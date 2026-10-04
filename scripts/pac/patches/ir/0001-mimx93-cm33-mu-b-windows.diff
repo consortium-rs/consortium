@@ -1,0 +1,30 @@
+The i.MX 93 CM33 drives the B half of MU1 and MU2 (Linux owns the A half), but
+MIMX9352_cm33_COMMON.h declares only the MUA windows. Add MU1_MUB/MU2_MUB at their
+reference-manual bases so the HAL emits their singletons and the MU doorbell can
+bind them. Introduced by 4efb041 ("imx93 should assign mua to linux and mub to cm33").
+--- a/crates/consortium-data/database/chip/mimx93_cm33.json
++++ b/crates/consortium-data/database/chip/mimx93_cm33.json
+@@ -1413,6 +1413,11 @@
+     {
+       "name": "MU1_MUA",
+       "base_address": "0x44220000",
++      "block": "mu/MU"
++    },
++    {
++      "name": "MU1_MUB",
++      "base_address": "0x44230000",
+       "block": "mu/MU"
+     },
+     {
+@@ -1421,6 +1426,11 @@
+       "block": "mu/MU"
+     },
+     {
++      "name": "MU2_MUB",
++      "base_address": "0x42440000",
++      "block": "mu/MU"
++    },
++    {
+       "name": "MU_APPS__S3MUA",
+       "base_address": "0x47520000",
+       "block": "s3mu/S3MU"

@@ -31,7 +31,7 @@ use core::task::Poll;
 use embassy_hal_internal::{Peri, PeripheralType};
 use embassy_sync::waitqueue::AtomicWaker;
 use embedded_can::{ErrorKind, Id, StandardId};
-use pac::peripherals::fdcan::{FDCAN, FDCAN_IR, FDCAN_RXF0A, FDCAN_TXBAR};
+use pac::peripherals::fdcan::{FDCAN, FDCAN_IR, FDCAN_RXF0A, FDCAN_TXBAR, FDCAN_TXBCR};
 
 use crate::pac;
 
@@ -479,6 +479,13 @@ impl CanTx {
         )
         .await?;
         self.load_tx(frame);
+        // A frame no node acknowledges is retransmitted forever and would hold
+        // the buffer against every later `transmit`; withdraw it if this future
+        // is dropped before it completes.
+        let guard = TxCancelGuard {
+            regs: self.regs,
+            armed: true,
+        };
         // Await transmission completion.
         wait_flag(
             &self.state.tx_waker,
@@ -487,8 +494,33 @@ impl CanTx {
             || (!self.tx_busy()).then_some(Ok(())),
         )
         .await?;
+        guard.defuse();
         self.regs.IR().write_value(ir_tc());
         Ok(())
+    }
+}
+
+/// Requests cancellation of transmit buffer 0 when dropped unless
+/// [`defuse`](Self::defuse)d. `TXBRP` clears once the controller has withdrawn
+/// the frame (or finished sending it), which is what the next `transmit` waits
+/// on.
+struct TxCancelGuard {
+    regs: FDCAN,
+    armed: bool,
+}
+
+impl TxCancelGuard {
+    /// The frame was sent; nothing to cancel.
+    fn defuse(mut self) {
+        self.armed = false;
+    }
+}
+
+impl Drop for TxCancelGuard {
+    fn drop(&mut self) {
+        if self.armed {
+            self.regs.TXBCR().write_value(FDCAN_TXBCR(1));
+        }
     }
 }
 

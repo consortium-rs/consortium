@@ -11,6 +11,7 @@ from common import (
     calc_bit_size_from_mask,
     evaluate_expr,
     extract_description,
+    mask_ranges,
     safe_hex_to_int,
     strip_suffix,
     write_json,
@@ -110,6 +111,18 @@ class STM32HeaderParser:
                 if not other_mask or not (field_mask & other_mask):
                     continue
 
+                # Two names for exactly the same bits: a mode-dependent alias
+                # (`PPSCTRL`/`PPSCMD`), a duplicate from another register
+                # variant (`DTID`/`DTIDA`), or a value constant spelled with the
+                # field's own mask (`VLC`/`VLC_VLANTAGREPLACE`). chiptool allows
+                # one, so keep whichever the header defines first; `fields` is
+                # in definition order.
+                if field_mask == other_mask:
+                    if i > j:
+                        remove.add(i)
+                        break
+                    continue
+
                 if cls._is_aggregate_alias(field["name"], field_names):
                     remove.add(i)
                     break
@@ -117,7 +130,7 @@ class STM32HeaderParser:
                 if cls._is_aggregate_alias(other["name"], field_names):
                     continue
 
-                same_offset = field["bit_offset"] == other["bit_offset"]
+                same_offset = cls._first_bit(field) == cls._first_bit(other)
                 narrower = field["bit_size"] < other["bit_size"]
                 if same_offset and narrower:
                     remove.add(i)
@@ -130,8 +143,46 @@ class STM32HeaderParser:
             field.pop("_mask", None)
             pruned.append(field)
 
-        pruned.sort(key=lambda f: (f["bit_offset"], f["name"]))
+        pruned.sort(key=lambda f: (cls._first_bit(f), f["name"]))
         return pruned
+
+    @staticmethod
+    def _split_capture_compare(
+        fields: list[dict[str, Any]],
+    ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+        """Separate a capture/compare mode register into its two views.
+
+        A timer `CCMRx` holds different fields in the same bits depending on
+        whether a channel is an input (`ICxPSC`, `ICxF`) or an output (`OCxFE`,
+        `OCxPE`, `OCxM`, `OCxCE`). chiptool forbids overlapping fields, so the
+        register keeps the output view and the input view becomes its own
+        fieldset; fields of neither mode (`CCxS`) appear in both. Registers
+        without such a collision come back unchanged with an empty input view.
+        """
+
+        def mode(field: dict[str, Any]) -> str | None:
+            match = re.match(r"(IC|OC)\d", field["name"])
+            return match.group(1) if match else None
+
+        inputs = [f for f in fields if mode(f) == "IC"]
+        outputs = [f for f in fields if mode(f) == "OC"]
+        collide = any(
+            i.get("_mask", 0) & o.get("_mask", 0) for i in inputs for o in outputs
+        )
+        if not collide:
+            return fields, []
+        shared = [f for f in fields if mode(f) is None]
+        output_view = [f for f in fields if mode(f) != "IC"]
+        # The shared fields go in both views, and pruning pops each field's
+        # `_mask`, so the input view gets its own copies.
+        input_view = [dict(f) for f in shared] + inputs
+        return output_view, input_view
+
+    @staticmethod
+    def _first_bit(field: dict[str, Any]) -> int:
+        """Lowest bit of a field, whether its offset is regular or split."""
+        offset = field["bit_offset"]
+        return offset[0]["start"] if isinstance(offset, list) else offset
 
     def strip_preprocessor(self):
         """Remove #if/#else/#endif conditionals, keeping all branches."""
@@ -387,6 +438,16 @@ class STM32HeaderParser:
             # Calculate bit size from unshifted mask
             bit_size = calc_bit_size_from_mask(mask_val)
 
+            # A mask with gaps (`TIM_SMCR_TS` is bits 4-6 and 20-21) is a split
+            # field: chiptool takes it as a list of inclusive bit ranges. A
+            # single offset would claim the gap and collide with its neighbours.
+            ranges = mask_ranges(mask_val << bit_offset)
+            offset: int | list[dict[str, int]] = (
+                bit_offset
+                if len(ranges) <= 1
+                else [{"start": start, "end": end} for start, end in ranges]
+            )
+
             # Some registers (e.g. GPIO_ADVCFGRL/H) name each per-pin nibble with a
             # bare number (macro `GPIO_ADVCFGRL_0_Pos`), which cannot be a Rust ident.
             # Prefix digit-leading field names with the register's last token so the
@@ -396,7 +457,7 @@ class STM32HeaderParser:
 
             field: dict[str, Any] = {
                 "name": field_ident,
-                "bit_offset": bit_offset,
+                "bit_offset": offset,
                 "bit_size": bit_size,
                 "_mask": mask_val << bit_offset,
             }
@@ -408,10 +469,16 @@ class STM32HeaderParser:
 
         # Convert to fieldsets
         for reg_name, fields in fieldsets_dict.items():
+            fields, input_view = self._split_capture_compare(fields)
             self.fieldsets[reg_name] = {
                 "description": "",
                 "fields": self._prune_overlapping_fields(fields),
             }
+            if input_view:
+                self.fieldsets[f"{reg_name}_INPUT"] = {
+                    "description": f"{reg_name} as read in input-capture mode",
+                    "fields": self._prune_overlapping_fields(input_view),
+                }
 
     def parse_base_addresses_and_instances(self):
         """Extract base addresses and instance casts."""

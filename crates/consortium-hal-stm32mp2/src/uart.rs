@@ -1,10 +1,15 @@
 //! UART driver backed by an STM32MP2 USART instance.
 //!
-//! Any USART/UART instance can back a [`Uart`]; select it by passing its MMIO
-//! base to [`Uart::new`] together with a `&'static` `UartState` per
-//! instance. Blocking I/O ([`embedded_io`], [`embedded_hal_nb::serial`])
-//! works without interrupts. Async I/O ([`embedded_io_async`]) requires the
-//! caller to route the instance's interrupt to `UartState::on_interrupt`.
+//! Any USART/UART/LPUART instance can back a [`Uart`]; select it by handing its
+//! peripheral singleton to [`Uart::new`]. Blocking I/O ([`embedded_io`],
+//! [`embedded_hal_nb::serial`]) works without interrupts. Async I/O
+//! ([`embedded_io_async`]) requires the caller to route the instance's
+//! interrupt to [`on_interrupt`] (or [`on_buffered_interrupt`] for a
+//! [`BufferedUart`]).
+//!
+//! The async reads and writes are cancel-safe: a future moves bytes only in the
+//! poll that completes it, so dropping one loses no data, and the one interrupt
+//! enable it may leave armed is masked by the handler the first time it fires.
 
 use core::future::poll_fn;
 use core::sync::atomic::{AtomicBool, Ordering};
@@ -172,6 +177,9 @@ pub(crate) trait SealedInstance {
     fn regs() -> USART;
     /// This instance's dedicated interrupt state.
     fn state() -> &'static State;
+    /// Whether this instance is an LPUART (`BRR = 256 · f / baud`) rather than
+    /// a USART/UART (`BRR = f / baud`).
+    const LPUART: bool;
 }
 
 /// An instance the [`Uart`] and [`BufferedUart`] drivers can drive.
@@ -189,6 +197,8 @@ pub trait Instance: SealedInstance + PeripheralType {
 macro_rules! impl_uart {
     ($instance:ident, $base:expr, $irq:expr) => {
         impl crate::uart::SealedInstance for crate::peripherals::$instance {
+            const LPUART: bool = crate::uart::is_lpuart(stringify!($instance));
+
             #[inline]
             fn regs() -> crate::pac::peripherals::usart::USART {
                 // SAFETY: `$base` is this instance's base as extracted from the
@@ -295,11 +305,8 @@ impl Uart {
         let r = T::regs();
         let state = T::state();
 
-        let brr = brr_value(clock_hz, config.baudrate);
-
         r.CR1().write(|w| w.set_UE(false));
-        r.BRR().write(|w| w.set_BRR(brr));
-        r.PRESC().write(|w| w.set_PRESCALER(0));
+        set_baudrate(r, T::LPUART, clock_hz, config.baudrate);
         r.ICR().write(|w| {
             w.set_PECF(true);
             w.set_FECF(true);
@@ -326,12 +333,68 @@ impl Uart {
     }
 }
 
-const fn brr_value(clock_hz: u32, baudrate: u32) -> u16 {
+/// Kernel-clock dividers selectable through `PRESC.PRESCALER`, indexed by the
+/// field value.
+const PRESC_DIVS: [u32; 12] = [1, 2, 4, 6, 8, 10, 12, 16, 32, 64, 128, 256];
+
+/// `(PRESC.PRESCALER, BRR)` for `baudrate` from kernel clock `clock_hz`.
+///
+/// A USART oversamples by 16, so `BRR = f / baud` and must lie in
+/// `16..=0xffff`. An LPUART has no oversampling and computes
+/// `BRR = 256 · f / baud`, which must lie in `0x300..=0xf_ffff` (a 20-bit
+/// field). The smallest prescaler that brings `BRR` into range is chosen.
+///
+/// # Panics
+///
+/// Panics if `baudrate` is zero, too high for the clock (`BRR` below its
+/// minimum even undivided), or too low (`BRR` above its maximum even at the
+/// largest prescaler).
+const fn baud_divisor(clock_hz: u32, baudrate: u32, lpuart: bool) -> (u8, u32) {
     assert!(baudrate > 0);
-    let div = (clock_hz as u64 + baudrate as u64 / 2) / baudrate as u64;
-    // Oversampling by 16 requires BRR >= 16; the register is 16 bits wide.
-    assert!(div >= 16 && div <= u16::MAX as u64);
-    div as u16
+    let (mul, brr_min, brr_max) = if lpuart {
+        (256u64, 0x300u64, 0xf_ffffu64)
+    } else {
+        (1u64, 0x10u64, 0xffffu64)
+    };
+    let mut i = 0;
+    while i < PRESC_DIVS.len() {
+        let presc = PRESC_DIVS[i] as u64;
+        let brr = ((clock_hz as u64 / presc) * mul + baudrate as u64 / 2) / baudrate as u64;
+        // Prescaling only lowers BRR, so falling below the minimum here means
+        // no prescaler can reach the baud rate.
+        assert!(brr >= brr_min, "baud rate too high for the kernel clock");
+        if brr <= brr_max {
+            return (i as u8, brr as u32);
+        }
+        i += 1;
+    }
+    panic!("baud rate too low for the kernel clock")
+}
+
+/// Program `PRESC` and `BRR` for `baudrate`. The USART must be disabled.
+fn set_baudrate(r: USART, lpuart: bool, clock_hz: u32, baudrate: u32) {
+    let (presc, brr) = baud_divisor(clock_hz, baudrate, lpuart);
+    r.PRESC().write(|w| w.set_PRESCALER(presc));
+    // The generated `set_BRR` covers only the USART's 16 bits; an LPUART's
+    // divider is 20 bits wide, so write the whole register.
+    r.BRR().write_value(pac::peripherals::usart::USART_BRR(brr));
+}
+
+/// Whether the peripheral singleton `name` is an LPUART, whose baud-rate
+/// generator differs from a USART's.
+pub(crate) const fn is_lpuart(name: &str) -> bool {
+    let (name, prefix) = (name.as_bytes(), b"LPUART");
+    if name.len() < prefix.len() {
+        return false;
+    }
+    let mut i = 0;
+    while i < prefix.len() {
+        if name[i] != prefix[i] {
+            return false;
+        }
+        i += 1;
+    }
+    true
 }
 
 impl UartRx {
@@ -625,11 +688,8 @@ impl BufferedUart {
         let r = T::regs();
         let state = T::state();
 
-        let brr = brr_value(clock_hz, config.baudrate);
-
         r.CR1().write(|w| w.set_UE(false));
-        r.BRR().write(|w| w.set_BRR(brr));
-        r.PRESC().write(|w| w.set_PRESCALER(0));
+        set_baudrate(r, T::LPUART, clock_hz, config.baudrate);
         r.ICR().write(|w| {
             w.set_PECF(true);
             w.set_FECF(true);
@@ -799,25 +859,54 @@ mod tests {
     use std::sync::atomic::{AtomicUsize, Ordering};
     use std::task::{Wake, Waker};
 
-    use super::{State, brr_value};
+    use super::{State, baud_divisor, is_lpuart};
     use crate::pac::peripherals::usart::USART;
 
     #[test]
-    fn brr_rounds_to_nearest() {
-        assert_eq!(brr_value(64_000_000, 115_200), 556);
-        assert_eq!(brr_value(1_000_000, 9_600), 104);
+    fn usart_brr_rounds_to_nearest() {
+        assert_eq!(baud_divisor(64_000_000, 115_200, false), (0, 556));
+        assert_eq!(baud_divisor(1_000_000, 9_600, false), (0, 104));
+    }
+
+    #[test]
+    fn usart_prescales_slow_baud() {
+        // 200 MHz / 1200 = 166_667 overflows BRR; /4 (PRESCALER = 2) fits.
+        assert_eq!(baud_divisor(200_000_000, 1_200, false), (2, 41_667));
+    }
+
+    #[test]
+    fn lpuart_brr_is_scaled_by_256() {
+        // 256 · 64 MHz / 115200 = 142_222, inside the 20-bit field.
+        assert_eq!(baud_divisor(64_000_000, 115_200, true), (0, 142_222));
+        // 256 · 64 MHz / 9600 = 1_706_667 overflows; /2 fits.
+        assert_eq!(baud_divisor(64_000_000, 9_600, true), (1, 853_333));
     }
 
     #[test]
     #[should_panic]
-    fn brr_rejects_too_fast_baud() {
-        brr_value(100_000, 115_200);
+    fn usart_rejects_too_fast_baud() {
+        baud_divisor(100_000, 115_200, false);
     }
 
     #[test]
     #[should_panic]
-    fn brr_rejects_divider_overflow() {
-        brr_value(2_000_000_000, 300);
+    fn lpuart_rejects_too_fast_baud() {
+        // 256 · 1 MHz / 1 Mbaud = 256 < 0x300.
+        baud_divisor(1_000_000, 1_000_000, true);
+    }
+
+    #[test]
+    #[should_panic]
+    fn usart_rejects_divider_overflow() {
+        baud_divisor(u32::MAX, 1, false);
+    }
+
+    #[test]
+    fn lpuart_instances_are_recognized() {
+        assert!(is_lpuart("LPUART1"));
+        assert!(!is_lpuart("USART1"));
+        assert!(!is_lpuart("UART4"));
+        assert!(!is_lpuart("LPU"));
     }
 
     /// Word-aligned backing store standing in for the USART register block.

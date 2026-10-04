@@ -887,10 +887,6 @@ fieldset/TAMP_PRIVCR:
       bit_offset: 15
       bit_size: 1
       description: 0x00004000U
-    - name: CNT1PRIV
-      bit_offset: 15
-      bit_size: 1
-      description: 0x00008000U
     - name: BKPRWPRIV
       bit_offset: 29
       bit_size: 1
@@ -1387,26 +1383,45 @@ fieldset/TAMP_RCIDCFGR:
 fieldset/TAMP_HWCFGR2:
   description: ''
   fields:
+    - name: OPTIONREG_OUT
+      bit_offset: 0
+      bit_size: 8
+      description: 0x000000FFU
+    - name: TRUST_ZONE
+      bit_offset: 8
+      bit_size: 4
+      description: 0x00000F00U
     - name: RIF
       bit_offset: 12
       bit_size: 4
 fieldset/TAMP_HWCFGR1:
   description: ''
   fields:
+    - name: BACKUP_REGS
+      bit_offset: 0
+      bit_size: 8
+      description: 0x000000FFU
     - name: TAMPER
       bit_offset: 8
       bit_size: 4
       description: 0x00000F00U
+    - name: ACTIVE_TAMPER
+      bit_offset: 12
+      bit_size: 4
+      description: 0x0000F000U
+    - name: INT_TAMPER
+      bit_offset: 16
+      bit_size: 16
 fieldset/TAMP_VERR:
   description: ''
   fields:
     - name: MINREV
       bit_offset: 0
-      bit_size: 3
+      bit_size: 1
       description: TAMP Minor version
     - name: MAJREV
       bit_offset: 4
-      bit_size: 3
+      bit_size: 1
       description: TAMP Major version
 fieldset/TAMP_IPIDR:
   description: ''

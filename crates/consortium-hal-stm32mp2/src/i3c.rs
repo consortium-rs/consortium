@@ -404,7 +404,12 @@ impl I3c {
         mode: BusMode,
     ) -> Result<(), Error> {
         self.clear_events();
-        self.write_part(address, bytes, mode, true)
+        let guard = FlushGuard::new(self.regs);
+        let result = self.write_part(address, bytes, mode, true);
+        if result.is_ok() {
+            guard.defuse();
+        }
+        result
     }
 
     /// Blocking private read followed by STOP.
@@ -415,7 +420,12 @@ impl I3c {
         mode: BusMode,
     ) -> Result<(), Error> {
         self.clear_events();
-        self.read_part(address, bytes, mode, true)
+        let guard = FlushGuard::new(self.regs);
+        let result = self.read_part(address, bytes, mode, true);
+        if result.is_ok() {
+            guard.defuse();
+        }
+        result
     }
 
     /// Blocking write/read with a repeated START.
@@ -427,8 +437,13 @@ impl I3c {
         mode: BusMode,
     ) -> Result<(), Error> {
         self.clear_events();
+        let guard = FlushGuard::new(self.regs);
         self.write_part(address, write, mode, false)?;
-        self.read_part(address, read, mode, true)
+        let result = self.read_part(address, read, mode, true);
+        if result.is_ok() {
+            guard.defuse();
+        }
+        result
     }
 
     /// Execute a repeated-start transaction.
@@ -439,6 +454,7 @@ impl I3c {
         mode: BusMode,
     ) -> Result<(), Error> {
         self.clear_events();
+        let guard = FlushGuard::new(self.regs);
         let count = operations.len();
         for (index, operation) in operations.iter_mut().enumerate() {
             let stop = index + 1 == count;
@@ -447,6 +463,7 @@ impl I3c {
                 Operation::Write(bytes) => self.write_part(address, bytes, mode, stop)?,
             }
         }
+        guard.defuse();
         Ok(())
     }
 
@@ -461,10 +478,15 @@ impl I3c {
     /// Send a broadcast CCC without a defining byte.
     pub fn broadcast_ccc(&mut self, command: u8) -> Result<(), Error> {
         self.clear_events();
+        let guard = FlushGuard::new(self.regs);
         self.regs
             .CR()
             .write_value(Self::ccc_descriptor(command, true));
-        self.wait_complete()
+        let result = self.wait_complete();
+        if result.is_ok() {
+            guard.defuse();
+        }
+        result
     }
 
     /// Reset all target dynamic addresses.
@@ -639,7 +661,12 @@ impl I3c {
     /// Async private write followed by STOP.
     pub async fn write(&mut self, address: u8, bytes: &[u8], mode: BusMode) -> Result<(), Error> {
         self.clear_events();
-        self.write_part_async(address, bytes, mode, true).await
+        let guard = FlushGuard::new(self.regs);
+        let result = self.write_part_async(address, bytes, mode, true).await;
+        if result.is_ok() {
+            guard.defuse();
+        }
+        result
     }
 
     /// Async private read followed by STOP.
@@ -650,7 +677,12 @@ impl I3c {
         mode: BusMode,
     ) -> Result<(), Error> {
         self.clear_events();
-        self.read_part_async(address, bytes, mode, true).await
+        let guard = FlushGuard::new(self.regs);
+        let result = self.read_part_async(address, bytes, mode, true).await;
+        if result.is_ok() {
+            guard.defuse();
+        }
+        result
     }
 
     /// Async write/read with a repeated START.
@@ -662,8 +694,13 @@ impl I3c {
         mode: BusMode,
     ) -> Result<(), Error> {
         self.clear_events();
+        let guard = FlushGuard::new(self.regs);
         self.write_part_async(address, write, mode, false).await?;
-        self.read_part_async(address, read, mode, true).await
+        let result = self.read_part_async(address, read, mode, true).await;
+        if result.is_ok() {
+            guard.defuse();
+        }
+        result
     }
 
     /// Async repeated-start transaction.
@@ -674,6 +711,7 @@ impl I3c {
         mode: BusMode,
     ) -> Result<(), Error> {
         self.clear_events();
+        let guard = FlushGuard::new(self.regs);
         let count = operations.len();
         for (index, operation) in operations.iter_mut().enumerate() {
             let stop = index + 1 == count;
@@ -684,7 +722,64 @@ impl I3c {
                 }
             }
         }
+        guard.defuse();
         Ok(())
+    }
+}
+
+/// Return the controller to a clean state after a failed or abandoned
+/// transfer: mask its interrupts, flush every FIFO, and clear the latched
+/// events.
+///
+/// The controller ends a message by itself on a FIFO underrun or overrun, so a
+/// transfer dropped mid-message does not hold the bus. A repeated-start
+/// sequence abandoned *between* messages (a descriptor without `MEND`) still
+/// leaves the bus held until the next transfer's first message; ending it with
+/// a bare STOP is not implemented.
+fn flush(r: I3C) {
+    r.IER().modify(|w| {
+        w.set_TXFNFIE(false);
+        w.set_RXFNEIE(false);
+        w.set_FCIE(false);
+        w.set_RXTGTENDIE(false);
+        w.set_ERRIE(false);
+    });
+    r.CFGR().modify(|w| {
+        w.set_RXFLUSH(true);
+        w.set_TXFLUSH(true);
+        w.set_CFLUSH(true);
+        w.set_SFLUSH(true);
+    });
+    r.CEVR().write(|w| {
+        w.set_CFCF(true);
+        w.set_CRXTGTENDF(true);
+        w.set_CERRF(true);
+    });
+}
+
+/// Runs [`flush`] when dropped unless [`defuse`](Self::defuse)d, covering both
+/// an error propagated with `?` and an async transfer dropped mid-flight.
+struct FlushGuard {
+    regs: I3C,
+    armed: bool,
+}
+
+impl FlushGuard {
+    fn new(regs: I3C) -> Self {
+        Self { regs, armed: true }
+    }
+
+    /// The transfer completed cleanly; skip the flush.
+    fn defuse(mut self) {
+        self.armed = false;
+    }
+}
+
+impl Drop for FlushGuard {
+    fn drop(&mut self) {
+        if self.armed {
+            flush(self.regs);
+        }
     }
 }
 

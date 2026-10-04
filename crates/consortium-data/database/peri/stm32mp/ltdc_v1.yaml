@@ -719,5 +719,5 @@ fieldset/LTDC_FUTR:
     - name: THRE
       bit_offset: 0
       bit_size: 16
-      description: threshold to trigger a FIFO underrun interrupt (per FIFO word, 64
-        bits)
+      description: threshold to trigger a FIFO underrun interrupt (per FIFO word,
+        64 bits)

@@ -1,8 +1,7 @@
 #![allow(non_camel_case_types)]
 #![allow(non_snake_case)]
 #![allow(non_upper_case_globals)]
-#![doc = "Peripheral access API (generated using chiptool v0.1.0 (73c44de 2026-04-17))"]
-
+#![doc = "Peripheral access API (generated using chiptool v0.1.0 (bcf538a 2026-05-18))"]
 #[doc = ""]
 #[derive(Copy, Clone, Eq, PartialEq)]
 pub struct RCC {
@@ -104,17 +103,17 @@ impl RCC {
     }
     #[doc = "RCC CPU Boot Control Register"]
     #[inline(always)]
-    pub const fn CPUBOOTCR(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn CPUBOOTCR(self) -> crate::common::Reg<RCC_CPUBOOTCR, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0434usize) as _) }
     }
     #[doc = "RCC Standby Boot Control Register"]
     #[inline(always)]
-    pub const fn STBYBOOTCR(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn STBYBOOTCR(self) -> crate::common::Reg<RCC_STBYBOOTCR, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0438usize) as _) }
     }
     #[doc = "RCC Legacy Boot Control Register"]
     #[inline(always)]
-    pub const fn LEGBOOTCR(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn LEGBOOTCR(self) -> crate::common::Reg<RCC_LEGBOOTCR, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x043cusize) as _) }
     }
     #[doc = "RCC Backup Domain Control Register"]
@@ -169,52 +168,52 @@ impl RCC {
     }
     #[doc = "RCC IWDG CPU1 Clock Freeze Set Register"]
     #[inline(always)]
-    pub const fn IWDGC1FZSETR(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn IWDGC1FZSETR(self) -> crate::common::Reg<RCC_IWDGC1FZSETR, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0468usize) as _) }
     }
     #[doc = "RCC IWDG CPU1 Clock Freeze Clear Register"]
     #[inline(always)]
-    pub const fn IWDGC1FZCLRR(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn IWDGC1FZCLRR(self) -> crate::common::Reg<RCC_IWDGC1FZCLRR, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x046cusize) as _) }
     }
     #[doc = "RCC IWDG CPU1 Configuration Set Register"]
     #[inline(always)]
-    pub const fn IWDGC1CFGSETR(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn IWDGC1CFGSETR(self) -> crate::common::Reg<RCC_IWDGC1CFGSETR, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0470usize) as _) }
     }
     #[doc = "RCC IWDG CPU1 Configuration Clear Register"]
     #[inline(always)]
-    pub const fn IWDGC1CFGCLRR(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn IWDGC1CFGCLRR(self) -> crate::common::Reg<RCC_IWDGC1CFGCLRR, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0474usize) as _) }
     }
     #[doc = "RCC IWDG CPU2 Clock Freeze Set Register"]
     #[inline(always)]
-    pub const fn IWDGC2FZSETR(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn IWDGC2FZSETR(self) -> crate::common::Reg<RCC_IWDGC2FZSETR, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0478usize) as _) }
     }
     #[doc = "RCC IWDG CPU2 Clock Freeze Clear Register"]
     #[inline(always)]
-    pub const fn IWDGC2FZCLRR(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn IWDGC2FZCLRR(self) -> crate::common::Reg<RCC_IWDGC2FZCLRR, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x047cusize) as _) }
     }
     #[doc = "RCC IWDG CPU2 Configuration Set Register"]
     #[inline(always)]
-    pub const fn IWDGC2CFGSETR(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn IWDGC2CFGSETR(self) -> crate::common::Reg<RCC_IWDGC2CFGSETR, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0480usize) as _) }
     }
     #[doc = "RCC IWDG CPU2 Configuration Clear Register"]
     #[inline(always)]
-    pub const fn IWDGC2CFGCLRR(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn IWDGC2CFGCLRR(self) -> crate::common::Reg<RCC_IWDGC2CFGCLRR, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0484usize) as _) }
     }
     #[doc = "RCC IWDG CPU3 Configuration Set Register"]
     #[inline(always)]
-    pub const fn IWDGC3CFGSETR(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn IWDGC3CFGSETR(self) -> crate::common::Reg<RCC_IWDGC3CFGSETR, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0488usize) as _) }
     }
     #[doc = "RCC IWDG CPU3 Configuration Clear Register"]
     #[inline(always)]
-    pub const fn IWDGC3CFGCLRR(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn IWDGC3CFGCLRR(self) -> crate::common::Reg<RCC_IWDGC3CFGCLRR, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x048cusize) as _) }
     }
     #[doc = "RCC CPU3 Configuration Register"]
@@ -3620,6 +3619,30 @@ impl defmt::Format for RCC_C1RSTCSETR {
 #[derive(Copy, Clone, Eq, PartialEq)]
 pub struct RCC_C1SREQCLRR(pub u32);
 impl RCC_C1SREQCLRR {
+    #[doc = "Stop request for CPU1 processor core 0"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn STPREQ_P0(&self) -> bool {
+        let val = (self.0 >> 0usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Stop request for CPU1 processor core 0"]
+    #[inline(always)]
+    pub const fn set_STPREQ_P0(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
+    #[doc = "Stop request for CPU1 processor core 1"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn STPREQ_P1(&self) -> bool {
+        let val = (self.0 >> 1usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Stop request for CPU1 processor core 1"]
+    #[inline(always)]
+    pub const fn set_STPREQ_P1(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 1usize)) | (((val as u32) & 0x01) << 1usize);
+    }
     #[doc = "Enhanced CSleep request for CPU1 subsystem"]
     #[must_use]
     #[inline(always)]
@@ -3642,6 +3665,8 @@ impl Default for RCC_C1SREQCLRR {
 impl core::fmt::Debug for RCC_C1SREQCLRR {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         f.debug_struct("RCC_C1SREQCLRR")
+            .field("STPREQ_P0", &self.STPREQ_P0())
+            .field("STPREQ_P1", &self.STPREQ_P1())
             .field("ESLPREQ", &self.ESLPREQ())
             .finish()
     }
@@ -3649,7 +3674,13 @@ impl core::fmt::Debug for RCC_C1SREQCLRR {
 #[cfg(feature = "defmt")]
 impl defmt::Format for RCC_C1SREQCLRR {
     fn format(&self, f: defmt::Formatter) {
-        defmt::write!(f, "RCC_C1SREQCLRR {{ ESLPREQ: {=bool:?} }}", self.ESLPREQ())
+        defmt::write!(
+            f,
+            "RCC_C1SREQCLRR {{ STPREQ_P0: {=bool:?}, STPREQ_P1: {=bool:?}, ESLPREQ: {=bool:?} }}",
+            self.STPREQ_P0(),
+            self.STPREQ_P1(),
+            self.ESLPREQ()
+        )
     }
 }
 #[doc = ""]
@@ -3657,6 +3688,30 @@ impl defmt::Format for RCC_C1SREQCLRR {
 #[derive(Copy, Clone, Eq, PartialEq)]
 pub struct RCC_C1SREQSETR(pub u32);
 impl RCC_C1SREQSETR {
+    #[doc = "Stop request for CPU1 processor core 0"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn STPREQ_P0(&self) -> bool {
+        let val = (self.0 >> 0usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Stop request for CPU1 processor core 0"]
+    #[inline(always)]
+    pub const fn set_STPREQ_P0(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
+    #[doc = "Stop request for CPU1 processor core 1"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn STPREQ_P1(&self) -> bool {
+        let val = (self.0 >> 1usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Stop request for CPU1 processor core 1"]
+    #[inline(always)]
+    pub const fn set_STPREQ_P1(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 1usize)) | (((val as u32) & 0x01) << 1usize);
+    }
     #[doc = "Enhanced CSleep request for CPU1 subsystem"]
     #[must_use]
     #[inline(always)]
@@ -3679,6 +3734,8 @@ impl Default for RCC_C1SREQSETR {
 impl core::fmt::Debug for RCC_C1SREQSETR {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         f.debug_struct("RCC_C1SREQSETR")
+            .field("STPREQ_P0", &self.STPREQ_P0())
+            .field("STPREQ_P1", &self.STPREQ_P1())
             .field("ESLPREQ", &self.ESLPREQ())
             .finish()
     }
@@ -3686,7 +3743,13 @@ impl core::fmt::Debug for RCC_C1SREQSETR {
 #[cfg(feature = "defmt")]
 impl defmt::Format for RCC_C1SREQSETR {
     fn format(&self, f: defmt::Formatter) {
-        defmt::write!(f, "RCC_C1SREQSETR {{ ESLPREQ: {=bool:?} }}", self.ESLPREQ())
+        defmt::write!(
+            f,
+            "RCC_C1SREQSETR {{ STPREQ_P0: {=bool:?}, STPREQ_P1: {=bool:?}, ESLPREQ: {=bool:?} }}",
+            self.STPREQ_P0(),
+            self.STPREQ_P1(),
+            self.ESLPREQ()
+        )
     }
 }
 #[doc = ""]
@@ -5098,6 +5161,61 @@ impl defmt::Format for RCC_CCICFGR {
             self.CCIRST(),
             self.CCIEN(),
             self.CCILPEN()
+        )
+    }
+}
+#[doc = ""]
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct RCC_CPUBOOTCR(pub u32);
+impl RCC_CPUBOOTCR {
+    #[doc = "CPU2 to boot"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn BOOT_CPU2(&self) -> bool {
+        let val = (self.0 >> 0usize) & 0x01;
+        val != 0
+    }
+    #[doc = "CPU2 to boot"]
+    #[inline(always)]
+    pub const fn set_BOOT_CPU2(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
+    #[doc = "CPU1 boot"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn BOOT_CPU1(&self) -> bool {
+        let val = (self.0 >> 1usize) & 0x01;
+        val != 0
+    }
+    #[doc = "CPU1 boot"]
+    #[inline(always)]
+    pub const fn set_BOOT_CPU1(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 1usize)) | (((val as u32) & 0x01) << 1usize);
+    }
+}
+impl Default for RCC_CPUBOOTCR {
+    #[inline(always)]
+    fn default() -> RCC_CPUBOOTCR {
+        RCC_CPUBOOTCR(0)
+    }
+}
+impl core::fmt::Debug for RCC_CPUBOOTCR {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("RCC_CPUBOOTCR")
+            .field("BOOT_CPU2", &self.BOOT_CPU2())
+            .field("BOOT_CPU1", &self.BOOT_CPU1())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for RCC_CPUBOOTCR {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "RCC_CPUBOOTCR {{ BOOT_CPU2: {=bool:?}, BOOT_CPU1: {=bool:?} }}",
+            self.BOOT_CPU2(),
+            self.BOOT_CPU1()
         )
     }
 }
@@ -10772,6 +10890,625 @@ impl defmt::Format for RCC_IWDG5CFGR {
 #[doc = ""]
 #[repr(transparent)]
 #[derive(Copy, Clone, Eq, PartialEq)]
+pub struct RCC_IWDGC1CFGCLRR(pub u32);
+impl RCC_IWDGC1CFGCLRR {
+    #[doc = "Clear of IWDG1 timeout event to reset the application"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn IWDG1_SYSRSTEN(&self) -> bool {
+        let val = (self.0 >> 0usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Clear of IWDG1 timeout event to reset the application"]
+    #[inline(always)]
+    pub const fn set_IWDG1_SYSRSTEN(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
+    #[doc = "Clear of IWDG2 timeout event to reset the application"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn IWDG2_SYSRSTEN(&self) -> bool {
+        let val = (self.0 >> 2usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Clear of IWDG2 timeout event to reset the application"]
+    #[inline(always)]
+    pub const fn set_IWDG2_SYSRSTEN(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 2usize)) | (((val as u32) & 0x01) << 2usize);
+    }
+    #[doc = "IWDG2 kernel reset"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn IWDG2_KERRST(&self) -> bool {
+        let val = (self.0 >> 18usize) & 0x01;
+        val != 0
+    }
+    #[doc = "IWDG2 kernel reset"]
+    #[inline(always)]
+    pub const fn set_IWDG2_KERRST(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 18usize)) | (((val as u32) & 0x01) << 18usize);
+    }
+}
+impl Default for RCC_IWDGC1CFGCLRR {
+    #[inline(always)]
+    fn default() -> RCC_IWDGC1CFGCLRR {
+        RCC_IWDGC1CFGCLRR(0)
+    }
+}
+impl core::fmt::Debug for RCC_IWDGC1CFGCLRR {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("RCC_IWDGC1CFGCLRR")
+            .field("IWDG1_SYSRSTEN", &self.IWDG1_SYSRSTEN())
+            .field("IWDG2_SYSRSTEN", &self.IWDG2_SYSRSTEN())
+            .field("IWDG2_KERRST", &self.IWDG2_KERRST())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for RCC_IWDGC1CFGCLRR {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "RCC_IWDGC1CFGCLRR {{ IWDG1_SYSRSTEN: {=bool:?}, IWDG2_SYSRSTEN: {=bool:?}, IWDG2_KERRST: {=bool:?} }}",
+            self.IWDG1_SYSRSTEN(),
+            self.IWDG2_SYSRSTEN(),
+            self.IWDG2_KERRST()
+        )
+    }
+}
+#[doc = ""]
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct RCC_IWDGC1CFGSETR(pub u32);
+impl RCC_IWDGC1CFGSETR {
+    #[doc = "Enable of IWDG1 timeout event to reset the application"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn IWDG1_SYSRSTEN(&self) -> bool {
+        let val = (self.0 >> 0usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Enable of IWDG1 timeout event to reset the application"]
+    #[inline(always)]
+    pub const fn set_IWDG1_SYSRSTEN(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
+    #[doc = "Enable of IWDG2 timeout event to reset the application"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn IWDG2_SYSRSTEN(&self) -> bool {
+        let val = (self.0 >> 2usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Enable of IWDG2 timeout event to reset the application"]
+    #[inline(always)]
+    pub const fn set_IWDG2_SYSRSTEN(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 2usize)) | (((val as u32) & 0x01) << 2usize);
+    }
+    #[doc = "IWDG2 kernel reset"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn IWDG2_KERRST(&self) -> bool {
+        let val = (self.0 >> 18usize) & 0x01;
+        val != 0
+    }
+    #[doc = "IWDG2 kernel reset"]
+    #[inline(always)]
+    pub const fn set_IWDG2_KERRST(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 18usize)) | (((val as u32) & 0x01) << 18usize);
+    }
+}
+impl Default for RCC_IWDGC1CFGSETR {
+    #[inline(always)]
+    fn default() -> RCC_IWDGC1CFGSETR {
+        RCC_IWDGC1CFGSETR(0)
+    }
+}
+impl core::fmt::Debug for RCC_IWDGC1CFGSETR {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("RCC_IWDGC1CFGSETR")
+            .field("IWDG1_SYSRSTEN", &self.IWDG1_SYSRSTEN())
+            .field("IWDG2_SYSRSTEN", &self.IWDG2_SYSRSTEN())
+            .field("IWDG2_KERRST", &self.IWDG2_KERRST())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for RCC_IWDGC1CFGSETR {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "RCC_IWDGC1CFGSETR {{ IWDG1_SYSRSTEN: {=bool:?}, IWDG2_SYSRSTEN: {=bool:?}, IWDG2_KERRST: {=bool:?} }}",
+            self.IWDG1_SYSRSTEN(),
+            self.IWDG2_SYSRSTEN(),
+            self.IWDG2_KERRST()
+        )
+    }
+}
+#[doc = ""]
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct RCC_IWDGC1FZCLRR(pub u32);
+impl RCC_IWDGC1FZCLRR {
+    #[doc = "Unfreeze IWDG1 clock"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn FZ_IWDG1(&self) -> bool {
+        let val = (self.0 >> 0usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Unfreeze IWDG1 clock"]
+    #[inline(always)]
+    pub const fn set_FZ_IWDG1(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
+    #[doc = "Unfreeze IWDG2 clock"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn FZ_IWDG2(&self) -> bool {
+        let val = (self.0 >> 1usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Unfreeze IWDG2 clock"]
+    #[inline(always)]
+    pub const fn set_FZ_IWDG2(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 1usize)) | (((val as u32) & 0x01) << 1usize);
+    }
+}
+impl Default for RCC_IWDGC1FZCLRR {
+    #[inline(always)]
+    fn default() -> RCC_IWDGC1FZCLRR {
+        RCC_IWDGC1FZCLRR(0)
+    }
+}
+impl core::fmt::Debug for RCC_IWDGC1FZCLRR {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("RCC_IWDGC1FZCLRR")
+            .field("FZ_IWDG1", &self.FZ_IWDG1())
+            .field("FZ_IWDG2", &self.FZ_IWDG2())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for RCC_IWDGC1FZCLRR {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "RCC_IWDGC1FZCLRR {{ FZ_IWDG1: {=bool:?}, FZ_IWDG2: {=bool:?} }}",
+            self.FZ_IWDG1(),
+            self.FZ_IWDG2()
+        )
+    }
+}
+#[doc = ""]
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct RCC_IWDGC1FZSETR(pub u32);
+impl RCC_IWDGC1FZSETR {
+    #[doc = "Freeze of IWDG1 clock"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn FZ_IWDG1(&self) -> bool {
+        let val = (self.0 >> 0usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Freeze of IWDG1 clock"]
+    #[inline(always)]
+    pub const fn set_FZ_IWDG1(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
+    #[doc = "Freeze of IWDG2 clock"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn FZ_IWDG2(&self) -> bool {
+        let val = (self.0 >> 1usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Freeze of IWDG2 clock"]
+    #[inline(always)]
+    pub const fn set_FZ_IWDG2(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 1usize)) | (((val as u32) & 0x01) << 1usize);
+    }
+}
+impl Default for RCC_IWDGC1FZSETR {
+    #[inline(always)]
+    fn default() -> RCC_IWDGC1FZSETR {
+        RCC_IWDGC1FZSETR(0)
+    }
+}
+impl core::fmt::Debug for RCC_IWDGC1FZSETR {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("RCC_IWDGC1FZSETR")
+            .field("FZ_IWDG1", &self.FZ_IWDG1())
+            .field("FZ_IWDG2", &self.FZ_IWDG2())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for RCC_IWDGC1FZSETR {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "RCC_IWDGC1FZSETR {{ FZ_IWDG1: {=bool:?}, FZ_IWDG2: {=bool:?} }}",
+            self.FZ_IWDG1(),
+            self.FZ_IWDG2()
+        )
+    }
+}
+#[doc = ""]
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct RCC_IWDGC2CFGCLRR(pub u32);
+impl RCC_IWDGC2CFGCLRR {
+    #[doc = "Clear of IWDG3 timeout event to reset the application"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn IWDG3_SYSRSTEN(&self) -> bool {
+        let val = (self.0 >> 0usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Clear of IWDG3 timeout event to reset the application"]
+    #[inline(always)]
+    pub const fn set_IWDG3_SYSRSTEN(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
+    #[doc = "Clear of IWDG4 timeout event to reset the application"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn IWDG4_SYSRSTEN(&self) -> bool {
+        let val = (self.0 >> 2usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Clear of IWDG4 timeout event to reset the application"]
+    #[inline(always)]
+    pub const fn set_IWDG4_SYSRSTEN(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 2usize)) | (((val as u32) & 0x01) << 2usize);
+    }
+    #[doc = "IWDG4 kernel reset"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn IWDG4_KERRST(&self) -> bool {
+        let val = (self.0 >> 18usize) & 0x01;
+        val != 0
+    }
+    #[doc = "IWDG4 kernel reset"]
+    #[inline(always)]
+    pub const fn set_IWDG4_KERRST(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 18usize)) | (((val as u32) & 0x01) << 18usize);
+    }
+}
+impl Default for RCC_IWDGC2CFGCLRR {
+    #[inline(always)]
+    fn default() -> RCC_IWDGC2CFGCLRR {
+        RCC_IWDGC2CFGCLRR(0)
+    }
+}
+impl core::fmt::Debug for RCC_IWDGC2CFGCLRR {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("RCC_IWDGC2CFGCLRR")
+            .field("IWDG3_SYSRSTEN", &self.IWDG3_SYSRSTEN())
+            .field("IWDG4_SYSRSTEN", &self.IWDG4_SYSRSTEN())
+            .field("IWDG4_KERRST", &self.IWDG4_KERRST())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for RCC_IWDGC2CFGCLRR {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "RCC_IWDGC2CFGCLRR {{ IWDG3_SYSRSTEN: {=bool:?}, IWDG4_SYSRSTEN: {=bool:?}, IWDG4_KERRST: {=bool:?} }}",
+            self.IWDG3_SYSRSTEN(),
+            self.IWDG4_SYSRSTEN(),
+            self.IWDG4_KERRST()
+        )
+    }
+}
+#[doc = ""]
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct RCC_IWDGC2CFGSETR(pub u32);
+impl RCC_IWDGC2CFGSETR {
+    #[doc = "Enable of IWDG3 timeout event to reset the application"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn IWDG3_SYSRSTEN(&self) -> bool {
+        let val = (self.0 >> 0usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Enable of IWDG3 timeout event to reset the application"]
+    #[inline(always)]
+    pub const fn set_IWDG3_SYSRSTEN(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
+    #[doc = "Enable of IWDG4 timeout event to reset the application"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn IWDG4_SYSRSTEN(&self) -> bool {
+        let val = (self.0 >> 2usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Enable of IWDG4 timeout event to reset the application"]
+    #[inline(always)]
+    pub const fn set_IWDG4_SYSRSTEN(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 2usize)) | (((val as u32) & 0x01) << 2usize);
+    }
+    #[doc = "IWDG4 kernel reset"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn IWDG4_KERRST(&self) -> bool {
+        let val = (self.0 >> 18usize) & 0x01;
+        val != 0
+    }
+    #[doc = "IWDG4 kernel reset"]
+    #[inline(always)]
+    pub const fn set_IWDG4_KERRST(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 18usize)) | (((val as u32) & 0x01) << 18usize);
+    }
+}
+impl Default for RCC_IWDGC2CFGSETR {
+    #[inline(always)]
+    fn default() -> RCC_IWDGC2CFGSETR {
+        RCC_IWDGC2CFGSETR(0)
+    }
+}
+impl core::fmt::Debug for RCC_IWDGC2CFGSETR {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("RCC_IWDGC2CFGSETR")
+            .field("IWDG3_SYSRSTEN", &self.IWDG3_SYSRSTEN())
+            .field("IWDG4_SYSRSTEN", &self.IWDG4_SYSRSTEN())
+            .field("IWDG4_KERRST", &self.IWDG4_KERRST())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for RCC_IWDGC2CFGSETR {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "RCC_IWDGC2CFGSETR {{ IWDG3_SYSRSTEN: {=bool:?}, IWDG4_SYSRSTEN: {=bool:?}, IWDG4_KERRST: {=bool:?} }}",
+            self.IWDG3_SYSRSTEN(),
+            self.IWDG4_SYSRSTEN(),
+            self.IWDG4_KERRST()
+        )
+    }
+}
+#[doc = ""]
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct RCC_IWDGC2FZCLRR(pub u32);
+impl RCC_IWDGC2FZCLRR {
+    #[doc = "Unfreeze of IWDG3 clock"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn FZ_IWDG3(&self) -> bool {
+        let val = (self.0 >> 0usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Unfreeze of IWDG3 clock"]
+    #[inline(always)]
+    pub const fn set_FZ_IWDG3(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
+    #[doc = "Unfreeze of IWDG4 clock"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn FZ_IWDG4(&self) -> bool {
+        let val = (self.0 >> 1usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Unfreeze of IWDG4 clock"]
+    #[inline(always)]
+    pub const fn set_FZ_IWDG4(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 1usize)) | (((val as u32) & 0x01) << 1usize);
+    }
+}
+impl Default for RCC_IWDGC2FZCLRR {
+    #[inline(always)]
+    fn default() -> RCC_IWDGC2FZCLRR {
+        RCC_IWDGC2FZCLRR(0)
+    }
+}
+impl core::fmt::Debug for RCC_IWDGC2FZCLRR {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("RCC_IWDGC2FZCLRR")
+            .field("FZ_IWDG3", &self.FZ_IWDG3())
+            .field("FZ_IWDG4", &self.FZ_IWDG4())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for RCC_IWDGC2FZCLRR {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "RCC_IWDGC2FZCLRR {{ FZ_IWDG3: {=bool:?}, FZ_IWDG4: {=bool:?} }}",
+            self.FZ_IWDG3(),
+            self.FZ_IWDG4()
+        )
+    }
+}
+#[doc = ""]
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct RCC_IWDGC2FZSETR(pub u32);
+impl RCC_IWDGC2FZSETR {
+    #[doc = "Freeze of IWDG3 clock"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn FZ_IWDG3(&self) -> bool {
+        let val = (self.0 >> 0usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Freeze of IWDG3 clock"]
+    #[inline(always)]
+    pub const fn set_FZ_IWDG3(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
+    #[doc = "Freeze of IWDG4 clock"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn FZ_IWDG4(&self) -> bool {
+        let val = (self.0 >> 1usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Freeze of IWDG4 clock"]
+    #[inline(always)]
+    pub const fn set_FZ_IWDG4(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 1usize)) | (((val as u32) & 0x01) << 1usize);
+    }
+}
+impl Default for RCC_IWDGC2FZSETR {
+    #[inline(always)]
+    fn default() -> RCC_IWDGC2FZSETR {
+        RCC_IWDGC2FZSETR(0)
+    }
+}
+impl core::fmt::Debug for RCC_IWDGC2FZSETR {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("RCC_IWDGC2FZSETR")
+            .field("FZ_IWDG3", &self.FZ_IWDG3())
+            .field("FZ_IWDG4", &self.FZ_IWDG4())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for RCC_IWDGC2FZSETR {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "RCC_IWDGC2FZSETR {{ FZ_IWDG3: {=bool:?}, FZ_IWDG4: {=bool:?} }}",
+            self.FZ_IWDG3(),
+            self.FZ_IWDG4()
+        )
+    }
+}
+#[doc = ""]
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct RCC_IWDGC3CFGCLRR(pub u32);
+impl RCC_IWDGC3CFGCLRR {
+    #[doc = "Clear of IWDG5 timeout event to reset the application"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn IWDG5_SYSRSTEN(&self) -> bool {
+        let val = (self.0 >> 0usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Clear of IWDG5 timeout event to reset the application"]
+    #[inline(always)]
+    pub const fn set_IWDG5_SYSRSTEN(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
+}
+impl Default for RCC_IWDGC3CFGCLRR {
+    #[inline(always)]
+    fn default() -> RCC_IWDGC3CFGCLRR {
+        RCC_IWDGC3CFGCLRR(0)
+    }
+}
+impl core::fmt::Debug for RCC_IWDGC3CFGCLRR {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("RCC_IWDGC3CFGCLRR")
+            .field("IWDG5_SYSRSTEN", &self.IWDG5_SYSRSTEN())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for RCC_IWDGC3CFGCLRR {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "RCC_IWDGC3CFGCLRR {{ IWDG5_SYSRSTEN: {=bool:?} }}",
+            self.IWDG5_SYSRSTEN()
+        )
+    }
+}
+#[doc = ""]
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct RCC_IWDGC3CFGSETR(pub u32);
+impl RCC_IWDGC3CFGSETR {
+    #[doc = "Enable of IWDG5 timeout event to reset the application"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn IWDG5_SYSRSTEN(&self) -> bool {
+        let val = (self.0 >> 0usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Enable of IWDG5 timeout event to reset the application"]
+    #[inline(always)]
+    pub const fn set_IWDG5_SYSRSTEN(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
+}
+impl Default for RCC_IWDGC3CFGSETR {
+    #[inline(always)]
+    fn default() -> RCC_IWDGC3CFGSETR {
+        RCC_IWDGC3CFGSETR(0)
+    }
+}
+impl core::fmt::Debug for RCC_IWDGC3CFGSETR {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("RCC_IWDGC3CFGSETR")
+            .field("IWDG5_SYSRSTEN", &self.IWDG5_SYSRSTEN())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for RCC_IWDGC3CFGSETR {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "RCC_IWDGC3CFGSETR {{ IWDG5_SYSRSTEN: {=bool:?} }}",
+            self.IWDG5_SYSRSTEN()
+        )
+    }
+}
+#[doc = ""]
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct RCC_LEGBOOTCR(pub u32);
+impl RCC_LEGBOOTCR {
+    #[doc = "Enable of the legacy selection mode to choose the first CPU to boot"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn LEGACY_BEN(&self) -> bool {
+        let val = (self.0 >> 0usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Enable of the legacy selection mode to choose the first CPU to boot"]
+    #[inline(always)]
+    pub const fn set_LEGACY_BEN(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
+}
+impl Default for RCC_LEGBOOTCR {
+    #[inline(always)]
+    fn default() -> RCC_LEGBOOTCR {
+        RCC_LEGBOOTCR(0)
+    }
+}
+impl core::fmt::Debug for RCC_LEGBOOTCR {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("RCC_LEGBOOTCR")
+            .field("LEGACY_BEN", &self.LEGACY_BEN())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for RCC_LEGBOOTCR {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "RCC_LEGBOOTCR {{ LEGACY_BEN: {=bool:?} }}",
+            self.LEGACY_BEN()
+        )
+    }
+}
+#[doc = ""]
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
 pub struct RCC_LPDMACFGR(pub u32);
 impl RCC_LPDMACFGR {
     #[doc = "LPDMA1 reset"]
@@ -15942,6 +16679,18 @@ impl defmt::Format for RCC_PREDIVxCFGR {
 #[derive(Copy, Clone, Eq, PartialEq)]
 pub struct RCC_PWRLPDLYCR(pub u32);
 impl RCC_PWRLPDLYCR {
+    #[doc = "PWR_LP delay value"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn PWRLP_DLY(&self) -> u32 {
+        let val = (self.0 >> 0usize) & 0x003f_ffff;
+        val as u32
+    }
+    #[doc = "PWR_LP delay value"]
+    #[inline(always)]
+    pub const fn set_PWRLP_DLY(&mut self, val: u32) {
+        self.0 = (self.0 & !(0x003f_ffff << 0usize)) | (((val as u32) & 0x003f_ffff) << 0usize);
+    }
     #[doc = "Skip of PWR_LP delay for CPU2"]
     #[must_use]
     #[inline(always)]
@@ -15964,6 +16713,7 @@ impl Default for RCC_PWRLPDLYCR {
 impl core::fmt::Debug for RCC_PWRLPDLYCR {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         f.debug_struct("RCC_PWRLPDLYCR")
+            .field("PWRLP_DLY", &self.PWRLP_DLY())
             .field("CPU2TMPSKP", &self.CPU2TMPSKP())
             .finish()
     }
@@ -15973,7 +16723,8 @@ impl defmt::Format for RCC_PWRLPDLYCR {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(
             f,
-            "RCC_PWRLPDLYCR {{ CPU2TMPSKP: {=bool:?} }}",
+            "RCC_PWRLPDLYCR {{ PWRLP_DLY: {=u32:?}, CPU2TMPSKP: {=bool:?} }}",
+            self.PWRLP_DLY(),
             self.CPU2TMPSKP()
         )
     }
@@ -17703,6 +18454,103 @@ impl defmt::Format for RCC_SRAM2CFGR {
             "RCC_SRAM2CFGR {{ SRAM2EN: {=bool:?}, SRAM2LPEN: {=bool:?} }}",
             self.SRAM2EN(),
             self.SRAM2LPEN()
+        )
+    }
+}
+#[doc = ""]
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct RCC_STBYBOOTCR(pub u32);
+impl RCC_STBYBOOTCR {
+    #[doc = "CPU boot select"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn CPU_BEN_SEL(&self) -> bool {
+        let val = (self.0 >> 1usize) & 0x01;
+        val != 0
+    }
+    #[doc = "CPU boot select"]
+    #[inline(always)]
+    pub const fn set_CPU_BEN_SEL(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 1usize)) | (((val as u32) & 0x01) << 1usize);
+    }
+    #[doc = "CPU2 cold boot"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn COLD_CPU2(&self) -> bool {
+        let val = (self.0 >> 2usize) & 0x01;
+        val != 0
+    }
+    #[doc = "CPU2 cold boot"]
+    #[inline(always)]
+    pub const fn set_COLD_CPU2(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 2usize)) | (((val as u32) & 0x01) << 2usize);
+    }
+    #[doc = "CPU2 hardware boot enable"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn CPU2_HW_BEN(&self) -> bool {
+        let val = (self.0 >> 4usize) & 0x01;
+        val != 0
+    }
+    #[doc = "CPU2 hardware boot enable"]
+    #[inline(always)]
+    pub const fn set_CPU2_HW_BEN(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 4usize)) | (((val as u32) & 0x01) << 4usize);
+    }
+    #[doc = "CPU1 hardware boot enable"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn CPU1_HW_BEN(&self) -> bool {
+        let val = (self.0 >> 5usize) & 0x01;
+        val != 0
+    }
+    #[doc = "CPU1 hardware boot enable"]
+    #[inline(always)]
+    pub const fn set_CPU1_HW_BEN(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 5usize)) | (((val as u32) & 0x01) << 5usize);
+    }
+    #[doc = "RETRAM CRC error system reset enable"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn RET_CRCERR_RSTEN(&self) -> bool {
+        let val = (self.0 >> 8usize) & 0x01;
+        val != 0
+    }
+    #[doc = "RETRAM CRC error system reset enable"]
+    #[inline(always)]
+    pub const fn set_RET_CRCERR_RSTEN(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 8usize)) | (((val as u32) & 0x01) << 8usize);
+    }
+}
+impl Default for RCC_STBYBOOTCR {
+    #[inline(always)]
+    fn default() -> RCC_STBYBOOTCR {
+        RCC_STBYBOOTCR(0)
+    }
+}
+impl core::fmt::Debug for RCC_STBYBOOTCR {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("RCC_STBYBOOTCR")
+            .field("CPU_BEN_SEL", &self.CPU_BEN_SEL())
+            .field("COLD_CPU2", &self.COLD_CPU2())
+            .field("CPU2_HW_BEN", &self.CPU2_HW_BEN())
+            .field("CPU1_HW_BEN", &self.CPU1_HW_BEN())
+            .field("RET_CRCERR_RSTEN", &self.RET_CRCERR_RSTEN())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for RCC_STBYBOOTCR {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "RCC_STBYBOOTCR {{ CPU_BEN_SEL: {=bool:?}, COLD_CPU2: {=bool:?}, CPU2_HW_BEN: {=bool:?}, CPU1_HW_BEN: {=bool:?}, RET_CRCERR_RSTEN: {=bool:?} }}",
+            self.CPU_BEN_SEL(),
+            self.COLD_CPU2(),
+            self.CPU2_HW_BEN(),
+            self.CPU1_HW_BEN(),
+            self.RET_CRCERR_RSTEN()
         )
     }
 }

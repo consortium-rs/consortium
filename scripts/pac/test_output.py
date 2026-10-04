@@ -111,12 +111,12 @@ def check_bitfield_widths(data: dict) -> list[str]:
 
 
 def check_field_overlaps(data: dict) -> list[str]:
-    """Report fields sharing a bit offset.
+    """Report fields starting at the same bit.
 
-    CMSIS headers legitimately define multiple views at the same offset (e.g.
-    timer CCMRx input-capture vs output-compare modes, or single-bit/array
-    aliases like RLOCK/RLOCK0). chiptool represents these as distinct fields, so
-    these are informational warnings rather than errors.
+    CMSIS headers define some aliases at one offset (single-bit/array pairs such
+    as RLOCK/RLOCK0), so these are informational warnings rather than errors;
+    `just pac-validate` is what rejects genuine overlaps. A split field's
+    `bit_offset` is a list of `{start, end}` ranges, keyed here by its first bit.
     """
     warnings = []
 
@@ -127,6 +127,8 @@ def check_field_overlaps(data: dict) -> list[str]:
         fields_by_offset: dict[int, list] = {}
         for field in value["fields"]:
             offset = field.get("bit_offset", 0)
+            if isinstance(offset, list):
+                offset = offset[0]["start"]
             fields_by_offset.setdefault(offset, []).append(field)
 
         for offset, fields in fields_by_offset.items():

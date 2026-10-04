@@ -834,6 +834,11 @@
       "description": "CAMERAMIX ISI interrupt Channel 0"
     },
     {
+      "name": "ISP",
+      "value": 222,
+      "description": "ISP Processing Interrupt - Context 0"
+    },
+    {
       "name": "IRQSTEER_0",
       "value": 224,
       "description": "IRQSTEER0 interrupt"
@@ -955,247 +960,247 @@
     },
     {
       "name": "DMA5_3_0_1",
-      "value": 266,
+      "value": 362,
       "description": "eDMA3 channel 0/1 interrupt"
     },
     {
       "name": "DMA5_3_2_3",
-      "value": 267,
+      "value": 363,
       "description": "eDMA3 channel 2/3 interrupt"
     },
     {
       "name": "DMA5_3_4_5",
-      "value": 268,
+      "value": 364,
       "description": "eDMA3 channel 4/5 interrupt"
     },
     {
       "name": "DMA5_3_6_7",
-      "value": 269,
+      "value": 365,
       "description": "eDMA3 channel 6/7 interrupt"
     },
     {
       "name": "DMA5_3_8_9",
-      "value": 270,
+      "value": 366,
       "description": "eDMA3 channel 8/9 interrupt"
     },
     {
       "name": "DMA5_3_10_11",
-      "value": 271,
+      "value": 367,
       "description": "eDMA3 channel 10/11 interrupt"
     },
     {
       "name": "DMA5_3_12_13",
-      "value": 272,
+      "value": 368,
       "description": "eDMA3 channel 12/13 interrupt"
     },
     {
       "name": "DMA5_3_14_15",
-      "value": 273,
+      "value": 369,
       "description": "eDMA3 channel 14/15 interrupt"
     },
     {
       "name": "DMA5_3_16_17",
-      "value": 274,
+      "value": 370,
       "description": "eDMA3 channel 16/17 interrupt"
     },
     {
       "name": "DMA5_3_18_19",
-      "value": 275,
+      "value": 371,
       "description": "eDMA3 channel 18/19 interrupt"
     },
     {
       "name": "DMA5_3_20_21",
-      "value": 276,
+      "value": 372,
       "description": "eDMA3 channel 20/21 interrupt"
     },
     {
       "name": "DMA5_3_22_23",
-      "value": 277,
+      "value": 373,
       "description": "eDMA3 channel 22/23 interrupt"
     },
     {
       "name": "DMA5_3_24_25",
-      "value": 278,
+      "value": 374,
       "description": "eDMA3 channel 24/25 interrupt"
     },
     {
       "name": "DMA5_3_26_27",
-      "value": 279,
+      "value": 375,
       "description": "eDMA3 channel 26/27 interrupt"
     },
     {
       "name": "DMA5_3_28_29",
-      "value": 280,
-      "description": "eDMA3 channel 29/29 interrupt"
+      "value": 376,
+      "description": "eDMA3 channel 28/29 interrupt"
     },
     {
       "name": "DMA5_3_30_31",
-      "value": 281,
+      "value": 377,
       "description": "eDMA3 channel 30/31 interrupt"
     },
     {
       "name": "DMA5_3_32_33",
-      "value": 282,
+      "value": 426,
       "description": "eDMA3 channel 32/33 interrupt"
     },
     {
       "name": "DMA5_3_34_35",
-      "value": 283,
+      "value": 427,
       "description": "eDMA3 channel 34/35 interrupt"
     },
     {
       "name": "DMA5_3_36_37",
-      "value": 284,
+      "value": 428,
       "description": "eDMA3 channel 36/37 interrupt"
     },
     {
       "name": "DMA5_3_38_39",
-      "value": 285,
+      "value": 429,
       "description": "eDMA3 channel 38/39 interrupt"
     },
     {
       "name": "DMA5_3_40_41",
-      "value": 286,
+      "value": 430,
       "description": "eDMA3 channel 40/41 interrupt"
     },
     {
       "name": "DMA5_3_42_43",
-      "value": 287,
+      "value": 431,
       "description": "eDMA3 channel 42/43 interrupt"
     },
     {
       "name": "DMA5_3_44_45",
-      "value": 288,
+      "value": 432,
       "description": "eDMA3 channel 44/45 interrupt"
     },
     {
       "name": "DMA5_3_46_47",
-      "value": 289,
+      "value": 433,
       "description": "eDMA3 channel 46/47 interrupt"
     },
     {
       "name": "DMA5_3_48_49",
-      "value": 290,
+      "value": 434,
       "description": "eDMA3 channel 48/49 interrupt"
     },
     {
       "name": "DMA5_3_50_51",
-      "value": 291,
+      "value": 435,
       "description": "eDMA3 channel 50/51 interrupt"
     },
     {
       "name": "DMA5_3_52_53",
-      "value": 292,
+      "value": 436,
       "description": "eDMA3 channel 52/53 interrupt"
     },
     {
       "name": "DMA5_3_54_55",
-      "value": 293,
+      "value": 437,
       "description": "eDMA3 channel 54/55 interrupt"
     },
     {
       "name": "DMA5_3_56_57",
-      "value": 294,
+      "value": 438,
       "description": "eDMA3 channel 56/57 interrupt"
     },
     {
       "name": "DMA5_3_58_59",
-      "value": 295,
+      "value": 439,
       "description": "eDMA3 channel 58/59 interrupt"
     },
     {
       "name": "DMA5_3_60_61",
-      "value": 296,
+      "value": 440,
       "description": "eDMA3 channel 60/61 interrupt"
     },
     {
       "name": "DMA5_3_62_63",
-      "value": 297,
+      "value": 441,
       "description": "eDMA3 channel 62/63 interrupt"
     },
     {
       "name": "DMA5_4_ERROR",
-      "value": 361,
+      "value": 697,
       "description": "CAMERAMIX EDMA error interrupt"
     },
     {
       "name": "DMA5_4_0_1",
-      "value": 362,
+      "value": 746,
       "description": "CAMERAMIX EDMA channel 0 interrupt"
     },
     {
       "name": "DMA5_4_2_3",
-      "value": 363,
+      "value": 747,
       "description": "CAMERAMIX EDMA channel 2 interrupt"
     },
     {
       "name": "DMA5_4_4_5",
-      "value": 364,
+      "value": 748,
       "description": "CAMERAMIX EDMA channel 4 interrupt"
     },
     {
       "name": "DMA5_4_6_7",
-      "value": 365,
+      "value": 749,
       "description": "CAMERAMIX EDMA channel 6 interrupt"
     },
     {
       "name": "DMA5_4_8_9",
-      "value": 366,
+      "value": 750,
       "description": "CAMERAMIX EDMA channel 8 interrupt"
     },
     {
       "name": "DMA5_4_10_11",
-      "value": 367,
+      "value": 751,
       "description": "CAMERAMIX EDMA channel 10 interrupt"
     },
     {
       "name": "DMA5_4_12_13",
-      "value": 368,
+      "value": 752,
       "description": "CAMERAMIX EDMA channel 12 interrupt"
     },
     {
       "name": "DMA5_4_14_15",
-      "value": 369,
+      "value": 753,
       "description": "CAMERAMIX EDMA channel 14 interrupt"
     },
     {
       "name": "DMA5_4_16_17",
-      "value": 370,
+      "value": 754,
       "description": "CAMERAMIX EDMA channel 16 interrupt"
     },
     {
       "name": "DMA5_4_18_19",
-      "value": 371,
+      "value": 755,
       "description": "CAMERAMIX EDMA channel 18 interrupt"
     },
     {
       "name": "DMA5_4_20_21",
-      "value": 372,
+      "value": 756,
       "description": "CAMERAMIX EDMA channel 20 interrupt"
     },
     {
       "name": "DMA5_4_22_23",
-      "value": 373,
+      "value": 757,
       "description": "CAMERAMIX EDMA channel 22 interrupt"
     },
     {
       "name": "DMA5_4_24_25",
-      "value": 374,
+      "value": 758,
       "description": "CAMERAMIX EDMA channel 24 interrupt"
     },
     {
       "name": "DMA5_4_26_27",
-      "value": 375,
+      "value": 759,
       "description": "CAMERAMIX EDMA channel 26 interrupt"
     },
     {
       "name": "DMA5_4_28_29",
-      "value": 376,
+      "value": 760,
       "description": "CAMERAMIX EDMA channel 28 interrupt"
     },
     {
       "name": "DMA5_4_30_31",
-      "value": 377,
+      "value": 761,
       "description": "CAMERAMIX EDMA channel 30 interrupt"
     }
   ],
@@ -1268,12 +1273,12 @@
     {
       "name": "AON_CMUA1",
       "base_address": "0x44540000",
-      "block": "aon_cmu/AON_CMU"
+      "block": "cmu/CMU"
     },
     {
       "name": "AON_CMUA2",
       "base_address": "0x44650000",
-      "block": "aon_cmu/AON_CMU"
+      "block": "cmu/CMU"
     },
     {
       "name": "AON__AXBS",
@@ -2023,7 +2028,7 @@
     {
       "name": "ENETC0_GLOBAL",
       "base_address": "0x4cc20000",
-      "block": "enetc/ENETC"
+      "block": "enetc_global/ENETC_GLOBAL"
     },
     {
       "name": "ENETC0_PCI_HDR_TYPE0",
@@ -2673,12 +2678,12 @@
     {
       "name": "NOC_CMUN0",
       "base_address": "0x49070000",
-      "block": "noc_cmu/NOC_CMU"
+      "block": "cmu/CMU"
     },
     {
       "name": "NOC_CMUN1",
       "base_address": "0x49080000",
-      "block": "noc_cmu/NOC_CMU"
+      "block": "cmu/CMU"
     },
     {
       "name": "NOC__BLK_CTRL_NOCMIX",
@@ -2688,102 +2693,7 @@
     {
       "name": "NOC__EIMN",
       "base_address": "0x49270000",
-      "block": "noc_eim/NOC_EIM"
-    },
-    {
-      "name": "NOC__GIC__GICA",
-      "base_address": "0x48010000",
-      "block": "noc_gica/NOC_GICA"
-    },
-    {
-      "name": "NOC__GIC__GICD",
-      "base_address": "0x48000000",
-      "block": "noc_gicd/NOC_GICD"
-    },
-    {
-      "name": "NOC__GIC__GICDA",
-      "base_address": "0x48120000",
-      "block": "noc_gicda/NOC_GICDA"
-    },
-    {
-      "name": "NOC__GIC__GICP",
-      "base_address": "0x48030000",
-      "block": "noc_gicp/NOC_GICP"
-    },
-    {
-      "name": "NOC__GIC__GICRLPI0",
-      "base_address": "0x48060000",
-      "block": "noc_gicrlpi0/NOC_GICRLPI0"
-    },
-    {
-      "name": "NOC__GIC__GICRLPI1",
-      "base_address": "0x48080000",
-      "block": "noc_gicrlpi1/NOC_GICRLPI1"
-    },
-    {
-      "name": "NOC__GIC__GICRLPI2",
-      "base_address": "0x480a0000",
-      "block": "noc_gicrlpi2/NOC_GICRLPI2"
-    },
-    {
-      "name": "NOC__GIC__GICRLPI3",
-      "base_address": "0x480c0000",
-      "block": "noc_gicrlpi3/NOC_GICRLPI3"
-    },
-    {
-      "name": "NOC__GIC__GICRLPI4",
-      "base_address": "0x480e0000",
-      "block": "noc_gicrlpi4/NOC_GICRLPI4"
-    },
-    {
-      "name": "NOC__GIC__GICRLPI5",
-      "base_address": "0x48100000",
-      "block": "noc_gicrlpi5/NOC_GICRLPI5"
-    },
-    {
-      "name": "NOC__GIC__GICRSGI0",
-      "base_address": "0x48070000",
-      "block": "noc_gicrsgi0/NOC_GICRSGI0"
-    },
-    {
-      "name": "NOC__GIC__GICRSGI1",
-      "base_address": "0x48090000",
-      "block": "noc_gicrsgi1/NOC_GICRSGI1"
-    },
-    {
-      "name": "NOC__GIC__GICRSGI2",
-      "base_address": "0x480b0000",
-      "block": "noc_gicrsgi2/NOC_GICRSGI2"
-    },
-    {
-      "name": "NOC__GIC__GICRSGI3",
-      "base_address": "0x480d0000",
-      "block": "noc_gicrsgi3/NOC_GICRSGI3"
-    },
-    {
-      "name": "NOC__GIC__GICRSGI4",
-      "base_address": "0x480f0000",
-      "block": "noc_gicrsgi4/NOC_GICRSGI4"
-    },
-    {
-      "name": "NOC__GIC__GICRSGI5",
-      "base_address": "0x48110000",
-      "block": "noc_gicrsgi5/NOC_GICRSGI5"
-    },
-    {
-      "name": "NOC__GIC__GICT",
-      "base_address": "0x48020000",
-      "block": "noc_gict/NOC_GICT"
-    },
-    {
-      "name": "NOC__GIC__GITS0",
-      "base_address": "0x48040000",
-      "block": "noc_gits0/NOC_GITS0"
-    },
-    {
-      "name": "NOC__GIC__GITS0TRANSLATER",
-      "base_address": "0x48050000",
-      "block": "noc_gits0translater/NOC_GITS0TRANSLATER"
+      "block": "eim/EIM"
     },
     {
       "name": "NOC__LSTCUN",
@@ -3009,11 +2919,6 @@
       "name": "TPM6",
       "base_address": "0x42510000",
       "block": "tpm/TPM"
-    },
-    {
-      "name": "TRDC1",
-      "base_address": "0x44270000",
-      "block": "trdc_mbc2/TRDC_MBC2"
     },
     {
       "name": "TSTMR1",

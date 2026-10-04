@@ -67,9 +67,11 @@ block/LPTIM:
     - name: PIDR
       byte_offset: 1016
       description: LPTIM peripheral type identification register
+      fieldset: LPTIM_PIDR
     - name: SIDR
       byte_offset: 1020
       description: LPTIM registers map size identification register
+      fieldset: LPTIM_SIDR
 fieldset/LPTIM_ISR:
   description: ''
   fields:
@@ -475,3 +477,17 @@ fieldset/LPTIM_VERR:
       bit_offset: 4
       bit_size: 4
       description: Major revision
+fieldset/LPTIM_PIDR:
+  description: ''
+  fields:
+    - name: P_ID
+      bit_offset: 0
+      bit_size: 32
+      description: Peripheral type identifier
+fieldset/LPTIM_SIDR:
+  description: ''
+  fields:
+    - name: S_ID
+      bit_offset: 0
+      bit_size: 32
+      description: Registers map size identifier

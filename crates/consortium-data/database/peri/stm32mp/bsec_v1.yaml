@@ -757,6 +757,10 @@ fieldset/BSEC_OTPSR:
       bit_offset: 0
       bit_size: 1
       description: Busy flag
+    - name: INIT_DONE
+      bit_offset: 1
+      bit_size: 1
+      description: Initialization done
     - name: HIDEUP
       bit_offset: 2
       bit_size: 1

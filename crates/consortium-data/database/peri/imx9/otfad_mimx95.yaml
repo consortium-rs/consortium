@@ -1,0 +1,89 @@
+block/OTFAD:
+  description: ''
+  items:
+    - name: CR
+      byte_offset: 3072
+      fieldset: OTFAD_CR
+    - name: SR
+      byte_offset: 3076
+      fieldset: OTFAD_SR
+    - name: CTX_KEY
+      byte_offset: 3328
+      array:
+        len: 4
+        stride: 64
+fieldset/OTFAD_CR:
+  description: ''
+  fields:
+    - name: FLDM
+      bit_offset: 3
+      bit_size: 1
+    - name: RRAE
+      bit_offset: 7
+      bit_size: 1
+    - name: GE
+      bit_offset: 31
+      bit_size: 1
+fieldset/OTFAD_SR:
+  description: ''
+  fields:
+    - name: MDPCP
+      bit_offset: 1
+      bit_size: 1
+      description: MDPC Present
+    - name: MODE
+      bit_offset: 2
+      bit_size: 2
+      description: MDPC Present
+    - name: NCTX
+      bit_offset: 4
+      bit_size: 4
+      description: Number of Contexts
+    - name: HRL
+      bit_offset: 24
+      bit_size: 4
+      description: Number of Contexts
+    - name: RRAM
+      bit_offset: 28
+      bit_size: 1
+      description: Hardware Revision Level
+    - name: GEM
+      bit_offset: 29
+      bit_size: 1
+fieldset/OTFAD_KEY:
+  description: ''
+  fields:
+    - name: KEY
+      bit_offset: 0
+      bit_size: 32
+      description: AES Key
+fieldset/OTFAD_CTR:
+  description: ''
+  fields:
+    - name: CTR
+      bit_offset: 0
+      bit_size: 32
+      description: AES Counter
+fieldset/OTFAD_RGD_W0:
+  description: ''
+  fields:
+    - name: SRTADDR
+      bit_offset: 10
+      bit_size: 22
+      description: Start Address
+fieldset/OTFAD_RGD_W1:
+  description: ''
+  fields:
+    - name: VLD
+      bit_offset: 0
+      bit_size: 1
+    - name: ADE
+      bit_offset: 1
+      bit_size: 1
+    - name: RO
+      bit_offset: 2
+      bit_size: 1
+    - name: ENDADDR
+      bit_offset: 10
+      bit_size: 22
+      description: End Address

@@ -77,7 +77,8 @@ A few conventions that come up in review:
   types before validation, lowering, and codegen. Update the snapshot tests under
   `crates/consortium-cfg/tests/` when generated output intentionally changes.
 - Do not hand-edit generated output (PAC crates, `src/peripherals/<chip>.rs`, chip
-  databases). Change the generator or the patch workflow and re-run it.
+  databases). Change the generator or add a patch under `scripts/pac/patches/`, then run
+  `just pac-verify`.
 - New dependencies need Apache-2.0-compatible licensing and must respect the relevant
   `no_std`/`alloc`/`std` constraints. Intra-workspace deps carry both `path` and
   `version`; dev-dependencies stay path-only on purpose (see `docs/PUBLISHING.md`).

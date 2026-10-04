@@ -234,13 +234,13 @@ fieldset/OCTOSPI_DCR2:
 fieldset/OCTOSPI_DCR3:
   description: ''
   fields:
-    - name: CSBOUND
-      bit_offset: 16
-      bit_size: 5
-      description: Maximum transfer
     - name: MAXTRAN
       bit_offset: 0
       bit_size: 8
+      description: Maximum transfer
+    - name: CSBOUND
+      bit_offset: 16
+      bit_size: 5
       description: Maximum transfer
 fieldset/OCTOSPI_DCR4:
   description: ''

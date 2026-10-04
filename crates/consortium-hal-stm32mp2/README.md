@@ -155,7 +155,7 @@ Synchronization waits use a bounded status-read budget, not an Embassy timer.
 
 IWDG cannot be disabled after starting until reset. Supported instances are
 IWDG1–4 on MP21 and IWDG1–5 on MP25 (also the MP23 map). The separate WWDG
-peripheral is not covered. Regenerate the register API with `just pac-gen-iwdg`
-after updating the STM32 register YAML through the CMSIS parser.
+peripheral is not covered. The register API is regenerated with the rest of the PAC
+by `just pac-regen`.
 
 Register sequencing follows [STM32CubeMP2's IWDG driver](https://github.com/STMicroelectronics/STM32CubeMP2/blob/main/Drivers/STM32MP2xx_HAL_Driver/Src/stm32mp2xx_hal_iwdg.c).

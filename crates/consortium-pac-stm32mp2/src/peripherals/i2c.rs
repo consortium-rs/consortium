@@ -1,7 +1,7 @@
 #![allow(non_camel_case_types)]
 #![allow(non_snake_case)]
 #![allow(non_upper_case_globals)]
-#![doc = "Peripheral access API (generated using chiptool v0.1.0 (73c44de 2026-04-17))"]
+#![doc = "Peripheral access API (generated using chiptool v0.1.0 (bcf538a 2026-05-18))"]
 #[doc = ""]
 #[derive(Copy, Clone, Eq, PartialEq)]
 pub struct I2C {
@@ -576,6 +576,18 @@ impl I2C_CR2 {
     pub const fn set_SADD(&mut self, val: u16) {
         self.0 = (self.0 & !(0x03ff << 0usize)) | (((val as u32) & 0x03ff) << 0usize);
     }
+    #[doc = "Transfer direction (master mode)"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn RD_WRN(&self) -> bool {
+        let val = (self.0 >> 10usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Transfer direction (master mode)"]
+    #[inline(always)]
+    pub const fn set_RD_WRN(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 10usize)) | (((val as u32) & 0x01) << 10usize);
+    }
     #[doc = "10-bit addressing mode (master mode)"]
     #[must_use]
     #[inline(always)]
@@ -695,6 +707,7 @@ impl core::fmt::Debug for I2C_CR2 {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         f.debug_struct("I2C_CR2")
             .field("SADD", &self.SADD())
+            .field("RD_WRN", &self.RD_WRN())
             .field("ADD10", &self.ADD10())
             .field("HEAD10R", &self.HEAD10R())
             .field("START", &self.START())
@@ -712,8 +725,9 @@ impl defmt::Format for I2C_CR2 {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(
             f,
-            "I2C_CR2 {{ SADD: {=u16:?}, ADD10: {=bool:?}, HEAD10R: {=bool:?}, START: {=bool:?}, STOP: {=bool:?}, NACK: {=bool:?}, NBYTES: {=u8:?}, RELOAD: {=bool:?}, AUTOEND: {=bool:?}, PECBYTE: {=bool:?} }}",
+            "I2C_CR2 {{ SADD: {=u16:?}, RD_WRN: {=bool:?}, ADD10: {=bool:?}, HEAD10R: {=bool:?}, START: {=bool:?}, STOP: {=bool:?}, NACK: {=bool:?}, NBYTES: {=u8:?}, RELOAD: {=bool:?}, AUTOEND: {=bool:?}, PECBYTE: {=bool:?} }}",
             self.SADD(),
+            self.RD_WRN(),
             self.ADD10(),
             self.HEAD10R(),
             self.START(),

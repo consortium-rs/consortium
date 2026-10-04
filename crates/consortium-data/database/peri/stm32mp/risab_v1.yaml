@@ -44,8 +44,8 @@ block/RISAB:
       array:
         len: 32
         stride: 4
-      description: RISAB Page x privileged configuration register for compartment 2,
-        0x600-0x67C
+      description: RISAB Page x privileged configuration register for compartment
+        2, 0x600-0x67C
       fieldset: RISAB_PGC2PRIVCFGR
     - name: PGCIDCFGR
       byte_offset: 2336
@@ -108,26 +108,10 @@ fieldset/RISAB_IACR:
 fieldset/RISAB_RIFLOCKR:
   description: ''
   fields:
-    - name: RLOCK
-      bit_offset: 0
-      bit_size: 32
-      description: '0xFFFFFFFF'
     - name: RLOCK0
       bit_offset: 0
       bit_size: 1
       description: '0x00000001'
-    - name: RLOCK1
-      bit_offset: 1
-      bit_size: 1
-      description: '0x00000002'
-    - name: RLOCK2
-      bit_offset: 2
-      bit_size: 1
-      description: '0x00000004'
-    - name: RLOCK3
-      bit_offset: 3
-      bit_size: 1
-      description: '0x00000008'
     - name: RLOCK4
       bit_offset: 4
       bit_size: 1
@@ -266,10 +250,6 @@ fieldset/RISAB_IADDR:
 fieldset/RISAB_PGSECCFGR:
   description: ''
   fields:
-    - name: SEC
-      bit_offset: 0
-      bit_size: 8
-      description: '0x000000FF'
     - name: SEC0
       bit_offset: 0
       bit_size: 1
@@ -304,10 +284,6 @@ fieldset/RISAB_PGSECCFGR:
 fieldset/RISAB_PGPRIVCFGR:
   description: ''
   fields:
-    - name: PRIV
-      bit_offset: 0
-      bit_size: 8
-      description: '0x000000FF'
     - name: PRIV0
       bit_offset: 0
       bit_size: 1
@@ -342,10 +318,6 @@ fieldset/RISAB_PGPRIVCFGR:
 fieldset/RISAB_PGC2PRIVCFGR:
   description: ''
   fields:
-    - name: PRIV
-      bit_offset: 0
-      bit_size: 8
-      description: '0x000000FF'
     - name: PRIV0
       bit_offset: 0
       bit_size: 1

@@ -32,17 +32,18 @@ for d in crates/*/; do n=$(basename "$d"); curl -sf "https://crates.io/api/v1/cr
 ## PocketJS
 
 `consortium-hmi-pocket` depends on `pocket-mod`, `pocket-ui-wgpu`, and `pocket3d`,
-none of which are on crates.io. They are pinned to the upstream GitHub release
-tag `v0.7.0` rather than to the local `submodules/pocketjs` checkout, so the
-build is reproducible off a plain `git clone` with no submodule init.
+none of which are on crates.io. They are pinned by `rev` to an upstream GitHub
+commit rather than to the local `submodules/pocketjs` checkout, so the build is
+reproducible off a plain `git clone` with no submodule init.
 
 The submodule is still required for the JS side — `bun tools/build.ts` produces
 the `<app>.js`/`.pak` pair the builder stages — so it does not go away.
 
-Note that the submodule HEAD is ahead of `v0.7.0`; the crate compiles against
-both, but if you take new upstream Rust API, bump the tag in the manifest rather
-than relying on the submodule. When PocketJS reaches crates.io, replace the three
-`git`/`tag` entries with version requirements and drop the `publish = false`.
+The `rev` is the same commit the submodule is checked out at, so the Rust
+crates and the bun-built bundle agree. When you move the submodule, bump the
+`rev` in the manifest to match. When PocketJS reaches crates.io, replace the
+three `git`/`rev` entries with version requirements and drop the
+`publish = false`.
 
 ## Ordering
 

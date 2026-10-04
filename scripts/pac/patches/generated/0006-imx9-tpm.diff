@@ -1,0 +1,22 @@
+Hand-corrected `consortium-pac-imx9::peripherals::tpm`: keep the TPM CONTROLS_CnV channel-value array.
+The file is otherwise chiptool output; this restores the committed API on top of it.
+--- a/crates/consortium-pac-imx9/src/peripherals/tpm.rs
++++ b/crates/consortium-pac-imx9/src/peripherals/tpm.rs
+@@ -47,11 +47,16 @@
+         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x1cusize) as _) }
+     }
+     #[inline(always)]
+-    pub const fn CONTROLS_CnSC(self, n: usize) -> crate::common::Reg<u32, crate::common::RW> {
++    pub const fn CONTROLS_CnSC(self, n: usize) -> crate::common::Reg<TPM_CnSC, crate::common::RW> {
+         assert!(n < 4usize);
+         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x20usize + n * 8usize) as _) }
+     }
+     #[inline(always)]
++    pub const fn CONTROLS_CnV(self, n: usize) -> crate::common::Reg<TPM_CnV, crate::common::RW> {
++        assert!(n < 4usize);
++        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x24usize + n * 8usize) as _) }
++    }
++    #[inline(always)]
+     pub const fn COMBINE(self) -> crate::common::Reg<TPM_COMBINE, crate::common::RW> {
+         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x64usize) as _) }
+     }

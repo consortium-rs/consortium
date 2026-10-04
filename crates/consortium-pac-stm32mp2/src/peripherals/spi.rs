@@ -1,7 +1,7 @@
 #![allow(non_camel_case_types)]
 #![allow(non_snake_case)]
 #![allow(non_upper_case_globals)]
-#![doc = "Peripheral access API (generated using chiptool v0.1.0 (73c44de 2026-04-17))"]
+#![doc = "Peripheral access API (generated using chiptool v0.1.0 (bcf538a 2026-05-18))"]
 #[doc = ""]
 #[derive(Copy, Clone, Eq, PartialEq)]
 pub struct SPI {
@@ -669,6 +669,18 @@ impl SPI_CR1 {
     pub const fn set_SSI(&mut self, val: bool) {
         self.0 = (self.0 & !(0x01 << 12usize)) | (((val as u32) & 0x01) << 12usize);
     }
+    #[doc = "32-bit CRC polynomial configuration"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn CRC33_17(&self) -> bool {
+        let val = (self.0 >> 13usize) & 0x01;
+        val != 0
+    }
+    #[doc = "32-bit CRC polynomial configuration"]
+    #[inline(always)]
+    pub const fn set_CRC33_17(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 13usize)) | (((val as u32) & 0x01) << 13usize);
+    }
     #[doc = "CRC calculation initialization pattern control for receiver"]
     #[must_use]
     #[inline(always)]
@@ -721,6 +733,7 @@ impl core::fmt::Debug for SPI_CR1 {
             .field("CSUSP", &self.CSUSP())
             .field("HDDIR", &self.HDDIR())
             .field("SSI", &self.SSI())
+            .field("CRC33_17", &self.CRC33_17())
             .field("RCRCINI", &self.RCRCINI())
             .field("TCRCINI", &self.TCRCINI())
             .field("IOLOCK", &self.IOLOCK())
@@ -732,13 +745,14 @@ impl defmt::Format for SPI_CR1 {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(
             f,
-            "SPI_CR1 {{ SPE: {=bool:?}, MASRX: {=bool:?}, CSTART: {=bool:?}, CSUSP: {=bool:?}, HDDIR: {=bool:?}, SSI: {=bool:?}, RCRCINI: {=bool:?}, TCRCINI: {=bool:?}, IOLOCK: {=bool:?} }}",
+            "SPI_CR1 {{ SPE: {=bool:?}, MASRX: {=bool:?}, CSTART: {=bool:?}, CSUSP: {=bool:?}, HDDIR: {=bool:?}, SSI: {=bool:?}, CRC33_17: {=bool:?}, RCRCINI: {=bool:?}, TCRCINI: {=bool:?}, IOLOCK: {=bool:?} }}",
             self.SPE(),
             self.MASRX(),
             self.CSTART(),
             self.CSUSP(),
             self.HDDIR(),
             self.SSI(),
+            self.CRC33_17(),
             self.RCRCINI(),
             self.TCRCINI(),
             self.IOLOCK()

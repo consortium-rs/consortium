@@ -31,12 +31,26 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Install chiptool
-        run: cargo install --git https://github.com/embassy-rs/chiptool --locked
+        # Pinned: chiptool stamps its revision into every generated file. Keep in
+        # step with `chiptool_rev` in the justfile.
+        run: cargo install --git https://github.com/embassy-rs/chiptool --rev bcf538a2e7b8584ae874ee9ab72efb1576fc6152 --locked
 
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
           pip install pyyaml
+
+      - name: Apply vendor-header patches
+        # Same patches `just pac-patch` applies; `ir/` and `generated/` patch
+        # pipeline outputs, not submodules.
+        run: |
+          for dir in scripts/pac/patches/*/; do
+            submodule=$(basename "$dir")
+            case "$submodule" in ir|generated) continue ;; esac
+            for patch in "$dir"*.diff; do
+              git -C "submodules/$submodule" apply --ignore-whitespace "$(pwd)/$patch"
+            done
+          done
 
       - name: Stage vendor headers
         run: bash scripts/pac/prepare.sh
@@ -50,7 +64,6 @@ jobs:
       - name: Validate with chiptool
         run: |
           python scripts/pac/validate_with_chiptool.py
-        continue-on-error: true
 
       - name: Show summary
         run: |

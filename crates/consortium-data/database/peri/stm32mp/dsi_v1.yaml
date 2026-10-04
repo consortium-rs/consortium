@@ -108,12 +108,15 @@ block/DSI:
     - name: TCCR0
       byte_offset: 120
       description: DSI Host timeout counter configuration register 0
+      fieldset: DSI_TCCR0
     - name: TCCR1
       byte_offset: 124
       description: DSI Host timeout counter configuration register 1
+      fieldset: DSI_TCCR1
     - name: TCCR2
       byte_offset: 128
       description: DSI Host timeout counter configuration register 2
+      fieldset: DSI_TCCR2
     - name: TCCR3
       byte_offset: 132
       description: DSI Host timeout counter configuration register 3
@@ -121,9 +124,11 @@ block/DSI:
     - name: TCCR4
       byte_offset: 136
       description: DSI Host timeout counter configuration register 4
+      fieldset: DSI_TCCR4
     - name: TCCR5
       byte_offset: 140
       description: DSI Host timeout counter configuration register 5
+      fieldset: DSI_TCCR5
     - name: TDCR
       byte_offset: 144
       description: DSI Host 3D configuration register
@@ -135,9 +140,11 @@ block/DSI:
     - name: CLTCR
       byte_offset: 152
       description: DSI Host clock lane timer configuration register
+      fieldset: DSI_CLTCR
     - name: DLTCR
       byte_offset: 156
       description: DSI Host data lane timer configuration register
+      fieldset: DSI_DLTCR
     - name: PCTLR
       byte_offset: 160
       description: DSI Host PHY control register
@@ -153,6 +160,7 @@ block/DSI:
     - name: PTTCR
       byte_offset: 172
       description: DSI Host PHY TX triggers configuration register
+      fieldset: DSI_PTTCR
     - name: PSR
       byte_offset: 176
       description: DSI Host PHY status register
@@ -196,6 +204,7 @@ block/DSI:
     - name: DLTRCR
       byte_offset: 244
       description: DSI Host data lane timer read configuration register
+      fieldset: DSI_DLTRCR
     - name: VSCR
       byte_offset: 256
       description: DSI Host video shadow control register
@@ -690,13 +699,56 @@ fieldset/DSI_GPSR:
       bit_offset: 6
       bit_size: 1
       description: Read command busy
+fieldset/DSI_TCCR0:
+  description: ''
+  fields:
+    - name: LPRX_TOCNT
+      bit_offset: 0
+      bit_size: 16
+      description: Low-power reception timeout counter
+    - name: HSTX_TOCNT
+      bit_offset: 16
+      bit_size: 16
+      description: High-speed transmission timeout counter
+fieldset/DSI_TCCR1:
+  description: ''
+  fields:
+    - name: HSRD_TOCNT
+      bit_offset: 0
+      bit_size: 16
+      description: High-speed read timeout counter
+fieldset/DSI_TCCR2:
+  description: ''
+  fields:
+    - name: LPRD_TOCNT
+      bit_offset: 0
+      bit_size: 16
+      description: Low-power read timeout counter
 fieldset/DSI_TCCR3:
   description: ''
   fields:
+    - name: HSWR_TOCNT
+      bit_offset: 0
+      bit_size: 16
+      description: High-speed write timeout counter
     - name: PM
       bit_offset: 24
       bit_size: 1
       description: Presp mode
+fieldset/DSI_TCCR4:
+  description: ''
+  fields:
+    - name: LPWR_TOCNT
+      bit_offset: 0
+      bit_size: 16
+      description: Low-power write timeout counter
+fieldset/DSI_TCCR5:
+  description: ''
+  fields:
+    - name: BTA_TOCNT
+      bit_offset: 0
+      bit_size: 16
+      description: Bus-turn-around timeout counter
 fieldset/DSI_TDCR:
   description: ''
   fields:
@@ -731,6 +783,28 @@ fieldset/DSI_CLCR:
       bit_offset: 1
       bit_size: 1
       description: Automatic clock lane control
+fieldset/DSI_CLTCR:
+  description: ''
+  fields:
+    - name: LP2HS_TIME
+      bit_offset: 0
+      bit_size: 10
+      description: Low-power to high-speed time
+    - name: HS2LP_TIME
+      bit_offset: 16
+      bit_size: 10
+      description: High-speed to low-power time
+fieldset/DSI_DLTCR:
+  description: ''
+  fields:
+    - name: LP2HS_TIME
+      bit_offset: 0
+      bit_size: 10
+      description: Low-power to high-speed time
+    - name: HS2LP_TIME
+      bit_offset: 16
+      bit_size: 10
+      description: High-speed to low-power time
 fieldset/DSI_PCTLR:
   description: ''
   fields:
@@ -757,6 +831,10 @@ fieldset/DSI_PCONFR:
       bit_offset: 0
       bit_size: 2
       description: Number of lanes
+    - name: SW_TIME
+      bit_offset: 8
+      bit_size: 8
+      description: Stop wait time
 fieldset/DSI_PUCR:
   description: ''
   fields:
@@ -776,6 +854,13 @@ fieldset/DSI_PUCR:
       bit_offset: 3
       bit_size: 1
       description: ULPS exit on data lane
+fieldset/DSI_PTTCR:
+  description: ''
+  fields:
+    - name: TX_TRIG
+      bit_offset: 0
+      bit_size: 4
+      description: Transmission trigger
 fieldset/DSI_PSR:
   description: ''
   fields:
@@ -1347,6 +1432,13 @@ fieldset/DSI_FIR1:
       bit_offset: 12
       bit_size: 1
       description: Force generic payload receive error
+fieldset/DSI_DLTRCR:
+  description: ''
+  fields:
+    - name: MRD_TIME
+      bit_offset: 0
+      bit_size: 15
+      description: Maximum read time
 fieldset/DSI_VSCR:
   description: ''
   fields:
@@ -1728,7 +1820,8 @@ fieldset/DSI_WRPCR2:
     - name: UPD
       bit_offset: 16
       bit_size: 1
-      description: 'Update (copies) the PLL Shadow Registers to the effective PLL registers:'
+      description: 'Update (copies) the PLL Shadow Registers to the effective PLL
+        registers:'
     - name: CLR
       bit_offset: 24
       bit_size: 1

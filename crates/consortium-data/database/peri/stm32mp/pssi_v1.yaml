@@ -12,15 +12,19 @@ block/PSSI:
     - name: RIS
       byte_offset: 8
       description: PSSI raw interrupt status register
+      fieldset: PSSI_RIS
     - name: IER
       byte_offset: 12
       description: PSSI interrupt enable register
+      fieldset: PSSI_IER
     - name: MIS
       byte_offset: 16
       description: PSSI masked interrupt status register
+      fieldset: PSSI_MIS
     - name: ICR
       byte_offset: 20
       description: PSSI interrupt clear register
+      fieldset: PSSI_ICR
     - name: DR
       byte_offset: 40
       description: PSSI data register
@@ -40,49 +44,77 @@ block/PSSI:
 fieldset/PSSI_CR:
   description: ''
   fields:
-    - name: OUTEN
-      bit_offset: 31
-      bit_size: 1
-      description: Data direction selection
-    - name: DMAEN
-      bit_offset: 30
-      bit_size: 1
-      description: DMA enable
-    - name: DERDYCFG
-      bit_offset: 18
-      bit_size: 3
-      description: Data enable and ready configuration
-    - name: ENABLE
-      bit_offset: 14
-      bit_size: 1
-      description: PSSI enable
-    - name: EDM
-      bit_offset: 10
-      bit_size: 2
-      description: Extended data mode
-    - name: RDYPOL
-      bit_offset: 8
-      bit_size: 1
-      description: Ready polarity
-    - name: DEPOL
-      bit_offset: 6
-      bit_size: 1
-      description: Data enable polarity
     - name: CKPOL
       bit_offset: 5
       bit_size: 1
       description: Parallel data clock polarity
+    - name: DEPOL
+      bit_offset: 6
+      bit_size: 1
+      description: Data enable polarity
+    - name: RDYPOL
+      bit_offset: 8
+      bit_size: 1
+      description: Ready polarity
+    - name: EDM
+      bit_offset: 10
+      bit_size: 2
+      description: Extended data mode
+    - name: ENABLE
+      bit_offset: 14
+      bit_size: 1
+      description: PSSI enable
+    - name: DERDYCFG
+      bit_offset: 18
+      bit_size: 3
+      description: Data enable and ready configuration
+    - name: DMAEN
+      bit_offset: 30
+      bit_size: 1
+      description: DMA enable
+    - name: OUTEN
+      bit_offset: 31
+      bit_size: 1
+      description: Data direction selection
 fieldset/PSSI_SR:
   description: ''
   fields:
-    - name: RTT1B
-      bit_offset: 3
-      bit_size: 1
-      description: Ready to transfer one byte
     - name: RTT4B
       bit_offset: 2
       bit_size: 1
       description: Ready to transfer four bytes
+    - name: RTT1B
+      bit_offset: 3
+      bit_size: 1
+      description: Ready to transfer one byte
+fieldset/PSSI_RIS:
+  description: ''
+  fields:
+    - name: OVR_RIS
+      bit_offset: 1
+      bit_size: 1
+      description: Data buffer overrun/underrun raw interrupt status
+fieldset/PSSI_IER:
+  description: ''
+  fields:
+    - name: OVR_IE
+      bit_offset: 1
+      bit_size: 1
+      description: Data buffer overrun/underrun interrupt enable
+fieldset/PSSI_MIS:
+  description: ''
+  fields:
+    - name: OVR_MIS
+      bit_offset: 1
+      bit_size: 1
+      description: Data buffer overrun/underrun masked interrupt status
+fieldset/PSSI_ICR:
+  description: ''
+  fields:
+    - name: OVR_ISC
+      bit_offset: 1
+      bit_size: 1
+      description: Data buffer overrun/underrun interrupt status clear
 fieldset/PSSI_DR:
   description: ''
   fields:

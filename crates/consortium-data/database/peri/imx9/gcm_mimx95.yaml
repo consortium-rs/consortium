@@ -1,0 +1,282 @@
+block/GCM:
+  description: ''
+  items:
+    - name: NEO_PIPE2_GCM_CONF_IMAT0_CAM
+      byte_offset: 0
+    - name: NEO_PIPE2_GCM_CONF_IMAT1_CAM
+      byte_offset: 4
+    - name: NEO_PIPE2_GCM_CONF_IMAT2_CAM
+      byte_offset: 12
+    - name: NEO_PIPE2_GCM_CONF_IMAT3_CAM
+      byte_offset: 16
+    - name: NEO_PIPE2_GCM_CONF_IMAT4_CAM
+      byte_offset: 24
+    - name: NEO_PIPE2_GCM_CONF_IMAT5_CAM
+      byte_offset: 28
+    - name: NEO_PIPE2_GCM_CONF_IOFFSET0_CAM
+      byte_offset: 32
+    - name: NEO_PIPE2_GCM_CONF_IOFFSET1_CAM
+      byte_offset: 36
+    - name: NEO_PIPE2_GCM_CONF_IOFFSET2_CAM
+      byte_offset: 40
+    - name: NEO_PIPE2_GCM_CONF_OMAT0_CAM
+      byte_offset: 48
+    - name: NEO_PIPE2_GCM_CONF_OMAT1_CAM
+      byte_offset: 52
+    - name: NEO_PIPE2_GCM_CONF_OMAT2_CAM
+      byte_offset: 56
+    - name: NEO_PIPE2_GCM_CONF_OMAT3_CAM
+      byte_offset: 60
+    - name: NEO_PIPE2_GCM_CONF_OMAT4_CAM
+      byte_offset: 64
+    - name: NEO_PIPE2_GCM_CONF_OMAT5_CAM
+      byte_offset: 68
+    - name: NEO_PIPE2_GCM_CONF_OOFFSET0_CAM
+      byte_offset: 72
+    - name: NEO_PIPE2_GCM_CONF_OOFFSET1_CAM
+      byte_offset: 76
+    - name: NEO_PIPE2_GCM_CONF_OOFFSET2_CAM
+      byte_offset: 80
+    - name: NEO_PIPE2_GCM_CONF_GAMMA0_CAM
+      byte_offset: 96
+    - name: NEO_PIPE2_GCM_CONF_GAMMA1_CAM
+      byte_offset: 100
+    - name: NEO_PIPE2_GCM_CONF_GAMMA2_CAM
+      byte_offset: 104
+    - name: NEO_PIPE2_GCM_CONF_BLKLVL0_CTRL_CAM
+      byte_offset: 108
+    - name: NEO_PIPE2_GCM_CONF_BLKLVL1_CTRL_CAM
+      byte_offset: 112
+    - name: NEO_PIPE2_GCM_CONF_BLKLVL2_CTRL_CAM
+      byte_offset: 116
+    - name: NEO_PIPE2_GCM_CONF_LOWTH_CTRL01_CAM
+      byte_offset: 120
+    - name: NEO_PIPE2_GCM_CONF_LOWTH_CTRL2_CAM
+      byte_offset: 124
+    - name: NEO_PIPE2_GCM_CONF_MAT_CONFG_CAM
+      byte_offset: 128
+    - name: NEO_PIPE2_GCM_CONF_R_GAIN_CAM
+      byte_offset: 132
+    - name: NEO_PIPE2_GCM_CONF_G_GAIN_CAM
+      byte_offset: 136
+    - name: NEO_PIPE2_GCM_CONF_B_GAIN_CAM
+      byte_offset: 140
+fieldset/GCM_IMAT0_CAM:
+  description: ''
+  fields:
+    - name: R0C0
+      bit_offset: 0
+      bit_size: 16
+    - name: R0C1
+      bit_offset: 16
+      bit_size: 16
+fieldset/GCM_IMAT1_CAM:
+  description: ''
+  fields:
+    - name: R0C2
+      bit_offset: 0
+      bit_size: 16
+fieldset/GCM_IMAT2_CAM:
+  description: ''
+  fields:
+    - name: R1C0
+      bit_offset: 0
+      bit_size: 16
+    - name: R1C1
+      bit_offset: 16
+      bit_size: 16
+fieldset/GCM_IMAT3_CAM:
+  description: ''
+  fields:
+    - name: R1C2
+      bit_offset: 0
+      bit_size: 16
+fieldset/GCM_IMAT4_CAM:
+  description: ''
+  fields:
+    - name: R2C0
+      bit_offset: 0
+      bit_size: 16
+    - name: R2C1
+      bit_offset: 16
+      bit_size: 16
+fieldset/GCM_IMAT5_CAM:
+  description: ''
+  fields:
+    - name: R2C2
+      bit_offset: 0
+      bit_size: 16
+fieldset/GCM_IOFFSET0_CAM:
+  description: ''
+  fields:
+    - name: OFFSET0
+      bit_offset: 0
+      bit_size: 16
+fieldset/GCM_IOFFSET1_CAM:
+  description: ''
+  fields:
+    - name: OFFSET1
+      bit_offset: 0
+      bit_size: 16
+fieldset/GCM_IOFFSET2_CAM:
+  description: ''
+  fields:
+    - name: OFFSET2
+      bit_offset: 0
+      bit_size: 16
+fieldset/GCM_OMAT0_CAM:
+  description: ''
+  fields:
+    - name: R0C0
+      bit_offset: 0
+      bit_size: 16
+    - name: R0C1
+      bit_offset: 16
+      bit_size: 16
+fieldset/GCM_OMAT1_CAM:
+  description: ''
+  fields:
+    - name: R0C2
+      bit_offset: 0
+      bit_size: 16
+fieldset/GCM_OMAT2_CAM:
+  description: ''
+  fields:
+    - name: R1C0
+      bit_offset: 0
+      bit_size: 16
+    - name: R1C1
+      bit_offset: 16
+      bit_size: 16
+fieldset/GCM_OMAT3_CAM:
+  description: ''
+  fields:
+    - name: R1C2
+      bit_offset: 0
+      bit_size: 16
+fieldset/GCM_OMAT4_CAM:
+  description: ''
+  fields:
+    - name: R2C0
+      bit_offset: 0
+      bit_size: 16
+    - name: R2C1
+      bit_offset: 16
+      bit_size: 16
+fieldset/GCM_OMAT5_CAM:
+  description: ''
+  fields:
+    - name: R2C2
+      bit_offset: 0
+      bit_size: 16
+fieldset/GCM_OOFFSET0_CAM:
+  description: ''
+  fields:
+    - name: OFFSET0
+      bit_offset: 0
+      bit_size: 13
+fieldset/GCM_OOFFSET1_CAM:
+  description: ''
+  fields:
+    - name: OFFSET1
+      bit_offset: 0
+      bit_size: 13
+fieldset/GCM_OOFFSET2_CAM:
+  description: ''
+  fields:
+    - name: OFFSET2
+      bit_offset: 0
+      bit_size: 13
+fieldset/GCM_GAMMA0_CAM:
+  description: ''
+  fields:
+    - name: GAMMA0
+      bit_offset: 0
+      bit_size: 9
+    - name: OFFSET0
+      bit_offset: 16
+      bit_size: 12
+fieldset/GCM_GAMMA1_CAM:
+  description: ''
+  fields:
+    - name: GAMMA1
+      bit_offset: 0
+      bit_size: 9
+    - name: OFFSET1
+      bit_offset: 16
+      bit_size: 12
+fieldset/GCM_GAMMA2_CAM:
+  description: ''
+  fields:
+    - name: GAMMA2
+      bit_offset: 0
+      bit_size: 9
+    - name: OFFSET2
+      bit_offset: 16
+      bit_size: 12
+fieldset/GCM_BLKLVL0_CTRL_CAM:
+  description: ''
+  fields:
+    - name: OFFSET0
+      bit_offset: 0
+      bit_size: 16
+    - name: GAIN0
+      bit_offset: 16
+      bit_size: 16
+fieldset/GCM_BLKLVL1_CTRL_CAM:
+  description: ''
+  fields:
+    - name: OFFSET1
+      bit_offset: 0
+      bit_size: 16
+    - name: GAIN1
+      bit_offset: 16
+      bit_size: 16
+fieldset/GCM_BLKLVL2_CTRL_CAM:
+  description: ''
+  fields:
+    - name: OFFSET2
+      bit_offset: 0
+      bit_size: 16
+    - name: GAIN2
+      bit_offset: 16
+      bit_size: 16
+fieldset/GCM_LOWTH_CTRL01_CAM:
+  description: ''
+  fields:
+    - name: THRESHOLD0
+      bit_offset: 0
+      bit_size: 16
+    - name: THRESHOLD1
+      bit_offset: 16
+      bit_size: 16
+fieldset/GCM_LOWTH_CTRL2_CAM:
+  description: ''
+  fields:
+    - name: THRESHOLD2
+      bit_offset: 0
+      bit_size: 16
+fieldset/GCM_MAT_CONFG_CAM_SIGN:
+  description: ''
+  fields:
+    - name: CONFG
+      bit_offset: 0
+      bit_size: 1
+fieldset/GCM_R_GAIN_CAM:
+  description: ''
+  fields:
+    - name: GAIN
+      bit_offset: 0
+      bit_size: 16
+fieldset/GCM_G_GAIN_CAM:
+  description: ''
+  fields:
+    - name: GAIN
+      bit_offset: 0
+      bit_size: 16
+fieldset/GCM_B_GAIN_CAM:
+  description: ''
+  fields:
+    - name: GAIN
+      bit_offset: 0
+      bit_size: 16

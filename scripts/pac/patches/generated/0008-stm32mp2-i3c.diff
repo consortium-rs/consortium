@@ -1,0 +1,313 @@
+Hand-corrected `consortium-pac-stm32mp2::peripherals::i3c`: keep the STM32 I3C byte-lane and CCC accessors (BCR, CR.CCC, IBIDR.IBIDBx, RDWR.RDBx, TDWR.TDBx).
+The file is otherwise chiptool output; this restores the committed API on top of it.
+--- a/crates/consortium-pac-stm32mp2/src/peripherals/i3c.rs
++++ b/crates/consortium-pac-stm32mp2/src/peripherals/i3c.rs
+@@ -180,6 +180,18 @@
+ #[derive(Copy, Clone, Eq, PartialEq)]
+ pub struct I3C_BCR(pub u32);
+ impl I3C_BCR {
++    #[doc = "Bus Characteristics"]
++    #[must_use]
++    #[inline(always)]
++    pub const fn BCR(&self) -> u8 {
++        let val = (self.0 >> 0usize) & 0xff;
++        val as u8
++    }
++    #[doc = "Bus Characteristics"]
++    #[inline(always)]
++    pub const fn set_BCR(&mut self, val: u8) {
++        self.0 = (self.0 & !(0xff << 0usize)) | (((val as u32) & 0xff) << 0usize);
++    }
+     #[doc = "Max Data Speed Limitation"]
+     #[must_use]
+     #[inline(always)]
+@@ -238,6 +250,7 @@
+ impl core::fmt::Debug for I3C_BCR {
+     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+         f.debug_struct("I3C_BCR")
++            .field("BCR", &self.BCR())
+             .field("BCR0", &self.BCR0())
+             .field("BCR1", &self.BCR1())
+             .field("BCR2", &self.BCR2())
+@@ -250,7 +263,8 @@
+     fn format(&self, f: defmt::Formatter) {
+         defmt::write!(
+             f,
+-            "I3C_BCR {{ BCR0: {=bool:?}, BCR1: {=bool:?}, BCR2: {=bool:?}, BCR6: {=bool:?} }}",
++            "I3C_BCR {{ BCR: {=u8:?}, BCR0: {=bool:?}, BCR1: {=bool:?}, BCR2: {=bool:?}, BCR6: {=bool:?} }}",
++            self.BCR(),
+             self.BCR0(),
+             self.BCR1(),
+             self.BCR2(),
+@@ -874,6 +888,18 @@
+     #[inline(always)]
+     pub const fn set_DCNT(&mut self, val: u16) {
+         self.0 = (self.0 & !(0xffff << 0usize)) | (((val as u32) & 0xffff) << 0usize);
++    }
++    #[doc = "8-Bit CCC code"]
++    #[must_use]
++    #[inline(always)]
++    pub const fn CCC(&self) -> u8 {
++        let val = (self.0 >> 16usize) & 0xff;
++        val as u8
++    }
++    #[doc = "8-Bit CCC code"]
++    #[inline(always)]
++    pub const fn set_CCC(&mut self, val: u8) {
++        self.0 = (self.0 & !(0xff << 16usize)) | (((val as u32) & 0xff) << 16usize);
+     }
+     #[doc = "read / non-write message (when I3C is acting as controller)"]
+     #[must_use]
+@@ -934,6 +960,7 @@
+     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+         f.debug_struct("I3C_CR")
+             .field("DCNT", &self.DCNT())
++            .field("CCC", &self.CCC())
+             .field("RNW", &self.RNW())
+             .field("ADD", &self.ADD())
+             .field("MTYPE", &self.MTYPE())
+@@ -946,8 +973,9 @@
+     fn format(&self, f: defmt::Formatter) {
+         defmt::write!(
+             f,
+-            "I3C_CR {{ DCNT: {=u16:?}, RNW: {=bool:?}, ADD: {=u8:?}, MTYPE: {=u8:?}, MEND: {=bool:?} }}",
++            "I3C_CR {{ DCNT: {=u16:?}, CCC: {=u8:?}, RNW: {=bool:?}, ADD: {=u8:?}, MTYPE: {=u8:?}, MEND: {=bool:?} }}",
+             self.DCNT(),
++            self.CCC(),
+             self.RNW(),
+             self.ADD(),
+             self.MTYPE(),
+@@ -2002,6 +2030,18 @@
+     #[inline(always)]
+     pub const fn set_IBIDB0(&mut self, val: u8) {
+         self.0 = (self.0 & !(0xff << 0usize)) | (((val as u32) & 0xff) << 0usize);
++    }
++    #[doc = "32-bit IBI payload data"]
++    #[must_use]
++    #[inline(always)]
++    pub const fn IBIDBx(&self) -> u32 {
++        let val = (self.0 >> 0usize) & 0xffff_ffff;
++        val as u32
++    }
++    #[doc = "32-bit IBI payload data"]
++    #[inline(always)]
++    pub const fn set_IBIDBx(&mut self, val: u32) {
++        self.0 = (self.0 & !(0xffff_ffff << 0usize)) | (((val as u32) & 0xffff_ffff) << 0usize);
+     }
+     #[doc = "8-bit IBI payload data (next byte on I3C bus after IBIDB0\\[7:0\\])"]
+     #[must_use]
+@@ -2050,6 +2090,7 @@
+     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+         f.debug_struct("I3C_IBIDR")
+             .field("IBIDB0", &self.IBIDB0())
++            .field("IBIDBx", &self.IBIDBx())
+             .field("IBIDB1", &self.IBIDB1())
+             .field("IBIDB2", &self.IBIDB2())
+             .field("IBIDB3", &self.IBIDB3())
+@@ -2061,8 +2102,9 @@
+     fn format(&self, f: defmt::Formatter) {
+         defmt::write!(
+             f,
+-            "I3C_IBIDR {{ IBIDB0: {=u8:?}, IBIDB1: {=u8:?}, IBIDB2: {=u8:?}, IBIDB3: {=u8:?} }}",
++            "I3C_IBIDR {{ IBIDB0: {=u8:?}, IBIDBx: {=u32:?}, IBIDB1: {=u8:?}, IBIDB2: {=u8:?}, IBIDB3: {=u8:?} }}",
+             self.IBIDB0(),
++            self.IBIDBx(),
+             self.IBIDB1(),
+             self.IBIDB2(),
+             self.IBIDB3()
+@@ -2598,6 +2640,18 @@
+     #[inline(always)]
+     pub const fn set_RDB0(&mut self, val: u8) {
+         self.0 = (self.0 & !(0xff << 0usize)) | (((val as u32) & 0xff) << 0usize);
++    }
++    #[doc = "32-bit received data"]
++    #[must_use]
++    #[inline(always)]
++    pub const fn RDBx(&self) -> u32 {
++        let val = (self.0 >> 0usize) & 0xffff_ffff;
++        val as u32
++    }
++    #[doc = "32-bit received data"]
++    #[inline(always)]
++    pub const fn set_RDBx(&mut self, val: u32) {
++        self.0 = (self.0 & !(0xffff_ffff << 0usize)) | (((val as u32) & 0xffff_ffff) << 0usize);
+     }
+     #[doc = "8-bit received data (next byte after RDB0 on I3C bus)"]
+     #[must_use]
+@@ -2646,6 +2700,7 @@
+     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+         f.debug_struct("I3C_RDWR")
+             .field("RDB0", &self.RDB0())
++            .field("RDBx", &self.RDBx())
+             .field("RDB1", &self.RDB1())
+             .field("RDB2", &self.RDB2())
+             .field("RDB3", &self.RDB3())
+@@ -2657,8 +2712,9 @@
+     fn format(&self, f: defmt::Formatter) {
+         defmt::write!(
+             f,
+-            "I3C_RDWR {{ RDB0: {=u8:?}, RDB1: {=u8:?}, RDB2: {=u8:?}, RDB3: {=u8:?} }}",
++            "I3C_RDWR {{ RDB0: {=u8:?}, RDBx: {=u32:?}, RDB1: {=u8:?}, RDB2: {=u8:?}, RDB3: {=u8:?} }}",
+             self.RDB0(),
++            self.RDBx(),
+             self.RDB1(),
+             self.RDB2(),
+             self.RDB3()
+@@ -3047,6 +3103,18 @@
+     pub const fn set_TDB0(&mut self, val: u8) {
+         self.0 = (self.0 & !(0xff << 0usize)) | (((val as u32) & 0xff) << 0usize);
+     }
++    #[doc = "32-bit transmit data"]
++    #[must_use]
++    #[inline(always)]
++    pub const fn TDBx(&self) -> u32 {
++        let val = (self.0 >> 0usize) & 0xffff_ffff;
++        val as u32
++    }
++    #[doc = "32-bit transmit data"]
++    #[inline(always)]
++    pub const fn set_TDBx(&mut self, val: u32) {
++        self.0 = (self.0 & !(0xffff_ffff << 0usize)) | (((val as u32) & 0xffff_ffff) << 0usize);
++    }
+     #[doc = "8-bit transmit data (next byte after TDB0\\[7:0\\] on I3C bus)"]
+     #[must_use]
+     #[inline(always)]
+@@ -3094,6 +3162,7 @@
+     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+         f.debug_struct("I3C_TDWR")
+             .field("TDB0", &self.TDB0())
++            .field("TDBx", &self.TDBx())
+             .field("TDB1", &self.TDB1())
+             .field("TDB2", &self.TDB2())
+             .field("TDB3", &self.TDB3())
+@@ -3105,8 +3174,9 @@
+     fn format(&self, f: defmt::Formatter) {
+         defmt::write!(
+             f,
+-            "I3C_TDWR {{ TDB0: {=u8:?}, TDB1: {=u8:?}, TDB2: {=u8:?}, TDB3: {=u8:?} }}",
++            "I3C_TDWR {{ TDB0: {=u8:?}, TDBx: {=u32:?}, TDB1: {=u8:?}, TDB2: {=u8:?}, TDB3: {=u8:?} }}",
+             self.TDB0(),
++            self.TDBx(),
+             self.TDB1(),
+             self.TDB2(),
+             self.TDB3()
+@@ -3173,59 +3243,55 @@
+ #[derive(Copy, Clone, Eq, PartialEq)]
+ pub struct I3C_TIMINGR0(pub u32);
+ impl I3C_TIMINGR0 {
+-    #[doc = "SCL low duration in I3C push-pull phases, in number of kernel clocks cycles:"]
++    #[doc = "SCL low duration in I3C push-pull phases, in kernel clock cycles"]
+     #[must_use]
+     #[inline(always)]
+     pub const fn SCLL_PP(&self) -> u8 {
+-        let val = (self.0 >> 0usize) & 0xff;
+-        val as u8
++        ((self.0 >> 0) & 0xff) as u8
+     }
+-    #[doc = "SCL low duration in I3C push-pull phases, in number of kernel clocks cycles:"]
++    #[doc = "SCL low duration in I3C push-pull phases, in kernel clock cycles"]
+     #[inline(always)]
+     pub const fn set_SCLL_PP(&mut self, val: u8) {
+-        self.0 = (self.0 & !(0xff << 0usize)) | (((val as u32) & 0xff) << 0usize);
++        self.0 = (self.0 & !0xff) | val as u32;
+     }
+-    #[doc = "SCL high duration, used for I3C messages (both in push-pull and open-drain phases), in number of ke"]
++    #[doc = "SCL high duration for I3C messages, in kernel clock cycles"]
+     #[must_use]
+     #[inline(always)]
+     pub const fn SCLH_I3C(&self) -> u8 {
+-        let val = (self.0 >> 8usize) & 0xff;
+-        val as u8
++        ((self.0 >> 8) & 0xff) as u8
+     }
+-    #[doc = "SCL high duration, used for I3C messages (both in push-pull and open-drain phases), in number of ke"]
++    #[doc = "SCL high duration for I3C messages, in kernel clock cycles"]
+     #[inline(always)]
+     pub const fn set_SCLH_I3C(&mut self, val: u8) {
+-        self.0 = (self.0 & !(0xff << 8usize)) | (((val as u32) & 0xff) << 8usize);
++        self.0 = (self.0 & !(0xff << 8)) | ((val as u32) << 8);
+     }
+-    #[doc = "SCL low duration in open-drain phases, used for legacy I2C commands and for I3C open-drain phases ("]
++    #[doc = "SCL low duration in open-drain phases, in kernel clock cycles"]
+     #[must_use]
+     #[inline(always)]
+     pub const fn SCLL_OD(&self) -> u8 {
+-        let val = (self.0 >> 16usize) & 0xff;
+-        val as u8
++        ((self.0 >> 16) & 0xff) as u8
+     }
+-    #[doc = "SCL low duration in open-drain phases, used for legacy I2C commands and for I3C open-drain phases ("]
++    #[doc = "SCL low duration in open-drain phases, in kernel clock cycles"]
+     #[inline(always)]
+     pub const fn set_SCLL_OD(&mut self, val: u8) {
+-        self.0 = (self.0 & !(0xff << 16usize)) | (((val as u32) & 0xff) << 16usize);
++        self.0 = (self.0 & !(0xff << 16)) | ((val as u32) << 16);
+     }
+-    #[doc = "SCL high duration, used for legacy I2C commands, in number of kernel clocks cycles:"]
++    #[doc = "SCL high duration for legacy I2C messages, in kernel clock cycles"]
+     #[must_use]
+     #[inline(always)]
+     pub const fn SCLH_I2C(&self) -> u8 {
+-        let val = (self.0 >> 24usize) & 0xff;
+-        val as u8
++        ((self.0 >> 24) & 0xff) as u8
+     }
+-    #[doc = "SCL high duration, used for legacy I2C commands, in number of kernel clocks cycles:"]
++    #[doc = "SCL high duration for legacy I2C messages, in kernel clock cycles"]
+     #[inline(always)]
+     pub const fn set_SCLH_I2C(&mut self, val: u8) {
+-        self.0 = (self.0 & !(0xff << 24usize)) | (((val as u32) & 0xff) << 24usize);
++        self.0 = (self.0 & !(0xff << 24)) | ((val as u32) << 24);
+     }
+ }
+ impl Default for I3C_TIMINGR0 {
+     #[inline(always)]
+-    fn default() -> I3C_TIMINGR0 {
+-        I3C_TIMINGR0(0)
++    fn default() -> Self {
++        Self(0)
+     }
+ }
+ impl core::fmt::Debug for I3C_TIMINGR0 {
+@@ -3291,19 +3357,7 @@
+     #[inline(always)]
+     pub const fn set_FREE(&mut self, val: u8) {
+         self.0 = (self.0 & !(0x7f << 16usize)) | (((val as u32) & 0x7f) << 16usize);
+-    }
+-    #[doc = "SDA hold time (when the I3C is acting as controller), in number of kernel clocks cycles (refer to M"]
+-    #[must_use]
+-    #[inline(always)]
+-    pub const fn SDA_HD(&self) -> bool {
+-        let val = (self.0 >> 28usize) & 0x01;
+-        val != 0
+     }
+-    #[doc = "SDA hold time (when the I3C is acting as controller), in number of kernel clocks cycles (refer to M"]
+-    #[inline(always)]
+-    pub const fn set_SDA_HD(&mut self, val: bool) {
+-        self.0 = (self.0 & !(0x01 << 28usize)) | (((val as u32) & 0x01) << 28usize);
+-    }
+ }
+ impl Default for I3C_TIMINGR1 {
+     #[inline(always)]
+@@ -3317,7 +3371,6 @@
+             .field("AVAL", &self.AVAL())
+             .field("ASNCR", &self.ASNCR())
+             .field("FREE", &self.FREE())
+-            .field("SDA_HD", &self.SDA_HD())
+             .finish()
+     }
+ }
+@@ -3326,11 +3379,10 @@
+     fn format(&self, f: defmt::Formatter) {
+         defmt::write!(
+             f,
+-            "I3C_TIMINGR1 {{ AVAL: {=u8:?}, ASNCR: {=u8:?}, FREE: {=u8:?}, SDA_HD: {=bool:?} }}",
++            "I3C_TIMINGR1 {{ AVAL: {=u8:?}, ASNCR: {=u8:?}, FREE: {=u8:?} }}",
+             self.AVAL(),
+             self.ASNCR(),
+-            self.FREE(),
+-            self.SDA_HD()
++            self.FREE()
+         )
+     }
+ }

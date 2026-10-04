@@ -167,8 +167,12 @@ fieldset/CRYP_CR:
       bit_size: 1
       description: '0x00000004'
     - name: ALGOMODE
-      bit_offset: 3
-      bit_size: 17
+      bit_offset:
+        - start: 3
+          end: 5
+        - start: 19
+          end: 19
+      bit_size: 4
       description: '0x00000008'
     - name: DATATYPE
       bit_offset: 6
@@ -186,6 +190,14 @@ fieldset/CRYP_CR:
       bit_offset: 15
       bit_size: 1
       description: '0x00008000'
+    - name: GCM_CCMPH
+      bit_offset: 16
+      bit_size: 2
+      description: '0x00010000'
+    - name: ALGOMODE_3
+      bit_offset: 19
+      bit_size: 1
+      description: ALGOMODE[3]
     - name: NPBLB
       bit_offset: 20
       bit_size: 4

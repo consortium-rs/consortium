@@ -61,12 +61,17 @@ setup-cargo-binstall:
 setup-ls-lint:
     vp dlx --yes @ls-lint/ls-lint@{{ ls_lint_version }} --version
 
+# Pinned chiptool revision: it stamps itself into every generated PAC module, so
+# `just pac-verify` only passes with this exact build. Keep in step with
+# `CHIPTOOL_REV` in scripts/pac/gen_blocks.py.
+chiptool_rev := "bcf538a2e7b8584ae874ee9ab72efb1576fc6152"
+
 # Install chiptool, used to validate/regenerate the peripheral access crates
 setup-chiptool:
-    @if command -v chiptool >/dev/null 2>&1; then \
-        echo "chiptool is already installed"; \
+    @if cargo install --list | grep -q "chiptool#$(echo {{ chiptool_rev }} | cut -c1-8)"; then \
+        echo "chiptool {{ chiptool_rev }} is already installed"; \
     else \
-        cargo install --git https://github.com/embassy-rs/chiptool --locked; \
+        cargo install --git https://github.com/embassy-rs/chiptool --rev {{ chiptool_rev }} --locked --force; \
     fi
 
 # Build all crates
@@ -663,6 +668,8 @@ pac-patch:
         submodule=$(basename "$submodule_patches_dir")
         target="submodules/$submodule"
 
+        # `ir/` and `generated/` patch pipeline outputs, not a submodule.
+        case "$submodule" in ir|generated) continue ;; esac
         if [ ! -d "$target" ]; then
             echo "Skipping $submodule (not cloned yet)"
             continue
@@ -736,6 +743,7 @@ pac-check:
     for submodule_patches_dir in "$PATCHES_DIR"/*/; do
         submodule=$(basename "$submodule_patches_dir")
         target="submodules/$submodule"
+        case "$submodule" in ir|generated) continue ;; esac
         [ ! -d "$target" ] && continue
 
         patches=("$submodule_patches_dir"*.diff)
@@ -757,26 +765,81 @@ pac-prepare:
 
 # Parse STM32MP CMSIS headers into chiptool IR
 pac-parse-stm32:
-    python scripts/pac/parse_stm32.py --all
+    uv run --with pyyaml python scripts/pac/parse_stm32.py --all
 
 # Parse NXP MCUX CMSIS headers into chiptool IR
 pac-parse-nxp:
-    python scripts/pac/parse_nxp.py --all
+    uv run --with pyyaml python scripts/pac/parse_nxp.py --all
 
 # Generate svd2rust-style interrupt tables from the chip databases
 pac-gen-interrupts:
-    python scripts/pac/gen_interrupts.py
+    uv run --with pyyaml python scripts/pac/gen_interrupts.py
 
 # Generate the chip HALs' peripheral singletons from the chip databases
 pac-gen-peripherals:
-    python scripts/pac/gen_peripherals.py
+    uv run --with pyyaml python scripts/pac/gen_peripherals.py
 
-# Regenerate the IWDG PAC after parsing the STM32 headers.
-pac-gen-iwdg:
-    chiptool gen-block --input crates/consortium-data/database/peri/stm32mp/iwdg_v1.yaml \
-      --output crates/consortium-pac-stm32mp2/src/peripherals/iwdg.rs \
-      --common-module crate::common --skip-no-std
-    rustfmt --edition 2024 crates/consortium-pac-stm32mp2/src/peripherals/iwdg.rs
+# Generate the PAC register-block modules from the IR with the pinned chiptool
+pac-gen-blocks:
+    uv run --with pyyaml python scripts/pac/gen_blocks.py
+
+# Undo the PAC vendor patches, leaving the submodules at their pinned commits
+pac-unpatch:
+    #!/usr/bin/env bash
+    set -e
+    for submodule_patches_dir in scripts/pac/patches/*/; do
+        submodule=$(basename "$submodule_patches_dir")
+        case "$submodule" in ir|generated) continue ;; esac
+        [ -d "submodules/$submodule" ] && git -C "submodules/$submodule" checkout -- .
+    done
+
+# Every file the PAC pipeline owns; `pac-regen` rewrites exactly these.
+pac_outputs := "crates/consortium-data/database/chip crates/consortium-data/database/peri crates/consortium-pac-stm32mp2/src/interrupts crates/consortium-pac-stm32mp2/src/peripherals crates/consortium-pac-imx9/src/interrupts crates/consortium-pac-imx9/src/peripherals crates/consortium-hal-stm32mp2/src/peripherals crates/consortium-hal-imx9/src/peripherals"
+
+# Stages, in order: vendor-header patches (scripts/pac/patches/<submodule>/),
+# header staging, IR parsing, IR corrections (scripts/pac/patches/ir/), interrupt
+# tables, HAL singletons, chiptool blocks, then corrections to the generated Rust
+# (scripts/pac/patches/generated/). Each patch carries a header saying why.
+#
+# Regenerate every PAC output from the pinned vendor headers
+pac-regen:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    shopt -s nullglob
+    just pac-patch
+    bash scripts/pac/prepare.sh
+    just pac-unpatch
+    # The IR is rewritten from scratch so a peripheral dropped upstream does not
+    # linger as a stale file.
+    rm -rf crates/consortium-data/database/peri crates/consortium-data/database/chip
+    py="uv run --with pyyaml python"
+    $py scripts/pac/parse_stm32.py --all > /dev/null
+    $py scripts/pac/parse_nxp.py --all > /dev/null
+    for patch in scripts/pac/patches/ir/*.diff; do
+        git apply --whitespace=nowarn "$patch"
+    done
+    $py scripts/pac/gen_interrupts.py
+    $py scripts/pac/gen_peripherals.py
+    $py scripts/pac/gen_blocks.py > /dev/null
+    rustfmt --edition 2024 crates/consortium-pac-*/src/interrupts/*.rs \
+        crates/consortium-hal-*/src/peripherals/*.rs
+    for patch in scripts/pac/patches/generated/*.diff; do
+        git apply --whitespace=nowarn "$patch"
+    done
+    # Committed IR follows the repository formatter, as `just fmt-check` requires.
+    vp fmt crates/consortium-data/database > /dev/null
+    echo "PAC outputs regenerated"
+
+# Fail if the committed PAC outputs differ from a fresh `pac-regen`
+pac-verify: pac-regen
+    #!/usr/bin/env bash
+    set -euo pipefail
+    untracked=$(git ls-files --others --exclude-standard -- {{ pac_outputs }})
+    if [ -n "$untracked" ]; then
+        echo "pac-regen produced files that are not committed:"; echo "$untracked"; exit 1
+    fi
+    git diff --exit-code --stat -- {{ pac_outputs }}
+    echo "PAC outputs are reproducible"
 
 # Parse all CMSIS headers (STM32 + NXP)
 pac-parse-all: pac-parse-stm32 pac-parse-nxp
@@ -784,11 +847,11 @@ pac-parse-all: pac-parse-stm32 pac-parse-nxp
 
 # Run custom PAC output validation tests
 pac-test:
-    python scripts/pac/test_output.py
+    uv run --with pyyaml python scripts/pac/test_output.py
 
 # Validate PAC output with chiptool
 pac-validate:
-    python scripts/pac/validate_with_chiptool.py
+    uv run --with pyyaml python scripts/pac/validate_with_chiptool.py
 
 # Show PAC validation summary
 pac-summary:

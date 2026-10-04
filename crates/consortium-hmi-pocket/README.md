@@ -9,9 +9,9 @@ smaller dependency footprint — select with `[hmi] engine = "pocket"`.
 
 > **`publish = false`.** Its `pocket-mod`, `pocket-ui-wgpu`, and `pocket3d` dependencies
 > come from an **upstream commit**, and cargo refuses to publish a package with a git
-> dependency. This stays unpublished until PocketJS reaches crates.io. The pin is a SHA
-> rather than a tag because the host touch entry this crate needs landed after `v0.7.0`
-> and upstream has not cut a release since; it returns to a tag once one includes it. The
+> dependency. This stays unpublished until PocketJS reaches crates.io. The pin is the same
+> upstream `main` commit that `submodules/pocketjs` is checked out at, so the Rust crates
+> and the bun-built bundle come from one PocketJS revision; bump the two together. The
 > `submodules/pocketjs` checkout is still needed for the bun/JS side.
 
 ## Usage

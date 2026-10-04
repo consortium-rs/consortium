@@ -115,22 +115,22 @@ fieldset/PKA_HWCFGR:
   fields:
     - name: CFG1
       bit_offset: 0
-      bit_size: 3
+      bit_size: 1
       description: '0x00000004'
     - name: CFG2
       bit_offset: 4
-      bit_size: 3
+      bit_size: 1
       description: '0x00000040'
 fieldset/PKA_VERR:
   description: ''
   fields:
     - name: MINREV
       bit_offset: 0
-      bit_size: 3
+      bit_size: 1
       description: '0x00000004'
     - name: MAJREV
       bit_offset: 4
-      bit_size: 3
+      bit_size: 1
       description: '0x00000040'
 fieldset/PKA_IPIDR:
   description: ''

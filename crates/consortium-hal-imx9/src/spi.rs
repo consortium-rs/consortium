@@ -1,16 +1,17 @@
 //! SPI master driver backed by an i.MX9 LPSPI instance.
 //!
-//! Select an instance by passing its MMIO base to [`Spi::new`] together with a
-//! `&'static` [`State`]. Blocking transfers ([`embedded_hal::spi::SpiBus`])
-//! work without interrupts. Async transfers
-//! ([`embedded_hal_async::spi::SpiBus`]) require the caller to route the
-//! instance's interrupt to `State::on_interrupt`.
+//! Select an instance by handing its peripheral singleton to [`Spi::new`].
+//! Blocking transfers ([`embedded_hal::spi::SpiBus`]) work without interrupts.
+//! Async transfers ([`embedded_hal_async::spi::SpiBus`]) require the caller to
+//! route the instance's interrupt to [`on_interrupt`].
 //!
 //! This is a byte-oriented full-duplex master: every transferred word clocks
 //! eight bits out on the shifter and eight bits in. The driver drives one
 //! hardware chip-select (`PCS`) and holds it asserted for the duration of each
 //! `SpiBus` method call (via the `TCR.CONT` flag), releasing it on the final
-//! word so a bus method reads as one framed transaction.
+//! word so a bus method reads as one framed transaction. A transfer that
+//! fails, or an async one dropped mid-flight, soft-resets the module so `PCS`
+//! is released and the FIFOs are empty before control returns.
 //!
 //! DMA readiness: the byte primitives push through `TDR` and drain `RDR`, so a
 //! DMA-backed path can be layered on top by enabling `DER.TDDE`/`DER.RDDE` and
@@ -295,6 +296,7 @@ impl Spi {
     }
 
     fn transfer_blocking(&mut self, read: &mut [u8], write: &[u8]) -> Result<(), Error> {
+        let guard = AbortGuard::new(self.regs);
         let len = read.len().max(write.len());
         for i in 0..len {
             let tx = write.get(i).copied().unwrap_or(0);
@@ -304,6 +306,7 @@ impl Spi {
                 *slot = rx;
             }
         }
+        guard.defuse();
         Ok(())
     }
 
@@ -375,6 +378,8 @@ impl Spi {
     }
 
     async fn transfer_async(&mut self, read: &mut [u8], write: &[u8]) -> Result<(), Error> {
+        // Covers an error returned through `?` and a future dropped mid-transfer.
+        let guard = AbortGuard::new(self.regs);
         let len = read.len().max(write.len());
         for i in 0..len {
             let tx = write.get(i).copied().unwrap_or(0);
@@ -384,7 +389,66 @@ impl Spi {
                 *slot = rx;
             }
         }
+        guard.defuse();
         Ok(())
+    }
+}
+
+/// Stop a transfer that ended early, by error or by a dropped future.
+///
+/// A word-at-a-time transfer holds `PCS` asserted between words (`TCR.CONT`),
+/// so stopping partway would leave the target selected. A module software
+/// reset is the one step that negates `PCS`, empties both FIFOs, and clears the
+/// error flags together; it also clears every register but `CR`, so the
+/// configuration [`Spi::new`] programmed is saved and restored around it.
+fn abort(r: LPSPI) {
+    critical_section::with(|_| {
+        r.IER().write(|w| {
+            w.set_TDIE(false);
+            w.set_RDIE(false);
+            w.set_TEIE(false);
+            w.set_REIE(false);
+        })
+    });
+    let cfgr1 = r.CFGR1().read();
+    let ccr = r.CCR().read();
+    let fcr = r.FCR().read();
+    r.CR().write(|w| w.set_RST(true));
+    r.CR().write(|w| {
+        w.set_RST(false);
+        w.set_RTF(true);
+        w.set_RRF(true);
+    });
+    r.CFGR1().write_value(cfgr1);
+    r.CCR().write_value(ccr);
+    r.FCR().write_value(fcr);
+    r.CR().modify(|w| w.set_MEN(true));
+}
+
+/// Runs [`abort`] when dropped unless [`defuse`](Self::defuse)d, so an error
+/// propagated with `?` and an async transfer dropped mid-flight both release
+/// `PCS` and leave the FIFOs empty.
+struct AbortGuard {
+    regs: LPSPI,
+    armed: bool,
+}
+
+impl AbortGuard {
+    fn new(regs: LPSPI) -> Self {
+        Self { regs, armed: true }
+    }
+
+    /// The transfer completed cleanly; skip the abort.
+    fn defuse(mut self) {
+        self.armed = false;
+    }
+}
+
+impl Drop for AbortGuard {
+    fn drop(&mut self) {
+        if self.armed {
+            abort(self.regs);
+        }
     }
 }
 
@@ -416,11 +480,13 @@ impl embedded_hal::spi::SpiBus<u8> for Spi {
     }
 
     fn transfer_in_place(&mut self, words: &mut [u8]) -> Result<(), Error> {
+        let guard = AbortGuard::new(self.regs);
         let len = words.len();
         for (i, word) in words.iter_mut().enumerate() {
             let cont = i + 1 < len;
             *word = self.transfer_word(*word, cont)?;
         }
+        guard.defuse();
         Ok(())
     }
 
@@ -446,11 +512,13 @@ impl embedded_hal_async::spi::SpiBus<u8> for Spi {
     }
 
     async fn transfer_in_place(&mut self, words: &mut [u8]) -> Result<(), Error> {
+        let guard = AbortGuard::new(self.regs);
         let len = words.len();
         for (i, word) in words.iter_mut().enumerate() {
             let cont = i + 1 < len;
             *word = self.transfer_word_async(*word, cont).await?;
         }
+        guard.defuse();
         Ok(())
     }
 

@@ -170,6 +170,10 @@ fieldset/I2C_CR2:
       bit_offset: 0
       bit_size: 10
       description: Slave address (master mode)
+    - name: RD_WRN
+      bit_offset: 10
+      bit_size: 1
+      description: Transfer direction (master mode)
     - name: ADD10
       bit_offset: 11
       bit_size: 1

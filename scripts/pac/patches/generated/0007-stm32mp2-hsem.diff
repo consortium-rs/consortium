@@ -1,0 +1,263 @@
+Hand-corrected `consortium-pac-stm32mp2::peripherals::hsem`: keep the whole-register HSEM_C1IER ISE field alongside the per-bit ISEn fields.
+The file is otherwise chiptool output; this restores the committed API on top of it.
+--- a/crates/consortium-pac-stm32mp2/src/peripherals/hsem.rs
++++ b/crates/consortium-pac-stm32mp2/src/peripherals/hsem.rs
+@@ -328,6 +328,18 @@
+ #[derive(Copy, Clone, Eq, PartialEq)]
+ pub struct HSEM_C1IER(pub u32);
+ impl HSEM_C1IER {
++    #[doc = "non-secure Interrupt(n) semaphore x enable bit. (x = 0 to 15)"]
++    #[must_use]
++    #[inline(always)]
++    pub const fn ISE(&self) -> u16 {
++        let val = (self.0 >> 0usize) & 0xffff;
++        val as u16
++    }
++    #[doc = "non-secure Interrupt(n) semaphore x enable bit. (x = 0 to 15)"]
++    #[inline(always)]
++    pub const fn set_ISE(&mut self, val: u16) {
++        self.0 = (self.0 & !(0xffff << 0usize)) | (((val as u32) & 0xffff) << 0usize);
++    }
+     #[doc = "semaphore 0 , interrupt 0 enable bit."]
+     #[must_use]
+     #[inline(always)]
+@@ -340,6 +352,18 @@
+     pub const fn set_ISE0(&mut self, val: bool) {
+         self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+     }
++    #[doc = "semaphore 1 , interrupt 0 enable bit."]
++    #[must_use]
++    #[inline(always)]
++    pub const fn ISE1(&self) -> bool {
++        let val = (self.0 >> 1usize) & 0x01;
++        val != 0
++    }
++    #[doc = "semaphore 1 , interrupt 0 enable bit."]
++    #[inline(always)]
++    pub const fn set_ISE1(&mut self, val: bool) {
++        self.0 = (self.0 & !(0x01 << 1usize)) | (((val as u32) & 0x01) << 1usize);
++    }
+     #[doc = "semaphore 2 , interrupt 0 enable bit."]
+     #[must_use]
+     #[inline(always)]
+@@ -518,7 +542,9 @@
+ impl core::fmt::Debug for HSEM_C1IER {
+     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+         f.debug_struct("HSEM_C1IER")
++            .field("ISE", &self.ISE())
+             .field("ISE0", &self.ISE0())
++            .field("ISE1", &self.ISE1())
+             .field("ISE2", &self.ISE2())
+             .field("ISE3", &self.ISE3())
+             .field("ISE4", &self.ISE4())
+@@ -541,8 +567,10 @@
+     fn format(&self, f: defmt::Formatter) {
+         defmt::write!(
+             f,
+-            "HSEM_C1IER {{ ISE0: {=bool:?}, ISE2: {=bool:?}, ISE3: {=bool:?}, ISE4: {=bool:?}, ISE5: {=bool:?}, ISE6: {=bool:?}, ISE7: {=bool:?}, ISE8: {=bool:?}, ISE9: {=bool:?}, ISE10: {=bool:?}, ISE11: {=bool:?}, ISE12: {=bool:?}, ISE13: {=bool:?}, ISE14: {=bool:?}, ISE15: {=bool:?} }}",
++            "HSEM_C1IER {{ ISE: {=u16:?}, ISE0: {=bool:?}, ISE1: {=bool:?}, ISE2: {=bool:?}, ISE3: {=bool:?}, ISE4: {=bool:?}, ISE5: {=bool:?}, ISE6: {=bool:?}, ISE7: {=bool:?}, ISE8: {=bool:?}, ISE9: {=bool:?}, ISE10: {=bool:?}, ISE11: {=bool:?}, ISE12: {=bool:?}, ISE13: {=bool:?}, ISE14: {=bool:?}, ISE15: {=bool:?} }}",
++            self.ISE(),
+             self.ISE0(),
++            self.ISE1(),
+             self.ISE2(),
+             self.ISE3(),
+             self.ISE4(),
+@@ -858,18 +886,6 @@
+     pub const fn set_CFEN(&mut self, val: bool) {
+         self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+     }
+-    #[doc = "Semaphore group p CID filtering enable."]
+-    #[must_use]
+-    #[inline(always)]
+-    pub const fn SEM_WLIST_C(&self) -> u8 {
+-        let val = (self.0 >> 16usize) & 0x07;
+-        val as u8
+-    }
+-    #[doc = "Semaphore group p CID filtering enable."]
+-    #[inline(always)]
+-    pub const fn set_SEM_WLIST_C(&mut self, val: u8) {
+-        self.0 = (self.0 & !(0x07 << 16usize)) | (((val as u32) & 0x07) << 16usize);
+-    }
+ }
+ impl Default for HSEM_G0CIDCFGR {
+     #[inline(always)]
+@@ -881,19 +897,13 @@
+     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+         f.debug_struct("HSEM_G0CIDCFGR")
+             .field("CFEN", &self.CFEN())
+-            .field("SEM_WLIST_C", &self.SEM_WLIST_C())
+             .finish()
+     }
+ }
+ #[cfg(feature = "defmt")]
+ impl defmt::Format for HSEM_G0CIDCFGR {
+     fn format(&self, f: defmt::Formatter) {
+-        defmt::write!(
+-            f,
+-            "HSEM_G0CIDCFGR {{ CFEN: {=bool:?}, SEM_WLIST_C: {=u8:?} }}",
+-            self.CFEN(),
+-            self.SEM_WLIST_C()
+-        )
++        defmt::write!(f, "HSEM_G0CIDCFGR {{ CFEN: {=bool:?} }}", self.CFEN())
+     }
+ }
+ #[doc = ""]
+@@ -913,18 +923,6 @@
+     pub const fn set_CFEN(&mut self, val: bool) {
+         self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+     }
+-    #[doc = "Semaphore group p CID filtering enable."]
+-    #[must_use]
+-    #[inline(always)]
+-    pub const fn SEM_WLIST_C(&self) -> u8 {
+-        let val = (self.0 >> 16usize) & 0x07;
+-        val as u8
+-    }
+-    #[doc = "Semaphore group p CID filtering enable."]
+-    #[inline(always)]
+-    pub const fn set_SEM_WLIST_C(&mut self, val: u8) {
+-        self.0 = (self.0 & !(0x07 << 16usize)) | (((val as u32) & 0x07) << 16usize);
+-    }
+ }
+ impl Default for HSEM_G1CIDCFGR {
+     #[inline(always)]
+@@ -936,19 +934,13 @@
+     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+         f.debug_struct("HSEM_G1CIDCFGR")
+             .field("CFEN", &self.CFEN())
+-            .field("SEM_WLIST_C", &self.SEM_WLIST_C())
+             .finish()
+     }
+ }
+ #[cfg(feature = "defmt")]
+ impl defmt::Format for HSEM_G1CIDCFGR {
+     fn format(&self, f: defmt::Formatter) {
+-        defmt::write!(
+-            f,
+-            "HSEM_G1CIDCFGR {{ CFEN: {=bool:?}, SEM_WLIST_C: {=u8:?} }}",
+-            self.CFEN(),
+-            self.SEM_WLIST_C()
+-        )
++        defmt::write!(f, "HSEM_G1CIDCFGR {{ CFEN: {=bool:?} }}", self.CFEN())
+     }
+ }
+ #[doc = ""]
+@@ -968,18 +960,6 @@
+     pub const fn set_CFEN(&mut self, val: bool) {
+         self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+     }
+-    #[doc = "Semaphore group p CID filtering enable."]
+-    #[must_use]
+-    #[inline(always)]
+-    pub const fn SEM_WLIST_C(&self) -> u8 {
+-        let val = (self.0 >> 16usize) & 0x07;
+-        val as u8
+-    }
+-    #[doc = "Semaphore group p CID filtering enable."]
+-    #[inline(always)]
+-    pub const fn set_SEM_WLIST_C(&mut self, val: u8) {
+-        self.0 = (self.0 & !(0x07 << 16usize)) | (((val as u32) & 0x07) << 16usize);
+-    }
+ }
+ impl Default for HSEM_G2CIDCFGR {
+     #[inline(always)]
+@@ -991,19 +971,13 @@
+     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+         f.debug_struct("HSEM_G2CIDCFGR")
+             .field("CFEN", &self.CFEN())
+-            .field("SEM_WLIST_C", &self.SEM_WLIST_C())
+             .finish()
+     }
+ }
+ #[cfg(feature = "defmt")]
+ impl defmt::Format for HSEM_G2CIDCFGR {
+     fn format(&self, f: defmt::Formatter) {
+-        defmt::write!(
+-            f,
+-            "HSEM_G2CIDCFGR {{ CFEN: {=bool:?}, SEM_WLIST_C: {=u8:?} }}",
+-            self.CFEN(),
+-            self.SEM_WLIST_C()
+-        )
++        defmt::write!(f, "HSEM_G2CIDCFGR {{ CFEN: {=bool:?} }}", self.CFEN())
+     }
+ }
+ #[doc = ""]
+@@ -1023,18 +997,6 @@
+     pub const fn set_CFEN(&mut self, val: bool) {
+         self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+     }
+-    #[doc = "Semaphore group p CID filtering enable."]
+-    #[must_use]
+-    #[inline(always)]
+-    pub const fn SEM_WLIST_C(&self) -> u8 {
+-        let val = (self.0 >> 16usize) & 0x07;
+-        val as u8
+-    }
+-    #[doc = "Semaphore group p CID filtering enable."]
+-    #[inline(always)]
+-    pub const fn set_SEM_WLIST_C(&mut self, val: u8) {
+-        self.0 = (self.0 & !(0x07 << 16usize)) | (((val as u32) & 0x07) << 16usize);
+-    }
+ }
+ impl Default for HSEM_G3CIDCFGR {
+     #[inline(always)]
+@@ -1046,19 +1008,13 @@
+     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+         f.debug_struct("HSEM_G3CIDCFGR")
+             .field("CFEN", &self.CFEN())
+-            .field("SEM_WLIST_C", &self.SEM_WLIST_C())
+             .finish()
+     }
+ }
+ #[cfg(feature = "defmt")]
+ impl defmt::Format for HSEM_G3CIDCFGR {
+     fn format(&self, f: defmt::Formatter) {
+-        defmt::write!(
+-            f,
+-            "HSEM_G3CIDCFGR {{ CFEN: {=bool:?}, SEM_WLIST_C: {=u8:?} }}",
+-            self.CFEN(),
+-            self.SEM_WLIST_C()
+-        )
++        defmt::write!(f, "HSEM_G3CIDCFGR {{ CFEN: {=bool:?} }}", self.CFEN())
+     }
+ }
+ #[doc = ""]
+@@ -1090,18 +1046,6 @@
+     pub const fn set_NBINT(&mut self, val: u8) {
+         self.0 = (self.0 & !(0x0f << 8usize)) | (((val as u32) & 0x0f) << 8usize);
+     }
+-    #[doc = "Hardware Configuration compartment isolation bus width"]
+-    #[must_use]
+-    #[inline(always)]
+-    pub const fn CID_WIDTH(&self) -> u8 {
+-        let val = (self.0 >> 12usize) & 0x0f;
+-        val as u8
+-    }
+-    #[doc = "Hardware Configuration compartment isolation bus width"]
+-    #[inline(always)]
+-    pub const fn set_CID_WIDTH(&mut self, val: u8) {
+-        self.0 = (self.0 & !(0x0f << 12usize)) | (((val as u32) & 0x0f) << 12usize);
+-    }
+     #[doc = "Hardware Configuration security protection enable"]
+     #[must_use]
+     #[inline(always)]
+@@ -1150,7 +1094,6 @@
+         f.debug_struct("HSEM_HWCFGR1")
+             .field("NBSEM", &self.NBSEM())
+             .field("NBINT", &self.NBINT())
+-            .field("CID_WIDTH", &self.CID_WIDTH())
+             .field("SECEN", &self.SECEN())
+             .field("PRIVEN", &self.PRIVEN())
+             .field("CFEN", &self.CFEN())
+@@ -1162,10 +1105,9 @@
+     fn format(&self, f: defmt::Formatter) {
+         defmt::write!(
+             f,
+-            "HSEM_HWCFGR1 {{ NBSEM: {=u8:?}, NBINT: {=u8:?}, CID_WIDTH: {=u8:?}, SECEN: {=bool:?}, PRIVEN: {=bool:?}, CFEN: {=bool:?} }}",
++            "HSEM_HWCFGR1 {{ NBSEM: {=u8:?}, NBINT: {=u8:?}, SECEN: {=bool:?}, PRIVEN: {=bool:?}, CFEN: {=bool:?} }}",
+             self.NBSEM(),
+             self.NBINT(),
+-            self.CID_WIDTH(),
+             self.SECEN(),
+             self.PRIVEN(),
+             self.CFEN()

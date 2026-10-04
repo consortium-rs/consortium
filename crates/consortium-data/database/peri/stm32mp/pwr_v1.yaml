@@ -68,9 +68,11 @@ block/PWR:
     - name: D1CR
       byte_offset: 76
       description: PWR D1 control register
+      fieldset: PWR_D1CR
     - name: D2CR
       byte_offset: 80
       description: PWR D2 control register
+      fieldset: PWR_D2CR
     - name: D3CR
       byte_offset: 84
       description: PWR D3 control register
@@ -102,6 +104,7 @@ block/PWR:
     - name: D3WKUPENR
       byte_offset: 152
       description: PWR D3 wake-up enable register
+      fieldset: PWR_D3WKUPENR
     - name: RSECCFGR
       byte_offset: 256
       description: PWR resource secure configuration register
@@ -278,20 +281,20 @@ fieldset/PWR_CR2:
       bit_offset: 0
       bit_size: 1
       description: 'VBAT and temperature monitoring enableWhen set, the VBAT supply
-        and temperature monitoring is enabled.- 0: VBAT and temperature monitoring disabled.-
-        1: VBAT and temperature monitoring enabled.'
+        and temperature monitoring is enabled.- 0: VBAT and temperature monitoring
+        disabled.- 1: VBAT and temperature monitoring enabled.'
     - name: VBATL
       bit_offset: 8
       bit_size: 1
-      description: 'Monitored VBAT level above low threshold- 0: VBAT level above low
-        threshold level, or Monitor disabled.- 1: VBAT level equal or below low threshold
-        level.'
+      description: 'Monitored VBAT level above low threshold- 0: VBAT level above
+        low threshold level, or Monitor disabled.- 1: VBAT level equal or below low
+        threshold level.'
     - name: VBATH
       bit_offset: 9
       bit_size: 1
-      description: 'Monitored VBAT level above high threshold- 0: VBAT level below high
-        threshold level, or Monitor disabled.- 1: VBAT level equal or above high threshold
-        level.'
+      description: 'Monitored VBAT level above high threshold- 0: VBAT level below
+        high threshold level, or Monitor disabled.- 1: VBAT level equal or above high
+        threshold level.'
     - name: TEMPL
       bit_offset: 10
       bit_size: 1
@@ -302,8 +305,8 @@ fieldset/PWR_CR2:
       bit_offset: 11
       bit_size: 1
       description: 'Monitored temperature level above high threshold- 0: Temperature
-        below high threshold level, or Monitor disabled.- 1: Temperature equal or above
-        high threshold level.'
+        below high threshold level, or Monitor disabled.- 1: Temperature equal or
+        above high threshold level.'
 fieldset/PWR_CR3:
   description: ''
   fields:
@@ -317,13 +320,13 @@ fieldset/PWR_CR3:
     - name: PVDO
       bit_offset: 8
       bit_size: 1
-      description: 'Programmable Voltage Detect OutputThis bit is set and cleared by
-        hardware. It is valid only if PVD is enabled by the PVDEN bit.- 0: VDD or voltage
-        level on PVD_IN is equal or higher than the PVD threshold selected with the
-        PLS[2:0] bits.- 1: VDD or voltage level on PVD_IN is lower than the PVD threshold
-        selected with the PLS[2:0] bits.The PVD is disabled in Standby mode and after
-        a system reset. For this reason, this bit is equal to 0 after Standby and system
-        reset.'
+      description: 'Programmable Voltage Detect OutputThis bit is set and cleared
+        by hardware. It is valid only if PVD is enabled by the PVDEN bit.- 0: VDD
+        or voltage level on PVD_IN is equal or higher than the PVD threshold selected
+        with the PLS[2:0] bits.- 1: VDD or voltage level on PVD_IN is lower than the
+        PVD threshold selected with the PLS[2:0] bits.The PVD is disabled in Standby
+        mode and after a system reset. For this reason, this bit is equal to 0 after
+        Standby and system reset.'
 fieldset/PWR_CR5:
   description: ''
   fields:
@@ -335,9 +338,9 @@ fieldset/PWR_CR5:
     - name: VCOREL
       bit_offset: 8
       bit_size: 1
-      description: 'Monitored VDDCORE level above low threshold.- 0: VDDCORE level above
-        low threshold level, or Monitor disabled.- 1: VDDCORE level equal or below low
-        threshold level.'
+      description: 'Monitored VDDCORE level above low threshold.- 0: VDDCORE level
+        above low threshold level, or Monitor disabled.- 1: VDDCORE level equal or
+        below low threshold level.'
     - name: VCOREH
       bit_offset: 9
       bit_size: 1
@@ -355,20 +358,20 @@ fieldset/PWR_CR6:
     - name: VCPULLS
       bit_offset: 4
       bit_size: 1
-      description: VDDCPU Voltage Detector low level selection.This bit select the low
-        voltage threshold detected by the monitoring.
+      description: VDDCPU Voltage Detector low level selection.This bit select the
+        low voltage threshold detected by the monitoring.
     - name: VCPUL
       bit_offset: 8
       bit_size: 1
       description: 'Monitored VDDCPU level above low threshold.- 0: VDDCPU level above
-        low threshold level, or Monitor disabled.- 1: VDDCPU level equal or below low
-        threshold level.'
+        low threshold level, or Monitor disabled.- 1: VDDCPU level equal or below
+        low threshold level.'
     - name: VCPUH
       bit_offset: 9
       bit_size: 1
-      description: 'Monitored VDDCPU level above high threshold.- 0: VDDCPU level below
-        high threshold level, or Monitor disabled.- 1: VDDCPU level equal or above high
-        threshold level.'
+      description: 'Monitored VDDCPU level above high threshold.- 0: VDDCPU level
+        below high threshold level, or Monitor disabled.- 1: VDDCPU level equal or
+        above high threshold level.'
 fieldset/PWR_CR7:
   description: ''
   fields:
@@ -431,9 +434,9 @@ fieldset/PWR_CR9:
       bit_size: 1
       description: 'LPSRAM 1 backup supply enable (used to maintain LPSRAM1 RAM content
         in Standby and VBAT modes).When set, the LPSRAM1 is supplied from backup regulator
-        in Standby and VBAT modes.When reset, The LPSRAM1 can still be used in Run and
-        Stop modes but its content will be lost in Standby and VBAT modes.- 0: LPSRAM1
-        Backup supply disable.- 1: LPSRAM1 Backup supply enable.'
+        in Standby and VBAT modes.When reset, The LPSRAM1 can still be used in Run
+        and Stop modes but its content will be lost in Standby and VBAT modes.- 0:
+        LPSRAM1 Backup supply disable.- 1: LPSRAM1 Backup supply enable.'
 fieldset/PWR_CR10:
   description: ''
   fields:
@@ -443,11 +446,11 @@ fieldset/PWR_CR10:
       description: 'Retention RAM backup supply enable (used to maintain RET RAM content
         in Standby and VBAT modes).When set, the retention ram is supplied from backup
         regulator in Standby and VBAT modes. When reset, the retention ram can still
-        be used in Run and Stop modes but its content will be lost in Standby and VBAT
-        modes.- 00: RETRAM Backup supply disable.- 01: RETRAM Backup supply enable in
-        Standby and VBAT modes.- 10: RETRAM Backup supply enable only in Standby mode
-        (memory content lost in VBAT mode).- 11: RETRAM Backup supply enable only in
-        Standby mode (memory content lost in VBAT mode).'
+        be used in Run and Stop modes but its content will be lost in Standby and
+        VBAT modes.- 00: RETRAM Backup supply disable.- 01: RETRAM Backup supply enable
+        in Standby and VBAT modes.- 10: RETRAM Backup supply enable only in Standby
+        mode (memory content lost in VBAT mode).- 11: RETRAM Backup supply enable
+        only in Standby mode (memory content lost in VBAT mode).'
 fieldset/PWR_CR11:
   description: ''
   fields:
@@ -480,11 +483,11 @@ fieldset/PWR_BDCR1:
     - name: DBD3P
       bit_offset: 0
       bit_size: 1
-      description: 'Disable backup and D3 domains write protection.In reset state, all
-        registers in backup and D3 domains are protected against parasitic write access
-        from D1 and D2 domains. This bit must be set to enable write access to these
-        registers.- 0: Write access to backup and D3 domains disabled- 1: Write access
-        to backup and D3 domains enabled'
+      description: 'Disable backup and D3 domains write protection.In reset state,
+        all registers in backup and D3 domains are protected against parasitic write
+        access from D1 and D2 domains. This bit must be set to enable write access
+        to these registers.- 0: Write access to backup and D3 domains disabled- 1:
+        Write access to backup and D3 domains enabled'
 fieldset/PWR_BDCR2:
   description: ''
   fields:
@@ -493,23 +496,37 @@ fieldset/PWR_BDCR2:
       bit_size: 1
       description: 'Disable backup domain write protection.In reset state, all registers
         in backup domain are protected against parasitic write access from D3 domain.
-        This bit must be set to enable write access to these registers.- 0: Write access
-        to backup domains disabled- 1: Write access to backup domains enabled'
+        This bit must be set to enable write access to these registers.- 0: Write
+        access to backup domains disabled- 1: Write access to backup domains enabled'
 fieldset/PWR_CPU1CR:
   description: ''
   fields:
+    - name: PDDS_D2
+      bit_offset: 0
+      bit_size: 1
+      description: 'D2 Domain / System Power Down Deepsleep selection.This bit is
+        reset only by a VDD POR reset. (not reset when exit from Standby mode)Allows
+        CPU1 to define the Deepsleep mode for the D2 / system.- 0: Keep Stop mode
+        when CPU1 enters to CStop.- 1: Allow Standby mode when CPU1 enters to CStop.'
+    - name: PDDS_D1
+      bit_offset: 1
+      bit_size: 1
+      description: 'D1 domain Power Down Deepsleep selection.This bit is reset only
+        by a VDD POR reset. (not reset when exit from Standby mode)Allows CPU1 to
+        define the Deepsleep mode for the system.- 0: Keep DStop mode when CPU1 enters
+        to CStop.- 1: Allow DStandby mode when CPU1 enters to CStop.'
     - name: VBF
       bit_offset: 4
       bit_size: 1
-      description: 'VBAT exit FlagThis bit is set by hardware and cleared only by a
-        Vsw POR reset or by setting the CPU1 CSSF bit. (not reset when exit from VBAT)-
-        0: System has not been in VBAT mode.- 1: System has been in VBAT mode.'
+      description: 'VBAT exit FlagThis bit is set by hardware and cleared only by
+        a Vsw POR reset or by setting the CPU1 CSSF bit. (not reset when exit from
+        VBAT)- 0: System has not been in VBAT mode.- 1: System has been in VBAT mode.'
     - name: STOPF
       bit_offset: 5
       bit_size: 1
       description: 'System Stop FlagThis bit is set by hardware and cleared only by
-        any system reset or by setting the CPU1 CSSF bit.- 0: System has not been in
-        Stop mode.- 1: System has been in Stop mode, clock system has been stopped.'
+        any system reset or by setting the CPU1 CSSF bit.- 0: System has not been
+        in Stop mode.- 1: System has been in Stop mode, clock system has been stopped.'
     - name: SBF
       bit_offset: 6
       bit_size: 1
@@ -517,75 +534,212 @@ fieldset/PWR_CPU1CR:
         by a VDD POR reset or by setting the CPU1 and CPU2 CSSF bit. (not reset when
         exit from Standby mode)- 0: System has not been in Standby mode.- 1: System
         has been in Standby mode, system contents has been lost.'
+    - name: SBF_D1
+      bit_offset: 7
+      bit_size: 1
+      description: 'D1 DStandby FlagThis bit is set by hardware and cleared only by
+        a VDD POR reset or by setting the CPU1 CSSF bit. (not reset when exit from
+        Standby mode)- 0: D1 domain has not been in DStandby mode.- 1: D1 domain has
+        been in DStandby mode.'
+    - name: SBF_D3
+      bit_offset: 8
+      bit_size: 1
+      description: 'D3 SStandby FlagThis bit is set by hardware and cleared only by
+        a Vsw POR reset or by setting the CPU1 CSSF bit. (not reset when exit from
+        VBAT and Standby modes)- 0: D3 domain has not been in SStandby mode.- 1: D3
+        domain has been in SStandby mode.'
     - name: CSSF
       bit_offset: 9
       bit_size: 1
       description: 'Clear CPU1 STOPF, SBF_D1/_D3, SBF, VBF flags and CPU2 SBF flag.(Always
         read as 0)This bit is reset on any system reset.- 0: No effect.- 1: When written,
-        clear the CPU1 flags (STOPF, SBF_D1/_D3, SBF, and VBF) and CPU2 SBF flag. Register
-        bit is cleared to 0 by hardware.'
+        clear the CPU1 flags (STOPF, SBF_D1/_D3, SBF, and VBF) and CPU2 SBF flag.
+        Register bit is cleared to 0 by hardware.'
     - name: STANDBYWFIL2
       bit_offset: 15
       bit_size: 1
       description: 'CPU1 system idle indication.This bit is set and reset by HW based
         on the CPU1 operation mode.- 0: CPU1 system active.- 1: CPU1 system idle.'
+    - name: LPDS_D1
+      bit_offset: 16
+      bit_size: 1
+      description: 'Low power Deepsleep Stop mode selection for the D1 domain (DStop2).This
+        bit is reset on any system reset.- 0: Stop mode selected, external regulator
+        kept in main power mode.- 1: low-power stop mode selected, external regulator
+        may enter low power mode. Further low power mode selection is provided by
+        LVDS_D1.'
+    - name: LVDS_D1
+      bit_offset: 17
+      bit_size: 1
+      description: 'Low voltage Deepsleep LPLV-Stop mode selection for the D1 domain
+        (DStop3).This bit is reset on any system reset.This bit has only effect when
+        the low power stop mode is selected in LPDS_D1 and will change the VDDCPU
+        domain supply reset level.- 0: LP-Stop mode VDDCPU domain supply reset level
+        at same level as Run mode. The VDDCPU domain supply level in LP-Stop mode
+        shall be kept at same level as Run mode.- 1: LPLV-Stop mode VDDCPU domain
+        supply reset level at lower level than Run mode. Allows to lower VDDCPU domain
+        supply in LPLV-Stop mode (see datasheet for voltage levels).'
 fieldset/PWR_CPU2CR:
   description: ''
   fields:
+    - name: PDDS_D2
+      bit_offset: 0
+      bit_size: 1
+      description: 'D2 Domain / System Power Down Deepsleep selection.This bit is
+        reset only by a VDD POR reset. (not reset when exit from Standby mode)Allows
+        CPU2 to define the Deepsleep mode for the system / D2.- 0: Keep Stop mode
+        when CPU2 enters to CStop.- 1: Allow Standby mode when CPU2 enters to CStop.'
     - name: VBF
       bit_offset: 4
       bit_size: 1
-      description: 'VBAT exit FlagThis bit is set by hardware and cleared only by a
-        Vsw POR reset or by setting the CPU1 CSSF bit. (not reset when exit from VBAT)-
-        0: System has not been in VBAT mode.- 1: System has been in VBAT mode.'
+      description: 'VBAT exit FlagThis bit is set by hardware and cleared only by
+        a Vsw POR reset or by setting the CPU1 CSSF bit. (not reset when exit from
+        VBAT)- 0: System has not been in VBAT mode.- 1: System has been in VBAT mode.'
     - name: STOPF
       bit_offset: 5
       bit_size: 1
       description: 'System Stop FlagThis bit is set by hardware and cleared only by
-        any system reset or by setting the CPU2 CSSF bit.- 0: System has not been in
-        Stop mode.- 1: System has been in Stop mode, clock system has been stopped.'
+        any system reset or by setting the CPU2 CSSF bit.- 0: System has not been
+        in Stop mode.- 1: System has been in Stop mode, clock system has been stopped.'
     - name: SBF
       bit_offset: 6
       bit_size: 1
       description: 'System Standby FlagThis bit is set by hardware and cleared only
         by a VDD POR reset or by setting the CPU2 and CPU1 CSSF bit. (not reset when
-        exit from Standby mode)- 0: System has not been in Standby mode- 1: System has
-        been in Standby mode, system contents has been lost.'
+        exit from Standby mode)- 0: System has not been in Standby mode- 1: System
+        has been in Standby mode, system contents has been lost.'
+    - name: SBF_D2
+      bit_offset: 7
+      bit_size: 1
+      description: 'D2 Standby FlagThis bit is set by hardware and cleared only by
+        a VDD POR reset or by setting the CPU2 CSSF bit. (not reset when exit from
+        Standby mode)- 0: D2 domain has not been in Standby mode.- 1: D2 domain has
+        been in Standby mode.'
+    - name: SBF_D3
+      bit_offset: 8
+      bit_size: 1
+      description: 'D3 SStandby FlagThis bit is set by hardware and cleared only by
+        a Vsw POR reset or by setting the CPU2 CSSF bit. (not reset when exit from
+        VBAT and Standby modes)- 0: D3 domain has not been in SStandby mode.- 1: D3
+        domain has been in SStandby mode.'
     - name: CSSF
       bit_offset: 9
       bit_size: 1
-      description: 'Clear CPU2 STOPF, SBF_D2, SBF_D3, SBF, VBF flags and CPU1 SBF flag.(Always
-        read as 0)This bit is reset on any system reset.- 0: No effect.- 1: When written,
-        clear the CPU2 flags (STOPF, SBF_D2, SBF_D3, SBF and VBF) and CPU1 SBF flag.
-        Register bit is cleared to 0 by hardware.'
+      description: 'Clear CPU2 STOPF, SBF_D2, SBF_D3, SBF, VBF flags and CPU1 SBF
+        flag.(Always read as 0)This bit is reset on any system reset.- 0: No effect.-
+        1: When written, clear the CPU2 flags (STOPF, SBF_D2, SBF_D3, SBF and VBF)
+        and CPU1 SBF flag. Register bit is cleared to 0 by hardware.'
     - name: DEEPSLEEP
       bit_offset: 15
       bit_size: 1
       description: 'CPU2 system idle indication.This bit is set and reset by HW based
         on the CPU2 operation mode.- 0: CPU2 system active.- 1: CPU2 system idle.'
+    - name: LPDS_D2
+      bit_offset: 16
+      bit_size: 1
+      description: 'Low power Deepsleep Stop mode selection for the D2 domain / System.This
+        bit is reset on any system reset.- 0: Stop mode selected, external regulator
+        kept in main power mode (pwr_lp=1)- 1: low-power stop mode selected, external
+        regulator may enter low power mode (pwr_lp =0). Further low power mode selection
+        is provided by LVDS_D2.'
+    - name: LVDS_D2
+      bit_offset: 17
+      bit_size: 1
+      description: 'Low voltage Deepsleep LPLV-Stop mode selection for the D2 domain
+        / System.This bit is reset on any system reset.This bit has only effect when
+        the low power stop mode is selected in LPDS_D2 and will change the VDDCORE
+        domain supply reset level.- 0: LP-Stop mode VDDCORE domain supply reset level
+        at same level as Run mode. The VDDCORE domain supply level in LP-Stop mode
+        shall be kept at same level as Run mode.- 1: LPLV-Stop mode VDDCORE domain
+        supply reset level at lower level than Run mode. Allows to lower VDDCORE domain
+        supply in LPLV-Stop mode (see datasheet for voltage levels).'
 fieldset/PWR_CPU3CR:
   description: ''
   fields:
     - name: VBF
       bit_offset: 4
       bit_size: 1
-      description: 'VBAT exit FlagThis bit is set by hardware and cleared only by a
-        Vsw POR reset or by setting the CPU3 CSSF bit. (not reset when exit from VBAT)-
-        0: System has not been in VBAT mode.- 1: System has been in VBAT mode.'
+      description: 'VBAT exit FlagThis bit is set by hardware and cleared only by
+        a Vsw POR reset or by setting the CPU3 CSSF bit. (not reset when exit from
+        VBAT)- 0: System has not been in VBAT mode.- 1: System has been in VBAT mode.'
+    - name: SBF_D3
+      bit_offset: 8
+      bit_size: 1
+      description: 'D3 SStandby FlagThis bit is set by hardware and cleared only by
+        a Vsw POR reset or by setting the CPU3 CSSF bit. (not reset when exit from
+        VBAT1 or Standby modes)- 0: D3 domain has not been in SStandby mode- 1: D3
+        domain has been in SStandby mode'
     - name: CSSF
       bit_offset: 9
       bit_size: 1
       description: 'Clear CPU3 SBF_D3, VBF flag.(Always read as 0)This bit is reset
-        on any system reset.- 0: No effect.- 1: When written, clear the CPU3 flag (SBF_D3
-        and VBF). Register bit is cleared to 0 by hardware.'
+        on any system reset.- 0: No effect.- 1: When written, clear the CPU3 flag
+        (SBF_D3 and VBF). Register bit is cleared to 0 by hardware.'
     - name: DEEPSLEEP
       bit_offset: 15
       bit_size: 1
       description: 'CPU3 system idle indication.This bit is set and reset by HW based
         on the CPU3 operation mode.- 0: CPU3 active.- 1: CPU3 idle.'
+fieldset/PWR_D1CR:
+  description: ''
+  fields:
+    - name: LPCFG_D1
+      bit_offset: 0
+      bit_size: 1
+      description: 'PWR_CPU_ON pin configuration.- 0: PWR_CPU_ON pin signals DStandby
+        mode (PWR_CPU_ON =1 in DRun, DStop1/2/3, and 0 in DStandby). (pwr_cpu_on)-
+        1: PWR_CPU_ON pin signals DStandby &amp;amp; DStop2/3 modes (PWR_CPU_ON =
+        1 in DRun, DStop1, and 0 in DStop2/3 and DStandby). (pwr_cpu_onlp)'
+    - name: POPL_D1
+      bit_offset: 8
+      bit_size: 5
+      description: 'pwr_cpu_on pulse low configuration.These bits are set and cleared
+        by software. They define the minimum guaranteed duration of the pwr_cpu_on
+        low pulse in DStandby mode. (There is no impact on the DSTOP2/3 modes).The
+        LSI oscillator is automatically enabled when needed by the POPL_D1 pulse low
+        configuration.- 00000: No guaranteed minimum low time.- 00001: ~ 1 ms guaranteed
+        minimum low time. (1 x 32 LSI cycles)- 00010: ~ 2 ms guaranteed minimum low
+        time. (2 x 32 LSI cycles)...- 11111: ~ 31 ms guaranteed minimum low time.
+        (31 x 32 LSI cycles)'
+fieldset/PWR_D2CR:
+  description: ''
+  fields:
+    - name: LPCFG_D2
+      bit_offset: 0
+      bit_size: 1
+      description: 'PWR_ON pin configuration.- 0: PWR_ON pin signals Standby modes
+        (PWR_ON =1 in Run, Stop1/2, LP-Stop1/2, LPLV-Stop1/2, and 0 in Standby1/2).
+        (pwr_on)- 1: PWR_ON pin signals Standby &amp;amp; LP-Stop, LPLV-Stop modes
+        (PWR_ CPU_ON = 1 in Run, Stop1/2, and 0 in LP-Stop1/2, LPLV-Stop1/2 and Standby1/2).
+        (pwr_onlp)'
+    - name: POPL_D2
+      bit_offset: 8
+      bit_size: 5
+      description: 'pwr_on pulse low configuration.These bits are set and cleared
+        by software. They define the minimum guaranteed duration of the pwr_on low
+        pulse in Standby mode. (There is no impact on the LP-Stop and LPLV-Stop modes).The
+        LSI oscillator is automatically enabled when needed by the POPL_D2 pulse low
+        configuration.- 00000: No guaranteed minimum low time.- 00001: ~ 1 ms guaranteed
+        minimum low time. (1 x 32 LSI cycles)- 00010: ~ 2 ms guaranteed minimum low
+        time. (2 x 32 LSI cycles)...- 11111: ~ 31 ms guaranteed minimum low time.
+        (31 x 32 LSI cycles)'
+    - name: LPLVDLY_D2
+      bit_offset: 16
+      bit_size: 3
+      description: Bit fields for PWR_D3CR register
+    - name: PODH_D2
+      bit_offset: 24
+      bit_size: 4
+      description: Bit fields for PWR_D3CR register
 fieldset/PWR_D3CR:
   description: ''
   fields:
+    - name: PDDS_D3
+      bit_offset: 0
+      bit_size: 1
+      description: 'D3 domain Power Down Deepsleep selection. This bit has only effect
+        when the EN_D3 bit is not set.- 0: Keep SStop mode when system enters to Standby.-
+        1: Allow SStandby mode when system enters to Standby.'
     - name: D3RDY
       bit_offset: 31
       bit_size: 1
@@ -597,9 +751,9 @@ fieldset/PWR_WKUPCR1:
     - name: WKUPC
       bit_offset: 0
       bit_size: 1
-      description: 'Clear Wakeup Flag for WKUPx pin.These bits are always read as 0.-
-        0: No effect- 1: Writing 1 will clear the WKUPFx Wakeup Flag. (Bit is cleared
-        to 0 by HW)'
+      description: 'Clear Wakeup Flag for WKUPx pin.These bits are always read as
+        0.- 0: No effect- 1: Writing 1 will clear the WKUPFx Wakeup Flag. (Bit is
+        cleared to 0 by HW)'
     - name: WKUPP
       bit_offset: 8
       bit_size: 1
@@ -609,11 +763,11 @@ fieldset/PWR_WKUPCR1:
     - name: WKUPPUPD
       bit_offset: 12
       bit_size: 2
-      description: 'Wakeup pull configuration for WKUPx pin.These bits define the IO
-        pad pull configuration used when WKUPENCPU1 or/and WKUPENCPU2 = 1. (note that
-        the associated GPIO port pull configuration shall be set to the same value or
-        00). The Wakeup Pin pull configuration will be maintained in Standby mode.-
-        00: No pulls- 01: Pull-up- 10: Pull-down- 11: Reserved'
+      description: 'Wakeup pull configuration for WKUPx pin.These bits define the
+        IO pad pull configuration used when WKUPENCPU1 or/and WKUPENCPU2 = 1. (note
+        that the associated GPIO port pull configuration shall be set to the same
+        value or 00). The Wakeup Pin pull configuration will be maintained in Standby
+        mode.- 00: No pulls- 01: Pull-up- 10: Pull-down- 11: Reserved'
     - name: WKUPENCPU1
       bit_offset: 16
       bit_size: 1
@@ -640,9 +794,9 @@ fieldset/PWR_WKUPCR2:
     - name: WKUPC
       bit_offset: 0
       bit_size: 1
-      description: 'Clear Wakeup Flag for WKUPx pin.These bits are always read as 0.-
-        0: No effect- 1: Writing 1 will clear the WKUPFx Wakeup Flag. (Bit is cleared
-        to 0 by HW)'
+      description: 'Clear Wakeup Flag for WKUPx pin.These bits are always read as
+        0.- 0: No effect- 1: Writing 1 will clear the WKUPFx Wakeup Flag. (Bit is
+        cleared to 0 by HW)'
     - name: WKUPP
       bit_offset: 8
       bit_size: 1
@@ -652,11 +806,11 @@ fieldset/PWR_WKUPCR2:
     - name: WKUPPUPD
       bit_offset: 12
       bit_size: 2
-      description: 'Wakeup pull configuration for WKUPx pin.These bits define the IO
-        pad pull configuration used when WKUPENCPU1 or/and WKUPENCPU2 = 1. (note that
-        the associated GPIO port pull configuration shall be set to the same value or
-        00). The Wakeup Pin pull configuration will be maintained in Standby mode.-
-        00: No pulls- 01: Pull-up- 10: Pull-down- 11: Reserved'
+      description: 'Wakeup pull configuration for WKUPx pin.These bits define the
+        IO pad pull configuration used when WKUPENCPU1 or/and WKUPENCPU2 = 1. (note
+        that the associated GPIO port pull configuration shall be set to the same
+        value or 00). The Wakeup Pin pull configuration will be maintained in Standby
+        mode.- 00: No pulls- 01: Pull-up- 10: Pull-down- 11: Reserved'
     - name: WKUPENCPU1
       bit_offset: 16
       bit_size: 1
@@ -683,9 +837,9 @@ fieldset/PWR_WKUPCR3:
     - name: WKUPC
       bit_offset: 0
       bit_size: 1
-      description: 'Clear Wakeup Flag for WKUPx pin.These bits are always read as 0.-
-        0: No effect- 1: Writing 1 will clear the WKUPFx Wakeup Flag. (Bit is cleared
-        to 0 by HW)'
+      description: 'Clear Wakeup Flag for WKUPx pin.These bits are always read as
+        0.- 0: No effect- 1: Writing 1 will clear the WKUPFx Wakeup Flag. (Bit is
+        cleared to 0 by HW)'
     - name: WKUPP
       bit_offset: 8
       bit_size: 1
@@ -695,11 +849,11 @@ fieldset/PWR_WKUPCR3:
     - name: WKUPPUPD
       bit_offset: 12
       bit_size: 2
-      description: 'Wakeup pull configuration for WKUPx pin.These bits define the IO
-        pad pull configuration used when WKUPENCPU1 or/and WKUPENCPU2 = 1. (note that
-        the associated GPIO port pull configuration shall be set to the same value or
-        00). The Wakeup Pin pull configuration will be maintained in Standby mode.-
-        00: No pulls- 01: Pull-up- 10: Pull-down- 11: Reserved'
+      description: 'Wakeup pull configuration for WKUPx pin.These bits define the
+        IO pad pull configuration used when WKUPENCPU1 or/and WKUPENCPU2 = 1. (note
+        that the associated GPIO port pull configuration shall be set to the same
+        value or 00). The Wakeup Pin pull configuration will be maintained in Standby
+        mode.- 00: No pulls- 01: Pull-up- 10: Pull-down- 11: Reserved'
     - name: WKUPENCPU1
       bit_offset: 16
       bit_size: 1
@@ -726,9 +880,9 @@ fieldset/PWR_WKUPCR4:
     - name: WKUPC
       bit_offset: 0
       bit_size: 1
-      description: 'Clear Wakeup Flag for WKUPx pin.These bits are always read as 0.-
-        0: No effect- 1: Writing 1 will clear the WKUPFx Wakeup Flag. (Bit is cleared
-        to 0 by HW)'
+      description: 'Clear Wakeup Flag for WKUPx pin.These bits are always read as
+        0.- 0: No effect- 1: Writing 1 will clear the WKUPFx Wakeup Flag. (Bit is
+        cleared to 0 by HW)'
     - name: WKUPP
       bit_offset: 8
       bit_size: 1
@@ -738,11 +892,11 @@ fieldset/PWR_WKUPCR4:
     - name: WKUPPUPD
       bit_offset: 12
       bit_size: 2
-      description: 'Wakeup pull configuration for WKUPx pin.These bits define the IO
-        pad pull configuration used when WKUPENCPU1 or/and WKUPENCPU2 = 1. (note that
-        the associated GPIO port pull configuration shall be set to the same value or
-        00). The Wakeup Pin pull configuration will be maintained in Standby mode.-
-        00: No pulls- 01: Pull-up- 10: Pull-down- 11: Reserved'
+      description: 'Wakeup pull configuration for WKUPx pin.These bits define the
+        IO pad pull configuration used when WKUPENCPU1 or/and WKUPENCPU2 = 1. (note
+        that the associated GPIO port pull configuration shall be set to the same
+        value or 00). The Wakeup Pin pull configuration will be maintained in Standby
+        mode.- 00: No pulls- 01: Pull-up- 10: Pull-down- 11: Reserved'
     - name: WKUPENCPU1
       bit_offset: 16
       bit_size: 1
@@ -769,9 +923,9 @@ fieldset/PWR_WKUPCR5:
     - name: WKUPC
       bit_offset: 0
       bit_size: 1
-      description: 'Clear Wakeup Flag for WKUPx pin.These bits are always read as 0.-
-        0: No effect- 1: Writing 1 will clear the WKUPFx Wakeup Flag. (Bit is cleared
-        to 0 by HW)'
+      description: 'Clear Wakeup Flag for WKUPx pin.These bits are always read as
+        0.- 0: No effect- 1: Writing 1 will clear the WKUPFx Wakeup Flag. (Bit is
+        cleared to 0 by HW)'
     - name: WKUPP
       bit_offset: 8
       bit_size: 1
@@ -781,11 +935,11 @@ fieldset/PWR_WKUPCR5:
     - name: WKUPPUPD
       bit_offset: 12
       bit_size: 2
-      description: 'Wakeup pull configuration for WKUPx pin.These bits define the IO
-        pad pull configuration used when WKUPENCPU1 or/and WKUPENCPU2 = 1. (note that
-        the associated GPIO port pull configuration shall be set to the same value or
-        00). The Wakeup Pin pull configuration will be maintained in Standby mode.-
-        00: No pulls- 01: Pull-up- 10: Pull-down- 11: Reserved'
+      description: 'Wakeup pull configuration for WKUPx pin.These bits define the
+        IO pad pull configuration used when WKUPENCPU1 or/and WKUPENCPU2 = 1. (note
+        that the associated GPIO port pull configuration shall be set to the same
+        value or 00). The Wakeup Pin pull configuration will be maintained in Standby
+        mode.- 00: No pulls- 01: Pull-up- 10: Pull-down- 11: Reserved'
     - name: WKUPENCPU1
       bit_offset: 16
       bit_size: 1
@@ -812,9 +966,9 @@ fieldset/PWR_WKUPCR6:
     - name: WKUPC
       bit_offset: 0
       bit_size: 1
-      description: 'Clear Wakeup Flag for WKUPx pin.These bits are always read as 0.-
-        0: No effect- 1: Writing 1 will clear the WKUPFx Wakeup Flag. (Bit is cleared
-        to 0 by HW)'
+      description: 'Clear Wakeup Flag for WKUPx pin.These bits are always read as
+        0.- 0: No effect- 1: Writing 1 will clear the WKUPFx Wakeup Flag. (Bit is
+        cleared to 0 by HW)'
     - name: WKUPP
       bit_offset: 8
       bit_size: 1
@@ -824,11 +978,11 @@ fieldset/PWR_WKUPCR6:
     - name: WKUPPUPD
       bit_offset: 12
       bit_size: 2
-      description: 'Wakeup pull configuration for WKUPx pin.These bits define the IO
-        pad pull configuration used when WKUPENCPU1 or/and WKUPENCPU2 = 1. (note that
-        the associated GPIO port pull configuration shall be set to the same value or
-        00). The Wakeup Pin pull configuration will be maintained in Standby mode.-
-        00: No pulls- 01: Pull-up- 10: Pull-down- 11: Reserved'
+      description: 'Wakeup pull configuration for WKUPx pin.These bits define the
+        IO pad pull configuration used when WKUPENCPU1 or/and WKUPENCPU2 = 1. (note
+        that the associated GPIO port pull configuration shall be set to the same
+        value or 00). The Wakeup Pin pull configuration will be maintained in Standby
+        mode.- 00: No pulls- 01: Pull-up- 10: Pull-down- 11: Reserved'
     - name: WKUPENCPU1
       bit_offset: 16
       bit_size: 1
@@ -849,96 +1003,106 @@ fieldset/PWR_WKUPCR6:
       description: 'Wakeup flag for WKUPx pin before enable.This bit is set by hardware
         and cleared only by a NRST Reset or by setting the WKUPCx bit.- 0: No wakeup
         event occurred- 1: A wakeup event was received from WKUPx pin'
+fieldset/PWR_D3WKUPENR:
+  description: ''
+  fields:
+    - name: TAMP_WKUPEN_D3
+      bit_offset: 0
+      bit_size: 1
+      description: 'Enable Wakeup pin for D3 domain in VBAT mode.The bit is set and
+        cleared by software.- 0: A tamper event on D3WKUP pin does not wakeup the
+        D3 domain from SStandby in VBAT mode.- 1: A rising or falling edge on D3WKUP
+        pin wakes-up the D3 domain from SStandby in VBAT mode.'
 fieldset/PWR_RSECCFGR:
   description: ''
   fields:
     - name: RSEC0
       bit_offset: 0
       bit_size: 1
-      description: 'Secure attribute reference for the local resource number x (x =
-        0)These bits are written by software to enabled the secure mode for the local
-        resource x.- 0: The local resource number x is non-secure. Secure access is
-        also possible.- 1: The local resource number x is secure only.This bit can only
-        be written by secure application. If corresponding PRIVx bit is set in PWR_RPRIVCFGR
-        this bit can only be written by secure privileged application.If compartment
-        filtering for this local resource is enabled by setting CFEN bit in PWR_RxCIDCFGR,
-        only an allowed compartment can write this bit, on top of secure and privileged
-        restriction.'
+      description: 'Secure attribute reference for the local resource number x (x
+        = 0)These bits are written by software to enabled the secure mode for the
+        local resource x.- 0: The local resource number x is non-secure. Secure access
+        is also possible.- 1: The local resource number x is secure only.This bit
+        can only be written by secure application. If corresponding PRIVx bit is set
+        in PWR_RPRIVCFGR this bit can only be written by secure privileged application.If
+        compartment filtering for this local resource is enabled by setting CFEN bit
+        in PWR_RxCIDCFGR, only an allowed compartment can write this bit, on top of
+        secure and privileged restriction.'
     - name: RSEC1
       bit_offset: 1
       bit_size: 1
-      description: Secure attribute reference for the local resource number x (x = 1)See
-        RSEC0 for details.
+      description: Secure attribute reference for the local resource number x (x =
+        1)See RSEC0 for details.
     - name: RSEC2
       bit_offset: 2
       bit_size: 1
-      description: Secure attribute reference for the local resource number x (x = 2)See
-        RSEC0 for details.
+      description: Secure attribute reference for the local resource number x (x =
+        2)See RSEC0 for details.
     - name: RSEC3
       bit_offset: 3
       bit_size: 1
-      description: Secure attribute reference for the local resource number x (x = 3)See
-        RSEC0 for details.
+      description: Secure attribute reference for the local resource number x (x =
+        3)See RSEC0 for details.
     - name: RSEC4
       bit_offset: 4
       bit_size: 1
-      description: Secure attribute reference for the local resource number x (x = 4)See
-        RSEC0 for details.
+      description: Secure attribute reference for the local resource number x (x =
+        4)See RSEC0 for details.
     - name: RSEC5
       bit_offset: 5
       bit_size: 1
-      description: Secure attribute reference for the local resource number x (x = 5)See
-        RSEC0 for details.
+      description: Secure attribute reference for the local resource number x (x =
+        5)See RSEC0 for details.
     - name: RSEC6
       bit_offset: 6
       bit_size: 1
-      description: Secure attribute reference for the local resource number x (x = 6)See
-        RSEC0 for details.
+      description: Secure attribute reference for the local resource number x (x =
+        6)See RSEC0 for details.
 fieldset/PWR_RPRIVCFGR:
   description: ''
   fields:
     - name: RPRIV0
       bit_offset: 0
       bit_size: 1
-      description: 'Privileged attribute reference for the local resource number x (x
-        = 0)These bits are written by software to enabled the privileged mode for the
-        local resource x.- 0: The local resource number x is unprivileged. Secure access
-        is also possible.- 1: The local resource number x is privileged only.This bit
-        can only be written by privileged application. If corresponding SECx bit is
-        set in PWR_RSECCFGR this bit can only be written by secure privileged application.If
+      description: 'Privileged attribute reference for the local resource number x
+        (x = 0)These bits are written by software to enabled the privileged mode for
+        the local resource x.- 0: The local resource number x is unprivileged. Secure
+        access is also possible.- 1: The local resource number x is privileged only.This
+        bit can only be written by privileged application. If corresponding SECx bit
+        is set in PWR_RSECCFGR this bit can only be written by secure privileged application.If
         compartment filtering for this local resource is enabled by setting CFEN bit
         in PWR_RxCIDCFGR, only an allowed compartment can write this bit, on top of
         secure and privileged restriction.'
     - name: RPRIV1
       bit_offset: 1
       bit_size: 1
-      description: Privileged attribute reference for the local resource number x (x
-        = 1)See RPRIV0 for details.
+      description: Privileged attribute reference for the local resource number x
+        (x = 1)See RPRIV0 for details.
     - name: RPRIV2
       bit_offset: 2
       bit_size: 1
-      description: Privileged attribute reference for the local resource number x (x
-        = 2)See RPRIV0 for details.
+      description: Privileged attribute reference for the local resource number x
+        (x = 2)See RPRIV0 for details.
     - name: RPRIV3
       bit_offset: 3
       bit_size: 1
-      description: Privileged attribute reference for the local resource number x (x
-        = 3)See RPRIV0 for details.
+      description: Privileged attribute reference for the local resource number x
+        (x = 3)See RPRIV0 for details.
     - name: RPRIV4
       bit_offset: 4
       bit_size: 1
-      description: Privileged attribute reference for the local resource number x (x
-        = 4)See RPRIV0 for details.
+      description: Privileged attribute reference for the local resource number x
+        (x = 4)See RPRIV0 for details.
     - name: RPRIV5
       bit_offset: 5
       bit_size: 1
-      description: Privileged attribute reference for the local resource number x (x
-        = 5)See RPRIV0 for details.
+      description: Privileged attribute reference for the local resource number x
+        (x = 5)See RPRIV0 for details.
     - name: RPRIV6
       bit_offset: 6
       bit_size: 1
-      description: Privileged attribute reference for the local resource number x (x
-        = 6)See RPRIV0 for details.
+      description: Privileged attribute reference for the local resource number x
+        (x = 6)See RPRIV0 for details.
 fieldset/PWR_WIOSECCFGR:
   description: ''
   fields:
@@ -948,13 +1112,13 @@ fieldset/PWR_WIOSECCFGR:
       description: 'Secure attribute reference for the Wakeup IO x (x = 1)These bits
         are written by software to enabled the secure mode for the wakeup IO x.- 0:
         The wakeup IO x is non-secure. Secure access is also possible.- 1: The wakeup
-        IO x is secure only.This bit can only be written by secure application. If corresponding
-        PRIVx bit is set in PWR_WIOPRIVCFGR this bit can only be written by secure privileged
-        application.If compartment filtering for this Wakeup IO is enabled by setting
-        CFEN bit in PWR_WIOxCIDCFGR, only an allowed compartment can write this bit,
-        on top of secure and privileged restriction.Authorized compartment value depends
-        on the value of SEM_EN bit in PWR_WIOxCIDCFGR and optionally the SEM_MUTEX bit
-        in PWR_WIOxSEMCR.'
+        IO x is secure only.This bit can only be written by secure application. If
+        corresponding PRIVx bit is set in PWR_WIOPRIVCFGR this bit can only be written
+        by secure privileged application.If compartment filtering for this Wakeup
+        IO is enabled by setting CFEN bit in PWR_WIOxCIDCFGR, only an allowed compartment
+        can write this bit, on top of secure and privileged restriction.Authorized
+        compartment value depends on the value of SEM_EN bit in PWR_WIOxCIDCFGR and
+        optionally the SEM_MUTEX bit in PWR_WIOxSEMCR.'
     - name: WIOSEC2
       bit_offset: 1
       bit_size: 1
@@ -987,15 +1151,15 @@ fieldset/PWR_WIOPRIVCFGR:
       bit_offset: 0
       bit_size: 1
       description: 'Privileged attribute reference for the Wakeup IO x (x = 1)These
-        bits are written by software to enabled the privileged mode for the Wakeup IO
-        x.- 0: The Wakeup IO x is unprivileged. Privileged access is also possible.-
+        bits are written by software to enabled the privileged mode for the Wakeup
+        IO x.- 0: The Wakeup IO x is unprivileged. Privileged access is also possible.-
         1: The Wakeup IO x is privileged only.This bit can only be written by privileged
         application. If corresponding SECx bit is set in PWR_WIOSECCFGR this bit can
-        only be written by secure privileged application.If compartment filtering for
-        this Wakeup IO is enabled by setting CFEN bit in PWR_WIOxCIDCFGR, only an allowed
-        compartment can write this bit, on top of secure and privileged restriction.Authorized
-        compartment value depends on the value of SEM_EN bit in PWR_WIOxCIDCFGR and
-        optionally the SEM_MUTEX bit in PWR_WIOxSEMCR.'
+        only be written by secure privileged application.If compartment filtering
+        for this Wakeup IO is enabled by setting CFEN bit in PWR_WIOxCIDCFGR, only
+        an allowed compartment can write this bit, on top of secure and privileged
+        restriction.Authorized compartment value depends on the value of SEM_EN bit
+        in PWR_WIOxCIDCFGR and optionally the SEM_MUTEX bit in PWR_WIOxSEMCR.'
     - name: WIOPRIV2
       bit_offset: 1
       bit_size: 1
@@ -1030,6 +1194,13 @@ fieldset/PWR_WIO1CIDCFGR:
       description: 'Compartment ID filter enable- 0: Compartment-based filtering is
         disabled for Wakeup IO x.- 1: Compartment-based filtering is enabled for Wakeup
         IO x.'
+    - name: SEM_EN
+      bit_offset: 1
+      bit_size: 1
+      description: 'Semaphore enable- 0: Access to Wakeup IO x is granted only if
+        CID of the access equals to SCID.- 1: Access to Wakeup IO x is granted only
+        if SEM_MUTEX=1 and CID of the access equals to SEMCID.This bit is ignored
+        if CFEN=0. When this bit is cleared from 1 SEM_MUTEX is cleared.'
     - name: SCID
       bit_offset: 4
       bit_size: 3
@@ -1087,12 +1258,23 @@ fieldset/PWR_WIO1CIDCFGR:
 fieldset/PWR_WIO1SEMCR:
   description: ''
   fields:
+    - name: SEM_MUTEX
+      bit_offset: 0
+      bit_size: 1
+      description: 'Semaphore mutexApplication can set semaphore bit to get exclusive
+        access to Wakeup IO x when SEM_EN is set in PWR_WIOxCIDCFGR (writes are ignored
+        otherwise).Read 0: Semaphore is free to takeRead 1: Semaphore is takenWrite
+        0: Release semaphoreWrite 1: Acquire semaphoreWhen SEM_MUTEX=0 only applications
+        belonging to white-listed compartments (defined with SEMWLCy bits in PWR_WIOxCIDCFGR)
+        can acquire this semaphore.When SEM_MUTEX=1 only applications belonging to
+        compartment SEMCID can release this semaphore.This bit is cleared when CFEN
+        or SEM_EN are cleared from 1 in PWR_WIOxCIDCFGR.'
     - name: SEMCID
       bit_offset: 4
       bit_size: 3
       description: Semaphore Current Compartment IDWhen SEM_EN=1, this read-only bit
-        field is updated with the CID value of the latest successfulacquisition of PWR_WIOxSEMCR
-        semaphore (SEM_MUTEX bit set to 1).
+        field is updated with the CID value of the latest successfulacquisition of
+        PWR_WIOxSEMCR semaphore (SEM_MUTEX bit set to 1).
 fieldset/PWR_WIO2CIDCFGR:
   description: ''
   fields:
@@ -1102,6 +1284,13 @@ fieldset/PWR_WIO2CIDCFGR:
       description: 'Compartment ID filter enable- 0: Compartment-based filtering is
         disabled for Wakeup IO x.- 1: Compartment-based filtering is enabled for Wakeup
         IO x.'
+    - name: SEM_EN
+      bit_offset: 1
+      bit_size: 1
+      description: 'Semaphore enable- 0: Access to Wakeup IO x is granted only if
+        CID of the access equals to SCID.- 1: Access to Wakeup IO x is granted only
+        if SEM_MUTEX=1 and CID of the access equals to SEMCID.This bit is ignored
+        if CFEN=0. When this bit is cleared from 1 SEM_MUTEX is cleared.'
     - name: SCID
       bit_offset: 4
       bit_size: 3
@@ -1159,12 +1348,23 @@ fieldset/PWR_WIO2CIDCFGR:
 fieldset/PWR_WIO2SEMCR:
   description: ''
   fields:
+    - name: SEM_MUTEX
+      bit_offset: 0
+      bit_size: 1
+      description: 'Semaphore mutexApplication can set semaphore bit to get exclusive
+        access to Wakeup IO x when SEM_EN is set in PWR_WIOxCIDCFGR (writes are ignored
+        otherwise).Read 0: Semaphore is free to takeRead 1: Semaphore is takenWrite
+        0: Release semaphoreWrite 1: Acquire semaphoreWhen SEM_MUTEX=0 only applications
+        belonging to white-listed compartments (defined with SEMWLCy bits in PWR_WIOxCIDCFGR)
+        can acquire this semaphore.When SEM_MUTEX=1 only applications belonging to
+        compartment SEMCID can release this semaphore.This bit is cleared when CFEN
+        or SEM_EN are cleared from 1 in PWR_WIOxCIDCFGR.'
     - name: SEMCID
       bit_offset: 4
       bit_size: 3
       description: Semaphore Current Compartment IDWhen SEM_EN=1, this read-only bit
-        field is updated with the CID value of the latest successfulacquisition of PWR_WIOxSEMCR
-        semaphore (SEM_MUTEX bit set to 1).
+        field is updated with the CID value of the latest successfulacquisition of
+        PWR_WIOxSEMCR semaphore (SEM_MUTEX bit set to 1).
 fieldset/PWR_WIO3CIDCFGR:
   description: ''
   fields:
@@ -1174,6 +1374,13 @@ fieldset/PWR_WIO3CIDCFGR:
       description: 'Compartment ID filter enable- 0: Compartment-based filtering is
         disabled for Wakeup IO x.- 1: Compartment-based filtering is enabled for Wakeup
         IO x.'
+    - name: SEM_EN
+      bit_offset: 1
+      bit_size: 1
+      description: 'Semaphore enable- 0: Access to Wakeup IO x is granted only if
+        CID of the access equals to SCID.- 1: Access to Wakeup IO x is granted only
+        if SEM_MUTEX=1 and CID of the access equals to SEMCID.This bit is ignored
+        if CFEN=0. When this bit is cleared from 1 SEM_MUTEX is cleared.'
     - name: SCID
       bit_offset: 4
       bit_size: 3
@@ -1231,12 +1438,23 @@ fieldset/PWR_WIO3CIDCFGR:
 fieldset/PWR_WIO3SEMCR:
   description: ''
   fields:
+    - name: SEM_MUTEX
+      bit_offset: 0
+      bit_size: 1
+      description: 'Semaphore mutexApplication can set semaphore bit to get exclusive
+        access to Wakeup IO x when SEM_EN is set in PWR_WIOxCIDCFGR (writes are ignored
+        otherwise).Read 0: Semaphore is free to takeRead 1: Semaphore is takenWrite
+        0: Release semaphoreWrite 1: Acquire semaphoreWhen SEM_MUTEX=0 only applications
+        belonging to white-listed compartments (defined with SEMWLCy bits in PWR_WIOxCIDCFGR)
+        can acquire this semaphore.When SEM_MUTEX=1 only applications belonging to
+        compartment SEMCID can release this semaphore.This bit is cleared when CFEN
+        or SEM_EN are cleared from 1 in PWR_WIOxCIDCFGR.'
     - name: SEMCID
       bit_offset: 4
       bit_size: 3
       description: Semaphore Current Compartment IDWhen SEM_EN=1, this read-only bit
-        field is updated with the CID value of the latest successfulacquisition of PWR_WIOxSEMCR
-        semaphore (SEM_MUTEX bit set to 1).
+        field is updated with the CID value of the latest successfulacquisition of
+        PWR_WIOxSEMCR semaphore (SEM_MUTEX bit set to 1).
 fieldset/PWR_WIO4CIDCFGR:
   description: ''
   fields:
@@ -1246,6 +1464,13 @@ fieldset/PWR_WIO4CIDCFGR:
       description: 'Compartment ID filter enable- 0: Compartment-based filtering is
         disabled for Wakeup IO x.- 1: Compartment-based filtering is enabled for Wakeup
         IO x.'
+    - name: SEM_EN
+      bit_offset: 1
+      bit_size: 1
+      description: 'Semaphore enable- 0: Access to Wakeup IO x is granted only if
+        CID of the access equals to SCID.- 1: Access to Wakeup IO x is granted only
+        if SEM_MUTEX=1 and CID of the access equals to SEMCID.This bit is ignored
+        if CFEN=0. When this bit is cleared from 1 SEM_MUTEX is cleared.'
     - name: SCID
       bit_offset: 4
       bit_size: 3
@@ -1303,12 +1528,23 @@ fieldset/PWR_WIO4CIDCFGR:
 fieldset/PWR_WIO4SEMCR:
   description: ''
   fields:
+    - name: SEM_MUTEX
+      bit_offset: 0
+      bit_size: 1
+      description: 'Semaphore mutexApplication can set semaphore bit to get exclusive
+        access to Wakeup IO x when SEM_EN is set in PWR_WIOxCIDCFGR (writes are ignored
+        otherwise).Read 0: Semaphore is free to takeRead 1: Semaphore is takenWrite
+        0: Release semaphoreWrite 1: Acquire semaphoreWhen SEM_MUTEX=0 only applications
+        belonging to white-listed compartments (defined with SEMWLCy bits in PWR_WIOxCIDCFGR)
+        can acquire this semaphore.When SEM_MUTEX=1 only applications belonging to
+        compartment SEMCID can release this semaphore.This bit is cleared when CFEN
+        or SEM_EN are cleared from 1 in PWR_WIOxCIDCFGR.'
     - name: SEMCID
       bit_offset: 4
       bit_size: 3
       description: Semaphore Current Compartment IDWhen SEM_EN=1, this read-only bit
-        field is updated with the CID value of the latest successfulacquisition of PWR_WIOxSEMCR
-        semaphore (SEM_MUTEX bit set to 1).
+        field is updated with the CID value of the latest successfulacquisition of
+        PWR_WIOxSEMCR semaphore (SEM_MUTEX bit set to 1).
 fieldset/PWR_WIO5CIDCFGR:
   description: ''
   fields:
@@ -1318,6 +1554,13 @@ fieldset/PWR_WIO5CIDCFGR:
       description: 'Compartment ID filter enable- 0: Compartment-based filtering is
         disabled for Wakeup IO x.- 1: Compartment-based filtering is enabled for Wakeup
         IO x.'
+    - name: SEM_EN
+      bit_offset: 1
+      bit_size: 1
+      description: 'Semaphore enable- 0: Access to Wakeup IO x is granted only if
+        CID of the access equals to SCID.- 1: Access to Wakeup IO x is granted only
+        if SEM_MUTEX=1 and CID of the access equals to SEMCID.This bit is ignored
+        if CFEN=0. When this bit is cleared from 1 SEM_MUTEX is cleared.'
     - name: SCID
       bit_offset: 4
       bit_size: 3
@@ -1375,12 +1618,23 @@ fieldset/PWR_WIO5CIDCFGR:
 fieldset/PWR_WIO5SEMCR:
   description: ''
   fields:
+    - name: SEM_MUTEX
+      bit_offset: 0
+      bit_size: 1
+      description: 'Semaphore mutexApplication can set semaphore bit to get exclusive
+        access to Wakeup IO x when SEM_EN is set in PWR_WIOxCIDCFGR (writes are ignored
+        otherwise).Read 0: Semaphore is free to takeRead 1: Semaphore is takenWrite
+        0: Release semaphoreWrite 1: Acquire semaphoreWhen SEM_MUTEX=0 only applications
+        belonging to white-listed compartments (defined with SEMWLCy bits in PWR_WIOxCIDCFGR)
+        can acquire this semaphore.When SEM_MUTEX=1 only applications belonging to
+        compartment SEMCID can release this semaphore.This bit is cleared when CFEN
+        or SEM_EN are cleared from 1 in PWR_WIOxCIDCFGR.'
     - name: SEMCID
       bit_offset: 4
       bit_size: 3
       description: Semaphore Current Compartment IDWhen SEM_EN=1, this read-only bit
-        field is updated with the CID value of the latest successfulacquisition of PWR_WIOxSEMCR
-        semaphore (SEM_MUTEX bit set to 1).
+        field is updated with the CID value of the latest successfulacquisition of
+        PWR_WIOxSEMCR semaphore (SEM_MUTEX bit set to 1).
 fieldset/PWR_WIO6CIDCFGR:
   description: ''
   fields:
@@ -1390,6 +1644,13 @@ fieldset/PWR_WIO6CIDCFGR:
       description: 'Compartment ID filter enable- 0: Compartment-based filtering is
         disabled for Wakeup IO x.- 1: Compartment-based filtering is enabled for Wakeup
         IO x.'
+    - name: SEM_EN
+      bit_offset: 1
+      bit_size: 1
+      description: 'Semaphore enable- 0: Access to Wakeup IO x is granted only if
+        CID of the access equals to SCID.- 1: Access to Wakeup IO x is granted only
+        if SEM_MUTEX=1 and CID of the access equals to SEMCID.This bit is ignored
+        if CFEN=0. When this bit is cleared from 1 SEM_MUTEX is cleared.'
     - name: SCID
       bit_offset: 4
       bit_size: 3
@@ -1447,53 +1708,78 @@ fieldset/PWR_WIO6CIDCFGR:
 fieldset/PWR_WIO6SEMCR:
   description: ''
   fields:
+    - name: SEM_MUTEX
+      bit_offset: 0
+      bit_size: 1
+      description: 'Semaphore mutexApplication can set semaphore bit to get exclusive
+        access to Wakeup IO x when SEM_EN is set in PWR_WIOxCIDCFGR (writes are ignored
+        otherwise).Read 0: Semaphore is free to takeRead 1: Semaphore is takenWrite
+        0: Release semaphoreWrite 1: Acquire semaphoreWhen SEM_MUTEX=0 only applications
+        belonging to white-listed compartments (defined with SEMWLCy bits in PWR_WIOxCIDCFGR)
+        can acquire this semaphore.When SEM_MUTEX=1 only applications belonging to
+        compartment SEMCID can release this semaphore.This bit is cleared when CFEN
+        or SEM_EN are cleared from 1 in PWR_WIOxCIDCFGR.'
     - name: SEMCID
       bit_offset: 4
       bit_size: 3
       description: Semaphore Current Compartment IDWhen SEM_EN=1, this read-only bit
-        field is updated with the CID value of the latest successfulacquisition of PWR_WIOxSEMCR
-        semaphore (SEM_MUTEX bit set to 1).
+        field is updated with the CID value of the latest successfulacquisition of
+        PWR_WIOxSEMCR semaphore (SEM_MUTEX bit set to 1).
 fieldset/PWR_CPU1D1SR:
   description: ''
   fields:
+    - name: HOLD_BOOT
+      bit_offset: 0
+      bit_size: 1
+      description: 'CPU1 HOLD_BOOT status flag.Set by hardware to indicate when the
+        CPU1 is in HOLD_BOOT state.- 0: CPU1 is allowed to boot.- 1: CPU1 is maintained
+        in HOLD_BOOT state by hardware.Refer to RCC specification for details on HOLD_BOOT
+        processor state.'
     - name: CSTATE
       bit_offset: 2
       bit_size: 2
-      description: 'CPU1 cluster state status.Set by hardware to indicate when the CPU1
-        is in CRun, CSleep or CStop modes.- 00: CPU1 is in reset (Hold_boot or Wfben).-
-        01: CPU1 is in CRun state.- 10: CPU1 is in CSleep state.- 11: CPU1 is in CStop
-        state.'
+      description: 'CPU1 cluster state status.Set by hardware to indicate when the
+        CPU1 is in CRun, CSleep or CStop modes.- 00: CPU1 is in reset (Hold_boot or
+        Wfben).- 01: CPU1 is in CRun state.- 10: CPU1 is in CSleep state.- 11: CPU1
+        is in CStop state.'
     - name: DSTATE
       bit_offset: 8
       bit_size: 3
-      description: 'D1 domain state status.Set by hardware to indicate when the D1 domain
-        is in DRun, DStop1/2/3 or DStandby mode.- 000: DRun- 001: DStop1- 010: DStop2-
-        011: DStop3- 100: DStandby'
+      description: 'D1 domain state status.Set by hardware to indicate when the D1
+        domain is in DRun, DStop1/2/3 or DStandby mode.- 000: DRun- 001: DStop1- 010:
+        DStop2- 011: DStop3- 100: DStandby'
 fieldset/PWR_CPU2D2SR:
   description: ''
   fields:
+    - name: HOLD_BOOT
+      bit_offset: 0
+      bit_size: 1
+      description: 'CPU2 HOLD_BOOT status flag.Set by hardware to indicate when the
+        CPU2 is in HOLD_BOOT state.- 0: CPU2 is allowed to boot.- 1: CPU2 is maintained
+        in HOLD_BOOT state by hardware.Refer to RCC specification for details on HOLD_BOOT
+        processor state.'
     - name: WFBEN
       bit_offset: 1
       bit_size: 1
       description: "CPU2 Wait for boot enable status flag.Set by hardware to indicate\
         \ when the CPU2 is in wait for boot enable state. Only applicable in Wakeup\
         \ event mode.- 0: CPU2 is not in wait for boot enable state. Set at \xE2\x80\
-        \x980\xE2\x80\x99 in legacy boot mode.- 1: CPU2 is in wait for boot enable state.\
-        \ It will start once an event assign to him will be raised.Refer to RCC specification\
-        \ for details on HOLD_BOOT processor state."
+        \x980\xE2\x80\x99 in legacy boot mode.- 1: CPU2 is in wait for boot enable\
+        \ state. It will start once an event assign to him will be raised.Refer to\
+        \ RCC specification for details on HOLD_BOOT processor state."
     - name: CSTATE
       bit_offset: 2
       bit_size: 2
       description: 'CPU2 cluster state status flag.Set by hardware to indicate when
         the CPU2 is in CRun, CSleep or CStop states.- 00: CPU2 is in reset (Hold_boot
-        or Wfben).- 01: CPU2 is in CRun state.- 10: CPU2 is in CSleep state.- 11: CPU2
-        is in CStop state.'
+        or Wfben).- 01: CPU2 is in CRun state.- 10: CPU2 is in CSleep state.- 11:
+        CPU2 is in CStop state.'
     - name: DSTATE
       bit_offset: 8
       bit_size: 3
-      description: 'System / D2 state status.Set by hardware to indicate when the system
-        / D2 domain is in Run, Stop, LP-Stop, LPLV-Stop, Standby and VBAT modes.- 000:
-        Run- 001: Stop- 010: LP-Stop- 011: LPLV-Stop- 100: Standby- 101: VBAT'
+      description: 'System / D2 state status.Set by hardware to indicate when the
+        system / D2 domain is in Run, Stop, LP-Stop, LPLV-Stop, Standby and VBAT modes.-
+        000: Run- 001: Stop- 010: LP-Stop- 011: LPLV-Stop- 100: Standby- 101: VBAT'
 fieldset/PWR_CPU3D3SR:
   description: ''
   fields:
@@ -1506,9 +1792,10 @@ fieldset/PWR_CPU3D3SR:
     - name: DSTATE
       bit_offset: 8
       bit_size: 3
-      description: 'D3 state status.Set by hardware to indicate when the D3 domain is
-        in SRun1/2/3, SStop1/2 and SStandby modes.- 000: SRun1- 001: SRun2- 010: SRun3-
-        011: SStop1- 100: SStop2- 101: SStandby (only accessible in Debug standby mode)'
+      description: 'D3 state status.Set by hardware to indicate when the D3 domain
+        is in SRun1/2/3, SStop1/2 and SStandby modes.- 000: SRun1- 001: SRun2- 010:
+        SRun3- 011: SStop1- 100: SStop2- 101: SStandby (only accessible in Debug standby
+        mode)'
 fieldset/PWR_VERR:
   description: ''
   fields:

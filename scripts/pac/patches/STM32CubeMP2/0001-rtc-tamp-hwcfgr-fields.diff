@@ -1,0 +1,1468 @@
+Fix two field definitions in ST's STM32MP2 CMSIS headers (STM32CubeMP2 v1.3.2), every
+CM33 and CM0 variant:
+
+- RTC_HWCFGR_RIF is bits 31:28, as its own mask comment (0xF0000000) says; the header
+  puts it at bit 24, on top of TRUST_ZONE. TAMP_HWCFGR2 has the same RIF-above-
+  TRUST_ZONE nibble pair at the right offsets.
+- TAMP_HWCFGR1_INT_TAMPER is bits 31:16, as its mask comment (0xFFFF0000) says and as
+  the STM32U5 TAMP_HWCFGR1 lays it out; the header defines it at bit 8 with
+  ACTIVE_TAMPER's position and mask, on top of TAMPER and ACTIVE_TAMPER.
+
+Without this the parsed IR has overlapping fields, which `chiptool check` rejects.
+
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211axx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211axx_cm33.h
+index 113c0484..4e099134 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211axx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211axx_cm33.h
+@@ -38585,7 +38585,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -43645,9 +43645,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211cxx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211cxx_cm33.h
+index 793c74b0..fd6470cb 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211cxx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211cxx_cm33.h
+@@ -39694,7 +39694,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -45011,9 +45011,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211dxx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211dxx_cm33.h
+index d6cb3a30..6edbc963 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211dxx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211dxx_cm33.h
+@@ -38585,7 +38585,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -43645,9 +43645,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211fxx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211fxx_cm33.h
+index 0e78844d..cd584145 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211fxx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp211fxx_cm33.h
+@@ -39694,7 +39694,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -45011,9 +45011,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213axx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213axx_cm33.h
+index fe3af3ad..fd7e761e 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213axx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213axx_cm33.h
+@@ -40162,7 +40162,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -45222,9 +45222,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213cxx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213cxx_cm33.h
+index 0952f369..0b37400a 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213cxx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213cxx_cm33.h
+@@ -41271,7 +41271,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -46588,9 +46588,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213dxx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213dxx_cm33.h
+index 6c39b17d..0fcf5c86 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213dxx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213dxx_cm33.h
+@@ -40162,7 +40162,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -45222,9 +45222,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213fxx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213fxx_cm33.h
+index b006b19e..55e4642c 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213fxx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp213fxx_cm33.h
+@@ -41271,7 +41271,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -46588,9 +46588,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215axx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215axx_cm33.h
+index 27ab2cb8..5681cf4e 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215axx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215axx_cm33.h
+@@ -41297,7 +41297,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -46357,9 +46357,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215cxx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215cxx_cm33.h
+index 333fc25c..115887cf 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215cxx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215cxx_cm33.h
+@@ -42406,7 +42406,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -47723,9 +47723,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215dxx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215dxx_cm33.h
+index d28764bc..cc7cd624 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215dxx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215dxx_cm33.h
+@@ -41297,7 +41297,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -46357,9 +46357,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215fxx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215fxx_cm33.h
+index 4709b66e..f3bea5d2 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215fxx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp215fxx_cm33.h
+@@ -42406,7 +42406,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -47723,9 +47723,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp231axx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp231axx_cm33.h
+index efbbc215..b0122a59 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp231axx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp231axx_cm33.h
+@@ -42777,7 +42777,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -48030,9 +48030,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp231cxx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp231cxx_cm33.h
+index a2924586..d107c4b7 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp231cxx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp231cxx_cm33.h
+@@ -43477,7 +43477,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -48971,9 +48971,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp231dxx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp231dxx_cm33.h
+index 883ccc80..16d6c9ad 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp231dxx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp231dxx_cm33.h
+@@ -42777,7 +42777,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -48030,9 +48030,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp231fxx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp231fxx_cm33.h
+index 12d357fe..591cb73a 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp231fxx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp231fxx_cm33.h
+@@ -43477,7 +43477,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -48971,9 +48971,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp233axx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp233axx_cm33.h
+index 88d29d4e..8749cfe7 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp233axx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp233axx_cm33.h
+@@ -44354,7 +44354,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -49607,9 +49607,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp233cxx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp233cxx_cm33.h
+index abdb9a16..c309415d 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp233cxx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp233cxx_cm33.h
+@@ -45054,7 +45054,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -50548,9 +50548,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp233dxx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp233dxx_cm33.h
+index ae97b97c..6da4b53d 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp233dxx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp233dxx_cm33.h
+@@ -44354,7 +44354,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -49607,9 +49607,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp233fxx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp233fxx_cm33.h
+index a1de0ef4..aa96e7e3 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp233fxx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp233fxx_cm33.h
+@@ -45054,7 +45054,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -50548,9 +50548,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp235axx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp235axx_cm33.h
+index e5eb455c..cc73b8c5 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp235axx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp235axx_cm33.h
+@@ -48839,7 +48839,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -54092,9 +54092,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp235cxx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp235cxx_cm33.h
+index 7ec060b7..1522f54d 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp235cxx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp235cxx_cm33.h
+@@ -49539,7 +49539,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -55033,9 +55033,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp235dxx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp235dxx_cm33.h
+index 6de1a8cb..89462e3f 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp235dxx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp235dxx_cm33.h
+@@ -48839,7 +48839,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -54092,9 +54092,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp235fxx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp235fxx_cm33.h
+index 9c3d0894..90ec05bb 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp235fxx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp235fxx_cm33.h
+@@ -49539,7 +49539,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -55033,9 +55033,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251axx_cm0.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251axx_cm0.h
+index a5fbb569..05fe8c5a 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251axx_cm0.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251axx_cm0.h
+@@ -12515,7 +12515,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -13906,9 +13906,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251axx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251axx_cm33.h
+index 866db126..089d2499 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251axx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251axx_cm33.h
+@@ -43074,7 +43074,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -48327,9 +48327,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251cxx_cm0.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251cxx_cm0.h
+index 13abdcbe..bc7a03c8 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251cxx_cm0.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251cxx_cm0.h
+@@ -12515,7 +12515,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -13906,9 +13906,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251cxx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251cxx_cm33.h
+index 278f8d6a..5b62db29 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251cxx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251cxx_cm33.h
+@@ -43774,7 +43774,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -49268,9 +49268,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251dxx_cm0.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251dxx_cm0.h
+index 34237090..2193e338 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251dxx_cm0.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251dxx_cm0.h
+@@ -12515,7 +12515,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -13906,9 +13906,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251dxx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251dxx_cm33.h
+index d16359e3..6602e58a 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251dxx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251dxx_cm33.h
+@@ -43074,7 +43074,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -48327,9 +48327,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251fxx_cm0.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251fxx_cm0.h
+index 4673f43f..7dfd5b61 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251fxx_cm0.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251fxx_cm0.h
+@@ -12515,7 +12515,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -13906,9 +13906,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251fxx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251fxx_cm33.h
+index 8490bb05..2a09521c 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251fxx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp251fxx_cm33.h
+@@ -43774,7 +43774,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -49268,9 +49268,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253axx_cm0.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253axx_cm0.h
+index 8bc8d42c..bbc89244 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253axx_cm0.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253axx_cm0.h
+@@ -12515,7 +12515,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -13906,9 +13906,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253axx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253axx_cm33.h
+index fa8e8180..dfd337f1 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253axx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253axx_cm33.h
+@@ -44659,7 +44659,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -49912,9 +49912,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253cxx_cm0.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253cxx_cm0.h
+index 7bd2619e..3349995c 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253cxx_cm0.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253cxx_cm0.h
+@@ -12515,7 +12515,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -13906,9 +13906,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253cxx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253cxx_cm33.h
+index 4fc726ff..55fe2928 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253cxx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253cxx_cm33.h
+@@ -45359,7 +45359,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -50853,9 +50853,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253dxx_cm0.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253dxx_cm0.h
+index 8e37b5c5..b0861dbe 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253dxx_cm0.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253dxx_cm0.h
+@@ -12515,7 +12515,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -13906,9 +13906,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253dxx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253dxx_cm33.h
+index a1442e59..9d8b8304 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253dxx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253dxx_cm33.h
+@@ -44659,7 +44659,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -49912,9 +49912,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253fxx_cm0.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253fxx_cm0.h
+index f70e2dc1..c7eea68b 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253fxx_cm0.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253fxx_cm0.h
+@@ -12515,7 +12515,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -13906,9 +13906,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253fxx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253fxx_cm33.h
+index fcdc3833..9f2a6abf 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253fxx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp253fxx_cm33.h
+@@ -45359,7 +45359,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -50853,9 +50853,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255axx_cm0.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255axx_cm0.h
+index eb5c7e0d..603cf88f 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255axx_cm0.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255axx_cm0.h
+@@ -12515,7 +12515,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -13906,9 +13906,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255axx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255axx_cm33.h
+index 711779e1..89b46d7d 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255axx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255axx_cm33.h
+@@ -49150,7 +49150,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -54403,9 +54403,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255cxx_cm0.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255cxx_cm0.h
+index 5c50321d..28775597 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255cxx_cm0.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255cxx_cm0.h
+@@ -12515,7 +12515,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -13906,9 +13906,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255cxx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255cxx_cm33.h
+index b514fd8a..36638ab3 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255cxx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255cxx_cm33.h
+@@ -49850,7 +49850,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -55344,9 +55344,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255dxx_cm0.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255dxx_cm0.h
+index ab4f93c8..813371c2 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255dxx_cm0.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255dxx_cm0.h
+@@ -12515,7 +12515,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -13906,9 +13906,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255dxx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255dxx_cm33.h
+index bd9485dc..dfaa0544 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255dxx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255dxx_cm33.h
+@@ -49150,7 +49150,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -54403,9 +54403,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255fxx_cm0.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255fxx_cm0.h
+index f723acae..eed19249 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255fxx_cm0.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255fxx_cm0.h
+@@ -12515,7 +12515,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -13906,9 +13906,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255fxx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255fxx_cm33.h
+index e6626655..afb1f698 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255fxx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp255fxx_cm33.h
+@@ -49850,7 +49850,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -55344,9 +55344,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257axx_cm0.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257axx_cm0.h
+index 57f6d360..b02fd12f 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257axx_cm0.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257axx_cm0.h
+@@ -12515,7 +12515,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -13906,9 +13906,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257axx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257axx_cm33.h
+index d811aeed..2ac5d24b 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257axx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257axx_cm33.h
+@@ -49203,7 +49203,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -54456,9 +54456,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257cxx_cm0.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257cxx_cm0.h
+index 7179ede7..68d360e0 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257cxx_cm0.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257cxx_cm0.h
+@@ -12515,7 +12515,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -13906,9 +13906,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257cxx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257cxx_cm33.h
+index f9c13005..9d21ab6c 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257cxx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257cxx_cm33.h
+@@ -49903,7 +49903,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -55397,9 +55397,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257dxx_cm0.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257dxx_cm0.h
+index fbc70d1d..ffa43f09 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257dxx_cm0.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257dxx_cm0.h
+@@ -12515,7 +12515,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -13906,9 +13906,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257dxx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257dxx_cm33.h
+index 664ef2bc..f81965e2 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257dxx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257dxx_cm33.h
+@@ -49203,7 +49203,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -54456,9 +54456,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257fxx_cm0.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257fxx_cm0.h
+index eba00904..7705c311 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257fxx_cm0.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257fxx_cm0.h
+@@ -12515,7 +12515,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -13906,9 +13906,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)
+diff --git a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257fxx_cm33.h b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257fxx_cm33.h
+index 183b228f..9632a290 100644
+--- a/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257fxx_cm33.h
++++ b/Drivers/CMSIS/Device/ST/STM32MP2xx/Include/stm32mp257fxx_cm33.h
+@@ -49903,7 +49903,7 @@ typedef struct
+ #define RTC_HWCFGR_TRUST_ZONE_Pos      (24U)
+ #define RTC_HWCFGR_TRUST_ZONE_Msk      (0xFUL << RTC_HWCFGR_TRUST_ZONE_Pos)             /*!< 0x0F000000 */
+ #define RTC_HWCFGR_TRUST_ZONE          RTC_HWCFGR_TRUST_ZONE_Msk
+-#define RTC_HWCFGR_RIF_Pos             (24U)
++#define RTC_HWCFGR_RIF_Pos             (28U)
+ #define RTC_HWCFGR_RIF_Msk             (0xFUL << RTC_HWCFGR_RIF_Pos)                    /*!< 0xF0000000 */
+ #define RTC_HWCFGR_RIF                 RTC_HWCFGR_RIF_Msk
+ 
+@@ -55397,9 +55397,9 @@ typedef struct
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Pos  (12U)
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER_Msk  (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0x0000F000U */
+ #define TAMP_HWCFGR1_ACTIVE_TAMPER      TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
+-#define TAMP_HWCFGR1_INT_TAMPER_Pos     (8U)
+-#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFUL << TAMP_HWCFGR1_ACTIVE_TAMPER_Pos)    /*!< 0xFFFF0000U */
+-#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_ACTIVE_TAMPER_Msk
++#define TAMP_HWCFGR1_INT_TAMPER_Pos     (16U)
++#define TAMP_HWCFGR1_INT_TAMPER_Msk     (0xFFFFUL << TAMP_HWCFGR1_INT_TAMPER_Pos)    /*!< 0xFFFF0000U */
++#define TAMP_HWCFGR1_INT_TAMPER         TAMP_HWCFGR1_INT_TAMPER_Msk
+ 
+ /*******************  Bits definition for TAMP_VERR register  **************/
+ #define TAMP_VERR_MINREV_Pos            (0U)

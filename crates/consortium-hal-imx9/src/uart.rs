@@ -12,6 +12,10 @@
 //! interrupts. Async I/O ([`embedded_io_async`]) requires the application to
 //! forward the instance's interrupt to [`on_interrupt`], or to
 //! [`on_buffered_interrupt`] for a [`BufferedUart`].
+//!
+//! The async reads and writes are cancel-safe: a future moves bytes only in the
+//! poll that completes it, so dropping one loses no data, and the one interrupt
+//! enable it may leave armed is masked by the handler the first time it fires.
 
 use core::future::poll_fn;
 use core::sync::atomic::{AtomicBool, Ordering};

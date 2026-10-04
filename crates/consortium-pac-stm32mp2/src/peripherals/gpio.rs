@@ -271,57 +271,57 @@ impl GPIO {
     }
     #[doc = "GPIO hardware configuration register 10"]
     #[inline(always)]
-    pub const fn HWCFGR10(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn HWCFGR10(self) -> crate::common::Reg<GPIO_HWCFGR10, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x03c8usize) as _) }
     }
     #[doc = "GPIO hardware configuration register 9"]
     #[inline(always)]
-    pub const fn HWCFGR9(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn HWCFGR9(self) -> crate::common::Reg<GPIO_HWCFGR9, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x03ccusize) as _) }
     }
     #[doc = "GPIO hardware configuration register 8"]
     #[inline(always)]
-    pub const fn HWCFGR8(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn HWCFGR8(self) -> crate::common::Reg<GPIO_HWCFGR8, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x03d0usize) as _) }
     }
     #[doc = "GPIO hardware configuration register 7"]
     #[inline(always)]
-    pub const fn HWCFGR7(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn HWCFGR7(self) -> crate::common::Reg<GPIO_HWCFGR7, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x03d4usize) as _) }
     }
     #[doc = "GPIO hardware configuration register 6"]
     #[inline(always)]
-    pub const fn HWCFGR6(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn HWCFGR6(self) -> crate::common::Reg<GPIO_HWCFGR6, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x03d8usize) as _) }
     }
     #[doc = "GPIO hardware configuration register 5"]
     #[inline(always)]
-    pub const fn HWCFGR5(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn HWCFGR5(self) -> crate::common::Reg<GPIO_HWCFGR5, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x03dcusize) as _) }
     }
     #[doc = "GPIO hardware configuration register 4"]
     #[inline(always)]
-    pub const fn HWCFGR4(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn HWCFGR4(self) -> crate::common::Reg<GPIO_HWCFGR4, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x03e0usize) as _) }
     }
     #[doc = "GPIO hardware configuration register 3"]
     #[inline(always)]
-    pub const fn HWCFGR3(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn HWCFGR3(self) -> crate::common::Reg<GPIO_HWCFGR3, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x03e4usize) as _) }
     }
     #[doc = "GPIO hardware configuration register 2"]
     #[inline(always)]
-    pub const fn HWCFGR2(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn HWCFGR2(self) -> crate::common::Reg<GPIO_HWCFGR2, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x03e8usize) as _) }
     }
     #[doc = "GPIO hardware configuration register 1"]
     #[inline(always)]
-    pub const fn HWCFGR1(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn HWCFGR1(self) -> crate::common::Reg<GPIO_HWCFGR1, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x03ecusize) as _) }
     }
     #[doc = "GPIO hardware configuration register 0"]
     #[inline(always)]
-    pub const fn HWCFGR0(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn HWCFGR0(self) -> crate::common::Reg<GPIO_HWCFGR0, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x03f0usize) as _) }
     }
     #[doc = "GPIO version register"]
@@ -1361,6 +1361,18 @@ impl GPIO_CIDCFGR0 {
     pub const fn set_CFEN(&mut self, val: bool) {
         self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
     }
+    #[doc = "Semaphore enable"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn SEM_EN(&self) -> bool {
+        let val = (self.0 >> 1usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Semaphore enable"]
+    #[inline(always)]
+    pub const fn set_SEM_EN(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 1usize)) | (((val as u32) & 0x01) << 1usize);
+    }
     #[doc = "Static CID"]
     #[must_use]
     #[inline(always)]
@@ -1432,6 +1444,7 @@ impl core::fmt::Debug for GPIO_CIDCFGR0 {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         f.debug_struct("GPIO_CIDCFGR0")
             .field("CFEN", &self.CFEN())
+            .field("SEM_EN", &self.SEM_EN())
             .field("SCID", &self.SCID())
             .field("SEMWLC0", &self.SEMWLC0())
             .field("SEMWLC1", &self.SEMWLC1())
@@ -1445,8 +1458,9 @@ impl defmt::Format for GPIO_CIDCFGR0 {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(
             f,
-            "GPIO_CIDCFGR0 {{ CFEN: {=bool:?}, SCID: {=u8:?}, SEMWLC0: {=bool:?}, SEMWLC1: {=bool:?}, SEMWLC2: {=bool:?}, SEMWLC3: {=bool:?} }}",
+            "GPIO_CIDCFGR0 {{ CFEN: {=bool:?}, SEM_EN: {=bool:?}, SCID: {=u8:?}, SEMWLC0: {=bool:?}, SEMWLC1: {=bool:?}, SEMWLC2: {=bool:?}, SEMWLC3: {=bool:?} }}",
             self.CFEN(),
+            self.SEM_EN(),
             self.SCID(),
             self.SEMWLC0(),
             self.SEMWLC1(),
@@ -1471,6 +1485,18 @@ impl GPIO_CIDCFGR1 {
     #[inline(always)]
     pub const fn set_CFEN(&mut self, val: bool) {
         self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
+    #[doc = "Semaphore enable"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn SEM_EN(&self) -> bool {
+        let val = (self.0 >> 1usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Semaphore enable"]
+    #[inline(always)]
+    pub const fn set_SEM_EN(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 1usize)) | (((val as u32) & 0x01) << 1usize);
     }
     #[doc = "Static CID"]
     #[must_use]
@@ -1543,6 +1569,7 @@ impl core::fmt::Debug for GPIO_CIDCFGR1 {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         f.debug_struct("GPIO_CIDCFGR1")
             .field("CFEN", &self.CFEN())
+            .field("SEM_EN", &self.SEM_EN())
             .field("SCID", &self.SCID())
             .field("SEMWLC0", &self.SEMWLC0())
             .field("SEMWLC1", &self.SEMWLC1())
@@ -1556,8 +1583,9 @@ impl defmt::Format for GPIO_CIDCFGR1 {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(
             f,
-            "GPIO_CIDCFGR1 {{ CFEN: {=bool:?}, SCID: {=u8:?}, SEMWLC0: {=bool:?}, SEMWLC1: {=bool:?}, SEMWLC2: {=bool:?}, SEMWLC3: {=bool:?} }}",
+            "GPIO_CIDCFGR1 {{ CFEN: {=bool:?}, SEM_EN: {=bool:?}, SCID: {=u8:?}, SEMWLC0: {=bool:?}, SEMWLC1: {=bool:?}, SEMWLC2: {=bool:?}, SEMWLC3: {=bool:?} }}",
             self.CFEN(),
+            self.SEM_EN(),
             self.SCID(),
             self.SEMWLC0(),
             self.SEMWLC1(),
@@ -1582,6 +1610,18 @@ impl GPIO_CIDCFGR10 {
     #[inline(always)]
     pub const fn set_CFEN(&mut self, val: bool) {
         self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
+    #[doc = "Semaphore enable"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn SEM_EN(&self) -> bool {
+        let val = (self.0 >> 1usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Semaphore enable"]
+    #[inline(always)]
+    pub const fn set_SEM_EN(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 1usize)) | (((val as u32) & 0x01) << 1usize);
     }
     #[doc = "Static CID"]
     #[must_use]
@@ -1654,6 +1694,7 @@ impl core::fmt::Debug for GPIO_CIDCFGR10 {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         f.debug_struct("GPIO_CIDCFGR10")
             .field("CFEN", &self.CFEN())
+            .field("SEM_EN", &self.SEM_EN())
             .field("SCID", &self.SCID())
             .field("SEMWLC0", &self.SEMWLC0())
             .field("SEMWLC1", &self.SEMWLC1())
@@ -1667,8 +1708,9 @@ impl defmt::Format for GPIO_CIDCFGR10 {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(
             f,
-            "GPIO_CIDCFGR10 {{ CFEN: {=bool:?}, SCID: {=u8:?}, SEMWLC0: {=bool:?}, SEMWLC1: {=bool:?}, SEMWLC2: {=bool:?}, SEMWLC3: {=bool:?} }}",
+            "GPIO_CIDCFGR10 {{ CFEN: {=bool:?}, SEM_EN: {=bool:?}, SCID: {=u8:?}, SEMWLC0: {=bool:?}, SEMWLC1: {=bool:?}, SEMWLC2: {=bool:?}, SEMWLC3: {=bool:?} }}",
             self.CFEN(),
+            self.SEM_EN(),
             self.SCID(),
             self.SEMWLC0(),
             self.SEMWLC1(),
@@ -1693,6 +1735,18 @@ impl GPIO_CIDCFGR11 {
     #[inline(always)]
     pub const fn set_CFEN(&mut self, val: bool) {
         self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
+    #[doc = "Semaphore enable"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn SEM_EN(&self) -> bool {
+        let val = (self.0 >> 1usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Semaphore enable"]
+    #[inline(always)]
+    pub const fn set_SEM_EN(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 1usize)) | (((val as u32) & 0x01) << 1usize);
     }
     #[doc = "Static CID"]
     #[must_use]
@@ -1765,6 +1819,7 @@ impl core::fmt::Debug for GPIO_CIDCFGR11 {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         f.debug_struct("GPIO_CIDCFGR11")
             .field("CFEN", &self.CFEN())
+            .field("SEM_EN", &self.SEM_EN())
             .field("SCID", &self.SCID())
             .field("SEMWLC0", &self.SEMWLC0())
             .field("SEMWLC1", &self.SEMWLC1())
@@ -1778,8 +1833,9 @@ impl defmt::Format for GPIO_CIDCFGR11 {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(
             f,
-            "GPIO_CIDCFGR11 {{ CFEN: {=bool:?}, SCID: {=u8:?}, SEMWLC0: {=bool:?}, SEMWLC1: {=bool:?}, SEMWLC2: {=bool:?}, SEMWLC3: {=bool:?} }}",
+            "GPIO_CIDCFGR11 {{ CFEN: {=bool:?}, SEM_EN: {=bool:?}, SCID: {=u8:?}, SEMWLC0: {=bool:?}, SEMWLC1: {=bool:?}, SEMWLC2: {=bool:?}, SEMWLC3: {=bool:?} }}",
             self.CFEN(),
+            self.SEM_EN(),
             self.SCID(),
             self.SEMWLC0(),
             self.SEMWLC1(),
@@ -1804,6 +1860,18 @@ impl GPIO_CIDCFGR12 {
     #[inline(always)]
     pub const fn set_CFEN(&mut self, val: bool) {
         self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
+    #[doc = "Semaphore enable"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn SEM_EN(&self) -> bool {
+        let val = (self.0 >> 1usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Semaphore enable"]
+    #[inline(always)]
+    pub const fn set_SEM_EN(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 1usize)) | (((val as u32) & 0x01) << 1usize);
     }
     #[doc = "Static CID"]
     #[must_use]
@@ -1876,6 +1944,7 @@ impl core::fmt::Debug for GPIO_CIDCFGR12 {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         f.debug_struct("GPIO_CIDCFGR12")
             .field("CFEN", &self.CFEN())
+            .field("SEM_EN", &self.SEM_EN())
             .field("SCID", &self.SCID())
             .field("SEMWLC0", &self.SEMWLC0())
             .field("SEMWLC1", &self.SEMWLC1())
@@ -1889,8 +1958,9 @@ impl defmt::Format for GPIO_CIDCFGR12 {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(
             f,
-            "GPIO_CIDCFGR12 {{ CFEN: {=bool:?}, SCID: {=u8:?}, SEMWLC0: {=bool:?}, SEMWLC1: {=bool:?}, SEMWLC2: {=bool:?}, SEMWLC3: {=bool:?} }}",
+            "GPIO_CIDCFGR12 {{ CFEN: {=bool:?}, SEM_EN: {=bool:?}, SCID: {=u8:?}, SEMWLC0: {=bool:?}, SEMWLC1: {=bool:?}, SEMWLC2: {=bool:?}, SEMWLC3: {=bool:?} }}",
             self.CFEN(),
+            self.SEM_EN(),
             self.SCID(),
             self.SEMWLC0(),
             self.SEMWLC1(),
@@ -1915,6 +1985,18 @@ impl GPIO_CIDCFGR13 {
     #[inline(always)]
     pub const fn set_CFEN(&mut self, val: bool) {
         self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
+    #[doc = "Semaphore enable"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn SEM_EN(&self) -> bool {
+        let val = (self.0 >> 1usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Semaphore enable"]
+    #[inline(always)]
+    pub const fn set_SEM_EN(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 1usize)) | (((val as u32) & 0x01) << 1usize);
     }
     #[doc = "Static CID"]
     #[must_use]
@@ -1987,6 +2069,7 @@ impl core::fmt::Debug for GPIO_CIDCFGR13 {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         f.debug_struct("GPIO_CIDCFGR13")
             .field("CFEN", &self.CFEN())
+            .field("SEM_EN", &self.SEM_EN())
             .field("SCID", &self.SCID())
             .field("SEMWLC0", &self.SEMWLC0())
             .field("SEMWLC1", &self.SEMWLC1())
@@ -2000,8 +2083,9 @@ impl defmt::Format for GPIO_CIDCFGR13 {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(
             f,
-            "GPIO_CIDCFGR13 {{ CFEN: {=bool:?}, SCID: {=u8:?}, SEMWLC0: {=bool:?}, SEMWLC1: {=bool:?}, SEMWLC2: {=bool:?}, SEMWLC3: {=bool:?} }}",
+            "GPIO_CIDCFGR13 {{ CFEN: {=bool:?}, SEM_EN: {=bool:?}, SCID: {=u8:?}, SEMWLC0: {=bool:?}, SEMWLC1: {=bool:?}, SEMWLC2: {=bool:?}, SEMWLC3: {=bool:?} }}",
             self.CFEN(),
+            self.SEM_EN(),
             self.SCID(),
             self.SEMWLC0(),
             self.SEMWLC1(),
@@ -2026,6 +2110,18 @@ impl GPIO_CIDCFGR14 {
     #[inline(always)]
     pub const fn set_CFEN(&mut self, val: bool) {
         self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
+    #[doc = "Semaphore enable"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn SEM_EN(&self) -> bool {
+        let val = (self.0 >> 1usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Semaphore enable"]
+    #[inline(always)]
+    pub const fn set_SEM_EN(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 1usize)) | (((val as u32) & 0x01) << 1usize);
     }
     #[doc = "Static CID"]
     #[must_use]
@@ -2098,6 +2194,7 @@ impl core::fmt::Debug for GPIO_CIDCFGR14 {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         f.debug_struct("GPIO_CIDCFGR14")
             .field("CFEN", &self.CFEN())
+            .field("SEM_EN", &self.SEM_EN())
             .field("SCID", &self.SCID())
             .field("SEMWLC0", &self.SEMWLC0())
             .field("SEMWLC1", &self.SEMWLC1())
@@ -2111,8 +2208,9 @@ impl defmt::Format for GPIO_CIDCFGR14 {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(
             f,
-            "GPIO_CIDCFGR14 {{ CFEN: {=bool:?}, SCID: {=u8:?}, SEMWLC0: {=bool:?}, SEMWLC1: {=bool:?}, SEMWLC2: {=bool:?}, SEMWLC3: {=bool:?} }}",
+            "GPIO_CIDCFGR14 {{ CFEN: {=bool:?}, SEM_EN: {=bool:?}, SCID: {=u8:?}, SEMWLC0: {=bool:?}, SEMWLC1: {=bool:?}, SEMWLC2: {=bool:?}, SEMWLC3: {=bool:?} }}",
             self.CFEN(),
+            self.SEM_EN(),
             self.SCID(),
             self.SEMWLC0(),
             self.SEMWLC1(),
@@ -2137,6 +2235,18 @@ impl GPIO_CIDCFGR15 {
     #[inline(always)]
     pub const fn set_CFEN(&mut self, val: bool) {
         self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
+    #[doc = "Semaphore enable"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn SEM_EN(&self) -> bool {
+        let val = (self.0 >> 1usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Semaphore enable"]
+    #[inline(always)]
+    pub const fn set_SEM_EN(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 1usize)) | (((val as u32) & 0x01) << 1usize);
     }
     #[doc = "Static CID"]
     #[must_use]
@@ -2209,6 +2319,7 @@ impl core::fmt::Debug for GPIO_CIDCFGR15 {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         f.debug_struct("GPIO_CIDCFGR15")
             .field("CFEN", &self.CFEN())
+            .field("SEM_EN", &self.SEM_EN())
             .field("SCID", &self.SCID())
             .field("SEMWLC0", &self.SEMWLC0())
             .field("SEMWLC1", &self.SEMWLC1())
@@ -2222,8 +2333,9 @@ impl defmt::Format for GPIO_CIDCFGR15 {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(
             f,
-            "GPIO_CIDCFGR15 {{ CFEN: {=bool:?}, SCID: {=u8:?}, SEMWLC0: {=bool:?}, SEMWLC1: {=bool:?}, SEMWLC2: {=bool:?}, SEMWLC3: {=bool:?} }}",
+            "GPIO_CIDCFGR15 {{ CFEN: {=bool:?}, SEM_EN: {=bool:?}, SCID: {=u8:?}, SEMWLC0: {=bool:?}, SEMWLC1: {=bool:?}, SEMWLC2: {=bool:?}, SEMWLC3: {=bool:?} }}",
             self.CFEN(),
+            self.SEM_EN(),
             self.SCID(),
             self.SEMWLC0(),
             self.SEMWLC1(),
@@ -2248,6 +2360,18 @@ impl GPIO_CIDCFGR2 {
     #[inline(always)]
     pub const fn set_CFEN(&mut self, val: bool) {
         self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
+    #[doc = "Semaphore enable"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn SEM_EN(&self) -> bool {
+        let val = (self.0 >> 1usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Semaphore enable"]
+    #[inline(always)]
+    pub const fn set_SEM_EN(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 1usize)) | (((val as u32) & 0x01) << 1usize);
     }
     #[doc = "Static CID"]
     #[must_use]
@@ -2320,6 +2444,7 @@ impl core::fmt::Debug for GPIO_CIDCFGR2 {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         f.debug_struct("GPIO_CIDCFGR2")
             .field("CFEN", &self.CFEN())
+            .field("SEM_EN", &self.SEM_EN())
             .field("SCID", &self.SCID())
             .field("SEMWLC0", &self.SEMWLC0())
             .field("SEMWLC1", &self.SEMWLC1())
@@ -2333,8 +2458,9 @@ impl defmt::Format for GPIO_CIDCFGR2 {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(
             f,
-            "GPIO_CIDCFGR2 {{ CFEN: {=bool:?}, SCID: {=u8:?}, SEMWLC0: {=bool:?}, SEMWLC1: {=bool:?}, SEMWLC2: {=bool:?}, SEMWLC3: {=bool:?} }}",
+            "GPIO_CIDCFGR2 {{ CFEN: {=bool:?}, SEM_EN: {=bool:?}, SCID: {=u8:?}, SEMWLC0: {=bool:?}, SEMWLC1: {=bool:?}, SEMWLC2: {=bool:?}, SEMWLC3: {=bool:?} }}",
             self.CFEN(),
+            self.SEM_EN(),
             self.SCID(),
             self.SEMWLC0(),
             self.SEMWLC1(),
@@ -2359,6 +2485,18 @@ impl GPIO_CIDCFGR3 {
     #[inline(always)]
     pub const fn set_CFEN(&mut self, val: bool) {
         self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
+    #[doc = "Semaphore enable"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn SEM_EN(&self) -> bool {
+        let val = (self.0 >> 1usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Semaphore enable"]
+    #[inline(always)]
+    pub const fn set_SEM_EN(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 1usize)) | (((val as u32) & 0x01) << 1usize);
     }
     #[doc = "Static CID"]
     #[must_use]
@@ -2431,6 +2569,7 @@ impl core::fmt::Debug for GPIO_CIDCFGR3 {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         f.debug_struct("GPIO_CIDCFGR3")
             .field("CFEN", &self.CFEN())
+            .field("SEM_EN", &self.SEM_EN())
             .field("SCID", &self.SCID())
             .field("SEMWLC0", &self.SEMWLC0())
             .field("SEMWLC1", &self.SEMWLC1())
@@ -2444,8 +2583,9 @@ impl defmt::Format for GPIO_CIDCFGR3 {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(
             f,
-            "GPIO_CIDCFGR3 {{ CFEN: {=bool:?}, SCID: {=u8:?}, SEMWLC0: {=bool:?}, SEMWLC1: {=bool:?}, SEMWLC2: {=bool:?}, SEMWLC3: {=bool:?} }}",
+            "GPIO_CIDCFGR3 {{ CFEN: {=bool:?}, SEM_EN: {=bool:?}, SCID: {=u8:?}, SEMWLC0: {=bool:?}, SEMWLC1: {=bool:?}, SEMWLC2: {=bool:?}, SEMWLC3: {=bool:?} }}",
             self.CFEN(),
+            self.SEM_EN(),
             self.SCID(),
             self.SEMWLC0(),
             self.SEMWLC1(),
@@ -2470,6 +2610,18 @@ impl GPIO_CIDCFGR4 {
     #[inline(always)]
     pub const fn set_CFEN(&mut self, val: bool) {
         self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
+    #[doc = "Semaphore enable"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn SEM_EN(&self) -> bool {
+        let val = (self.0 >> 1usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Semaphore enable"]
+    #[inline(always)]
+    pub const fn set_SEM_EN(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 1usize)) | (((val as u32) & 0x01) << 1usize);
     }
     #[doc = "Static CID"]
     #[must_use]
@@ -2542,6 +2694,7 @@ impl core::fmt::Debug for GPIO_CIDCFGR4 {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         f.debug_struct("GPIO_CIDCFGR4")
             .field("CFEN", &self.CFEN())
+            .field("SEM_EN", &self.SEM_EN())
             .field("SCID", &self.SCID())
             .field("SEMWLC0", &self.SEMWLC0())
             .field("SEMWLC1", &self.SEMWLC1())
@@ -2555,8 +2708,9 @@ impl defmt::Format for GPIO_CIDCFGR4 {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(
             f,
-            "GPIO_CIDCFGR4 {{ CFEN: {=bool:?}, SCID: {=u8:?}, SEMWLC0: {=bool:?}, SEMWLC1: {=bool:?}, SEMWLC2: {=bool:?}, SEMWLC3: {=bool:?} }}",
+            "GPIO_CIDCFGR4 {{ CFEN: {=bool:?}, SEM_EN: {=bool:?}, SCID: {=u8:?}, SEMWLC0: {=bool:?}, SEMWLC1: {=bool:?}, SEMWLC2: {=bool:?}, SEMWLC3: {=bool:?} }}",
             self.CFEN(),
+            self.SEM_EN(),
             self.SCID(),
             self.SEMWLC0(),
             self.SEMWLC1(),
@@ -2581,6 +2735,18 @@ impl GPIO_CIDCFGR5 {
     #[inline(always)]
     pub const fn set_CFEN(&mut self, val: bool) {
         self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
+    #[doc = "Semaphore enable"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn SEM_EN(&self) -> bool {
+        let val = (self.0 >> 1usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Semaphore enable"]
+    #[inline(always)]
+    pub const fn set_SEM_EN(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 1usize)) | (((val as u32) & 0x01) << 1usize);
     }
     #[doc = "Static CID"]
     #[must_use]
@@ -2653,6 +2819,7 @@ impl core::fmt::Debug for GPIO_CIDCFGR5 {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         f.debug_struct("GPIO_CIDCFGR5")
             .field("CFEN", &self.CFEN())
+            .field("SEM_EN", &self.SEM_EN())
             .field("SCID", &self.SCID())
             .field("SEMWLC0", &self.SEMWLC0())
             .field("SEMWLC1", &self.SEMWLC1())
@@ -2666,8 +2833,9 @@ impl defmt::Format for GPIO_CIDCFGR5 {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(
             f,
-            "GPIO_CIDCFGR5 {{ CFEN: {=bool:?}, SCID: {=u8:?}, SEMWLC0: {=bool:?}, SEMWLC1: {=bool:?}, SEMWLC2: {=bool:?}, SEMWLC3: {=bool:?} }}",
+            "GPIO_CIDCFGR5 {{ CFEN: {=bool:?}, SEM_EN: {=bool:?}, SCID: {=u8:?}, SEMWLC0: {=bool:?}, SEMWLC1: {=bool:?}, SEMWLC2: {=bool:?}, SEMWLC3: {=bool:?} }}",
             self.CFEN(),
+            self.SEM_EN(),
             self.SCID(),
             self.SEMWLC0(),
             self.SEMWLC1(),
@@ -2692,6 +2860,18 @@ impl GPIO_CIDCFGR6 {
     #[inline(always)]
     pub const fn set_CFEN(&mut self, val: bool) {
         self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
+    #[doc = "Semaphore enable"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn SEM_EN(&self) -> bool {
+        let val = (self.0 >> 1usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Semaphore enable"]
+    #[inline(always)]
+    pub const fn set_SEM_EN(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 1usize)) | (((val as u32) & 0x01) << 1usize);
     }
     #[doc = "Static CID"]
     #[must_use]
@@ -2764,6 +2944,7 @@ impl core::fmt::Debug for GPIO_CIDCFGR6 {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         f.debug_struct("GPIO_CIDCFGR6")
             .field("CFEN", &self.CFEN())
+            .field("SEM_EN", &self.SEM_EN())
             .field("SCID", &self.SCID())
             .field("SEMWLC0", &self.SEMWLC0())
             .field("SEMWLC1", &self.SEMWLC1())
@@ -2777,8 +2958,9 @@ impl defmt::Format for GPIO_CIDCFGR6 {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(
             f,
-            "GPIO_CIDCFGR6 {{ CFEN: {=bool:?}, SCID: {=u8:?}, SEMWLC0: {=bool:?}, SEMWLC1: {=bool:?}, SEMWLC2: {=bool:?}, SEMWLC3: {=bool:?} }}",
+            "GPIO_CIDCFGR6 {{ CFEN: {=bool:?}, SEM_EN: {=bool:?}, SCID: {=u8:?}, SEMWLC0: {=bool:?}, SEMWLC1: {=bool:?}, SEMWLC2: {=bool:?}, SEMWLC3: {=bool:?} }}",
             self.CFEN(),
+            self.SEM_EN(),
             self.SCID(),
             self.SEMWLC0(),
             self.SEMWLC1(),
@@ -2803,6 +2985,18 @@ impl GPIO_CIDCFGR7 {
     #[inline(always)]
     pub const fn set_CFEN(&mut self, val: bool) {
         self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
+    #[doc = "Semaphore enable"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn SEM_EN(&self) -> bool {
+        let val = (self.0 >> 1usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Semaphore enable"]
+    #[inline(always)]
+    pub const fn set_SEM_EN(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 1usize)) | (((val as u32) & 0x01) << 1usize);
     }
     #[doc = "Static CID"]
     #[must_use]
@@ -2875,6 +3069,7 @@ impl core::fmt::Debug for GPIO_CIDCFGR7 {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         f.debug_struct("GPIO_CIDCFGR7")
             .field("CFEN", &self.CFEN())
+            .field("SEM_EN", &self.SEM_EN())
             .field("SCID", &self.SCID())
             .field("SEMWLC0", &self.SEMWLC0())
             .field("SEMWLC1", &self.SEMWLC1())
@@ -2888,8 +3083,9 @@ impl defmt::Format for GPIO_CIDCFGR7 {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(
             f,
-            "GPIO_CIDCFGR7 {{ CFEN: {=bool:?}, SCID: {=u8:?}, SEMWLC0: {=bool:?}, SEMWLC1: {=bool:?}, SEMWLC2: {=bool:?}, SEMWLC3: {=bool:?} }}",
+            "GPIO_CIDCFGR7 {{ CFEN: {=bool:?}, SEM_EN: {=bool:?}, SCID: {=u8:?}, SEMWLC0: {=bool:?}, SEMWLC1: {=bool:?}, SEMWLC2: {=bool:?}, SEMWLC3: {=bool:?} }}",
             self.CFEN(),
+            self.SEM_EN(),
             self.SCID(),
             self.SEMWLC0(),
             self.SEMWLC1(),
@@ -2914,6 +3110,18 @@ impl GPIO_CIDCFGR8 {
     #[inline(always)]
     pub const fn set_CFEN(&mut self, val: bool) {
         self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
+    #[doc = "Semaphore enable"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn SEM_EN(&self) -> bool {
+        let val = (self.0 >> 1usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Semaphore enable"]
+    #[inline(always)]
+    pub const fn set_SEM_EN(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 1usize)) | (((val as u32) & 0x01) << 1usize);
     }
     #[doc = "Static CID"]
     #[must_use]
@@ -2986,6 +3194,7 @@ impl core::fmt::Debug for GPIO_CIDCFGR8 {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         f.debug_struct("GPIO_CIDCFGR8")
             .field("CFEN", &self.CFEN())
+            .field("SEM_EN", &self.SEM_EN())
             .field("SCID", &self.SCID())
             .field("SEMWLC0", &self.SEMWLC0())
             .field("SEMWLC1", &self.SEMWLC1())
@@ -2999,8 +3208,9 @@ impl defmt::Format for GPIO_CIDCFGR8 {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(
             f,
-            "GPIO_CIDCFGR8 {{ CFEN: {=bool:?}, SCID: {=u8:?}, SEMWLC0: {=bool:?}, SEMWLC1: {=bool:?}, SEMWLC2: {=bool:?}, SEMWLC3: {=bool:?} }}",
+            "GPIO_CIDCFGR8 {{ CFEN: {=bool:?}, SEM_EN: {=bool:?}, SCID: {=u8:?}, SEMWLC0: {=bool:?}, SEMWLC1: {=bool:?}, SEMWLC2: {=bool:?}, SEMWLC3: {=bool:?} }}",
             self.CFEN(),
+            self.SEM_EN(),
             self.SCID(),
             self.SEMWLC0(),
             self.SEMWLC1(),
@@ -3025,6 +3235,18 @@ impl GPIO_CIDCFGR9 {
     #[inline(always)]
     pub const fn set_CFEN(&mut self, val: bool) {
         self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
+    #[doc = "Semaphore enable"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn SEM_EN(&self) -> bool {
+        let val = (self.0 >> 1usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Semaphore enable"]
+    #[inline(always)]
+    pub const fn set_SEM_EN(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 1usize)) | (((val as u32) & 0x01) << 1usize);
     }
     #[doc = "Static CID"]
     #[must_use]
@@ -3097,6 +3319,7 @@ impl core::fmt::Debug for GPIO_CIDCFGR9 {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         f.debug_struct("GPIO_CIDCFGR9")
             .field("CFEN", &self.CFEN())
+            .field("SEM_EN", &self.SEM_EN())
             .field("SCID", &self.SCID())
             .field("SEMWLC0", &self.SEMWLC0())
             .field("SEMWLC1", &self.SEMWLC1())
@@ -3110,8 +3333,9 @@ impl defmt::Format for GPIO_CIDCFGR9 {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(
             f,
-            "GPIO_CIDCFGR9 {{ CFEN: {=bool:?}, SCID: {=u8:?}, SEMWLC0: {=bool:?}, SEMWLC1: {=bool:?}, SEMWLC2: {=bool:?}, SEMWLC3: {=bool:?} }}",
+            "GPIO_CIDCFGR9 {{ CFEN: {=bool:?}, SEM_EN: {=bool:?}, SCID: {=u8:?}, SEMWLC0: {=bool:?}, SEMWLC1: {=bool:?}, SEMWLC2: {=bool:?}, SEMWLC3: {=bool:?} }}",
             self.CFEN(),
+            self.SEM_EN(),
             self.SCID(),
             self.SEMWLC0(),
             self.SEMWLC1(),
@@ -3396,6 +3620,721 @@ impl defmt::Format for GPIO_DELAYRL {
             self.DLY6(),
             self.DLY7()
         )
+    }
+}
+#[doc = ""]
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct GPIO_HWCFGR0(pub u32);
+impl GPIO_HWCFGR0 {
+    #[doc = "Option register reset value"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn OR_RES(&self) -> u16 {
+        let val = (self.0 >> 0usize) & 0xffff;
+        val as u16
+    }
+    #[doc = "Option register reset value"]
+    #[inline(always)]
+    pub const fn set_OR_RES(&mut self, val: u16) {
+        self.0 = (self.0 & !(0xffff << 0usize)) | (((val as u32) & 0xffff) << 0usize);
+    }
+}
+impl Default for GPIO_HWCFGR0 {
+    #[inline(always)]
+    fn default() -> GPIO_HWCFGR0 {
+        GPIO_HWCFGR0(0)
+    }
+}
+impl core::fmt::Debug for GPIO_HWCFGR0 {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("GPIO_HWCFGR0")
+            .field("OR_RES", &self.OR_RES())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for GPIO_HWCFGR0 {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(f, "GPIO_HWCFGR0 {{ OR_RES: {=u16:?} }}", self.OR_RES())
+    }
+}
+#[doc = ""]
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct GPIO_HWCFGR1(pub u32);
+impl GPIO_HWCFGR1 {
+    #[doc = "AF register high reset value"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn AFRH_RES(&self) -> u32 {
+        let val = (self.0 >> 0usize) & 0xffff_ffff;
+        val as u32
+    }
+    #[doc = "AF register high reset value"]
+    #[inline(always)]
+    pub const fn set_AFRH_RES(&mut self, val: u32) {
+        self.0 = (self.0 & !(0xffff_ffff << 0usize)) | (((val as u32) & 0xffff_ffff) << 0usize);
+    }
+}
+impl Default for GPIO_HWCFGR1 {
+    #[inline(always)]
+    fn default() -> GPIO_HWCFGR1 {
+        GPIO_HWCFGR1(0)
+    }
+}
+impl core::fmt::Debug for GPIO_HWCFGR1 {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("GPIO_HWCFGR1")
+            .field("AFRH_RES", &self.AFRH_RES())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for GPIO_HWCFGR1 {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(f, "GPIO_HWCFGR1 {{ AFRH_RES: {=u32:?} }}", self.AFRH_RES())
+    }
+}
+#[doc = ""]
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct GPIO_HWCFGR10(pub u32);
+impl GPIO_HWCFGR10 {
+    #[doc = "Bus interface configuration"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn AHB_IOP(&self) -> u8 {
+        let val = (self.0 >> 0usize) & 0x0f;
+        val as u8
+    }
+    #[doc = "Bus interface configuration"]
+    #[inline(always)]
+    pub const fn set_AHB_IOP(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x0f << 0usize)) | (((val as u32) & 0x0f) << 0usize);
+    }
+    #[doc = "Number of AF available for each I/O"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn AFSIZE_CFG(&self) -> u8 {
+        let val = (self.0 >> 4usize) & 0x0f;
+        val as u8
+    }
+    #[doc = "Number of AF available for each I/O"]
+    #[inline(always)]
+    pub const fn set_AFSIZE_CFG(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x0f << 4usize)) | (((val as u32) & 0x0f) << 4usize);
+    }
+    #[doc = "Number of speed lines for each I/O"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn SPEED_CFG(&self) -> u8 {
+        let val = (self.0 >> 8usize) & 0x0f;
+        val as u8
+    }
+    #[doc = "Number of speed lines for each I/O"]
+    #[inline(always)]
+    pub const fn set_SPEED_CFG(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x0f << 8usize)) | (((val as u32) & 0x0f) << 8usize);
+    }
+    #[doc = "Lock mechanism activation"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn LOCK_CFG(&self) -> u8 {
+        let val = (self.0 >> 12usize) & 0x0f;
+        val as u8
+    }
+    #[doc = "Lock mechanism activation"]
+    #[inline(always)]
+    pub const fn set_LOCK_CFG(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x0f << 12usize)) | (((val as u32) & 0x0f) << 12usize);
+    }
+    #[doc = "Security activation"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn SEC_CFG(&self) -> u8 {
+        let val = (self.0 >> 16usize) & 0x0f;
+        val as u8
+    }
+    #[doc = "Security activation"]
+    #[inline(always)]
+    pub const fn set_SEC_CFG(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x0f << 16usize)) | (((val as u32) & 0x0f) << 16usize);
+    }
+    #[doc = "Option register configuration"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn OR_CFG(&self) -> u8 {
+        let val = (self.0 >> 20usize) & 0x0f;
+        val as u8
+    }
+    #[doc = "Option register configuration"]
+    #[inline(always)]
+    pub const fn set_OR_CFG(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x0f << 20usize)) | (((val as u32) & 0x0f) << 20usize);
+    }
+}
+impl Default for GPIO_HWCFGR10 {
+    #[inline(always)]
+    fn default() -> GPIO_HWCFGR10 {
+        GPIO_HWCFGR10(0)
+    }
+}
+impl core::fmt::Debug for GPIO_HWCFGR10 {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("GPIO_HWCFGR10")
+            .field("AHB_IOP", &self.AHB_IOP())
+            .field("AFSIZE_CFG", &self.AFSIZE_CFG())
+            .field("SPEED_CFG", &self.SPEED_CFG())
+            .field("LOCK_CFG", &self.LOCK_CFG())
+            .field("SEC_CFG", &self.SEC_CFG())
+            .field("OR_CFG", &self.OR_CFG())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for GPIO_HWCFGR10 {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "GPIO_HWCFGR10 {{ AHB_IOP: {=u8:?}, AFSIZE_CFG: {=u8:?}, SPEED_CFG: {=u8:?}, LOCK_CFG: {=u8:?}, SEC_CFG: {=u8:?}, OR_CFG: {=u8:?} }}",
+            self.AHB_IOP(),
+            self.AFSIZE_CFG(),
+            self.SPEED_CFG(),
+            self.LOCK_CFG(),
+            self.SEC_CFG(),
+            self.OR_CFG()
+        )
+    }
+}
+#[doc = ""]
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct GPIO_HWCFGR2(pub u32);
+impl GPIO_HWCFGR2 {
+    #[doc = "AF register low reset value"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn AFRL_RES(&self) -> u32 {
+        let val = (self.0 >> 0usize) & 0xffff_ffff;
+        val as u32
+    }
+    #[doc = "AF register low reset value"]
+    #[inline(always)]
+    pub const fn set_AFRL_RES(&mut self, val: u32) {
+        self.0 = (self.0 & !(0xffff_ffff << 0usize)) | (((val as u32) & 0xffff_ffff) << 0usize);
+    }
+}
+impl Default for GPIO_HWCFGR2 {
+    #[inline(always)]
+    fn default() -> GPIO_HWCFGR2 {
+        GPIO_HWCFGR2(0)
+    }
+}
+impl core::fmt::Debug for GPIO_HWCFGR2 {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("GPIO_HWCFGR2")
+            .field("AFRL_RES", &self.AFRL_RES())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for GPIO_HWCFGR2 {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(f, "GPIO_HWCFGR2 {{ AFRL_RES: {=u32:?} }}", self.AFRL_RES())
+    }
+}
+#[doc = ""]
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct GPIO_HWCFGR3(pub u32);
+impl GPIO_HWCFGR3 {
+    #[doc = "Output data register reset value"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn ODR_RES(&self) -> u16 {
+        let val = (self.0 >> 0usize) & 0xffff;
+        val as u16
+    }
+    #[doc = "Output data register reset value"]
+    #[inline(always)]
+    pub const fn set_ODR_RES(&mut self, val: u16) {
+        self.0 = (self.0 & !(0xffff << 0usize)) | (((val as u32) & 0xffff) << 0usize);
+    }
+    #[doc = "Output type register reset value"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn OTYPER_RES(&self) -> u16 {
+        let val = (self.0 >> 16usize) & 0xffff;
+        val as u16
+    }
+    #[doc = "Output type register reset value"]
+    #[inline(always)]
+    pub const fn set_OTYPER_RES(&mut self, val: u16) {
+        self.0 = (self.0 & !(0xffff << 16usize)) | (((val as u32) & 0xffff) << 16usize);
+    }
+}
+impl Default for GPIO_HWCFGR3 {
+    #[inline(always)]
+    fn default() -> GPIO_HWCFGR3 {
+        GPIO_HWCFGR3(0)
+    }
+}
+impl core::fmt::Debug for GPIO_HWCFGR3 {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("GPIO_HWCFGR3")
+            .field("ODR_RES", &self.ODR_RES())
+            .field("OTYPER_RES", &self.OTYPER_RES())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for GPIO_HWCFGR3 {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "GPIO_HWCFGR3 {{ ODR_RES: {=u16:?}, OTYPER_RES: {=u16:?} }}",
+            self.ODR_RES(),
+            self.OTYPER_RES()
+        )
+    }
+}
+#[doc = ""]
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct GPIO_HWCFGR4(pub u32);
+impl GPIO_HWCFGR4 {
+    #[doc = "OSPEED register reset value"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn OSPEED_RES(&self) -> u32 {
+        let val = (self.0 >> 0usize) & 0xffff_ffff;
+        val as u32
+    }
+    #[doc = "OSPEED register reset value"]
+    #[inline(always)]
+    pub const fn set_OSPEED_RES(&mut self, val: u32) {
+        self.0 = (self.0 & !(0xffff_ffff << 0usize)) | (((val as u32) & 0xffff_ffff) << 0usize);
+    }
+}
+impl Default for GPIO_HWCFGR4 {
+    #[inline(always)]
+    fn default() -> GPIO_HWCFGR4 {
+        GPIO_HWCFGR4(0)
+    }
+}
+impl core::fmt::Debug for GPIO_HWCFGR4 {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("GPIO_HWCFGR4")
+            .field("OSPEED_RES", &self.OSPEED_RES())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for GPIO_HWCFGR4 {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "GPIO_HWCFGR4 {{ OSPEED_RES: {=u32:?} }}",
+            self.OSPEED_RES()
+        )
+    }
+}
+#[doc = ""]
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct GPIO_HWCFGR5(pub u32);
+impl GPIO_HWCFGR5 {
+    #[doc = "Pull-up / pull-down register reset value"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn PUPDR_RES(&self) -> u32 {
+        let val = (self.0 >> 0usize) & 0xffff_ffff;
+        val as u32
+    }
+    #[doc = "Pull-up / pull-down register reset value"]
+    #[inline(always)]
+    pub const fn set_PUPDR_RES(&mut self, val: u32) {
+        self.0 = (self.0 & !(0xffff_ffff << 0usize)) | (((val as u32) & 0xffff_ffff) << 0usize);
+    }
+}
+impl Default for GPIO_HWCFGR5 {
+    #[inline(always)]
+    fn default() -> GPIO_HWCFGR5 {
+        GPIO_HWCFGR5(0)
+    }
+}
+impl core::fmt::Debug for GPIO_HWCFGR5 {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("GPIO_HWCFGR5")
+            .field("PUPDR_RES", &self.PUPDR_RES())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for GPIO_HWCFGR5 {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "GPIO_HWCFGR5 {{ PUPDR_RES: {=u32:?} }}",
+            self.PUPDR_RES()
+        )
+    }
+}
+#[doc = ""]
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct GPIO_HWCFGR6(pub u32);
+impl GPIO_HWCFGR6 {
+    #[doc = "MODER register reset value"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn MODER_RES(&self) -> u32 {
+        let val = (self.0 >> 0usize) & 0xffff_ffff;
+        val as u32
+    }
+    #[doc = "MODER register reset value"]
+    #[inline(always)]
+    pub const fn set_MODER_RES(&mut self, val: u32) {
+        self.0 = (self.0 & !(0xffff_ffff << 0usize)) | (((val as u32) & 0xffff_ffff) << 0usize);
+    }
+}
+impl Default for GPIO_HWCFGR6 {
+    #[inline(always)]
+    fn default() -> GPIO_HWCFGR6 {
+        GPIO_HWCFGR6(0)
+    }
+}
+impl core::fmt::Debug for GPIO_HWCFGR6 {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("GPIO_HWCFGR6")
+            .field("MODER_RES", &self.MODER_RES())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for GPIO_HWCFGR6 {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "GPIO_HWCFGR6 {{ MODER_RES: {=u32:?} }}",
+            self.MODER_RES()
+        )
+    }
+}
+#[doc = ""]
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct GPIO_HWCFGR7(pub u32);
+impl GPIO_HWCFGR7 {
+    #[doc = "Indicate the priority AF for I/O0 (0 to F)"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn AF_PRIO0(&self) -> u8 {
+        let val = (self.0 >> 0usize) & 0x0f;
+        val as u8
+    }
+    #[doc = "Indicate the priority AF for I/O0 (0 to F)"]
+    #[inline(always)]
+    pub const fn set_AF_PRIO0(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x0f << 0usize)) | (((val as u32) & 0x0f) << 0usize);
+    }
+    #[doc = "Indicate the priority AF for I/O1 (0 to F)"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn AF_PRIO1(&self) -> u8 {
+        let val = (self.0 >> 4usize) & 0x0f;
+        val as u8
+    }
+    #[doc = "Indicate the priority AF for I/O1 (0 to F)"]
+    #[inline(always)]
+    pub const fn set_AF_PRIO1(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x0f << 4usize)) | (((val as u32) & 0x0f) << 4usize);
+    }
+    #[doc = "Indicate the priority AF for I/O2 (0 to F)"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn AF_PRIO2(&self) -> u8 {
+        let val = (self.0 >> 8usize) & 0x0f;
+        val as u8
+    }
+    #[doc = "Indicate the priority AF for I/O2 (0 to F)"]
+    #[inline(always)]
+    pub const fn set_AF_PRIO2(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x0f << 8usize)) | (((val as u32) & 0x0f) << 8usize);
+    }
+    #[doc = "Indicate the priority AF for I/O3 (0 to F)"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn AF_PRIO3(&self) -> u8 {
+        let val = (self.0 >> 12usize) & 0x0f;
+        val as u8
+    }
+    #[doc = "Indicate the priority AF for I/O3 (0 to F)"]
+    #[inline(always)]
+    pub const fn set_AF_PRIO3(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x0f << 12usize)) | (((val as u32) & 0x0f) << 12usize);
+    }
+    #[doc = "Indicate the priority AF for I/O4 (0 to F)"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn AF_PRIO4(&self) -> u8 {
+        let val = (self.0 >> 16usize) & 0x0f;
+        val as u8
+    }
+    #[doc = "Indicate the priority AF for I/O4 (0 to F)"]
+    #[inline(always)]
+    pub const fn set_AF_PRIO4(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x0f << 16usize)) | (((val as u32) & 0x0f) << 16usize);
+    }
+    #[doc = "Indicate the priority AF for I/O5 (0 to F)"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn AF_PRIO5(&self) -> u8 {
+        let val = (self.0 >> 20usize) & 0x0f;
+        val as u8
+    }
+    #[doc = "Indicate the priority AF for I/O5 (0 to F)"]
+    #[inline(always)]
+    pub const fn set_AF_PRIO5(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x0f << 20usize)) | (((val as u32) & 0x0f) << 20usize);
+    }
+    #[doc = "Indicate the priority AF for I/O6 (0 to F)"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn AF_PRIO6(&self) -> u8 {
+        let val = (self.0 >> 24usize) & 0x0f;
+        val as u8
+    }
+    #[doc = "Indicate the priority AF for I/O6 (0 to F)"]
+    #[inline(always)]
+    pub const fn set_AF_PRIO6(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x0f << 24usize)) | (((val as u32) & 0x0f) << 24usize);
+    }
+    #[doc = "Indicate the priority AF for I/O7 (0 to F)"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn AF_PRIO7(&self) -> u8 {
+        let val = (self.0 >> 28usize) & 0x0f;
+        val as u8
+    }
+    #[doc = "Indicate the priority AF for I/O7 (0 to F)"]
+    #[inline(always)]
+    pub const fn set_AF_PRIO7(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x0f << 28usize)) | (((val as u32) & 0x0f) << 28usize);
+    }
+}
+impl Default for GPIO_HWCFGR7 {
+    #[inline(always)]
+    fn default() -> GPIO_HWCFGR7 {
+        GPIO_HWCFGR7(0)
+    }
+}
+impl core::fmt::Debug for GPIO_HWCFGR7 {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("GPIO_HWCFGR7")
+            .field("AF_PRIO0", &self.AF_PRIO0())
+            .field("AF_PRIO1", &self.AF_PRIO1())
+            .field("AF_PRIO2", &self.AF_PRIO2())
+            .field("AF_PRIO3", &self.AF_PRIO3())
+            .field("AF_PRIO4", &self.AF_PRIO4())
+            .field("AF_PRIO5", &self.AF_PRIO5())
+            .field("AF_PRIO6", &self.AF_PRIO6())
+            .field("AF_PRIO7", &self.AF_PRIO7())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for GPIO_HWCFGR7 {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "GPIO_HWCFGR7 {{ AF_PRIO0: {=u8:?}, AF_PRIO1: {=u8:?}, AF_PRIO2: {=u8:?}, AF_PRIO3: {=u8:?}, AF_PRIO4: {=u8:?}, AF_PRIO5: {=u8:?}, AF_PRIO6: {=u8:?}, AF_PRIO7: {=u8:?} }}",
+            self.AF_PRIO0(),
+            self.AF_PRIO1(),
+            self.AF_PRIO2(),
+            self.AF_PRIO3(),
+            self.AF_PRIO4(),
+            self.AF_PRIO5(),
+            self.AF_PRIO6(),
+            self.AF_PRIO7()
+        )
+    }
+}
+#[doc = ""]
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct GPIO_HWCFGR8(pub u32);
+impl GPIO_HWCFGR8 {
+    #[doc = "Indicate the priority AF for I/O8 (0 to F)"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn AF_PRIO8(&self) -> u8 {
+        let val = (self.0 >> 0usize) & 0x0f;
+        val as u8
+    }
+    #[doc = "Indicate the priority AF for I/O8 (0 to F)"]
+    #[inline(always)]
+    pub const fn set_AF_PRIO8(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x0f << 0usize)) | (((val as u32) & 0x0f) << 0usize);
+    }
+    #[doc = "Indicate the priority AF for I/O9 (0 to F)"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn AF_PRIO9(&self) -> u8 {
+        let val = (self.0 >> 4usize) & 0x0f;
+        val as u8
+    }
+    #[doc = "Indicate the priority AF for I/O9 (0 to F)"]
+    #[inline(always)]
+    pub const fn set_AF_PRIO9(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x0f << 4usize)) | (((val as u32) & 0x0f) << 4usize);
+    }
+    #[doc = "Indicate the priority AF for I/O10 (0 to F)"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn AF_PRIO10(&self) -> u8 {
+        let val = (self.0 >> 8usize) & 0x0f;
+        val as u8
+    }
+    #[doc = "Indicate the priority AF for I/O10 (0 to F)"]
+    #[inline(always)]
+    pub const fn set_AF_PRIO10(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x0f << 8usize)) | (((val as u32) & 0x0f) << 8usize);
+    }
+    #[doc = "Indicate the priority AF for I/O11 (0 to F)"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn AF_PRIO11(&self) -> u8 {
+        let val = (self.0 >> 12usize) & 0x0f;
+        val as u8
+    }
+    #[doc = "Indicate the priority AF for I/O11 (0 to F)"]
+    #[inline(always)]
+    pub const fn set_AF_PRIO11(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x0f << 12usize)) | (((val as u32) & 0x0f) << 12usize);
+    }
+    #[doc = "Indicate the priority AF for I/O12 (0 to F)"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn AF_PRIO12(&self) -> u8 {
+        let val = (self.0 >> 16usize) & 0x0f;
+        val as u8
+    }
+    #[doc = "Indicate the priority AF for I/O12 (0 to F)"]
+    #[inline(always)]
+    pub const fn set_AF_PRIO12(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x0f << 16usize)) | (((val as u32) & 0x0f) << 16usize);
+    }
+    #[doc = "Indicate the priority AF for I/O13 (0 to F)"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn AF_PRIO13(&self) -> u8 {
+        let val = (self.0 >> 20usize) & 0x0f;
+        val as u8
+    }
+    #[doc = "Indicate the priority AF for I/O13 (0 to F)"]
+    #[inline(always)]
+    pub const fn set_AF_PRIO13(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x0f << 20usize)) | (((val as u32) & 0x0f) << 20usize);
+    }
+    #[doc = "Indicate the priority AF for I/O14 (0 to F)"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn AF_PRIO14(&self) -> u8 {
+        let val = (self.0 >> 24usize) & 0x0f;
+        val as u8
+    }
+    #[doc = "Indicate the priority AF for I/O14 (0 to F)"]
+    #[inline(always)]
+    pub const fn set_AF_PRIO14(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x0f << 24usize)) | (((val as u32) & 0x0f) << 24usize);
+    }
+    #[doc = "Indicate the priority AF for I/O15 (0 to F)"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn AF_PRIO15(&self) -> u8 {
+        let val = (self.0 >> 28usize) & 0x0f;
+        val as u8
+    }
+    #[doc = "Indicate the priority AF for I/O15 (0 to F)"]
+    #[inline(always)]
+    pub const fn set_AF_PRIO15(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x0f << 28usize)) | (((val as u32) & 0x0f) << 28usize);
+    }
+}
+impl Default for GPIO_HWCFGR8 {
+    #[inline(always)]
+    fn default() -> GPIO_HWCFGR8 {
+        GPIO_HWCFGR8(0)
+    }
+}
+impl core::fmt::Debug for GPIO_HWCFGR8 {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("GPIO_HWCFGR8")
+            .field("AF_PRIO8", &self.AF_PRIO8())
+            .field("AF_PRIO9", &self.AF_PRIO9())
+            .field("AF_PRIO10", &self.AF_PRIO10())
+            .field("AF_PRIO11", &self.AF_PRIO11())
+            .field("AF_PRIO12", &self.AF_PRIO12())
+            .field("AF_PRIO13", &self.AF_PRIO13())
+            .field("AF_PRIO14", &self.AF_PRIO14())
+            .field("AF_PRIO15", &self.AF_PRIO15())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for GPIO_HWCFGR8 {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(
+            f,
+            "GPIO_HWCFGR8 {{ AF_PRIO8: {=u8:?}, AF_PRIO9: {=u8:?}, AF_PRIO10: {=u8:?}, AF_PRIO11: {=u8:?}, AF_PRIO12: {=u8:?}, AF_PRIO13: {=u8:?}, AF_PRIO14: {=u8:?}, AF_PRIO15: {=u8:?} }}",
+            self.AF_PRIO8(),
+            self.AF_PRIO9(),
+            self.AF_PRIO10(),
+            self.AF_PRIO11(),
+            self.AF_PRIO12(),
+            self.AF_PRIO13(),
+            self.AF_PRIO14(),
+            self.AF_PRIO15()
+        )
+    }
+}
+#[doc = ""]
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct GPIO_HWCFGR9(pub u32);
+impl GPIO_HWCFGR9 {
+    #[doc = "Presence granularity, each bit indicate the presence of the IO"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn EN_IO(&self) -> u16 {
+        let val = (self.0 >> 0usize) & 0xffff;
+        val as u16
+    }
+    #[doc = "Presence granularity, each bit indicate the presence of the IO"]
+    #[inline(always)]
+    pub const fn set_EN_IO(&mut self, val: u16) {
+        self.0 = (self.0 & !(0xffff << 0usize)) | (((val as u32) & 0xffff) << 0usize);
+    }
+}
+impl Default for GPIO_HWCFGR9 {
+    #[inline(always)]
+    fn default() -> GPIO_HWCFGR9 {
+        GPIO_HWCFGR9(0)
+    }
+}
+impl core::fmt::Debug for GPIO_HWCFGR9 {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("GPIO_HWCFGR9")
+            .field("EN_IO", &self.EN_IO())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for GPIO_HWCFGR9 {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(f, "GPIO_HWCFGR9 {{ EN_IO: {=u16:?} }}", self.EN_IO())
     }
 }
 #[doc = ""]
@@ -5964,6 +6903,18 @@ impl defmt::Format for GPIO_SECCFGR {
 #[derive(Copy, Clone, Eq, PartialEq)]
 pub struct GPIO_SEMCR0(pub u32);
 impl GPIO_SEMCR0 {
+    #[doc = "Semaphore Mutex"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn SEM_MUTEX(&self) -> bool {
+        let val = (self.0 >> 0usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Semaphore Mutex"]
+    #[inline(always)]
+    pub const fn set_SEM_MUTEX(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
     #[doc = "Semaphore current CID"]
     #[must_use]
     #[inline(always)]
@@ -5986,6 +6937,7 @@ impl Default for GPIO_SEMCR0 {
 impl core::fmt::Debug for GPIO_SEMCR0 {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         f.debug_struct("GPIO_SEMCR0")
+            .field("SEM_MUTEX", &self.SEM_MUTEX())
             .field("SEMCID", &self.SEMCID())
             .finish()
     }
@@ -5993,7 +6945,12 @@ impl core::fmt::Debug for GPIO_SEMCR0 {
 #[cfg(feature = "defmt")]
 impl defmt::Format for GPIO_SEMCR0 {
     fn format(&self, f: defmt::Formatter) {
-        defmt::write!(f, "GPIO_SEMCR0 {{ SEMCID: {=u8:?} }}", self.SEMCID())
+        defmt::write!(
+            f,
+            "GPIO_SEMCR0 {{ SEM_MUTEX: {=bool:?}, SEMCID: {=u8:?} }}",
+            self.SEM_MUTEX(),
+            self.SEMCID()
+        )
     }
 }
 #[doc = ""]
@@ -6001,6 +6958,18 @@ impl defmt::Format for GPIO_SEMCR0 {
 #[derive(Copy, Clone, Eq, PartialEq)]
 pub struct GPIO_SEMCR1(pub u32);
 impl GPIO_SEMCR1 {
+    #[doc = "Semaphore Mutex"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn SEM_MUTEX(&self) -> bool {
+        let val = (self.0 >> 0usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Semaphore Mutex"]
+    #[inline(always)]
+    pub const fn set_SEM_MUTEX(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
     #[doc = "Semaphore current CID"]
     #[must_use]
     #[inline(always)]
@@ -6023,6 +6992,7 @@ impl Default for GPIO_SEMCR1 {
 impl core::fmt::Debug for GPIO_SEMCR1 {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         f.debug_struct("GPIO_SEMCR1")
+            .field("SEM_MUTEX", &self.SEM_MUTEX())
             .field("SEMCID", &self.SEMCID())
             .finish()
     }
@@ -6030,7 +7000,12 @@ impl core::fmt::Debug for GPIO_SEMCR1 {
 #[cfg(feature = "defmt")]
 impl defmt::Format for GPIO_SEMCR1 {
     fn format(&self, f: defmt::Formatter) {
-        defmt::write!(f, "GPIO_SEMCR1 {{ SEMCID: {=u8:?} }}", self.SEMCID())
+        defmt::write!(
+            f,
+            "GPIO_SEMCR1 {{ SEM_MUTEX: {=bool:?}, SEMCID: {=u8:?} }}",
+            self.SEM_MUTEX(),
+            self.SEMCID()
+        )
     }
 }
 #[doc = ""]
@@ -6038,6 +7013,18 @@ impl defmt::Format for GPIO_SEMCR1 {
 #[derive(Copy, Clone, Eq, PartialEq)]
 pub struct GPIO_SEMCR10(pub u32);
 impl GPIO_SEMCR10 {
+    #[doc = "Semaphore Mutex"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn SEM_MUTEX(&self) -> bool {
+        let val = (self.0 >> 0usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Semaphore Mutex"]
+    #[inline(always)]
+    pub const fn set_SEM_MUTEX(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
     #[doc = "Semaphore current CID"]
     #[must_use]
     #[inline(always)]
@@ -6060,6 +7047,7 @@ impl Default for GPIO_SEMCR10 {
 impl core::fmt::Debug for GPIO_SEMCR10 {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         f.debug_struct("GPIO_SEMCR10")
+            .field("SEM_MUTEX", &self.SEM_MUTEX())
             .field("SEMCID", &self.SEMCID())
             .finish()
     }
@@ -6067,7 +7055,12 @@ impl core::fmt::Debug for GPIO_SEMCR10 {
 #[cfg(feature = "defmt")]
 impl defmt::Format for GPIO_SEMCR10 {
     fn format(&self, f: defmt::Formatter) {
-        defmt::write!(f, "GPIO_SEMCR10 {{ SEMCID: {=u8:?} }}", self.SEMCID())
+        defmt::write!(
+            f,
+            "GPIO_SEMCR10 {{ SEM_MUTEX: {=bool:?}, SEMCID: {=u8:?} }}",
+            self.SEM_MUTEX(),
+            self.SEMCID()
+        )
     }
 }
 #[doc = ""]
@@ -6075,6 +7068,18 @@ impl defmt::Format for GPIO_SEMCR10 {
 #[derive(Copy, Clone, Eq, PartialEq)]
 pub struct GPIO_SEMCR11(pub u32);
 impl GPIO_SEMCR11 {
+    #[doc = "Semaphore Mutex"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn SEM_MUTEX(&self) -> bool {
+        let val = (self.0 >> 0usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Semaphore Mutex"]
+    #[inline(always)]
+    pub const fn set_SEM_MUTEX(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
     #[doc = "Semaphore current CID"]
     #[must_use]
     #[inline(always)]
@@ -6097,6 +7102,7 @@ impl Default for GPIO_SEMCR11 {
 impl core::fmt::Debug for GPIO_SEMCR11 {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         f.debug_struct("GPIO_SEMCR11")
+            .field("SEM_MUTEX", &self.SEM_MUTEX())
             .field("SEMCID", &self.SEMCID())
             .finish()
     }
@@ -6104,7 +7110,12 @@ impl core::fmt::Debug for GPIO_SEMCR11 {
 #[cfg(feature = "defmt")]
 impl defmt::Format for GPIO_SEMCR11 {
     fn format(&self, f: defmt::Formatter) {
-        defmt::write!(f, "GPIO_SEMCR11 {{ SEMCID: {=u8:?} }}", self.SEMCID())
+        defmt::write!(
+            f,
+            "GPIO_SEMCR11 {{ SEM_MUTEX: {=bool:?}, SEMCID: {=u8:?} }}",
+            self.SEM_MUTEX(),
+            self.SEMCID()
+        )
     }
 }
 #[doc = ""]
@@ -6112,6 +7123,18 @@ impl defmt::Format for GPIO_SEMCR11 {
 #[derive(Copy, Clone, Eq, PartialEq)]
 pub struct GPIO_SEMCR12(pub u32);
 impl GPIO_SEMCR12 {
+    #[doc = "Semaphore Mutex"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn SEM_MUTEX(&self) -> bool {
+        let val = (self.0 >> 0usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Semaphore Mutex"]
+    #[inline(always)]
+    pub const fn set_SEM_MUTEX(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
     #[doc = "Semaphore current CID"]
     #[must_use]
     #[inline(always)]
@@ -6134,6 +7157,7 @@ impl Default for GPIO_SEMCR12 {
 impl core::fmt::Debug for GPIO_SEMCR12 {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         f.debug_struct("GPIO_SEMCR12")
+            .field("SEM_MUTEX", &self.SEM_MUTEX())
             .field("SEMCID", &self.SEMCID())
             .finish()
     }
@@ -6141,7 +7165,12 @@ impl core::fmt::Debug for GPIO_SEMCR12 {
 #[cfg(feature = "defmt")]
 impl defmt::Format for GPIO_SEMCR12 {
     fn format(&self, f: defmt::Formatter) {
-        defmt::write!(f, "GPIO_SEMCR12 {{ SEMCID: {=u8:?} }}", self.SEMCID())
+        defmt::write!(
+            f,
+            "GPIO_SEMCR12 {{ SEM_MUTEX: {=bool:?}, SEMCID: {=u8:?} }}",
+            self.SEM_MUTEX(),
+            self.SEMCID()
+        )
     }
 }
 #[doc = ""]
@@ -6149,6 +7178,18 @@ impl defmt::Format for GPIO_SEMCR12 {
 #[derive(Copy, Clone, Eq, PartialEq)]
 pub struct GPIO_SEMCR13(pub u32);
 impl GPIO_SEMCR13 {
+    #[doc = "Semaphore Mutex"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn SEM_MUTEX(&self) -> bool {
+        let val = (self.0 >> 0usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Semaphore Mutex"]
+    #[inline(always)]
+    pub const fn set_SEM_MUTEX(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
     #[doc = "Semaphore current CID"]
     #[must_use]
     #[inline(always)]
@@ -6171,6 +7212,7 @@ impl Default for GPIO_SEMCR13 {
 impl core::fmt::Debug for GPIO_SEMCR13 {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         f.debug_struct("GPIO_SEMCR13")
+            .field("SEM_MUTEX", &self.SEM_MUTEX())
             .field("SEMCID", &self.SEMCID())
             .finish()
     }
@@ -6178,7 +7220,12 @@ impl core::fmt::Debug for GPIO_SEMCR13 {
 #[cfg(feature = "defmt")]
 impl defmt::Format for GPIO_SEMCR13 {
     fn format(&self, f: defmt::Formatter) {
-        defmt::write!(f, "GPIO_SEMCR13 {{ SEMCID: {=u8:?} }}", self.SEMCID())
+        defmt::write!(
+            f,
+            "GPIO_SEMCR13 {{ SEM_MUTEX: {=bool:?}, SEMCID: {=u8:?} }}",
+            self.SEM_MUTEX(),
+            self.SEMCID()
+        )
     }
 }
 #[doc = ""]
@@ -6186,6 +7233,18 @@ impl defmt::Format for GPIO_SEMCR13 {
 #[derive(Copy, Clone, Eq, PartialEq)]
 pub struct GPIO_SEMCR14(pub u32);
 impl GPIO_SEMCR14 {
+    #[doc = "Semaphore Mutex"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn SEM_MUTEX(&self) -> bool {
+        let val = (self.0 >> 0usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Semaphore Mutex"]
+    #[inline(always)]
+    pub const fn set_SEM_MUTEX(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
     #[doc = "Semaphore current CID"]
     #[must_use]
     #[inline(always)]
@@ -6208,6 +7267,7 @@ impl Default for GPIO_SEMCR14 {
 impl core::fmt::Debug for GPIO_SEMCR14 {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         f.debug_struct("GPIO_SEMCR14")
+            .field("SEM_MUTEX", &self.SEM_MUTEX())
             .field("SEMCID", &self.SEMCID())
             .finish()
     }
@@ -6215,7 +7275,12 @@ impl core::fmt::Debug for GPIO_SEMCR14 {
 #[cfg(feature = "defmt")]
 impl defmt::Format for GPIO_SEMCR14 {
     fn format(&self, f: defmt::Formatter) {
-        defmt::write!(f, "GPIO_SEMCR14 {{ SEMCID: {=u8:?} }}", self.SEMCID())
+        defmt::write!(
+            f,
+            "GPIO_SEMCR14 {{ SEM_MUTEX: {=bool:?}, SEMCID: {=u8:?} }}",
+            self.SEM_MUTEX(),
+            self.SEMCID()
+        )
     }
 }
 #[doc = ""]
@@ -6223,6 +7288,18 @@ impl defmt::Format for GPIO_SEMCR14 {
 #[derive(Copy, Clone, Eq, PartialEq)]
 pub struct GPIO_SEMCR15(pub u32);
 impl GPIO_SEMCR15 {
+    #[doc = "Semaphore Mutex"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn SEM_MUTEX(&self) -> bool {
+        let val = (self.0 >> 0usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Semaphore Mutex"]
+    #[inline(always)]
+    pub const fn set_SEM_MUTEX(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
     #[doc = "Semaphore current CID"]
     #[must_use]
     #[inline(always)]
@@ -6245,6 +7322,7 @@ impl Default for GPIO_SEMCR15 {
 impl core::fmt::Debug for GPIO_SEMCR15 {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         f.debug_struct("GPIO_SEMCR15")
+            .field("SEM_MUTEX", &self.SEM_MUTEX())
             .field("SEMCID", &self.SEMCID())
             .finish()
     }
@@ -6252,7 +7330,12 @@ impl core::fmt::Debug for GPIO_SEMCR15 {
 #[cfg(feature = "defmt")]
 impl defmt::Format for GPIO_SEMCR15 {
     fn format(&self, f: defmt::Formatter) {
-        defmt::write!(f, "GPIO_SEMCR15 {{ SEMCID: {=u8:?} }}", self.SEMCID())
+        defmt::write!(
+            f,
+            "GPIO_SEMCR15 {{ SEM_MUTEX: {=bool:?}, SEMCID: {=u8:?} }}",
+            self.SEM_MUTEX(),
+            self.SEMCID()
+        )
     }
 }
 #[doc = ""]
@@ -6260,6 +7343,18 @@ impl defmt::Format for GPIO_SEMCR15 {
 #[derive(Copy, Clone, Eq, PartialEq)]
 pub struct GPIO_SEMCR2(pub u32);
 impl GPIO_SEMCR2 {
+    #[doc = "Semaphore Mutex"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn SEM_MUTEX(&self) -> bool {
+        let val = (self.0 >> 0usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Semaphore Mutex"]
+    #[inline(always)]
+    pub const fn set_SEM_MUTEX(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
     #[doc = "Semaphore current CID"]
     #[must_use]
     #[inline(always)]
@@ -6282,6 +7377,7 @@ impl Default for GPIO_SEMCR2 {
 impl core::fmt::Debug for GPIO_SEMCR2 {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         f.debug_struct("GPIO_SEMCR2")
+            .field("SEM_MUTEX", &self.SEM_MUTEX())
             .field("SEMCID", &self.SEMCID())
             .finish()
     }
@@ -6289,7 +7385,12 @@ impl core::fmt::Debug for GPIO_SEMCR2 {
 #[cfg(feature = "defmt")]
 impl defmt::Format for GPIO_SEMCR2 {
     fn format(&self, f: defmt::Formatter) {
-        defmt::write!(f, "GPIO_SEMCR2 {{ SEMCID: {=u8:?} }}", self.SEMCID())
+        defmt::write!(
+            f,
+            "GPIO_SEMCR2 {{ SEM_MUTEX: {=bool:?}, SEMCID: {=u8:?} }}",
+            self.SEM_MUTEX(),
+            self.SEMCID()
+        )
     }
 }
 #[doc = ""]
@@ -6297,6 +7398,18 @@ impl defmt::Format for GPIO_SEMCR2 {
 #[derive(Copy, Clone, Eq, PartialEq)]
 pub struct GPIO_SEMCR3(pub u32);
 impl GPIO_SEMCR3 {
+    #[doc = "Semaphore Mutex"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn SEM_MUTEX(&self) -> bool {
+        let val = (self.0 >> 0usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Semaphore Mutex"]
+    #[inline(always)]
+    pub const fn set_SEM_MUTEX(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
     #[doc = "Semaphore current CID"]
     #[must_use]
     #[inline(always)]
@@ -6319,6 +7432,7 @@ impl Default for GPIO_SEMCR3 {
 impl core::fmt::Debug for GPIO_SEMCR3 {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         f.debug_struct("GPIO_SEMCR3")
+            .field("SEM_MUTEX", &self.SEM_MUTEX())
             .field("SEMCID", &self.SEMCID())
             .finish()
     }
@@ -6326,7 +7440,12 @@ impl core::fmt::Debug for GPIO_SEMCR3 {
 #[cfg(feature = "defmt")]
 impl defmt::Format for GPIO_SEMCR3 {
     fn format(&self, f: defmt::Formatter) {
-        defmt::write!(f, "GPIO_SEMCR3 {{ SEMCID: {=u8:?} }}", self.SEMCID())
+        defmt::write!(
+            f,
+            "GPIO_SEMCR3 {{ SEM_MUTEX: {=bool:?}, SEMCID: {=u8:?} }}",
+            self.SEM_MUTEX(),
+            self.SEMCID()
+        )
     }
 }
 #[doc = ""]
@@ -6334,6 +7453,18 @@ impl defmt::Format for GPIO_SEMCR3 {
 #[derive(Copy, Clone, Eq, PartialEq)]
 pub struct GPIO_SEMCR4(pub u32);
 impl GPIO_SEMCR4 {
+    #[doc = "Semaphore Mutex"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn SEM_MUTEX(&self) -> bool {
+        let val = (self.0 >> 0usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Semaphore Mutex"]
+    #[inline(always)]
+    pub const fn set_SEM_MUTEX(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
     #[doc = "Semaphore current CID"]
     #[must_use]
     #[inline(always)]
@@ -6356,6 +7487,7 @@ impl Default for GPIO_SEMCR4 {
 impl core::fmt::Debug for GPIO_SEMCR4 {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         f.debug_struct("GPIO_SEMCR4")
+            .field("SEM_MUTEX", &self.SEM_MUTEX())
             .field("SEMCID", &self.SEMCID())
             .finish()
     }
@@ -6363,7 +7495,12 @@ impl core::fmt::Debug for GPIO_SEMCR4 {
 #[cfg(feature = "defmt")]
 impl defmt::Format for GPIO_SEMCR4 {
     fn format(&self, f: defmt::Formatter) {
-        defmt::write!(f, "GPIO_SEMCR4 {{ SEMCID: {=u8:?} }}", self.SEMCID())
+        defmt::write!(
+            f,
+            "GPIO_SEMCR4 {{ SEM_MUTEX: {=bool:?}, SEMCID: {=u8:?} }}",
+            self.SEM_MUTEX(),
+            self.SEMCID()
+        )
     }
 }
 #[doc = ""]
@@ -6371,6 +7508,18 @@ impl defmt::Format for GPIO_SEMCR4 {
 #[derive(Copy, Clone, Eq, PartialEq)]
 pub struct GPIO_SEMCR5(pub u32);
 impl GPIO_SEMCR5 {
+    #[doc = "Semaphore Mutex"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn SEM_MUTEX(&self) -> bool {
+        let val = (self.0 >> 0usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Semaphore Mutex"]
+    #[inline(always)]
+    pub const fn set_SEM_MUTEX(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
     #[doc = "Semaphore current CID"]
     #[must_use]
     #[inline(always)]
@@ -6393,6 +7542,7 @@ impl Default for GPIO_SEMCR5 {
 impl core::fmt::Debug for GPIO_SEMCR5 {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         f.debug_struct("GPIO_SEMCR5")
+            .field("SEM_MUTEX", &self.SEM_MUTEX())
             .field("SEMCID", &self.SEMCID())
             .finish()
     }
@@ -6400,7 +7550,12 @@ impl core::fmt::Debug for GPIO_SEMCR5 {
 #[cfg(feature = "defmt")]
 impl defmt::Format for GPIO_SEMCR5 {
     fn format(&self, f: defmt::Formatter) {
-        defmt::write!(f, "GPIO_SEMCR5 {{ SEMCID: {=u8:?} }}", self.SEMCID())
+        defmt::write!(
+            f,
+            "GPIO_SEMCR5 {{ SEM_MUTEX: {=bool:?}, SEMCID: {=u8:?} }}",
+            self.SEM_MUTEX(),
+            self.SEMCID()
+        )
     }
 }
 #[doc = ""]
@@ -6408,6 +7563,18 @@ impl defmt::Format for GPIO_SEMCR5 {
 #[derive(Copy, Clone, Eq, PartialEq)]
 pub struct GPIO_SEMCR6(pub u32);
 impl GPIO_SEMCR6 {
+    #[doc = "Semaphore Mutex"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn SEM_MUTEX(&self) -> bool {
+        let val = (self.0 >> 0usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Semaphore Mutex"]
+    #[inline(always)]
+    pub const fn set_SEM_MUTEX(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
     #[doc = "Semaphore current CID"]
     #[must_use]
     #[inline(always)]
@@ -6430,6 +7597,7 @@ impl Default for GPIO_SEMCR6 {
 impl core::fmt::Debug for GPIO_SEMCR6 {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         f.debug_struct("GPIO_SEMCR6")
+            .field("SEM_MUTEX", &self.SEM_MUTEX())
             .field("SEMCID", &self.SEMCID())
             .finish()
     }
@@ -6437,7 +7605,12 @@ impl core::fmt::Debug for GPIO_SEMCR6 {
 #[cfg(feature = "defmt")]
 impl defmt::Format for GPIO_SEMCR6 {
     fn format(&self, f: defmt::Formatter) {
-        defmt::write!(f, "GPIO_SEMCR6 {{ SEMCID: {=u8:?} }}", self.SEMCID())
+        defmt::write!(
+            f,
+            "GPIO_SEMCR6 {{ SEM_MUTEX: {=bool:?}, SEMCID: {=u8:?} }}",
+            self.SEM_MUTEX(),
+            self.SEMCID()
+        )
     }
 }
 #[doc = ""]
@@ -6445,6 +7618,18 @@ impl defmt::Format for GPIO_SEMCR6 {
 #[derive(Copy, Clone, Eq, PartialEq)]
 pub struct GPIO_SEMCR7(pub u32);
 impl GPIO_SEMCR7 {
+    #[doc = "Semaphore Mutex"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn SEM_MUTEX(&self) -> bool {
+        let val = (self.0 >> 0usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Semaphore Mutex"]
+    #[inline(always)]
+    pub const fn set_SEM_MUTEX(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
     #[doc = "Semaphore current CID"]
     #[must_use]
     #[inline(always)]
@@ -6467,6 +7652,7 @@ impl Default for GPIO_SEMCR7 {
 impl core::fmt::Debug for GPIO_SEMCR7 {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         f.debug_struct("GPIO_SEMCR7")
+            .field("SEM_MUTEX", &self.SEM_MUTEX())
             .field("SEMCID", &self.SEMCID())
             .finish()
     }
@@ -6474,7 +7660,12 @@ impl core::fmt::Debug for GPIO_SEMCR7 {
 #[cfg(feature = "defmt")]
 impl defmt::Format for GPIO_SEMCR7 {
     fn format(&self, f: defmt::Formatter) {
-        defmt::write!(f, "GPIO_SEMCR7 {{ SEMCID: {=u8:?} }}", self.SEMCID())
+        defmt::write!(
+            f,
+            "GPIO_SEMCR7 {{ SEM_MUTEX: {=bool:?}, SEMCID: {=u8:?} }}",
+            self.SEM_MUTEX(),
+            self.SEMCID()
+        )
     }
 }
 #[doc = ""]
@@ -6482,6 +7673,18 @@ impl defmt::Format for GPIO_SEMCR7 {
 #[derive(Copy, Clone, Eq, PartialEq)]
 pub struct GPIO_SEMCR8(pub u32);
 impl GPIO_SEMCR8 {
+    #[doc = "Semaphore Mutex"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn SEM_MUTEX(&self) -> bool {
+        let val = (self.0 >> 0usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Semaphore Mutex"]
+    #[inline(always)]
+    pub const fn set_SEM_MUTEX(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
     #[doc = "Semaphore current CID"]
     #[must_use]
     #[inline(always)]
@@ -6504,6 +7707,7 @@ impl Default for GPIO_SEMCR8 {
 impl core::fmt::Debug for GPIO_SEMCR8 {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         f.debug_struct("GPIO_SEMCR8")
+            .field("SEM_MUTEX", &self.SEM_MUTEX())
             .field("SEMCID", &self.SEMCID())
             .finish()
     }
@@ -6511,7 +7715,12 @@ impl core::fmt::Debug for GPIO_SEMCR8 {
 #[cfg(feature = "defmt")]
 impl defmt::Format for GPIO_SEMCR8 {
     fn format(&self, f: defmt::Formatter) {
-        defmt::write!(f, "GPIO_SEMCR8 {{ SEMCID: {=u8:?} }}", self.SEMCID())
+        defmt::write!(
+            f,
+            "GPIO_SEMCR8 {{ SEM_MUTEX: {=bool:?}, SEMCID: {=u8:?} }}",
+            self.SEM_MUTEX(),
+            self.SEMCID()
+        )
     }
 }
 #[doc = ""]
@@ -6519,6 +7728,18 @@ impl defmt::Format for GPIO_SEMCR8 {
 #[derive(Copy, Clone, Eq, PartialEq)]
 pub struct GPIO_SEMCR9(pub u32);
 impl GPIO_SEMCR9 {
+    #[doc = "Semaphore Mutex"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn SEM_MUTEX(&self) -> bool {
+        let val = (self.0 >> 0usize) & 0x01;
+        val != 0
+    }
+    #[doc = "Semaphore Mutex"]
+    #[inline(always)]
+    pub const fn set_SEM_MUTEX(&mut self, val: bool) {
+        self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+    }
     #[doc = "Semaphore current CID"]
     #[must_use]
     #[inline(always)]
@@ -6541,6 +7762,7 @@ impl Default for GPIO_SEMCR9 {
 impl core::fmt::Debug for GPIO_SEMCR9 {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         f.debug_struct("GPIO_SEMCR9")
+            .field("SEM_MUTEX", &self.SEM_MUTEX())
             .field("SEMCID", &self.SEMCID())
             .finish()
     }
@@ -6548,7 +7770,12 @@ impl core::fmt::Debug for GPIO_SEMCR9 {
 #[cfg(feature = "defmt")]
 impl defmt::Format for GPIO_SEMCR9 {
     fn format(&self, f: defmt::Formatter) {
-        defmt::write!(f, "GPIO_SEMCR9 {{ SEMCID: {=u8:?} }}", self.SEMCID())
+        defmt::write!(
+            f,
+            "GPIO_SEMCR9 {{ SEM_MUTEX: {=bool:?}, SEMCID: {=u8:?} }}",
+            self.SEM_MUTEX(),
+            self.SEMCID()
+        )
     }
 }
 #[doc = ""]

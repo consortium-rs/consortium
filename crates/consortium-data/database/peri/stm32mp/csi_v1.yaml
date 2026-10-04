@@ -973,8 +973,8 @@ fieldset/CSI_IER1:
     - name: ESOTSYNCDL0IE
       bit_offset: 1
       bit_size: 1
-      description: Start of transmission synchronization interrupt error enable on lane
-        0
+      description: Start of transmission synchronization interrupt error enable on
+        lane 0
     - name: EESCDL0IE
       bit_offset: 2
       bit_size: 1
@@ -995,8 +995,8 @@ fieldset/CSI_IER1:
     - name: ESOTSYNCDL1IE
       bit_offset: 9
       bit_size: 1
-      description: Start of transmission synchronization interrupt error enable on lane
-        1
+      description: Start of transmission synchronization interrupt error enable on
+        lane 1
     - name: EESCDL1IE
       bit_offset: 10
       bit_size: 1
@@ -1345,7 +1345,8 @@ fieldset/CSI_FCR1:
     - name: CESOTSYNCDL0F
       bit_offset: 1
       bit_size: 1
-      description: Clear Start of transmission synchronization error flag on lane 0
+      description: Clear Start of transmission synchronization error flag on lane
+        0
     - name: CEESCDL0F
       bit_offset: 2
       bit_size: 1
@@ -1366,7 +1367,8 @@ fieldset/CSI_FCR1:
     - name: CESOTSYNCDL1F
       bit_offset: 9
       bit_size: 1
-      description: Clear Start of transmission synchronization error flag on lane 1
+      description: Clear Start of transmission synchronization error flag on lane
+        1
     - name: CEESCDL1F
       bit_offset: 10
       bit_size: 1
@@ -1479,8 +1481,8 @@ fieldset/CSI_PRCR:
     - name: PEN
       bit_offset: 1
       bit_size: 1
-      description: When set to 0, this bit places the digital section of the D-PHY in
-        the reset state
+      description: When set to 0, this bit places the digital section of the D-PHY
+        in the reset state
 fieldset/CSI_PMCR:
   description: ''
   fields:

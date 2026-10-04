@@ -61,11 +61,15 @@ The workflow is driven by the `just pac-*` recipes:
 
 ```bash
 just pac-init            # bring up vendor submodules
-just pac-patch           # apply vendor patches
-just pac-parse-nxp       # headers → chiptool metadata
-just pac-gen-interrupts  # chip dumps → interrupts/<chip>.rs and .x
-just pac-ci              # parse + test + validate
+just setup-chiptool      # install the pinned chiptool build
+just pac-regen           # regenerate every PAC output from the vendor headers
+just pac-verify          # regenerate, then fail if anything differs from git
 ```
+
+`pac-regen` runs the whole chain: vendor-header patches, header staging, IR parsing,
+IR corrections, interrupt tables, HAL singletons, chiptool register blocks (the
+module-to-IR map is `BLOCKS` in `scripts/pac/gen_blocks.py`), corrections to the
+generated Rust, and formatting. The committed output is exactly what it produces.
 
 Interrupt tables come from `scripts/pac/gen_interrupts.py` reading the
 `consortium-data` chip dumps — the same source that feeds
@@ -73,8 +77,10 @@ Interrupt tables come from `scripts/pac/gen_interrupts.py` reading the
 shared source is what keeps the HAL's singletons and the PAC's interrupt numbers in
 agreement.
 
-**Do not hand-edit generated output** unless a recipe or the patch workflow calls for
-it. Change the parser scripts or the vendor patches and re-run.
+**Do not hand-edit generated output.** A correction the parsers cannot make goes in a
+patch with a header saying why: `scripts/pac/patches/<submodule>/` for the vendor
+headers, `scripts/pac/patches/ir/` for the IR and chip dumps, and
+`scripts/pac/patches/generated/` for the Rust. Then re-run `just pac-verify`.
 
 ## Lints
 

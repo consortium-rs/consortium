@@ -76,18 +76,22 @@ pub fn ungate(offset: Option<u32>) {
     #[cfg(all(feature = "mimx93", not(feature = "mimx95")))]
     if let Some(offset) = offset {
         let gate = CCM_BASE + offset as usize;
-        // SAFETY: `gate` is an LPCG register block inside `CCM_CTRL`, an
-        // always-clocked block the CM33 can reach; the offsets come from the
+        // Every access below targets an LPCG register block inside `CCM_CTRL`,
+        // an always-clocked block the CM33 can reach; the offsets come from the
         // vendor gate table above. Opening an already-open gate is idempotent,
         // and only the consumer of the gated peripheral's singleton calls this.
-        unsafe {
-            let authen = ((gate + AUTHEN_OFFSET) as *const u32).read_volatile();
-            if authen & AUTHEN_CPULPM_EN != 0 {
-                ((gate + LPM_CUR_OFFSET) as *mut u32).write_volatile(LPM_SETTING_ON);
-            } else {
-                let direct = (gate + DIRECT_OFFSET) as *mut u32;
-                direct.write_volatile(direct.read_volatile() | DIRECT_ON);
-            }
+        //
+        // SAFETY: `AUTHEN` of the gate described above.
+        let authen = unsafe { ((gate + AUTHEN_OFFSET) as *const u32).read_volatile() };
+        if authen & AUTHEN_CPULPM_EN != 0 {
+            // SAFETY: `LPM_CUR` of the gate described above.
+            unsafe { ((gate + LPM_CUR_OFFSET) as *mut u32).write_volatile(LPM_SETTING_ON) };
+        } else {
+            let direct = (gate + DIRECT_OFFSET) as *mut u32;
+            // SAFETY: `DIRECT` of the gate described above.
+            let value = unsafe { direct.read_volatile() };
+            // SAFETY: as above; sets only `DIRECT.ON`, preserving the rest.
+            unsafe { direct.write_volatile(value | DIRECT_ON) };
         }
         // The peripheral access that follows must not overtake the gate write:
         // the two target different Device regions, which Armv8-M does not order.

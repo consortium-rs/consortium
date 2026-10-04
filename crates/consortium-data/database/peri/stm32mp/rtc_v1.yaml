@@ -20,6 +20,7 @@ block/RTC:
     - name: PRER
       byte_offset: 16
       description: RTC prescaler register
+      fieldset: RTC_PRER
     - name: WUTR
       byte_offset: 20
       description: RTC wakeup timer register
@@ -95,6 +96,7 @@ block/RTC:
     - name: CFGR
       byte_offset: 96
       description: RTC configuration register
+      fieldset: RTC_CFGR
     - name: ALRABINR
       byte_offset: 112
       description: RTC alarm A binary mode register
@@ -231,6 +233,16 @@ fieldset/RTC_ICSR:
     - name: RECALPF
       bit_offset: 16
       bit_size: 1
+fieldset/RTC_PRER:
+  description: ''
+  fields:
+    - name: PREDIV_S
+      bit_offset: 0
+      bit_size: 15
+      description: '0x00007FFF'
+    - name: PREDIV_A
+      bit_offset: 16
+      bit_size: 7
 fieldset/RTC_WUTR:
   description: ''
   fields:
@@ -348,6 +360,14 @@ fieldset/RTC_CR:
       bit_offset: 28
       bit_size: 1
       description: Alarm B mask
+    - name: TAMPALRM_PU
+      bit_offset: 29
+      bit_size: 1
+      description: TAMPALARM output pull-up config
+    - name: TAMPALRM_TYPE
+      bit_offset: 30
+      bit_size: 1
+      description: TAMPALARM output type
     - name: OUT2EN
       bit_offset: 31
       bit_size: 1
@@ -774,6 +794,12 @@ fieldset/RTC_SCR:
     - name: CSSRUF
       bit_offset: 6
       bit_size: 1
+fieldset/RTC_CFGR:
+  description: ''
+  fields:
+    - name: OUT2_RMP
+      bit_offset: 0
+      bit_size: 1
 fieldset/RTC_ALRABINR:
   description: ''
   fields:
@@ -807,23 +833,35 @@ fieldset/RTC_HWCFGR:
       bit_offset: 4
       bit_size: 4
       description: '0x000000F0'
+    - name: SMOOTH_CALIB
+      bit_offset: 8
+      bit_size: 4
+      description: '0x00000F00'
     - name: TIMESTAMP
       bit_offset: 12
       bit_size: 4
       description: '0x00000F000'
-    - name: RIF
+    - name: OPTIONREG_OUT
+      bit_offset: 16
+      bit_size: 8
+      description: '0x00FF0000'
+    - name: TRUST_ZONE
       bit_offset: 24
+      bit_size: 4
+      description: '0x0F000000'
+    - name: RIF
+      bit_offset: 28
       bit_size: 4
 fieldset/RTC_VERR:
   description: ''
   fields:
     - name: MINREV
       bit_offset: 0
-      bit_size: 3
+      bit_size: 1
       description: RTC Minor version
     - name: MAJREV
       bit_offset: 4
-      bit_size: 3
+      bit_size: 1
       description: RTC Major version
 fieldset/RTC_IPIDR:
   description: ''

@@ -4,16 +4,44 @@ block/GICV2M:
     - name: TYPER
       byte_offset: 8
       description: GICV2M typer register
+      fieldset: GICV2M_TYPER
     - name: SETSPI
       byte_offset: 64
       description: GICV2M set SPI register
+      fieldset: GICV2M_SETSPI
     - name: MISC_CTRL
       byte_offset: 256
       description: GICV2M MISC CTRL register
+      fieldset: GICV2M_MISC_CTRL
     - name: IIDR
       byte_offset: 4044
       description: GICV2M IIDR register
       fieldset: GICV2M_IIDR
+fieldset/GICV2M_TYPER:
+  description: ''
+  fields:
+    - name: NUMBER_OF_SPIS
+      bit_offset: 0
+      bit_size: 10
+      description: Returns the number-1 of contiguous SPIs assigned to the frame
+    - name: BASE_SPI_NUMBER
+      bit_offset: 16
+      bit_size: 10
+      description: Returns the lowest SPI ID assigned to the frame
+fieldset/GICV2M_SETSPI:
+  description: ''
+  fields:
+    - name: SPI_NUM
+      bit_offset: 0
+      bit_size: 10
+      description: On a write, an edge-triggered interrupt is generated to the GIC
+        for an SPI with the ID identified b
+fieldset/GICV2M_MISC_CTRL:
+  description: ''
+  fields:
+    - name: SPI_MERGED
+      bit_offset: 1
+      bit_size: 1
 fieldset/GICV2M_IIDR:
   description: ''
   fields:
@@ -25,3 +53,11 @@ fieldset/GICV2M_IIDR:
       bit_offset: 12
       bit_size: 4
       description: Revision number for the component
+    - name: ARCH_VERSION
+      bit_offset: 16
+      bit_size: 4
+      description: GICV2M architecture version
+    - name: PRODUCT_ID
+      bit_offset: 20
+      bit_size: 12
+      description: Product identifier

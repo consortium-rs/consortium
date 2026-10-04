@@ -338,6 +338,8 @@ pub enum Interrupt {
     DISP_IRQSTEER7 = 219,
     #[doc = "CAMERAMIX ISI interrupt Channel 0"]
     ISI = 221,
+    #[doc = "ISP Processing Interrupt - Context 0"]
+    ISP = 222,
     #[doc = "IRQSTEER0 interrupt"]
     IRQSTEER_0 = 224,
     #[doc = "IRQSTEER1 interrupt"]
@@ -565,6 +567,7 @@ unsafe extern "C" {
     fn DISP_IRQSTEER4();
     fn DISP_IRQSTEER7();
     fn ISI();
+    fn ISP();
     fn IRQSTEER_0();
     fn IRQSTEER_1();
     fn IRQSTEER_2();
@@ -923,7 +926,7 @@ pub static __INTERRUPTS: [Vector; 240] = [
     }, // 219: DISP_IRQSTEER7
     Vector { reserved: 0 },   // 220: reserved
     Vector { handler: ISI },  // 221: ISI
-    Vector { reserved: 0 },   // 222: reserved
+    Vector { handler: ISP },  // 222: ISP
     Vector { reserved: 0 },   // 223: reserved
     Vector {
         handler: IRQSTEER_0,

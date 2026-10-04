@@ -1,0 +1,55 @@
+block/INTM:
+  description: ''
+  items:
+    - name: INTM_MM
+      byte_offset: 0
+      fieldset: INTM_INTM_MM
+    - name: INTM_IACK
+      byte_offset: 4
+      fieldset: INTM_INTM_IACK
+    - name: MON_INTM_IRQSEL
+      byte_offset: 8
+      array:
+        len: 4
+        stride: 16
+      fieldset: INTM_MON_INTM_IRQSEL
+fieldset/INTM_INTM_MM:
+  description: ''
+  fields:
+    - name: MM
+      bit_offset: 0
+      bit_size: 1
+fieldset/INTM_INTM_IACK:
+  description: ''
+  fields:
+    - name: IRQ
+      bit_offset: 0
+      bit_size: 10
+      description: Interrupt Request
+fieldset/INTM_MON_INTM_IRQSEL:
+  description: ''
+  fields:
+    - name: IRQ
+      bit_offset: 0
+      bit_size: 10
+      description: Interrupt Request
+fieldset/INTM_MON_INTM_LATENCY:
+  description: ''
+  fields:
+    - name: LAT
+      bit_offset: 0
+      bit_size: 24
+      description: Latency
+fieldset/INTM_MON_INTM_TIMER:
+  description: ''
+  fields:
+    - name: TIMER
+      bit_offset: 0
+      bit_size: 24
+      description: Timer
+fieldset/INTM_MON_INTM_STATUS:
+  description: ''
+  fields:
+    - name: STATUS
+      bit_offset: 0
+      bit_size: 1

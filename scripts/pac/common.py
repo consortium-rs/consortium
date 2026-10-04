@@ -80,6 +80,23 @@ def calc_bit_size_from_mask(mask_val: int) -> int:
     return popcount(mask_val)
 
 
+def mask_ranges(mask_val: int) -> list[tuple[int, int]]:
+    """Split a shifted mask into its runs of set bits, lowest first.
+
+    `0x00300070` (bits 4-6 and 20-21) gives `[(4, 6), (20, 21)]`.
+    """
+    ranges: list[tuple[int, int]] = []
+    bit = 0
+    while mask_val >> bit:
+        if (mask_val >> bit) & 1:
+            start = bit
+            while (mask_val >> (bit + 1)) & 1:
+                bit += 1
+            ranges.append((start, bit))
+        bit += 1
+    return ranges
+
+
 class _IndentDumper(yaml.Dumper):
     """Dumper that indents block sequences under their parent key.
 

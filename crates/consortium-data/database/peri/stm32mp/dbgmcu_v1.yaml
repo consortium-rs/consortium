@@ -4,9 +4,11 @@ block/DBGMCU:
     - name: IDCODE
       byte_offset: 0
       description: MCU device ID code
+      fieldset: DBGMCU_IDCODE
     - name: CR
       byte_offset: 4
       description: DBGMCU Configuration Register
+      fieldset: DBGMCU_CR
     - name: CRA35
       byte_offset: 8
       description: DBGMCU Configuration Register CPU1
@@ -59,6 +61,40 @@ block/DBGMCU:
     - name: APBSRFZ3
       byte_offset: 76
       description: DBGMCU APBSR Peripheral Freeze Register CPU3
+fieldset/DBGMCU_IDCODE:
+  description: ''
+  fields:
+    - name: DEV_ID
+      bit_offset: 0
+      bit_size: 12
+      description: Device ID
+    - name: DIV_ID
+      bit_offset: 12
+      bit_size: 4
+      description: Division ID
+    - name: REV_ID
+      bit_offset: 16
+      bit_size: 16
+      description: Device revision
+fieldset/DBGMCU_CR:
+  description: ''
+  fields:
+    - name: DBG_SLEEP
+      bit_offset: 0
+      bit_size: 1
+      description: Allow debug in SLEEP mode
+    - name: DBG_STOP
+      bit_offset: 1
+      bit_size: 1
+      description: Allow debug in STOP mode
+    - name: DBG_STANDBY
+      bit_offset: 2
+      bit_size: 1
+      description: Allow debug in STANDBY mode
+    - name: DBG_SWD_SELN
+      bit_offset: 4
+      bit_size: 1
+      description: Select M0+ debug interface
 fieldset/DBGMCU_CRA35:
   description: ''
   fields:
@@ -66,3 +102,7 @@ fieldset/DBGMCU_CRA35:
       bit_offset: 0
       bit_size: 1
       description: IWDG1 behavior when secure debug enabled
+    - name: DBG_STGEN_STOP
+      bit_offset: 1
+      bit_size: 1
+      description: STGEN suspend in debug

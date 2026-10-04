@@ -8,6 +8,7 @@ block/OCTOSPIM:
     - name: HWCFGR
       byte_offset: 1008
       description: OCTOSPI IO Manager hardware configuration register
+      fieldset: OCTOSPIM_HWCFGR
     - name: VERR
       byte_offset: 1012
       description: OCTOSPI IO Manager version register
@@ -31,6 +32,29 @@ fieldset/OCTOSPIM_CR:
       bit_offset: 1
       bit_size: 1
       description: OCTOSPIM multiplexing mode
+    - name: CSSEL_OVR_EN
+      bit_offset: 4
+      bit_size: 1
+      description: Chip select selector override enable
+    - name: CSSEL_OVR_O1
+      bit_offset: 5
+      bit_size: 1
+      description: Chip select selector override setting for OCTOSPI1
+    - name: CSSEL_OVR_O2
+      bit_offset: 6
+      bit_size: 1
+      description: Chip select selector override setting for OCTOSPI2
+    - name: REQ2ACK_TIME
+      bit_offset: 16
+      bit_size: 8
+      description: REQ to ACK time
+fieldset/OCTOSPIM_HWCFGR:
+  description: ''
+  fields:
+    - name: NUM_PORT
+      bit_offset: 0
+      bit_size: 4
+      description: Number of ports
 fieldset/OCTOSPIM_VERR:
   description: ''
   fields:

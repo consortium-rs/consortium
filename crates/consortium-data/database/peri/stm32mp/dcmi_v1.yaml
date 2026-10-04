@@ -15,12 +15,14 @@ block/DCMI:
     - name: IER
       byte_offset: 12
       description: DCMI interrupt enable register
+      fieldset: DCMI_IER
     - name: MISR
       byte_offset: 16
       description: DCMI masked interrupt status register
     - name: ICR
       byte_offset: 20
       description: DCMI interrupt clear register
+      fieldset: DCMI_ICR
     - name: ESCR
       byte_offset: 24
       description: DCMI embedded synchronization code register
@@ -119,6 +121,50 @@ fieldset/DCMI_SR:
       description: '0x00000002'
     - name: FNE
       bit_offset: 2
+      bit_size: 1
+fieldset/DCMI_IER:
+  description: ''
+  fields:
+    - name: FRAME_IE
+      bit_offset: 0
+      bit_size: 1
+      description: '0x00000001'
+    - name: OVR_IE
+      bit_offset: 1
+      bit_size: 1
+      description: '0x00000002'
+    - name: ERR_IE
+      bit_offset: 2
+      bit_size: 1
+      description: '0x00000004'
+    - name: VSYNC_IE
+      bit_offset: 3
+      bit_size: 1
+      description: '0x00000008'
+    - name: LINE_IE
+      bit_offset: 4
+      bit_size: 1
+fieldset/DCMI_ICR:
+  description: ''
+  fields:
+    - name: FRAME_ISC
+      bit_offset: 0
+      bit_size: 1
+      description: '0x00000001'
+    - name: OVR_ISC
+      bit_offset: 1
+      bit_size: 1
+      description: '0x00000002'
+    - name: ERR_ISC
+      bit_offset: 2
+      bit_size: 1
+      description: '0x00000004'
+    - name: VSYNC_ISC
+      bit_offset: 3
+      bit_size: 1
+      description: '0x00000008'
+    - name: LINE_ISC
+      bit_offset: 4
       bit_size: 1
 fieldset/DCMI_ESCR:
   description: ''
