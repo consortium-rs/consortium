@@ -1,0 +1,128 @@
+Hand-corrected `consortium-pac-stm32mp2::peripherals::usart`: keep the USART_BRR LPUART (20-bit LPUART divider) and USART_CR1 M (word length) overlays.
+The file is otherwise chiptool output; this restores the committed API on top of it.
+--- a/crates/consortium-pac-stm32mp2/src/peripherals/usart.rs
++++ b/crates/consortium-pac-stm32mp2/src/peripherals/usart.rs
+@@ -223,6 +223,18 @@
+     pub const fn set_BRR(&mut self, val: u16) {
+         self.0 = (self.0 & !(0xffff << 0usize)) | (((val as u32) & 0xffff) << 0usize);
+     }
++    #[doc = "LPUART baud rate division (LPUARTDIV)"]
++    #[must_use]
++    #[inline(always)]
++    pub const fn LPUART(&self) -> u32 {
++        let val = (self.0 >> 0usize) & 0x000f_ffff;
++        val as u32
++    }
++    #[doc = "LPUART baud rate division (LPUARTDIV)"]
++    #[inline(always)]
++    pub const fn set_LPUART(&mut self, val: u32) {
++        self.0 = (self.0 & !(0x000f_ffff << 0usize)) | (((val as u32) & 0x000f_ffff) << 0usize);
++    }
+ }
+ impl Default for USART_BRR {
+     #[inline(always)]
+@@ -234,13 +246,19 @@
+     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+         f.debug_struct("USART_BRR")
+             .field("BRR", &self.BRR())
++            .field("LPUART", &self.LPUART())
+             .finish()
+     }
+ }
+ #[cfg(feature = "defmt")]
+ impl defmt::Format for USART_BRR {
+     fn format(&self, f: defmt::Formatter) {
+-        defmt::write!(f, "USART_BRR {{ BRR: {=u16:?} }}", self.BRR())
++        defmt::write!(
++            f,
++            "USART_BRR {{ BRR: {=u16:?}, LPUART: {=u32:?} }}",
++            self.BRR(),
++            self.LPUART()
++        )
+     }
+ }
+ #[doc = ""]
+@@ -391,8 +409,20 @@
+     #[inline(always)]
+     pub const fn set_WAKE(&mut self, val: bool) {
+         self.0 = (self.0 & !(0x01 << 11usize)) | (((val as u32) & 0x01) << 11usize);
++    }
++    #[doc = "Word length"]
++    #[must_use]
++    #[inline(always)]
++    pub const fn M(&self) -> u32 {
++        let val = (self.0 >> 12usize) & 0x0001_ffff;
++        val as u32
+     }
+     #[doc = "Word length"]
++    #[inline(always)]
++    pub const fn set_M(&mut self, val: u32) {
++        self.0 = (self.0 & !(0x0001_ffff << 12usize)) | (((val as u32) & 0x0001_ffff) << 12usize);
++    }
++    #[doc = "Word length"]
+     #[must_use]
+     #[inline(always)]
+     pub const fn M0(&self) -> bool {
+@@ -558,6 +588,7 @@
+             .field("PS", &self.PS())
+             .field("PCE", &self.PCE())
+             .field("WAKE", &self.WAKE())
++            .field("M", &self.M())
+             .field("M0", &self.M0())
+             .field("MME", &self.MME())
+             .field("CMIE", &self.CMIE())
+@@ -578,7 +609,7 @@
+     fn format(&self, f: defmt::Formatter) {
+         defmt::write!(
+             f,
+-            "USART_CR1 {{ UE: {=bool:?}, UESM: {=bool:?}, RE: {=bool:?}, TE: {=bool:?}, IDLEIE: {=bool:?}, RXFNEIE: {=bool:?}, TCIE: {=bool:?}, TXFNFIE: {=bool:?}, PEIE: {=bool:?}, PS: {=bool:?}, PCE: {=bool:?}, WAKE: {=bool:?}, M0: {=bool:?}, MME: {=bool:?}, CMIE: {=bool:?}, OVER8: {=bool:?}, DEDT: {=u8:?}, DEAT: {=u8:?}, RTOIE: {=bool:?}, EOBIE: {=bool:?}, M1: {=bool:?}, FIFOEN: {=bool:?}, TXFEIE: {=bool:?}, RXFFIE: {=bool:?} }}",
++            "USART_CR1 {{ UE: {=bool:?}, UESM: {=bool:?}, RE: {=bool:?}, TE: {=bool:?}, IDLEIE: {=bool:?}, RXFNEIE: {=bool:?}, TCIE: {=bool:?}, TXFNFIE: {=bool:?}, PEIE: {=bool:?}, PS: {=bool:?}, PCE: {=bool:?}, WAKE: {=bool:?}, M: {=u32:?}, M0: {=bool:?}, MME: {=bool:?}, CMIE: {=bool:?}, OVER8: {=bool:?}, DEDT: {=u8:?}, DEAT: {=u8:?}, RTOIE: {=bool:?}, EOBIE: {=bool:?}, M1: {=bool:?}, FIFOEN: {=bool:?}, TXFEIE: {=bool:?}, RXFFIE: {=bool:?} }}",
+             self.UE(),
+             self.UESM(),
+             self.RE(),
+@@ -591,6 +622,7 @@
+             self.PS(),
+             self.PCE(),
+             self.WAKE(),
++            self.M(),
+             self.M0(),
+             self.MME(),
+             self.CMIE(),
+@@ -623,18 +655,6 @@
+     pub const fn set_SLVEN(&mut self, val: bool) {
+         self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+     }
+-    #[doc = "When the DIS_NSS bit is set, the NSS pin input is ignored"]
+-    #[must_use]
+-    #[inline(always)]
+-    pub const fn DIS_NSS(&self) -> bool {
+-        let val = (self.0 >> 3usize) & 0x01;
+-        val != 0
+-    }
+-    #[doc = "When the DIS_NSS bit is set, the NSS pin input is ignored"]
+-    #[inline(always)]
+-    pub const fn set_DIS_NSS(&mut self, val: bool) {
+-        self.0 = (self.0 & !(0x01 << 3usize)) | (((val as u32) & 0x01) << 3usize);
+-    }
+     #[doc = "7-bit Address Detection/4-bit Address Detection"]
+     #[must_use]
+     #[inline(always)]
+@@ -862,7 +882,6 @@
+     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+         f.debug_struct("USART_CR2")
+             .field("SLVEN", &self.SLVEN())
+-            .field("DIS_NSS", &self.DIS_NSS())
+             .field("ADDM7", &self.ADDM7())
+             .field("LBDL", &self.LBDL())
+             .field("LBDIE", &self.LBDIE())
+@@ -889,9 +908,8 @@
+     fn format(&self, f: defmt::Formatter) {
+         defmt::write!(
+             f,
+-            "USART_CR2 {{ SLVEN: {=bool:?}, DIS_NSS: {=bool:?}, ADDM7: {=bool:?}, LBDL: {=bool:?}, LBDIE: {=bool:?}, LBCL: {=bool:?}, CPHA: {=bool:?}, CPOL: {=bool:?}, CLKEN: {=bool:?}, STOP: {=u8:?}, LINEN: {=bool:?}, SWAP: {=bool:?}, RXINV: {=bool:?}, TXINV: {=bool:?}, DATAINV: {=bool:?}, MSBFIRST: {=bool:?}, ABREN: {=bool:?}, ABRMODE: {=u8:?}, RTOEN: {=bool:?}, ADD: {=u8:?} }}",
++            "USART_CR2 {{ SLVEN: {=bool:?}, ADDM7: {=bool:?}, LBDL: {=bool:?}, LBDIE: {=bool:?}, LBCL: {=bool:?}, CPHA: {=bool:?}, CPOL: {=bool:?}, CLKEN: {=bool:?}, STOP: {=u8:?}, LINEN: {=bool:?}, SWAP: {=bool:?}, RXINV: {=bool:?}, TXINV: {=bool:?}, DATAINV: {=bool:?}, MSBFIRST: {=bool:?}, ABREN: {=bool:?}, ABRMODE: {=u8:?}, RTOEN: {=bool:?}, ADD: {=u8:?} }}",
+             self.SLVEN(),
+-            self.DIS_NSS(),
+             self.ADDM7(),
+             self.LBDL(),
+             self.LBDIE(),

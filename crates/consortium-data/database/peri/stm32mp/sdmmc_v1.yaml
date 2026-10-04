@@ -107,6 +107,7 @@ block/SDMMC:
     - name: IPIDR
       byte_offset: 1016
       description: SDMMC identification register
+      fieldset: SDMMC_IPIDR
     - name: SIDR
       byte_offset: 1020
       description: SDMMC size ID register
@@ -149,6 +150,10 @@ fieldset/SDMMC_CLKCR:
       bit_offset: 16
       bit_size: 1
       description: SDMMC_CK dephasing selection bit
+    - name: HWFC_EN
+      bit_offset: 17
+      bit_size: 1
+      description: HW Flow Control enable
     - name: DDR
       bit_offset: 18
       bit_size: 1
@@ -376,8 +381,8 @@ fieldset/SDMMC_STA:
     - name: TXFIFOHE
       bit_offset: 14
       bit_size: 1
-      description: 'Transmit FIFO Half Empty: at least 8 words can be written into the
-        FIFO'
+      description: 'Transmit FIFO Half Empty: at least 8 words can be written into
+        the FIFO'
     - name: RXFIFOHF
       bit_offset: 15
       bit_size: 1
@@ -691,6 +696,13 @@ fieldset/SDMMC_VERR:
       bit_offset: 4
       bit_size: 4
       description: SDMMC major revision number
+fieldset/SDMMC_IPIDR:
+  description: ''
+  fields:
+    - name: IP_ID
+      bit_offset: 0
+      bit_size: 32
+      description: SDMMC identification
 fieldset/SDMMC_SIDR:
   description: ''
   fields:

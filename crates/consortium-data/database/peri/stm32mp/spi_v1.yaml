@@ -108,6 +108,10 @@ fieldset/SPI_CR1:
       bit_offset: 12
       bit_size: 1
       description: Internal SS signal input level
+    - name: CRC33_17
+      bit_offset: 13
+      bit_size: 1
+      description: 32-bit CRC polynomial configuration
     - name: RCRCINI
       bit_offset: 14
       bit_size: 1

@@ -328,8 +328,8 @@ fieldset/I3C_SR:
     - name: ABT
       bit_offset: 17
       bit_size: 1
-      description: a private read message is completed/aborted prematurely by the target
-        (when the I3C is acting as co
+      description: a private read message is completed/aborted prematurely by the
+        target (when the I3C is acting as co
     - name: DIR
       bit_offset: 18
       bit_size: 1
@@ -380,7 +380,8 @@ fieldset/I3C_RMR:
     - name: IBIRDCNT
       bit_offset: 0
       bit_size: 3
-      description: IBI received payload data count (when the I3C is configured as controller)
+      description: IBI received payload data count (when the I3C is configured as
+        controller)
     - name: RCODE
       bit_offset: 8
       bit_size: 8
@@ -419,7 +420,8 @@ fieldset/I3C_EVR:
     - name: TXLASTF
       bit_offset: 6
       bit_size: 1
-      description: last written data byte/word flag (whatever the I3C is acting as controller/target)
+      description: last written data byte/word flag (whatever the I3C is acting as
+        controller/target)
     - name: RXLASTF
       bit_offset: 7
       bit_size: 1
@@ -491,8 +493,8 @@ fieldset/I3C_EVR:
     - name: INTUPDF
       bit_offset: 29
       bit_size: 1
-      description: interrupt/controller-role/hot-join update flag (when the I3C is acting
-        as target)
+      description: interrupt/controller-role/hot-join update flag (when the I3C is
+        acting as target)
     - name: DEFF
       bit_offset: 30
       bit_size: 1
@@ -507,7 +509,8 @@ fieldset/I3C_IER:
     - name: CFNFIE
       bit_offset: 2
       bit_size: 1
-      description: C-FIFO not full interrupt enable (whatever the I3C is acting as controller/target)
+      description: C-FIFO not full interrupt enable (whatever the I3C is acting as
+        controller/target)
     - name: SFNEIE
       bit_offset: 3
       bit_size: 1
@@ -521,12 +524,13 @@ fieldset/I3C_IER:
     - name: RXFNEIE
       bit_offset: 5
       bit_size: 1
-      description: RX-FIFO not empty interrupt enable (whatever the I3C is acting as
-        controller/target)
+      description: RX-FIFO not empty interrupt enable (whatever the I3C is acting
+        as controller/target)
     - name: FCIE
       bit_offset: 9
       bit_size: 1
-      description: frame complete interrupt enable (whatever the I3C is acting as controller/target)
+      description: frame complete interrupt enable (whatever the I3C is acting as
+        controller/target)
     - name: RXTGTENDIE
       bit_offset: 10
       bit_size: 1
@@ -552,8 +556,8 @@ fieldset/I3C_IER:
     - name: CRUPDIE
       bit_offset: 18
       bit_size: 1
-      description: controller-role update interrupt enable (when the I3C is acting as
-        target)
+      description: controller-role update interrupt enable (when the I3C is acting
+        as target)
     - name: HJIE
       bit_offset: 19
       bit_size: 1
@@ -613,7 +617,8 @@ fieldset/I3C_CEVR:
     - name: CRXTGTENDF
       bit_offset: 10
       bit_size: 1
-      description: clear target-initiated read end flag (when the I3C is acting as controller)
+      description: clear target-initiated read end flag (when the I3C is acting as
+        controller)
     - name: CERRF
       bit_offset: 11
       bit_size: 1
@@ -734,7 +739,8 @@ fieldset/I3C_DEVRX:
     - name: CRACK
       bit_offset: 17
       bit_size: 1
-      description: controller-role request acknowledge (when the I3C is acting as controller)
+      description: controller-role request acknowledge (when the I3C is acting as
+        controller)
     - name: IBIDEN
       bit_offset: 18
       bit_size: 1
@@ -772,19 +778,23 @@ fieldset/I3C_TIMINGR0:
     - name: SCLL_PP
       bit_offset: 0
       bit_size: 8
-      description: SCL low duration in I3C push-pull phases, in kernel clock cycles
+      description: 'SCL low duration in I3C push-pull phases, in number of kernel
+        clocks cycles:'
     - name: SCLH_I3C
       bit_offset: 8
       bit_size: 8
-      description: SCL high duration for I3C messages, in kernel clock cycles
+      description: SCL high duration, used for I3C messages (both in push-pull and
+        open-drain phases), in number of ke
     - name: SCLL_OD
       bit_offset: 16
       bit_size: 8
-      description: SCL low duration in open-drain phases, in kernel clock cycles
+      description: SCL low duration in open-drain phases, used for legacy I2C commands
+        and for I3C open-drain phases (
     - name: SCLH_I2C
       bit_offset: 24
       bit_size: 8
-      description: SCL high duration for legacy I2C messages, in kernel clock cycles
+      description: 'SCL high duration, used for legacy I2C commands, in number of
+        kernel clocks cycles:'
 fieldset/I3C_TIMINGR1:
   description: ''
   fields:
@@ -803,6 +813,11 @@ fieldset/I3C_TIMINGR1:
       bit_size: 7
       description: number of kernel clocks cycles that is used to set some MIPI timings
         like bus free condition time (
+    - name: SDA_HD
+      bit_offset: 28
+      bit_size: 1
+      description: SDA hold time (when the I3C is acting as controller), in number
+        of kernel clocks cycles (refer to M
 fieldset/I3C_TIMINGR2:
   description: ''
   fields:
@@ -927,8 +942,8 @@ fieldset/I3C_HWCFGR:
     - name: NBT
       bit_offset: 16
       bit_size: 4
-      description: number of targets whose the IBI/controller-role request can be managed
-        in parallel by this I3C IP,
+      description: number of targets whose the IBI/controller-role request can be
+        managed in parallel by this I3C IP,
 fieldset/I3C_VERR:
   description: ''
   fields:

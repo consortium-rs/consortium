@@ -439,13 +439,47 @@ impl CanTx {
         })
         .await?;
         self.load_tx(frame);
+        // A frame no node acknowledges is retransmitted forever and would hold
+        // the mailbox against every later `transmit`; withdraw it if this future
+        // is dropped before it completes.
+        let guard = TxCancelGuard {
+            regs: self.regs,
+            armed: true,
+        };
         // Await the transmit-complete flag.
         wait_flag(&self.state.tx_waker, self.regs, TX_MB, || {
             ((self.regs.IFLAG1().read().0 & (1 << TX_MB)) != 0).then_some(Ok(()))
         })
         .await?;
+        guard.defuse();
         self.regs.IFLAG1().write_value(CAN_IFLAG1(1 << TX_MB));
         Ok(())
+    }
+}
+
+/// Deactivates the transmit mailbox when dropped unless
+/// [`defuse`](Self::defuse)d. An inactive code is what [`CanTx::tx_ready`]
+/// accepts, so the next `transmit` can load the mailbox again. A frame already
+/// in arbitration may still complete; that is the documented FlexCAN outcome
+/// of deactivating a pending mailbox.
+struct TxCancelGuard {
+    regs: CAN,
+    armed: bool,
+}
+
+impl TxCancelGuard {
+    /// The frame was sent; nothing to cancel.
+    fn defuse(mut self) {
+        self.armed = false;
+    }
+}
+
+impl Drop for TxCancelGuard {
+    fn drop(&mut self) {
+        if self.armed {
+            write_cs(self.regs, TX_MB, code::TX_INACTIVE << cs::CODE_SHIFT);
+            self.regs.IFLAG1().write_value(CAN_IFLAG1(1 << TX_MB));
+        }
     }
 }
 

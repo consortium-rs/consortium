@@ -1,0 +1,2557 @@
+block/PXP:
+  description: ''
+  items:
+    - name: CTRL_RW
+      byte_offset: 0
+    - name: CTRL_SET
+      byte_offset: 4
+    - name: CTRL_CLR
+      byte_offset: 8
+    - name: CTRL_TOG
+      byte_offset: 12
+    - name: STAT_RW
+      byte_offset: 16
+    - name: STAT_SET
+      byte_offset: 20
+    - name: STAT_CLR
+      byte_offset: 24
+    - name: STAT_TOG
+      byte_offset: 28
+    - name: OUT_CTRL_RW
+      byte_offset: 32
+    - name: OUT_CTRL_SET
+      byte_offset: 36
+    - name: OUT_CTRL_CLR
+      byte_offset: 40
+    - name: OUT_CTRL_TOG
+      byte_offset: 44
+    - name: OUT_BUF
+      byte_offset: 48
+      fieldset: PXP_OUT_BUF
+    - name: OUT_BUF2
+      byte_offset: 64
+      fieldset: PXP_OUT_BUF2
+    - name: OUT_PITCH
+      byte_offset: 80
+      fieldset: PXP_OUT_PITCH
+    - name: OUT_LRC
+      byte_offset: 96
+      fieldset: PXP_OUT_LRC
+    - name: OUT_PS_ULC
+      byte_offset: 112
+      fieldset: PXP_OUT_PS_ULC
+    - name: OUT_PS_LRC
+      byte_offset: 128
+      fieldset: PXP_OUT_PS_LRC
+    - name: OUT_AS_ULC
+      byte_offset: 144
+      fieldset: PXP_OUT_AS_ULC
+    - name: OUT_AS_LRC
+      byte_offset: 160
+      fieldset: PXP_OUT_AS_LRC
+    - name: PS_CTRL_RW
+      byte_offset: 176
+    - name: PS_CTRL_SET
+      byte_offset: 180
+    - name: PS_CTRL_CLR
+      byte_offset: 184
+    - name: PS_CTRL_TOG
+      byte_offset: 188
+    - name: PS_BUF
+      byte_offset: 192
+      fieldset: PXP_PS_BUF
+    - name: PS_UBUF
+      byte_offset: 208
+      fieldset: PXP_PS_UBUF
+    - name: PS_VBUF
+      byte_offset: 224
+      fieldset: PXP_PS_VBUF
+    - name: PS_PITCH
+      byte_offset: 240
+      fieldset: PXP_PS_PITCH
+    - name: PS_BACKGROUND_0
+      byte_offset: 256
+      fieldset: PXP_PS_BACKGROUND_0
+    - name: PS_SCALE
+      byte_offset: 272
+      fieldset: PXP_PS_SCALE
+    - name: PS_OFFSET
+      byte_offset: 288
+      fieldset: PXP_PS_OFFSET
+    - name: PS_CLRKEYLOW_0
+      byte_offset: 304
+      fieldset: PXP_PS_CLRKEYLOW_0
+    - name: PS_CLRKEYHIGH_0
+      byte_offset: 320
+      fieldset: PXP_PS_CLRKEYHIGH_0
+    - name: AS_CTRL
+      byte_offset: 336
+      fieldset: PXP_AS_CTRL
+    - name: AS_BUF
+      byte_offset: 352
+      fieldset: PXP_AS_BUF
+    - name: AS_PITCH
+      byte_offset: 368
+      fieldset: PXP_AS_PITCH
+    - name: AS_CLRKEYLOW_0
+      byte_offset: 384
+      fieldset: PXP_AS_CLRKEYLOW_0
+    - name: AS_CLRKEYHIGH_0
+      byte_offset: 400
+      fieldset: PXP_AS_CLRKEYHIGH_0
+    - name: CSC1_COEF0
+      byte_offset: 416
+      fieldset: PXP_CSC1_COEF0
+    - name: CSC1_COEF1
+      byte_offset: 432
+      fieldset: PXP_CSC1_COEF1
+    - name: CSC1_COEF2
+      byte_offset: 448
+      fieldset: PXP_CSC1_COEF2
+    - name: CSC2_CTRL
+      byte_offset: 464
+      fieldset: PXP_CSC2_CTRL
+    - name: CSC2_COEF0
+      byte_offset: 480
+      fieldset: PXP_CSC2_COEF0
+    - name: CSC2_COEF1
+      byte_offset: 496
+      fieldset: PXP_CSC2_COEF1
+    - name: CSC2_COEF2
+      byte_offset: 512
+      fieldset: PXP_CSC2_COEF2
+    - name: CSC2_COEF3
+      byte_offset: 528
+      fieldset: PXP_CSC2_COEF3
+    - name: CSC2_COEF4
+      byte_offset: 544
+      fieldset: PXP_CSC2_COEF4
+    - name: CSC2_COEF5
+      byte_offset: 560
+      fieldset: PXP_CSC2_COEF5
+    - name: ALPHA_A_CTRL
+      byte_offset: 656
+    - name: ALPHA_B_CTRL
+      byte_offset: 672
+    - name: ALPHA_B_CTRL_1
+      byte_offset: 688
+      fieldset: PXP_ALPHA_B_CTRL_1
+    - name: PS_BACKGROUND_1
+      byte_offset: 704
+      fieldset: PXP_PS_BACKGROUND_1
+    - name: PS_CLRKEYLOW_1
+      byte_offset: 720
+      fieldset: PXP_PS_CLRKEYLOW_1
+    - name: PS_CLRKEYHIGH_1
+      byte_offset: 736
+      fieldset: PXP_PS_CLRKEYHIGH_1
+    - name: AS_CLRKEYLOW_1
+      byte_offset: 752
+      fieldset: PXP_AS_CLRKEYLOW_1
+    - name: AS_CLRKEYHIGH_1
+      byte_offset: 768
+      fieldset: PXP_AS_CLRKEYHIGH_1
+    - name: CTRL2_RW
+      byte_offset: 784
+    - name: CTRL2_SET
+      byte_offset: 788
+    - name: CTRL2_CLR
+      byte_offset: 792
+    - name: CTRL2_TOG
+      byte_offset: 796
+    - name: POWER_REG0
+      byte_offset: 800
+      fieldset: PXP_POWER_REG0
+    - name: POWER_REG1
+      byte_offset: 816
+    - name: DATA_PATH_CTRL0_RW
+      byte_offset: 832
+    - name: DATA_PATH_CTRL0_SET
+      byte_offset: 836
+    - name: DATA_PATH_CTRL0_CLR
+      byte_offset: 840
+    - name: DATA_PATH_CTRL0_TOG
+      byte_offset: 844
+    - name: IRQ_MASK_RW
+      byte_offset: 912
+    - name: IRQ_MASK_SET
+      byte_offset: 916
+    - name: IRQ_MASK_CLR
+      byte_offset: 920
+    - name: IRQ_MASK_TOG
+      byte_offset: 924
+    - name: IRQ_RW
+      byte_offset: 928
+    - name: IRQ_SET
+      byte_offset: 932
+    - name: IRQ_CLR
+      byte_offset: 936
+    - name: IRQ_TOG
+      byte_offset: 940
+    - name: NEXT
+      byte_offset: 1024
+      fieldset: PXP_NEXT
+    - name: INPUT_FETCH_CTRL_CH0_RW
+      byte_offset: 1104
+    - name: INPUT_FETCH_CTRL_CH0_SET
+      byte_offset: 1108
+    - name: INPUT_FETCH_CTRL_CH0_CLR
+      byte_offset: 1112
+    - name: INPUT_FETCH_CTRL_CH0_TOG
+      byte_offset: 1116
+    - name: INPUT_FETCH_CTRL_CH1_RW
+      byte_offset: 1120
+    - name: INPUT_FETCH_CTRL_CH1_SET
+      byte_offset: 1124
+    - name: INPUT_FETCH_CTRL_CH1_CLR
+      byte_offset: 1128
+    - name: INPUT_FETCH_CTRL_CH1_TOG
+      byte_offset: 1132
+    - name: INPUT_FETCH_STATUS_CH0
+      byte_offset: 1136
+    - name: INPUT_FETCH_STATUS_CH1
+      byte_offset: 1152
+    - name: INPUT_FETCH_ACTIVE_SIZE_ULC_CH0
+      byte_offset: 1168
+    - name: INPUT_FETCH_ACTIVE_SIZE_LRC_CH0
+      byte_offset: 1184
+    - name: INPUT_FETCH_ACTIVE_SIZE_ULC_CH1
+      byte_offset: 1200
+    - name: INPUT_FETCH_ACTIVE_SIZE_LRC_CH1
+      byte_offset: 1216
+    - name: INPUT_FETCH_SIZE_CH0
+      byte_offset: 1232
+    - name: INPUT_FETCH_SIZE_CH1
+      byte_offset: 1248
+    - name: INPUT_FETCH_BACKGROUND_COLOR_CH0
+      byte_offset: 1264
+    - name: INPUT_FETCH_BACKGROUND_COLOR_CH1
+      byte_offset: 1280
+    - name: INPUT_FETCH_PITCH
+      byte_offset: 1296
+    - name: INPUT_FETCH_SHIFT_CTRL_CH0_RW
+      byte_offset: 1312
+    - name: INPUT_FETCH_SHIFT_CTRL_CH0_SET
+      byte_offset: 1316
+    - name: INPUT_FETCH_SHIFT_CTRL_CH0_CLR
+      byte_offset: 1320
+    - name: INPUT_FETCH_SHIFT_CTRL_CH0_TOG
+      byte_offset: 1324
+    - name: INPUT_FETCH_SHIFT_CTRL_CH1_RW
+      byte_offset: 1328
+    - name: INPUT_FETCH_SHIFT_CTRL_CH1_SET
+      byte_offset: 1332
+    - name: INPUT_FETCH_SHIFT_CTRL_CH1_CLR
+      byte_offset: 1336
+    - name: INPUT_FETCH_SHIFT_CTRL_CH1_TOG
+      byte_offset: 1340
+    - name: INPUT_FETCH_SHIFT_OFFSET_CH0_RW
+      byte_offset: 1344
+    - name: INPUT_FETCH_SHIFT_OFFSET_CH0_SET
+      byte_offset: 1348
+    - name: INPUT_FETCH_SHIFT_OFFSET_CH0_CLR
+      byte_offset: 1352
+    - name: INPUT_FETCH_SHIFT_OFFSET_CH0_TOG
+      byte_offset: 1356
+    - name: INPUT_FETCH_SHIFT_OFFSET_CH1_RW
+      byte_offset: 1360
+    - name: INPUT_FETCH_SHIFT_OFFSET_CH1_SET
+      byte_offset: 1364
+    - name: INPUT_FETCH_SHIFT_OFFSET_CH1_CLR
+      byte_offset: 1368
+    - name: INPUT_FETCH_SHIFT_OFFSET_CH1_TOG
+      byte_offset: 1372
+    - name: INPUT_FETCH_SHIFT_WIDTH_CH0_RW
+      byte_offset: 1376
+    - name: INPUT_FETCH_SHIFT_WIDTH_CH0_SET
+      byte_offset: 1380
+    - name: INPUT_FETCH_SHIFT_WIDTH_CH0_CLR
+      byte_offset: 1384
+    - name: INPUT_FETCH_SHIFT_WIDTH_CH0_TOG
+      byte_offset: 1388
+    - name: INPUT_FETCH_SHIFT_WIDTH_CH1_RW
+      byte_offset: 1392
+    - name: INPUT_FETCH_SHIFT_WIDTH_CH1_SET
+      byte_offset: 1396
+    - name: INPUT_FETCH_SHIFT_WIDTH_CH1_CLR
+      byte_offset: 1400
+    - name: INPUT_FETCH_SHIFT_WIDTH_CH1_TOG
+      byte_offset: 1404
+    - name: INPUT_FETCH_ADDR_0_CH0
+      byte_offset: 1408
+    - name: INPUT_FETCH_ADDR_1_CH0
+      byte_offset: 1424
+    - name: INPUT_FETCH_ADDR_0_CH1
+      byte_offset: 1440
+    - name: INPUT_FETCH_ADDR_1_CH1
+      byte_offset: 1456
+    - name: INPUT_STORE_CTRL_CH0_RW
+      byte_offset: 1472
+    - name: INPUT_STORE_CTRL_CH0_SET
+      byte_offset: 1476
+    - name: INPUT_STORE_CTRL_CH0_CLR
+      byte_offset: 1480
+    - name: INPUT_STORE_CTRL_CH0_TOG
+      byte_offset: 1484
+    - name: INPUT_STORE_CTRL_CH1_RW
+      byte_offset: 1488
+    - name: INPUT_STORE_CTRL_CH1_SET
+      byte_offset: 1492
+    - name: INPUT_STORE_CTRL_CH1_CLR
+      byte_offset: 1496
+    - name: INPUT_STORE_CTRL_CH1_TOG
+      byte_offset: 1500
+    - name: INPUT_STORE_STATUS_CH0
+      byte_offset: 1504
+    - name: INPUT_STORE_STATUS_CH1
+      byte_offset: 1520
+    - name: INPUT_STORE_SIZE_CH0
+      byte_offset: 1536
+    - name: INPUT_STORE_SIZE_CH1
+      byte_offset: 1552
+    - name: INPUT_STORE_PITCH
+      byte_offset: 1568
+    - name: INPUT_STORE_SHIFT_CTRL_CH0_RW
+      byte_offset: 1584
+    - name: INPUT_STORE_SHIFT_CTRL_CH0_SET
+      byte_offset: 1588
+    - name: INPUT_STORE_SHIFT_CTRL_CH0_CLR
+      byte_offset: 1592
+    - name: INPUT_STORE_SHIFT_CTRL_CH0_TOG
+      byte_offset: 1596
+    - name: INPUT_STORE_SHIFT_CTRL_CH1_RW
+      byte_offset: 1600
+    - name: INPUT_STORE_SHIFT_CTRL_CH1_SET
+      byte_offset: 1604
+    - name: INPUT_STORE_SHIFT_CTRL_CH1_CLR
+      byte_offset: 1608
+    - name: INPUT_STORE_SHIFT_CTRL_CH1_TOG
+      byte_offset: 1612
+    - name: INPUT_STORE_ADDR_0_CH0
+      byte_offset: 1680
+    - name: INPUT_STORE_ADDR_1_CH0
+      byte_offset: 1696
+    - name: INPUT_STORE_FILL_DATA_CH0
+      byte_offset: 1712
+    - name: INPUT_STORE_ADDR_0_CH1
+      byte_offset: 1728
+    - name: INPUT_STORE_ADDR_1_CH1
+      byte_offset: 1744
+    - name: INPUT_STORE_D_MASK0_H_CH0
+      byte_offset: 1760
+    - name: INPUT_STORE_D_MASK0_L_CH0
+      byte_offset: 1776
+    - name: INPUT_STORE_D_MASK1_H_CH0
+      byte_offset: 1792
+    - name: INPUT_STORE_D_MASK1_L_CH0
+      byte_offset: 1808
+    - name: INPUT_STORE_D_MASK2_H_CH0
+      byte_offset: 1824
+    - name: INPUT_STORE_D_MASK2_L_CH0
+      byte_offset: 1840
+    - name: INPUT_STORE_D_MASK3_H_CH0
+      byte_offset: 1856
+    - name: INPUT_STORE_D_MASK3_L_CH0
+      byte_offset: 1872
+    - name: INPUT_STORE_D_MASK4_H_CH0
+      byte_offset: 1888
+    - name: INPUT_STORE_D_MASK4_L_CH0
+      byte_offset: 1904
+    - name: INPUT_STORE_D_MASK5_H_CH0
+      byte_offset: 1920
+    - name: INPUT_STORE_D_MASK5_L_CH0
+      byte_offset: 1936
+    - name: INPUT_STORE_D_MASK6_H_CH0
+      byte_offset: 1952
+    - name: INPUT_STORE_D_MASK6_L_CH0
+      byte_offset: 1968
+    - name: INPUT_STORE_D_MASK7_H_CH0
+      byte_offset: 1984
+    - name: INPUT_STORE_D_MASK7_L_CH0
+      byte_offset: 2016
+    - name: INPUT_STORE_D_SHIFT_L_CH0
+      byte_offset: 2032
+    - name: INPUT_STORE_D_SHIFT_H_CH0
+      byte_offset: 2048
+    - name: INPUT_STORE_F_SHIFT_L_CH0
+      byte_offset: 2064
+    - name: INPUT_STORE_F_SHIFT_H_CH0
+      byte_offset: 2080
+    - name: INPUT_STORE_F_MASK_L_CH0
+      byte_offset: 2096
+    - name: INPUT_STORE_F_MASK_H_CH0
+      byte_offset: 2112
+    - name: BUS_MUX
+      byte_offset: 11488
+    - name: HANDSHAKE_READY_MUX0
+      byte_offset: 11504
+      fieldset: PXP_HANDSHAKE_READY_MUX0
+    - name: HANDSHAKE_READY_MUX1
+      byte_offset: 11520
+      fieldset: PXP_HANDSHAKE_READY_MUX1
+    - name: HANDSHAKE_DONE_MUX0
+      byte_offset: 11536
+      fieldset: PXP_HANDSHAKE_DONE_MUX0
+    - name: HANDSHAKE_DONE_MUX1
+      byte_offset: 11552
+      fieldset: PXP_HANDSHAKE_DONE_MUX1
+    - name: HANDSHAKE_CPU_FETCH_RW
+      byte_offset: 11568
+    - name: HANDSHAKE_CPU_FETCH_SET
+      byte_offset: 11572
+    - name: HANDSHAKE_CPU_FETCH_CLR
+      byte_offset: 11576
+    - name: HANDSHAKE_CPU_FETCH_TOG
+      byte_offset: 11580
+    - name: HANDSHAKE_CPU_STORE_RW
+      byte_offset: 11584
+    - name: HANDSHAKE_CPU_STORE_SET
+      byte_offset: 11588
+    - name: HANDSHAKE_CPU_STORE_CLR
+      byte_offset: 11592
+    - name: HANDSHAKE_CPU_STORE_TOG
+      byte_offset: 11596
+fieldset/PXP_CTRL:
+  description: ''
+  fields:
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 1
+      description: ENABLE
+    - name: ROTATE0
+      bit_offset: 8
+      bit_size: 2
+    - name: HFLIP0
+      bit_offset: 10
+      bit_size: 1
+      description: HFLIP0
+    - name: VFLIP0
+      bit_offset: 11
+      bit_size: 1
+      description: HFLIP0
+    - name: ROTATE1
+      bit_offset: 12
+      bit_size: 2
+      description: VFLIP0
+    - name: HFLIP1
+      bit_offset: 14
+      bit_size: 1
+      description: HFLIP1
+    - name: VFLIP1
+      bit_offset: 15
+      bit_size: 1
+      description: HFLIP1
+    - name: CLKGATE
+      bit_offset: 30
+      bit_size: 1
+      description: ENABLE_ROTATE1
+    - name: SFTRST
+      bit_offset: 31
+      bit_size: 1
+      description: CLKGATE
+fieldset/PXP_CTRL_IRQ:
+  description: ''
+  fields:
+    - name: ENABLE
+      bit_offset: 1
+      bit_size: 1
+      description: ENABLE
+fieldset/PXP_CTRL_NEXT_IRQ:
+  description: ''
+  fields:
+    - name: ENABLE
+      bit_offset: 2
+      bit_size: 1
+      description: IRQ_ENABLE
+fieldset/PXP_CTRL_ENABLE_LCD0:
+  description: ''
+  fields:
+    - name: HANDSHAKE
+      bit_offset: 4
+      bit_size: 1
+      description: NEXT_IRQ_ENABLE
+fieldset/PXP_CTRL_HANDSHAKE_ABORT:
+  description: ''
+  fields:
+    - name: SKIP
+      bit_offset: 5
+      bit_size: 1
+fieldset/PXP_CTRL_ENABLE_PS_AS:
+  description: ''
+  fields:
+    - name: OUT
+      bit_offset: 16
+      bit_size: 1
+      description: VFLIP1
+fieldset/PXP_CTRL_ENABLE_INPUT_FETCH:
+  description: ''
+  fields:
+    - name: STORE
+      bit_offset: 20
+      bit_size: 1
+      description: ENABLE_PS_AS_OUT
+fieldset/PXP_CTRL_ENABLE_ALPHA:
+  description: ''
+  fields:
+    - name: B
+      bit_offset: 21
+      bit_size: 1
+      description: ENABLE_ALPHA_B
+fieldset/PXP_CTRL_BLOCK:
+  description: ''
+  fields:
+    - name: SIZE
+      bit_offset: 23
+      bit_size: 1
+      description: ENABLE_ALPHA_B
+fieldset/PXP_CTRL_ENABLE:
+  description: ''
+  fields:
+    - name: CSC2
+      bit_offset: 24
+      bit_size: 1
+      description: ENABLE_CSC2
+    - name: ROTATE0
+      bit_offset: 26
+      bit_size: 1
+      description: ENABLE_CSC2
+    - name: ROTATE1
+      bit_offset: 27
+      bit_size: 1
+      description: ENABLE_ROTATE0
+fieldset/PXP_STAT:
+  description: ''
+  fields:
+    - name: IRQ0
+      bit_offset: 0
+      bit_size: 1
+      description: IRQ0
+    - name: BLOCKY
+      bit_offset: 16
+      bit_size: 8
+      description: AXI_ERROR_ID_1
+    - name: BLOCKX
+      bit_offset: 24
+      bit_size: 8
+      description: BLOCKY
+fieldset/PXP_STAT_NEXT:
+  description: ''
+  fields:
+    - name: IRQ
+      bit_offset: 3
+      bit_size: 1
+      description: AXI_READ_ERROR_0
+fieldset/PXP_OUT_CTRL:
+  description: ''
+  fields:
+    - name: FORMAT
+      bit_offset: 0
+      bit_size: 5
+    - name: ALPHA
+      bit_offset: 24
+      bit_size: 8
+      description: ALPHA_OUTPUT
+fieldset/PXP_OUT_CTRL_INTERLACED:
+  description: ''
+  fields:
+    - name: OUTPUT
+      bit_offset: 8
+      bit_size: 2
+fieldset/PXP_OUT_CTRL_ALPHA:
+  description: ''
+  fields:
+    - name: OUTPUT
+      bit_offset: 23
+      bit_size: 1
+      description: ALPHA_OUTPUT
+fieldset/PXP_OUT_BUF:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: ADDR
+fieldset/PXP_OUT_BUF2:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: ADDR
+fieldset/PXP_OUT_PITCH:
+  description: ''
+  fields:
+    - name: PITCH
+      bit_offset: 0
+      bit_size: 16
+      description: PITCH
+fieldset/PXP_OUT_LRC:
+  description: ''
+  fields:
+    - name: Y
+      bit_offset: 0
+      bit_size: 14
+      description: Y
+    - name: X
+      bit_offset: 16
+      bit_size: 14
+      description: Y
+fieldset/PXP_OUT_PS_ULC:
+  description: ''
+  fields:
+    - name: Y
+      bit_offset: 0
+      bit_size: 14
+      description: Y
+    - name: X
+      bit_offset: 16
+      bit_size: 14
+      description: Y
+fieldset/PXP_OUT_PS_LRC:
+  description: ''
+  fields:
+    - name: Y
+      bit_offset: 0
+      bit_size: 14
+      description: Y
+    - name: X
+      bit_offset: 16
+      bit_size: 14
+      description: Y
+fieldset/PXP_OUT_AS_ULC:
+  description: ''
+  fields:
+    - name: Y
+      bit_offset: 0
+      bit_size: 14
+      description: Y
+    - name: X
+      bit_offset: 16
+      bit_size: 14
+      description: Y
+fieldset/PXP_OUT_AS_LRC:
+  description: ''
+  fields:
+    - name: Y
+      bit_offset: 0
+      bit_size: 14
+      description: Y
+    - name: X
+      bit_offset: 16
+      bit_size: 14
+      description: Y
+fieldset/PXP_PS_CTRL:
+  description: ''
+  fields:
+    - name: FORMAT
+      bit_offset: 0
+      bit_size: 6
+    - name: DECY
+      bit_offset: 8
+      bit_size: 2
+      description: WB_SWAP
+    - name: DECX
+      bit_offset: 10
+      bit_size: 2
+fieldset/PXP_PS_CTRL_WB:
+  description: ''
+  fields:
+    - name: SWAP
+      bit_offset: 6
+      bit_size: 1
+      description: WB_SWAP
+fieldset/PXP_PS_BUF:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: ADDR
+fieldset/PXP_PS_UBUF:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: ADDR
+fieldset/PXP_PS_VBUF:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: ADDR
+fieldset/PXP_PS_PITCH:
+  description: ''
+  fields:
+    - name: PITCH
+      bit_offset: 0
+      bit_size: 16
+      description: PITCH
+fieldset/PXP_PS_BACKGROUND_0:
+  description: ''
+  fields:
+    - name: COLOR
+      bit_offset: 0
+      bit_size: 24
+      description: COLOR
+fieldset/PXP_PS_SCALE:
+  description: ''
+  fields:
+    - name: XSCALE
+      bit_offset: 0
+      bit_size: 15
+      description: XSCALE
+    - name: YSCALE
+      bit_offset: 16
+      bit_size: 15
+      description: XSCALE
+fieldset/PXP_PS_OFFSET:
+  description: ''
+  fields:
+    - name: XOFFSET
+      bit_offset: 0
+      bit_size: 12
+      description: XOFFSET
+    - name: YOFFSET
+      bit_offset: 16
+      bit_size: 12
+      description: XOFFSET
+fieldset/PXP_PS_CLRKEYLOW_0:
+  description: ''
+  fields:
+    - name: PIXEL
+      bit_offset: 0
+      bit_size: 24
+      description: PIXEL
+fieldset/PXP_PS_CLRKEYHIGH_0:
+  description: ''
+  fields:
+    - name: PIXEL
+      bit_offset: 0
+      bit_size: 24
+      description: PIXEL
+fieldset/PXP_AS_CTRL_ALPHA:
+  description: ''
+  fields:
+    - name: CTRL
+      bit_offset: 1
+      bit_size: 2
+fieldset/PXP_AS_CTRL_ENABLE:
+  description: ''
+  fields:
+    - name: COLORKEY
+      bit_offset: 3
+      bit_size: 1
+      description: ENABLE_COLORKEY
+fieldset/PXP_AS_CTRL:
+  description: ''
+  fields:
+    - name: FORMAT
+      bit_offset: 4
+      bit_size: 4
+      description: ENABLE_COLORKEY
+    - name: ALPHA
+      bit_offset: 8
+      bit_size: 8
+      description: ALPHA
+    - name: ROP
+      bit_offset: 16
+      bit_size: 4
+      description: ALPHA
+fieldset/PXP_AS_CTRL_ALPHA0:
+  description: ''
+  fields:
+    - name: INVERT
+      bit_offset: 20
+      bit_size: 1
+      description: ALPHA0_INVERT
+fieldset/PXP_AS_CTRL_ALPHA1:
+  description: ''
+  fields:
+    - name: INVERT
+      bit_offset: 21
+      bit_size: 1
+      description: ALPHA0_INVERT
+fieldset/PXP_AS_BUF:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: ADDR
+fieldset/PXP_AS_PITCH:
+  description: ''
+  fields:
+    - name: PITCH
+      bit_offset: 0
+      bit_size: 16
+      description: PITCH
+fieldset/PXP_AS_CLRKEYLOW_0:
+  description: ''
+  fields:
+    - name: PIXEL
+      bit_offset: 0
+      bit_size: 24
+      description: PIXEL
+fieldset/PXP_AS_CLRKEYHIGH_0:
+  description: ''
+  fields:
+    - name: PIXEL
+      bit_offset: 0
+      bit_size: 24
+      description: PIXEL
+fieldset/PXP_CSC1_COEF0_Y:
+  description: ''
+  fields:
+    - name: OFFSET
+      bit_offset: 0
+      bit_size: 9
+      description: Y_OFFSET
+fieldset/PXP_CSC1_COEF0_UV:
+  description: ''
+  fields:
+    - name: OFFSET
+      bit_offset: 9
+      bit_size: 9
+      description: Y_OFFSET
+fieldset/PXP_CSC1_COEF0:
+  description: ''
+  fields:
+    - name: C0
+      bit_offset: 18
+      bit_size: 11
+      description: UV_OFFSET
+    - name: BYPASS
+      bit_offset: 30
+      bit_size: 1
+      description: C0
+fieldset/PXP_CSC1_COEF0_YCBCR:
+  description: ''
+  fields:
+    - name: MODE
+      bit_offset: 31
+      bit_size: 1
+      description: BYPASS
+fieldset/PXP_CSC1_COEF1:
+  description: ''
+  fields:
+    - name: C4
+      bit_offset: 0
+      bit_size: 11
+      description: C4
+    - name: C1
+      bit_offset: 16
+      bit_size: 11
+      description: C4
+fieldset/PXP_CSC1_COEF2:
+  description: ''
+  fields:
+    - name: C3
+      bit_offset: 0
+      bit_size: 11
+      description: C3
+    - name: C2
+      bit_offset: 16
+      bit_size: 11
+      description: C3
+fieldset/PXP_CSC2_CTRL:
+  description: ''
+  fields:
+    - name: BYPASS
+      bit_offset: 0
+      bit_size: 1
+      description: BYPASS
+fieldset/PXP_CSC2_CTRL_CSC:
+  description: ''
+  fields:
+    - name: MODE
+      bit_offset: 1
+      bit_size: 2
+      description: BYPASS
+fieldset/PXP_CSC2_COEF0:
+  description: ''
+  fields:
+    - name: A1
+      bit_offset: 0
+      bit_size: 11
+      description: A1
+    - name: A2
+      bit_offset: 16
+      bit_size: 11
+      description: A1
+fieldset/PXP_CSC2_COEF1:
+  description: ''
+  fields:
+    - name: A3
+      bit_offset: 0
+      bit_size: 11
+      description: A3
+    - name: B1
+      bit_offset: 16
+      bit_size: 11
+      description: A3
+fieldset/PXP_CSC2_COEF2:
+  description: ''
+  fields:
+    - name: B2
+      bit_offset: 0
+      bit_size: 11
+      description: B2
+    - name: B3
+      bit_offset: 16
+      bit_size: 11
+      description: B2
+fieldset/PXP_CSC2_COEF3:
+  description: ''
+  fields:
+    - name: C1
+      bit_offset: 0
+      bit_size: 11
+      description: C1
+    - name: C2
+      bit_offset: 16
+      bit_size: 11
+      description: C1
+fieldset/PXP_CSC2_COEF4:
+  description: ''
+  fields:
+    - name: C3
+      bit_offset: 0
+      bit_size: 11
+      description: C3
+    - name: D1
+      bit_offset: 16
+      bit_size: 9
+      description: C3
+fieldset/PXP_CSC2_COEF5:
+  description: ''
+  fields:
+    - name: D2
+      bit_offset: 0
+      bit_size: 9
+      description: D2
+    - name: D3
+      bit_offset: 16
+      bit_size: 9
+      description: D2
+fieldset/PXP_ALPHA_A_CTRL_PORTER_DUFF:
+  description: ''
+  fields:
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 1
+fieldset/PXP_ALPHA_A_CTRL_S0_S1_FACTOR:
+  description: ''
+  fields:
+    - name: MODE
+      bit_offset: 1
+      bit_size: 2
+fieldset/PXP_ALPHA_A_CTRL_S0_GLOBAL_ALPHA:
+  description: ''
+  fields:
+    - name: MODE
+      bit_offset: 3
+      bit_size: 2
+fieldset/PXP_ALPHA_A_CTRL_S0_ALPHA:
+  description: ''
+  fields:
+    - name: MODE
+      bit_offset: 5
+      bit_size: 1
+fieldset/PXP_ALPHA_A_CTRL_S0_COLOR:
+  description: ''
+  fields:
+    - name: MODE
+      bit_offset: 6
+      bit_size: 1
+fieldset/PXP_ALPHA_A_CTRL_S1_S0_FACTOR:
+  description: ''
+  fields:
+    - name: MODE
+      bit_offset: 8
+      bit_size: 2
+fieldset/PXP_ALPHA_A_CTRL_S1_GLOBAL_ALPHA:
+  description: ''
+  fields:
+    - name: MODE
+      bit_offset: 10
+      bit_size: 2
+fieldset/PXP_ALPHA_A_CTRL_S1_ALPHA:
+  description: ''
+  fields:
+    - name: MODE
+      bit_offset: 12
+      bit_size: 1
+fieldset/PXP_ALPHA_A_CTRL_S1_COLOR:
+  description: ''
+  fields:
+    - name: MODE
+      bit_offset: 13
+      bit_size: 1
+fieldset/PXP_ALPHA_A_CTRL_S0_GLOBAL:
+  description: ''
+  fields:
+    - name: ALPHA
+      bit_offset: 16
+      bit_size: 8
+      description: S0_GLOBAL_ALPHA
+fieldset/PXP_ALPHA_A_CTRL_S1_GLOBAL:
+  description: ''
+  fields:
+    - name: ALPHA
+      bit_offset: 24
+      bit_size: 8
+      description: S1_GLOBAL_ALPHA
+fieldset/PXP_ALPHA_B_CTRL_PORTER_DUFF:
+  description: ''
+  fields:
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 1
+fieldset/PXP_ALPHA_B_CTRL_S0_S1_FACTOR:
+  description: ''
+  fields:
+    - name: MODE
+      bit_offset: 1
+      bit_size: 2
+fieldset/PXP_ALPHA_B_CTRL_S0_GLOBAL_ALPHA:
+  description: ''
+  fields:
+    - name: MODE
+      bit_offset: 3
+      bit_size: 2
+fieldset/PXP_ALPHA_B_CTRL_S0_ALPHA:
+  description: ''
+  fields:
+    - name: MODE
+      bit_offset: 5
+      bit_size: 1
+fieldset/PXP_ALPHA_B_CTRL_S0_COLOR:
+  description: ''
+  fields:
+    - name: MODE
+      bit_offset: 6
+      bit_size: 1
+fieldset/PXP_ALPHA_B_CTRL_S1_S0_FACTOR:
+  description: ''
+  fields:
+    - name: MODE
+      bit_offset: 8
+      bit_size: 2
+fieldset/PXP_ALPHA_B_CTRL_S1_GLOBAL_ALPHA:
+  description: ''
+  fields:
+    - name: MODE
+      bit_offset: 10
+      bit_size: 2
+fieldset/PXP_ALPHA_B_CTRL_S1_ALPHA:
+  description: ''
+  fields:
+    - name: MODE
+      bit_offset: 12
+      bit_size: 1
+fieldset/PXP_ALPHA_B_CTRL_S1_COLOR:
+  description: ''
+  fields:
+    - name: MODE
+      bit_offset: 13
+      bit_size: 1
+fieldset/PXP_ALPHA_B_CTRL_S0_GLOBAL:
+  description: ''
+  fields:
+    - name: ALPHA
+      bit_offset: 16
+      bit_size: 8
+      description: S0_GLOBAL_ALPHA
+fieldset/PXP_ALPHA_B_CTRL_S1_GLOBAL:
+  description: ''
+  fields:
+    - name: ALPHA
+      bit_offset: 24
+      bit_size: 8
+      description: S1_GLOBAL_ALPHA
+fieldset/PXP_ALPHA_B_CTRL_1_ROP:
+  description: ''
+  fields:
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 1
+      description: ROP_ENABLE
+fieldset/PXP_ALPHA_B_CTRL_1_OL_CLRKEY:
+  description: ''
+  fields:
+    - name: ENABLE
+      bit_offset: 1
+      bit_size: 1
+      description: ROP_ENABLE
+fieldset/PXP_ALPHA_B_CTRL_1:
+  description: ''
+  fields:
+    - name: ROP
+      bit_offset: 4
+      bit_size: 4
+fieldset/PXP_PS_BACKGROUND_1:
+  description: ''
+  fields:
+    - name: COLOR
+      bit_offset: 0
+      bit_size: 24
+      description: COLOR
+fieldset/PXP_PS_CLRKEYLOW_1:
+  description: ''
+  fields:
+    - name: PIXEL
+      bit_offset: 0
+      bit_size: 24
+      description: PIXEL
+fieldset/PXP_PS_CLRKEYHIGH_1:
+  description: ''
+  fields:
+    - name: PIXEL
+      bit_offset: 0
+      bit_size: 24
+      description: PIXEL
+fieldset/PXP_AS_CLRKEYLOW_1:
+  description: ''
+  fields:
+    - name: PIXEL
+      bit_offset: 0
+      bit_size: 24
+      description: PIXEL
+fieldset/PXP_AS_CLRKEYHIGH_1:
+  description: ''
+  fields:
+    - name: PIXEL
+      bit_offset: 0
+      bit_size: 24
+      description: PIXEL
+fieldset/PXP_CTRL2:
+  description: ''
+  fields:
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 1
+      description: ENABLE
+    - name: ROTATE0
+      bit_offset: 8
+      bit_size: 2
+      description: ENABLE
+    - name: HFLIP0
+      bit_offset: 10
+      bit_size: 1
+      description: HFLIP0
+    - name: VFLIP0
+      bit_offset: 11
+      bit_size: 1
+      description: HFLIP0
+    - name: ROTATE1
+      bit_offset: 12
+      bit_size: 2
+      description: VFLIP0
+    - name: HFLIP1
+      bit_offset: 14
+      bit_size: 1
+      description: HFLIP1
+    - name: VFLIP1
+      bit_offset: 15
+      bit_size: 1
+      description: HFLIP1
+fieldset/PXP_CTRL2_ENABLE_INPUT_FETCH:
+  description: ''
+  fields:
+    - name: STORE
+      bit_offset: 20
+      bit_size: 1
+      description: VFLIP1
+fieldset/PXP_CTRL2_ENABLE_ALPHA:
+  description: ''
+  fields:
+    - name: B
+      bit_offset: 21
+      bit_size: 1
+      description: ENABLE_ALPHA_B
+fieldset/PXP_CTRL2_BLOCK:
+  description: ''
+  fields:
+    - name: SIZE
+      bit_offset: 23
+      bit_size: 1
+      description: ENABLE_ALPHA_B
+fieldset/PXP_CTRL2_ENABLE:
+  description: ''
+  fields:
+    - name: CSC2
+      bit_offset: 24
+      bit_size: 1
+      description: ENABLE_CSC2
+    - name: ROTATE0
+      bit_offset: 26
+      bit_size: 1
+      description: ENABLE_CSC2
+    - name: ROTATE1
+      bit_offset: 27
+      bit_size: 1
+      description: ENABLE_ROTATE0
+fieldset/PXP_POWER_REG0_ROT0_MEM_LP:
+  description: ''
+  fields:
+    - name: STATE
+      bit_offset: 9
+      bit_size: 3
+fieldset/PXP_POWER_REG0:
+  description: ''
+  fields:
+    - name: CTRL
+      bit_offset: 12
+      bit_size: 20
+      description: CTRL
+fieldset/PXP_POWER_REG1_ROT1_MEM_LP:
+  description: ''
+  fields:
+    - name: STATE
+      bit_offset: 0
+      bit_size: 3
+fieldset/PXP_DATA_PATH_CTRL0_MUX0:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 0
+      bit_size: 2
+fieldset/PXP_DATA_PATH_CTRL0_MUX1:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 2
+      bit_size: 2
+fieldset/PXP_DATA_PATH_CTRL0_MUX2:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 4
+      bit_size: 2
+fieldset/PXP_DATA_PATH_CTRL0_MUX3:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 6
+      bit_size: 2
+fieldset/PXP_DATA_PATH_CTRL0_MUX4:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 8
+      bit_size: 2
+      description: MUX4_SEL
+fieldset/PXP_DATA_PATH_CTRL0_MUX5:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 10
+      bit_size: 2
+      description: MUX4_SEL
+fieldset/PXP_DATA_PATH_CTRL0_MUX6:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 12
+      bit_size: 2
+fieldset/PXP_DATA_PATH_CTRL0_MUX7:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 14
+      bit_size: 2
+fieldset/PXP_DATA_PATH_CTRL0_MUX8:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 16
+      bit_size: 2
+fieldset/PXP_DATA_PATH_CTRL0_MUX9:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 18
+      bit_size: 2
+      description: MUX9_SEL
+fieldset/PXP_DATA_PATH_CTRL0_MUX10:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 20
+      bit_size: 2
+      description: MUX9_SEL
+fieldset/PXP_DATA_PATH_CTRL0_MUX11:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 22
+      bit_size: 2
+fieldset/PXP_DATA_PATH_CTRL0_MUX12:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 24
+      bit_size: 2
+fieldset/PXP_DATA_PATH_CTRL0_MUX13:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 26
+      bit_size: 2
+fieldset/PXP_DATA_PATH_CTRL0_MUX14:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 28
+      bit_size: 2
+fieldset/PXP_DATA_PATH_CTRL0_MUX15:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 30
+      bit_size: 2
+fieldset/PXP_IRQ_MASK_FIRST_CH0_PREFETCH_IRQ:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+fieldset/PXP_IRQ_MASK_FIRST_CH1_PREFETCH_IRQ:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 1
+      bit_size: 1
+fieldset/PXP_IRQ_MASK_FIRST_CH0_STORE_IRQ:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 2
+      bit_size: 1
+fieldset/PXP_IRQ_MASK_FIRST_CH1_STORE_IRQ:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 3
+      bit_size: 1
+fieldset/PXP_IRQ_MASK_FIRST_STORE_IRQ:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 12
+      bit_size: 1
+fieldset/PXP_IRQ_FIRST_CH0_PREFETCH:
+  description: ''
+  fields:
+    - name: IRQ
+      bit_offset: 0
+      bit_size: 1
+fieldset/PXP_IRQ_FIRST_CH1_PREFETCH:
+  description: ''
+  fields:
+    - name: IRQ
+      bit_offset: 1
+      bit_size: 1
+fieldset/PXP_IRQ_FIRST_CH0_STORE:
+  description: ''
+  fields:
+    - name: IRQ
+      bit_offset: 2
+      bit_size: 1
+fieldset/PXP_IRQ_FIRST_CH1_STORE:
+  description: ''
+  fields:
+    - name: IRQ
+      bit_offset: 3
+      bit_size: 1
+fieldset/PXP_IRQ_FIRST_STORE:
+  description: ''
+  fields:
+    - name: IRQ
+      bit_offset: 12
+      bit_size: 1
+      description: FIRST_STORE_IRQ
+fieldset/PXP_NEXT:
+  description: ''
+  fields:
+    - name: ENABLED
+      bit_offset: 0
+      bit_size: 1
+      description: ENABLED
+    - name: POINTER
+      bit_offset: 2
+      bit_size: 30
+      description: ENABLED
+fieldset/PXP_INPUT_FETCH_CTRL_CH0_CH:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+fieldset/PXP_INPUT_FETCH_CTRL_CH0_BLOCK:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 1
+      bit_size: 1
+fieldset/PXP_INPUT_FETCH_CTRL_CH0_HANDSHAKE:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 3
+      bit_size: 1
+fieldset/PXP_INPUT_FETCH_CTRL_CH0_BYPASS_PIXEL:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 4
+      bit_size: 1
+fieldset/PXP_INPUT_FETCH_CTRL_CH0_HIGH:
+  description: ''
+  fields:
+    - name: BYTE
+      bit_offset: 5
+      bit_size: 1
+fieldset/PXP_INPUT_FETCH_CTRL_CH0:
+  description: ''
+  fields:
+    - name: HFLIP
+      bit_offset: 9
+      bit_size: 1
+    - name: VFLIP
+      bit_offset: 10
+      bit_size: 1
+fieldset/PXP_INPUT_FETCH_CTRL_CH0_ROTATION:
+  description: ''
+  fields:
+    - name: ANGLE
+      bit_offset: 12
+      bit_size: 2
+fieldset/PXP_INPUT_FETCH_CTRL_CH0_RD_NUM:
+  description: ''
+  fields:
+    - name: BYTES
+      bit_offset: 16
+      bit_size: 2
+fieldset/PXP_INPUT_FETCH_CTRL_CH0_HANDSHAKE_SCAN_LINE:
+  description: ''
+  fields:
+    - name: NUM
+      bit_offset: 24
+      bit_size: 2
+fieldset/PXP_INPUT_FETCH_CTRL_CH0_ARBIT:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 31
+      bit_size: 1
+fieldset/PXP_INPUT_FETCH_CTRL_CH1_CH:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+fieldset/PXP_INPUT_FETCH_CTRL_CH1_BLOCK:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 1
+      bit_size: 1
+fieldset/PXP_INPUT_FETCH_CTRL_CH1_HANDSHAKE:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 3
+      bit_size: 1
+fieldset/PXP_INPUT_FETCH_CTRL_CH1_BYPASS_PIXEL:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 4
+      bit_size: 1
+fieldset/PXP_INPUT_FETCH_CTRL_CH1:
+  description: ''
+  fields:
+    - name: HFLIP
+      bit_offset: 9
+      bit_size: 1
+    - name: VFLIP
+      bit_offset: 10
+      bit_size: 1
+fieldset/PXP_INPUT_FETCH_CTRL_CH1_ROTATION:
+  description: ''
+  fields:
+    - name: ANGLE
+      bit_offset: 12
+      bit_size: 2
+fieldset/PXP_INPUT_FETCH_CTRL_CH1_RD_NUM:
+  description: ''
+  fields:
+    - name: BYTES
+      bit_offset: 16
+      bit_size: 2
+fieldset/PXP_INPUT_FETCH_CTRL_CH1_HANDSHAKE_SCAN_LINE:
+  description: ''
+  fields:
+    - name: NUM
+      bit_offset: 24
+      bit_size: 2
+fieldset/PXP_INPUT_FETCH_STATUS_CH0_PREFETCH_BLOCK:
+  description: ''
+  fields:
+    - name: X
+      bit_offset: 0
+      bit_size: 16
+    - name: Y
+      bit_offset: 16
+      bit_size: 16
+fieldset/PXP_INPUT_FETCH_STATUS_CH1_PREFETCH_BLOCK:
+  description: ''
+  fields:
+    - name: X
+      bit_offset: 0
+      bit_size: 16
+    - name: Y
+      bit_offset: 16
+      bit_size: 16
+fieldset/PXP_INPUT_FETCH_ACTIVE_SIZE_ULC_CH0_ACTIVE_SIZE_ULC:
+  description: ''
+  fields:
+    - name: X
+      bit_offset: 0
+      bit_size: 16
+    - name: Y
+      bit_offset: 16
+      bit_size: 16
+fieldset/PXP_INPUT_FETCH_ACTIVE_SIZE_LRC_CH0_ACTIVE_SIZE_LRC:
+  description: ''
+  fields:
+    - name: X
+      bit_offset: 0
+      bit_size: 16
+    - name: Y
+      bit_offset: 16
+      bit_size: 16
+fieldset/PXP_INPUT_FETCH_ACTIVE_SIZE_ULC_CH1_ACTIVE_SIZE_ULC:
+  description: ''
+  fields:
+    - name: X
+      bit_offset: 0
+      bit_size: 16
+    - name: Y
+      bit_offset: 16
+      bit_size: 16
+fieldset/PXP_INPUT_FETCH_ACTIVE_SIZE_LRC_CH1_ACTIVE_SIZE_LRC:
+  description: ''
+  fields:
+    - name: X
+      bit_offset: 0
+      bit_size: 16
+    - name: Y
+      bit_offset: 16
+      bit_size: 16
+fieldset/PXP_INPUT_FETCH_SIZE_CH0_INPUT_TOTAL:
+  description: ''
+  fields:
+    - name: WIDTH
+      bit_offset: 0
+      bit_size: 16
+    - name: HEIGHT
+      bit_offset: 16
+      bit_size: 16
+fieldset/PXP_INPUT_FETCH_SIZE_CH1_INPUT_TOTAL:
+  description: ''
+  fields:
+    - name: WIDTH
+      bit_offset: 0
+      bit_size: 16
+    - name: HEIGHT
+      bit_offset: 16
+      bit_size: 16
+fieldset/PXP_INPUT_FETCH_BACKGROUND_COLOR_CH0_BACKGROUND:
+  description: ''
+  fields:
+    - name: COLOR
+      bit_offset: 0
+      bit_size: 32
+fieldset/PXP_INPUT_FETCH_BACKGROUND_COLOR_CH1_BACKGROUND:
+  description: ''
+  fields:
+    - name: COLOR
+      bit_offset: 0
+      bit_size: 32
+fieldset/PXP_INPUT_FETCH_PITCH_CH0_INPUT:
+  description: ''
+  fields:
+    - name: PITCH
+      bit_offset: 0
+      bit_size: 16
+      description: CH0_INPUT_PITCH
+fieldset/PXP_INPUT_FETCH_PITCH_CH1_INPUT:
+  description: ''
+  fields:
+    - name: PITCH
+      bit_offset: 16
+      bit_size: 16
+      description: CH1_INPUT_PITCH
+fieldset/PXP_INPUT_FETCH_SHIFT_CTRL_CH0_INPUT_ACTIVE:
+  description: ''
+  fields:
+    - name: BPP
+      bit_offset: 0
+      bit_size: 2
+fieldset/PXP_INPUT_FETCH_SHIFT_CTRL_CH0_EXPAND:
+  description: ''
+  fields:
+    - name: FORMAT
+      bit_offset: 8
+      bit_size: 3
+    - name: EN
+      bit_offset: 11
+      bit_size: 1
+fieldset/PXP_INPUT_FETCH_SHIFT_CTRL_CH0_SHIFT:
+  description: ''
+  fields:
+    - name: BYPASS
+      bit_offset: 12
+      bit_size: 1
+fieldset/PXP_INPUT_FETCH_SHIFT_CTRL_CH1_INPUT_ACTIVE:
+  description: ''
+  fields:
+    - name: BPP
+      bit_offset: 0
+      bit_size: 2
+fieldset/PXP_INPUT_FETCH_SHIFT_CTRL_CH1_EXPAND:
+  description: ''
+  fields:
+    - name: FORMAT
+      bit_offset: 8
+      bit_size: 3
+    - name: EN
+      bit_offset: 11
+      bit_size: 1
+fieldset/PXP_INPUT_FETCH_SHIFT_CTRL_CH1_SHIFT:
+  description: ''
+  fields:
+    - name: BYPASS
+      bit_offset: 12
+      bit_size: 1
+fieldset/PXP_INPUT_FETCH_SHIFT_OFFSET_CH0:
+  description: ''
+  fields:
+    - name: OFFSET0
+      bit_offset: 0
+      bit_size: 5
+      description: OFFSET0
+    - name: OFFSET1
+      bit_offset: 8
+      bit_size: 5
+      description: OFFSET1
+    - name: OFFSET2
+      bit_offset: 16
+      bit_size: 5
+      description: OFFSET2
+    - name: OFFSET3
+      bit_offset: 24
+      bit_size: 5
+      description: OFFSET3
+fieldset/PXP_INPUT_FETCH_SHIFT_OFFSET_CH1:
+  description: ''
+  fields:
+    - name: OFFSET0
+      bit_offset: 0
+      bit_size: 5
+      description: OFFSET0
+    - name: OFFSET1
+      bit_offset: 8
+      bit_size: 5
+      description: OFFSET1
+    - name: OFFSET2
+      bit_offset: 16
+      bit_size: 5
+      description: OFFSET2
+    - name: OFFSET3
+      bit_offset: 24
+      bit_size: 5
+      description: OFFSET3
+fieldset/PXP_INPUT_FETCH_SHIFT_WIDTH_CH0:
+  description: ''
+  fields:
+    - name: WIDTH0
+      bit_offset: 0
+      bit_size: 4
+      description: WIDTH0
+    - name: WIDTH1
+      bit_offset: 4
+      bit_size: 4
+      description: WIDTH0
+    - name: WIDTH2
+      bit_offset: 8
+      bit_size: 4
+      description: WIDTH1
+    - name: WIDTH3
+      bit_offset: 12
+      bit_size: 4
+      description: WIDTH2
+fieldset/PXP_INPUT_FETCH_SHIFT_WIDTH_CH1:
+  description: ''
+  fields:
+    - name: WIDTH0
+      bit_offset: 0
+      bit_size: 4
+      description: WIDTH0
+    - name: WIDTH1
+      bit_offset: 4
+      bit_size: 4
+      description: WIDTH0
+    - name: WIDTH2
+      bit_offset: 8
+      bit_size: 4
+      description: WIDTH1
+    - name: WIDTH3
+      bit_offset: 12
+      bit_size: 4
+      description: WIDTH2
+fieldset/PXP_INPUT_FETCH_ADDR_0_CH0_INPUT_BASE:
+  description: ''
+  fields:
+    - name: ADDR0
+      bit_offset: 0
+      bit_size: 32
+fieldset/PXP_INPUT_FETCH_ADDR_1_CH0_INPUT_BASE:
+  description: ''
+  fields:
+    - name: ADDR1
+      bit_offset: 0
+      bit_size: 32
+fieldset/PXP_INPUT_FETCH_ADDR_0_CH1_INPUT_BASE:
+  description: ''
+  fields:
+    - name: ADDR0
+      bit_offset: 0
+      bit_size: 32
+fieldset/PXP_INPUT_FETCH_ADDR_1_CH1_INPUT_BASE:
+  description: ''
+  fields:
+    - name: ADDR1
+      bit_offset: 0
+      bit_size: 32
+fieldset/PXP_INPUT_STORE_CTRL_CH0_CH:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+fieldset/PXP_INPUT_STORE_CTRL_CH0_BLOCK:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 1
+      bit_size: 1
+fieldset/PXP_INPUT_STORE_CTRL_CH0_HANDSHAKE:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 3
+      bit_size: 1
+fieldset/PXP_INPUT_STORE_CTRL_CH0_ARRAY:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 4
+      bit_size: 1
+fieldset/PXP_INPUT_STORE_CTRL_CH0_ARRAY_LINE:
+  description: ''
+  fields:
+    - name: NUM
+      bit_offset: 5
+      bit_size: 2
+fieldset/PXP_INPUT_STORE_CTRL_CH0_STORE_BYPASS:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 8
+      bit_size: 1
+fieldset/PXP_INPUT_STORE_CTRL_CH0_STORE_MEMORY:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 9
+      bit_size: 1
+fieldset/PXP_INPUT_STORE_CTRL_CH0_PACK_IN:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 10
+      bit_size: 1
+fieldset/PXP_INPUT_STORE_CTRL_CH0_FILL_DATA:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 11
+      bit_size: 1
+fieldset/PXP_INPUT_STORE_CTRL_CH0_WR_NUM:
+  description: ''
+  fields:
+    - name: BYTES
+      bit_offset: 16
+      bit_size: 2
+fieldset/PXP_INPUT_STORE_CTRL_CH0_COMBINE:
+  description: ''
+  fields:
+    - name: 2CHANNEL
+      bit_offset: 24
+      bit_size: 1
+fieldset/PXP_INPUT_STORE_CTRL_CH0_ARBIT:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 31
+      bit_size: 1
+fieldset/PXP_INPUT_STORE_CTRL_CH1_CH:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+fieldset/PXP_INPUT_STORE_CTRL_CH1_BLOCK:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 1
+      bit_size: 1
+fieldset/PXP_INPUT_STORE_CTRL_CH1_HANDSHAKE:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 3
+      bit_size: 1
+fieldset/PXP_INPUT_STORE_CTRL_CH1_ARRAY:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 4
+      bit_size: 1
+fieldset/PXP_INPUT_STORE_CTRL_CH1_ARRAY_LINE:
+  description: ''
+  fields:
+    - name: NUM
+      bit_offset: 5
+      bit_size: 2
+fieldset/PXP_INPUT_STORE_CTRL_CH1_STORE_BYPASS:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 8
+      bit_size: 1
+fieldset/PXP_INPUT_STORE_CTRL_CH1_STORE_MEMORY:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 9
+      bit_size: 1
+fieldset/PXP_INPUT_STORE_CTRL_CH1_PACK_IN:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 10
+      bit_size: 1
+fieldset/PXP_INPUT_STORE_CTRL_CH1_WR_NUM:
+  description: ''
+  fields:
+    - name: BYTES
+      bit_offset: 16
+      bit_size: 2
+fieldset/PXP_INPUT_STORE_STATUS_CH0_STORE_BLOCK:
+  description: ''
+  fields:
+    - name: X
+      bit_offset: 0
+      bit_size: 16
+      description: STORE_BLOCK_X
+    - name: Y
+      bit_offset: 16
+      bit_size: 16
+      description: STORE_BLOCK_Y
+fieldset/PXP_INPUT_STORE_STATUS_CH1_STORE_BLOCK:
+  description: ''
+  fields:
+    - name: X
+      bit_offset: 0
+      bit_size: 16
+      description: STORE_BLOCK_X
+    - name: Y
+      bit_offset: 16
+      bit_size: 16
+      description: STORE_BLOCK_Y
+fieldset/PXP_INPUT_STORE_SIZE_CH0_OUT:
+  description: ''
+  fields:
+    - name: WIDTH
+      bit_offset: 0
+      bit_size: 16
+      description: OUT_WIDTH
+    - name: HEIGHT
+      bit_offset: 16
+      bit_size: 16
+      description: OUT_WIDTH
+fieldset/PXP_INPUT_STORE_SIZE_CH1_OUT:
+  description: ''
+  fields:
+    - name: WIDTH
+      bit_offset: 0
+      bit_size: 16
+      description: OUT_WIDTH
+    - name: HEIGHT
+      bit_offset: 16
+      bit_size: 16
+      description: OUT_WIDTH
+fieldset/PXP_INPUT_STORE_PITCH_CH0_OUT:
+  description: ''
+  fields:
+    - name: PITCH
+      bit_offset: 0
+      bit_size: 16
+      description: CH0_OUT_PITCH
+fieldset/PXP_INPUT_STORE_PITCH_CH1_OUT:
+  description: ''
+  fields:
+    - name: PITCH
+      bit_offset: 16
+      bit_size: 16
+      description: CH1_OUT_PITCH
+fieldset/PXP_INPUT_STORE_SHIFT_CTRL_CH0_OUTPUT_ACTIVE:
+  description: ''
+  fields:
+    - name: BPP
+      bit_offset: 2
+      bit_size: 2
+fieldset/PXP_INPUT_STORE_SHIFT_CTRL_CH0_OUT_YUV422_1P:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 4
+      bit_size: 1
+fieldset/PXP_INPUT_STORE_SHIFT_CTRL_CH0_OUT_YUV422_2P:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 5
+      bit_size: 1
+fieldset/PXP_INPUT_STORE_SHIFT_CTRL_CH0_SHIFT:
+  description: ''
+  fields:
+    - name: BYPASS
+      bit_offset: 7
+      bit_size: 1
+fieldset/PXP_INPUT_STORE_SHIFT_CTRL_CH1_OUTPUT_ACTIVE:
+  description: ''
+  fields:
+    - name: BPP
+      bit_offset: 2
+      bit_size: 2
+fieldset/PXP_INPUT_STORE_SHIFT_CTRL_CH1_OUT_YUV422_1P:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 4
+      bit_size: 1
+fieldset/PXP_INPUT_STORE_SHIFT_CTRL_CH1_OUT_YUV422_2P:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 5
+      bit_size: 1
+fieldset/PXP_INPUT_STORE_ADDR_0_CH0_OUT_BASE:
+  description: ''
+  fields:
+    - name: ADDR0
+      bit_offset: 0
+      bit_size: 32
+      description: OUT_BASE_ADDR0
+fieldset/PXP_INPUT_STORE_ADDR_1_CH0_OUT_BASE:
+  description: ''
+  fields:
+    - name: ADDR1
+      bit_offset: 0
+      bit_size: 32
+      description: OUT_BASE_ADDR1
+fieldset/PXP_INPUT_STORE_FILL_DATA_CH0_FILL_DATA:
+  description: ''
+  fields:
+    - name: CH0
+      bit_offset: 0
+      bit_size: 32
+      description: FILL_DATA_CH0
+fieldset/PXP_INPUT_STORE_ADDR_0_CH1_OUT_BASE:
+  description: ''
+  fields:
+    - name: ADDR0
+      bit_offset: 0
+      bit_size: 32
+      description: OUT_BASE_ADDR0
+fieldset/PXP_INPUT_STORE_ADDR_1_CH1_OUT_BASE:
+  description: ''
+  fields:
+    - name: ADDR1
+      bit_offset: 0
+      bit_size: 32
+      description: OUT_BASE_ADDR1
+fieldset/PXP_INPUT_STORE_D_MASK0_H_CH0_D_MASK0_H:
+  description: ''
+  fields:
+    - name: CH0
+      bit_offset: 0
+      bit_size: 32
+      description: D_MASK0_H_CH0
+fieldset/PXP_INPUT_STORE_D_MASK0_L_CH0_D_MASK0_L:
+  description: ''
+  fields:
+    - name: CH0
+      bit_offset: 0
+      bit_size: 32
+      description: D_MASK0_L_CH0
+fieldset/PXP_INPUT_STORE_D_MASK1_H_CH0_D_MASK1_H:
+  description: ''
+  fields:
+    - name: CH0
+      bit_offset: 0
+      bit_size: 32
+      description: D_MASK1_H_CH0
+fieldset/PXP_INPUT_STORE_D_MASK1_L_CH0_D_MASK1_L:
+  description: ''
+  fields:
+    - name: CH0
+      bit_offset: 0
+      bit_size: 32
+      description: D_MASK1_L_CH0
+fieldset/PXP_INPUT_STORE_D_MASK2_H_CH0_D_MASK2_H:
+  description: ''
+  fields:
+    - name: CH0
+      bit_offset: 0
+      bit_size: 32
+      description: D_MASK2_H_CH0
+fieldset/PXP_INPUT_STORE_D_MASK2_L_CH0_D_MASK2_L:
+  description: ''
+  fields:
+    - name: CH0
+      bit_offset: 0
+      bit_size: 32
+      description: D_MASK2_L_CH0
+fieldset/PXP_INPUT_STORE_D_MASK3_H_CH0_D_MASK3_H:
+  description: ''
+  fields:
+    - name: CH0
+      bit_offset: 0
+      bit_size: 32
+      description: D_MASK3_H_CH0
+fieldset/PXP_INPUT_STORE_D_MASK3_L_CH0_D_MASK3_L:
+  description: ''
+  fields:
+    - name: CH0
+      bit_offset: 0
+      bit_size: 32
+      description: D_MASK3_L_CH0
+fieldset/PXP_INPUT_STORE_D_MASK4_H_CH0_D_MASK4_H:
+  description: ''
+  fields:
+    - name: CH0
+      bit_offset: 0
+      bit_size: 32
+      description: D_MASK4_H_CH0
+fieldset/PXP_INPUT_STORE_D_MASK4_L_CH0_D_MASK4_L:
+  description: ''
+  fields:
+    - name: CH0
+      bit_offset: 0
+      bit_size: 32
+      description: D_MASK4_L_CH0
+fieldset/PXP_INPUT_STORE_D_MASK5_H_CH0_D_MASK5_H:
+  description: ''
+  fields:
+    - name: CH0
+      bit_offset: 0
+      bit_size: 32
+      description: D_MASK5_H_CH0
+fieldset/PXP_INPUT_STORE_D_MASK5_L_CH0_D_MASK5_L:
+  description: ''
+  fields:
+    - name: CH0
+      bit_offset: 0
+      bit_size: 32
+      description: D_MASK5_L_CH0
+fieldset/PXP_INPUT_STORE_D_MASK6_H_CH0_D_MASK6_H:
+  description: ''
+  fields:
+    - name: CH0
+      bit_offset: 0
+      bit_size: 32
+      description: D_MASK6_H_CH0
+fieldset/PXP_INPUT_STORE_D_MASK6_L_CH0_D_MASK6_L:
+  description: ''
+  fields:
+    - name: CH0
+      bit_offset: 0
+      bit_size: 32
+      description: D_MASK6_L_CH0
+fieldset/PXP_INPUT_STORE_D_MASK7_H_CH0_D_MASK7_H:
+  description: ''
+  fields:
+    - name: CH0
+      bit_offset: 0
+      bit_size: 32
+      description: D_MASK7_H_CH0
+fieldset/PXP_INPUT_STORE_D_MASK7_L_CH0_D_MASK7_L:
+  description: ''
+  fields:
+    - name: CH0
+      bit_offset: 0
+      bit_size: 32
+      description: D_MASK7_L_CH0
+fieldset/PXP_INPUT_STORE_D_SHIFT_L_CH0_D_SHIFT:
+  description: ''
+  fields:
+    - name: WIDTH0
+      bit_offset: 0
+      bit_size: 6
+    - name: FLAG0
+      bit_offset: 7
+      bit_size: 1
+      description: D_SHIFT_FLAG0
+    - name: WIDTH1
+      bit_offset: 8
+      bit_size: 6
+    - name: FLAG1
+      bit_offset: 15
+      bit_size: 1
+    - name: WIDTH2
+      bit_offset: 16
+      bit_size: 6
+    - name: FLAG2
+      bit_offset: 23
+      bit_size: 1
+    - name: WIDTH3
+      bit_offset: 24
+      bit_size: 6
+    - name: FLAG3
+      bit_offset: 31
+      bit_size: 1
+fieldset/PXP_INPUT_STORE_D_SHIFT_H_CH0_D_SHIFT:
+  description: ''
+  fields:
+    - name: WIDTH4
+      bit_offset: 0
+      bit_size: 6
+    - name: FLAG4
+      bit_offset: 7
+      bit_size: 1
+      description: D_SHIFT_FLAG4
+    - name: WIDTH5
+      bit_offset: 8
+      bit_size: 6
+    - name: FLAG5
+      bit_offset: 15
+      bit_size: 1
+    - name: WIDTH6
+      bit_offset: 16
+      bit_size: 6
+    - name: FLAG6
+      bit_offset: 23
+      bit_size: 1
+    - name: WIDTH7
+      bit_offset: 24
+      bit_size: 6
+    - name: FLAG7
+      bit_offset: 31
+      bit_size: 1
+fieldset/PXP_INPUT_STORE_F_SHIFT_L_CH0_F_SHIFT:
+  description: ''
+  fields:
+    - name: WIDTH0
+      bit_offset: 0
+      bit_size: 6
+    - name: FLAG0
+      bit_offset: 6
+      bit_size: 1
+      description: F_SHIFT_FLAG0
+    - name: WIDTH1
+      bit_offset: 8
+      bit_size: 6
+    - name: FLAG1
+      bit_offset: 14
+      bit_size: 1
+    - name: WIDTH2
+      bit_offset: 16
+      bit_size: 6
+    - name: FLAG2
+      bit_offset: 22
+      bit_size: 1
+    - name: WIDTH3
+      bit_offset: 24
+      bit_size: 6
+    - name: FLAG3
+      bit_offset: 30
+      bit_size: 1
+fieldset/PXP_INPUT_STORE_F_SHIFT_H_CH0_F_SHIFT:
+  description: ''
+  fields:
+    - name: WIDTH4
+      bit_offset: 0
+      bit_size: 6
+    - name: FLAG4
+      bit_offset: 6
+      bit_size: 1
+      description: F_SHIFT_FLAG4
+    - name: WIDTH5
+      bit_offset: 8
+      bit_size: 6
+    - name: FLAG5
+      bit_offset: 14
+      bit_size: 1
+    - name: WIDTH6
+      bit_offset: 16
+      bit_size: 6
+    - name: FLAG6
+      bit_offset: 22
+      bit_size: 1
+    - name: WIDTH7
+      bit_offset: 24
+      bit_size: 6
+    - name: FLAG7
+      bit_offset: 30
+      bit_size: 1
+fieldset/PXP_INPUT_STORE_F_MASK_L_CH0_F:
+  description: ''
+  fields:
+    - name: MASK0
+      bit_offset: 0
+      bit_size: 8
+      description: F_MASK0
+    - name: MASK1
+      bit_offset: 8
+      bit_size: 8
+      description: F_MASK0
+    - name: MASK2
+      bit_offset: 16
+      bit_size: 8
+      description: F_MASK1
+    - name: MASK3
+      bit_offset: 24
+      bit_size: 8
+      description: F_MASK2
+fieldset/PXP_INPUT_STORE_F_MASK_H_CH0_F:
+  description: ''
+  fields:
+    - name: MASK4
+      bit_offset: 0
+      bit_size: 8
+      description: F_MASK4
+    - name: MASK5
+      bit_offset: 8
+      bit_size: 8
+      description: F_MASK4
+    - name: MASK6
+      bit_offset: 16
+      bit_size: 8
+      description: F_MASK5
+    - name: MASK7
+      bit_offset: 24
+      bit_size: 8
+      description: F_MASK6
+fieldset/PXP_BUS_MUX_RD:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 0
+      bit_size: 8
+      description: RD_SEL
+fieldset/PXP_BUS_MUX_WR:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 16
+      bit_size: 8
+      description: RD_SEL
+fieldset/PXP_HANDSHAKE_READY_MUX0:
+  description: ''
+  fields:
+    - name: HSK0
+      bit_offset: 0
+      bit_size: 4
+      description: HSK0
+    - name: HSK1
+      bit_offset: 4
+      bit_size: 4
+      description: HSK0
+    - name: HSK2
+      bit_offset: 8
+      bit_size: 4
+      description: HSK1
+    - name: HSK3
+      bit_offset: 12
+      bit_size: 4
+      description: HSK2
+    - name: HSK4
+      bit_offset: 16
+      bit_size: 4
+      description: HSK3
+    - name: HSK5
+      bit_offset: 20
+      bit_size: 4
+      description: HSK4
+    - name: HSK6
+      bit_offset: 24
+      bit_size: 4
+      description: HSK5
+    - name: HSK7
+      bit_offset: 28
+      bit_size: 4
+      description: HSK6
+fieldset/PXP_HANDSHAKE_READY_MUX1:
+  description: ''
+  fields:
+    - name: HSK8
+      bit_offset: 0
+      bit_size: 4
+      description: HSK8
+    - name: HSK9
+      bit_offset: 4
+      bit_size: 4
+      description: HSK8
+    - name: HSK10
+      bit_offset: 8
+      bit_size: 4
+      description: HSK9
+    - name: HSK11
+      bit_offset: 12
+      bit_size: 4
+      description: HSK10
+    - name: HSK12
+      bit_offset: 16
+      bit_size: 4
+      description: HSK11
+    - name: HSK13
+      bit_offset: 20
+      bit_size: 4
+      description: HSK12
+    - name: HSK14
+      bit_offset: 24
+      bit_size: 4
+      description: HSK13
+    - name: HSK15
+      bit_offset: 28
+      bit_size: 4
+      description: HSK14
+fieldset/PXP_HANDSHAKE_DONE_MUX0:
+  description: ''
+  fields:
+    - name: HSK0
+      bit_offset: 0
+      bit_size: 4
+      description: HSK0
+    - name: HSK1
+      bit_offset: 4
+      bit_size: 4
+      description: HSK0
+    - name: HSK2
+      bit_offset: 8
+      bit_size: 4
+      description: HSK1
+    - name: HSK3
+      bit_offset: 12
+      bit_size: 4
+      description: HSK2
+    - name: HSK4
+      bit_offset: 16
+      bit_size: 4
+      description: HSK3
+    - name: HSK5
+      bit_offset: 20
+      bit_size: 4
+      description: HSK4
+    - name: HSK6
+      bit_offset: 24
+      bit_size: 4
+      description: HSK5
+    - name: HSK7
+      bit_offset: 28
+      bit_size: 4
+      description: HSK6
+fieldset/PXP_HANDSHAKE_DONE_MUX1:
+  description: ''
+  fields:
+    - name: HSK8
+      bit_offset: 0
+      bit_size: 4
+      description: HSK8
+    - name: HSK9
+      bit_offset: 4
+      bit_size: 4
+      description: HSK8
+    - name: HSK10
+      bit_offset: 8
+      bit_size: 4
+      description: HSK9
+    - name: HSK11
+      bit_offset: 12
+      bit_size: 4
+      description: HSK10
+    - name: HSK12
+      bit_offset: 16
+      bit_size: 4
+      description: HSK11
+    - name: HSK13
+      bit_offset: 20
+      bit_size: 4
+      description: HSK12
+    - name: HSK14
+      bit_offset: 24
+      bit_size: 4
+      description: HSK13
+    - name: HSK15
+      bit_offset: 28
+      bit_size: 4
+      description: HSK14
+fieldset/PXP_HANDSHAKE_CPU_FETCH_SW0_B0:
+  description: ''
+  fields:
+    - name: READY
+      bit_offset: 0
+      bit_size: 1
+      description: SW0_B0_READY
+    - name: DONE
+      bit_offset: 2
+      bit_size: 1
+      description: SW0_B0_DONE
+fieldset/PXP_HANDSHAKE_CPU_FETCH_SW0_B1:
+  description: ''
+  fields:
+    - name: READY
+      bit_offset: 1
+      bit_size: 1
+      description: SW0_B1_READY
+    - name: DONE
+      bit_offset: 3
+      bit_size: 1
+      description: SW0_B1_DONE
+fieldset/PXP_HANDSHAKE_CPU_FETCH_SW0_BUF:
+  description: ''
+  fields:
+    - name: LINES
+      bit_offset: 4
+      bit_size: 2
+fieldset/PXP_HANDSHAKE_CPU_FETCH_SW0_HSK:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 15
+      bit_size: 1
+      description: SW0_HSK_EN
+fieldset/PXP_HANDSHAKE_CPU_FETCH_SW1_B0:
+  description: ''
+  fields:
+    - name: READY
+      bit_offset: 16
+      bit_size: 1
+      description: SW0_HSK_EN
+    - name: DONE
+      bit_offset: 18
+      bit_size: 1
+      description: SW1_B0_DONE
+fieldset/PXP_HANDSHAKE_CPU_FETCH_SW1_B1:
+  description: ''
+  fields:
+    - name: READY
+      bit_offset: 17
+      bit_size: 1
+      description: SW1_B1_READY
+    - name: DONE
+      bit_offset: 19
+      bit_size: 1
+      description: SW1_B1_DONE
+fieldset/PXP_HANDSHAKE_CPU_FETCH_SW1_BUF:
+  description: ''
+  fields:
+    - name: LINES
+      bit_offset: 20
+      bit_size: 2
+fieldset/PXP_HANDSHAKE_CPU_FETCH_SW1_HSK:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 31
+      bit_size: 1
+      description: SW1_HSK_EN
+fieldset/PXP_HANDSHAKE_CPU_STORE_SW0_B0:
+  description: ''
+  fields:
+    - name: READY
+      bit_offset: 0
+      bit_size: 1
+      description: SW0_B0_READY
+    - name: DONE
+      bit_offset: 2
+      bit_size: 1
+      description: SW0_B0_DONE
+fieldset/PXP_HANDSHAKE_CPU_STORE_SW0_B1:
+  description: ''
+  fields:
+    - name: READY
+      bit_offset: 1
+      bit_size: 1
+      description: SW0_B1_READY
+    - name: DONE
+      bit_offset: 3
+      bit_size: 1
+      description: SW0_B1_DONE
+fieldset/PXP_HANDSHAKE_CPU_STORE_SW0_BUF:
+  description: ''
+  fields:
+    - name: LINES
+      bit_offset: 4
+      bit_size: 2
+fieldset/PXP_HANDSHAKE_CPU_STORE_SW0_HSK:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 15
+      bit_size: 1
+      description: SW0_HSK_EN
+fieldset/PXP_HANDSHAKE_CPU_STORE_SW1_B0:
+  description: ''
+  fields:
+    - name: READY
+      bit_offset: 16
+      bit_size: 1
+      description: SW0_HSK_EN
+    - name: DONE
+      bit_offset: 18
+      bit_size: 1
+      description: SW1_B0_DONE
+fieldset/PXP_HANDSHAKE_CPU_STORE_SW1_B1:
+  description: ''
+  fields:
+    - name: READY
+      bit_offset: 17
+      bit_size: 1
+      description: SW1_B1_READY
+    - name: DONE
+      bit_offset: 19
+      bit_size: 1
+      description: SW1_B1_DONE
+fieldset/PXP_HANDSHAKE_CPU_STORE_SW1_BUF:
+  description: ''
+  fields:
+    - name: LINES
+      bit_offset: 20
+      bit_size: 2
+fieldset/PXP_HANDSHAKE_CPU_STORE_SW1_HSK:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 31
+      bit_size: 1
+      description: SW1_HSK_EN

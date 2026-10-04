@@ -612,6 +612,10 @@ fieldset/ADC_OFCFGR1:
       bit_offset: 26
       bit_size: 1
       description: ADC offset instance 1 signed satuaration enable
+    - name: OFFSET_CH
+      bit_offset: 27
+      bit_size: 5
+      description: ADC offset instance 1 channel selection
 fieldset/ADC_OFCFGR2:
   description: ''
   fields:
@@ -627,6 +631,10 @@ fieldset/ADC_OFCFGR2:
       bit_offset: 26
       bit_size: 1
       description: ADC offset instance 2 signed satuaration enable
+    - name: OFFSET_CH
+      bit_offset: 27
+      bit_size: 5
+      description: ADC offset instance 2 channel selection
 fieldset/ADC_OFCFGR3:
   description: ''
   fields:
@@ -642,6 +650,10 @@ fieldset/ADC_OFCFGR3:
       bit_offset: 26
       bit_size: 1
       description: ADC offset instance 3 signed satuaration enable
+    - name: OFFSET_CH
+      bit_offset: 27
+      bit_size: 5
+      description: ADC offset instance 3 channel selection for the data offset
 fieldset/ADC_OFCFGR4:
   description: ''
   fields:
@@ -657,6 +669,10 @@ fieldset/ADC_OFCFGR4:
       bit_offset: 26
       bit_size: 1
       description: ADC offset instance 4 signed satuaration enable
+    - name: OFFSET_CH
+      bit_offset: 27
+      bit_size: 5
+      description: ADC offset instance 4 channel selection for the data offset
 fieldset/ADC_OFR1:
   description: ''
   fields:
@@ -794,6 +810,14 @@ fieldset/ADC_DIFSEL:
 fieldset/ADC_CALFACT:
   description: ''
   fields:
+    - name: CALFACT_S
+      bit_offset: 0
+      bit_size: 10
+      description: ADC calibration factor in single-ended mode
+    - name: CALFACT_D
+      bit_offset: 16
+      bit_size: 10
+      description: ADC calibration factor in differential mode
     - name: CALADDOS
       bit_offset: 31
       bit_size: 1

@@ -426,10 +426,15 @@ wake.
 
 `consortium-pac-imx9` and `consortium-pac-stm32mp2` are generated `no_std` PAC crates.
 Their chip features are `mimx93`/`mimx95` (default `mimx95`) and `stm32mp21`/`stm32mp257`
-(default `stm32mp257`), respectively. PAC generation uses the `just pac-*` recipes, vendor
-submodules under `submodules/`, parser scripts under `scripts/pac/`, and
-generated/validated outputs under `output/` and `data/`. Avoid hand-editing generated PAC
-output unless the recipe or patch workflow calls for it.
+(default `stm32mp257`), respectively. `just pac-regen` regenerates every PAC output end to
+end — chip dumps and IR under `crates/consortium-data/database/{chip,peri}/`, the PACs'
+`interrupts/` and `peripherals/`, and the HALs' `src/peripherals/<chip>.rs` — from the
+vendor submodules, with the pinned chiptool (`just setup-chiptool`). `just pac-verify`
+fails if the committed files differ from a fresh run. Corrections the parsers cannot
+make are patches, each headed with its reason: `scripts/pac/patches/<submodule>/` for
+vendor headers, `scripts/pac/patches/ir/` for the IR and chip dumps (applied before the
+interrupt/singleton generators), and `scripts/pac/patches/generated/` for the Rust.
+Never hand-edit the outputs; add or update a patch and re-run.
 
 `consortium-hal-imx9` and `consortium-hal-stm32mp2` re-export the shared HAL and their
 PAC crates (with `default-features = false`), re-export `interrupts`/`Interrupt` and the
@@ -876,9 +881,10 @@ touching a manifest:
   published manifest, which keeps test-only edges (such as `consortium-cfg` →
   `consortium-runtime-app`) out of the publish graph. Do not add versions to them.
 - `consortium-hmi-pocket` is `publish = false`. Its `pocket-mod`, `pocket-ui-wgpu`,
-  and `pocket3d` deps come from the upstream **`v0.7.0` git tag**, not from
+  and `pocket3d` deps come from an upstream **git `rev`**, not from
   `submodules/pocketjs`, because PocketJS is not on crates.io yet and cargo refuses
-  to publish a package with a git dependency. The submodule is still needed for the
+  to publish a package with a git dependency. The `rev` is the commit the submodule
+  is checked out at; bump both together. The submodule is still needed for the
   bun/JS side. `melt-pot-shared` is `publish = false` as an example crate.
 - MSRV is `rust-version = "1.87"` in `[workspace.package]`, enforced by clippy's
   `incompatible_msrv` on every `just lint`. Raise it rather than `#[allow]`-ing.

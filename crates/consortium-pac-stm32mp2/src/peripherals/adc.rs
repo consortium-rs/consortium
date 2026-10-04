@@ -528,6 +528,30 @@ impl defmt::Format for ADC_AWD3LTR {
 #[derive(Copy, Clone, Eq, PartialEq)]
 pub struct ADC_CALFACT(pub u32);
 impl ADC_CALFACT {
+    #[doc = "ADC calibration factor in single-ended mode"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn CALFACT_S(&self) -> u16 {
+        let val = (self.0 >> 0usize) & 0x03ff;
+        val as u16
+    }
+    #[doc = "ADC calibration factor in single-ended mode"]
+    #[inline(always)]
+    pub const fn set_CALFACT_S(&mut self, val: u16) {
+        self.0 = (self.0 & !(0x03ff << 0usize)) | (((val as u32) & 0x03ff) << 0usize);
+    }
+    #[doc = "ADC calibration factor in differential mode"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn CALFACT_D(&self) -> u16 {
+        let val = (self.0 >> 16usize) & 0x03ff;
+        val as u16
+    }
+    #[doc = "ADC calibration factor in differential mode"]
+    #[inline(always)]
+    pub const fn set_CALFACT_D(&mut self, val: u16) {
+        self.0 = (self.0 & !(0x03ff << 16usize)) | (((val as u32) & 0x03ff) << 16usize);
+    }
     #[doc = "ADC calibration additional offset mode"]
     #[must_use]
     #[inline(always)]
@@ -550,6 +574,8 @@ impl Default for ADC_CALFACT {
 impl core::fmt::Debug for ADC_CALFACT {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
         f.debug_struct("ADC_CALFACT")
+            .field("CALFACT_S", &self.CALFACT_S())
+            .field("CALFACT_D", &self.CALFACT_D())
             .field("CALADDOS", &self.CALADDOS())
             .finish()
     }
@@ -557,7 +583,13 @@ impl core::fmt::Debug for ADC_CALFACT {
 #[cfg(feature = "defmt")]
 impl defmt::Format for ADC_CALFACT {
     fn format(&self, f: defmt::Formatter) {
-        defmt::write!(f, "ADC_CALFACT {{ CALADDOS: {=bool:?} }}", self.CALADDOS())
+        defmt::write!(
+            f,
+            "ADC_CALFACT {{ CALFACT_S: {=u16:?}, CALFACT_D: {=u16:?}, CALADDOS: {=bool:?} }}",
+            self.CALFACT_S(),
+            self.CALFACT_D(),
+            self.CALADDOS()
+        )
     }
 }
 #[doc = ""]
@@ -1894,6 +1926,18 @@ impl ADC_OFCFGR1 {
     pub const fn set_SSAT(&mut self, val: bool) {
         self.0 = (self.0 & !(0x01 << 26usize)) | (((val as u32) & 0x01) << 26usize);
     }
+    #[doc = "ADC offset instance 1 channel selection"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn OFFSET_CH(&self) -> u8 {
+        let val = (self.0 >> 27usize) & 0x1f;
+        val as u8
+    }
+    #[doc = "ADC offset instance 1 channel selection"]
+    #[inline(always)]
+    pub const fn set_OFFSET_CH(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x1f << 27usize)) | (((val as u32) & 0x1f) << 27usize);
+    }
 }
 impl Default for ADC_OFCFGR1 {
     #[inline(always)]
@@ -1907,6 +1951,7 @@ impl core::fmt::Debug for ADC_OFCFGR1 {
             .field("POSOFF", &self.POSOFF())
             .field("USAT", &self.USAT())
             .field("SSAT", &self.SSAT())
+            .field("OFFSET_CH", &self.OFFSET_CH())
             .finish()
     }
 }
@@ -1915,10 +1960,11 @@ impl defmt::Format for ADC_OFCFGR1 {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(
             f,
-            "ADC_OFCFGR1 {{ POSOFF: {=bool:?}, USAT: {=bool:?}, SSAT: {=bool:?} }}",
+            "ADC_OFCFGR1 {{ POSOFF: {=bool:?}, USAT: {=bool:?}, SSAT: {=bool:?}, OFFSET_CH: {=u8:?} }}",
             self.POSOFF(),
             self.USAT(),
-            self.SSAT()
+            self.SSAT(),
+            self.OFFSET_CH()
         )
     }
 }
@@ -1963,6 +2009,18 @@ impl ADC_OFCFGR2 {
     pub const fn set_SSAT(&mut self, val: bool) {
         self.0 = (self.0 & !(0x01 << 26usize)) | (((val as u32) & 0x01) << 26usize);
     }
+    #[doc = "ADC offset instance 2 channel selection"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn OFFSET_CH(&self) -> u8 {
+        let val = (self.0 >> 27usize) & 0x1f;
+        val as u8
+    }
+    #[doc = "ADC offset instance 2 channel selection"]
+    #[inline(always)]
+    pub const fn set_OFFSET_CH(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x1f << 27usize)) | (((val as u32) & 0x1f) << 27usize);
+    }
 }
 impl Default for ADC_OFCFGR2 {
     #[inline(always)]
@@ -1976,6 +2034,7 @@ impl core::fmt::Debug for ADC_OFCFGR2 {
             .field("POSOFF", &self.POSOFF())
             .field("USAT", &self.USAT())
             .field("SSAT", &self.SSAT())
+            .field("OFFSET_CH", &self.OFFSET_CH())
             .finish()
     }
 }
@@ -1984,10 +2043,11 @@ impl defmt::Format for ADC_OFCFGR2 {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(
             f,
-            "ADC_OFCFGR2 {{ POSOFF: {=bool:?}, USAT: {=bool:?}, SSAT: {=bool:?} }}",
+            "ADC_OFCFGR2 {{ POSOFF: {=bool:?}, USAT: {=bool:?}, SSAT: {=bool:?}, OFFSET_CH: {=u8:?} }}",
             self.POSOFF(),
             self.USAT(),
-            self.SSAT()
+            self.SSAT(),
+            self.OFFSET_CH()
         )
     }
 }
@@ -2032,6 +2092,18 @@ impl ADC_OFCFGR3 {
     pub const fn set_SSAT(&mut self, val: bool) {
         self.0 = (self.0 & !(0x01 << 26usize)) | (((val as u32) & 0x01) << 26usize);
     }
+    #[doc = "ADC offset instance 3 channel selection for the data offset"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn OFFSET_CH(&self) -> u8 {
+        let val = (self.0 >> 27usize) & 0x1f;
+        val as u8
+    }
+    #[doc = "ADC offset instance 3 channel selection for the data offset"]
+    #[inline(always)]
+    pub const fn set_OFFSET_CH(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x1f << 27usize)) | (((val as u32) & 0x1f) << 27usize);
+    }
 }
 impl Default for ADC_OFCFGR3 {
     #[inline(always)]
@@ -2045,6 +2117,7 @@ impl core::fmt::Debug for ADC_OFCFGR3 {
             .field("POSOFF", &self.POSOFF())
             .field("USAT", &self.USAT())
             .field("SSAT", &self.SSAT())
+            .field("OFFSET_CH", &self.OFFSET_CH())
             .finish()
     }
 }
@@ -2053,10 +2126,11 @@ impl defmt::Format for ADC_OFCFGR3 {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(
             f,
-            "ADC_OFCFGR3 {{ POSOFF: {=bool:?}, USAT: {=bool:?}, SSAT: {=bool:?} }}",
+            "ADC_OFCFGR3 {{ POSOFF: {=bool:?}, USAT: {=bool:?}, SSAT: {=bool:?}, OFFSET_CH: {=u8:?} }}",
             self.POSOFF(),
             self.USAT(),
-            self.SSAT()
+            self.SSAT(),
+            self.OFFSET_CH()
         )
     }
 }
@@ -2101,6 +2175,18 @@ impl ADC_OFCFGR4 {
     pub const fn set_SSAT(&mut self, val: bool) {
         self.0 = (self.0 & !(0x01 << 26usize)) | (((val as u32) & 0x01) << 26usize);
     }
+    #[doc = "ADC offset instance 4 channel selection for the data offset"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn OFFSET_CH(&self) -> u8 {
+        let val = (self.0 >> 27usize) & 0x1f;
+        val as u8
+    }
+    #[doc = "ADC offset instance 4 channel selection for the data offset"]
+    #[inline(always)]
+    pub const fn set_OFFSET_CH(&mut self, val: u8) {
+        self.0 = (self.0 & !(0x1f << 27usize)) | (((val as u32) & 0x1f) << 27usize);
+    }
 }
 impl Default for ADC_OFCFGR4 {
     #[inline(always)]
@@ -2114,6 +2200,7 @@ impl core::fmt::Debug for ADC_OFCFGR4 {
             .field("POSOFF", &self.POSOFF())
             .field("USAT", &self.USAT())
             .field("SSAT", &self.SSAT())
+            .field("OFFSET_CH", &self.OFFSET_CH())
             .finish()
     }
 }
@@ -2122,10 +2209,11 @@ impl defmt::Format for ADC_OFCFGR4 {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(
             f,
-            "ADC_OFCFGR4 {{ POSOFF: {=bool:?}, USAT: {=bool:?}, SSAT: {=bool:?} }}",
+            "ADC_OFCFGR4 {{ POSOFF: {=bool:?}, USAT: {=bool:?}, SSAT: {=bool:?}, OFFSET_CH: {=u8:?} }}",
             self.POSOFF(),
             self.USAT(),
-            self.SSAT()
+            self.SSAT(),
+            self.OFFSET_CH()
         )
     }
 }

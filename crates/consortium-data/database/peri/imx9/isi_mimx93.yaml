@@ -1,0 +1,781 @@
+block/ISI:
+  description: ''
+  items:
+    - name: CHNL_CTRL
+      byte_offset: 0
+    - name: CHNL_IMG_CTRL
+      byte_offset: 4
+    - name: CHNL_OUT_BUF_CTRL
+      byte_offset: 8
+    - name: CHNL_IMG_CFG
+      byte_offset: 12
+    - name: CHNL_IER
+      byte_offset: 16
+    - name: CHNL_STS
+      byte_offset: 20
+    - name: CHNL_SCALE_FACTOR
+      byte_offset: 24
+    - name: CHNL_SCALE_OFFSET
+      byte_offset: 28
+    - name: CHNL_CROP_ULC
+      byte_offset: 32
+    - name: CHNL_CROP_LRC
+      byte_offset: 36
+    - name: CHNL_CSC_COEFF0
+      byte_offset: 40
+    - name: CHNL_CSC_COEFF1
+      byte_offset: 44
+    - name: CHNL_CSC_COEFF2
+      byte_offset: 48
+    - name: CHNL_CSC_COEFF3
+      byte_offset: 52
+    - name: CHNL_CSC_COEFF4
+      byte_offset: 56
+    - name: CHNL_CSC_COEFF5
+      byte_offset: 60
+    - name: CHNL_ROI_0_ALPHA
+      byte_offset: 64
+    - name: CHNL_ROI_0_ULC
+      byte_offset: 68
+    - name: CHNL_ROI_0_LRC
+      byte_offset: 72
+    - name: CHNL_ROI_1_ALPHA
+      byte_offset: 76
+    - name: CHNL_ROI_1_ULC
+      byte_offset: 80
+    - name: CHNL_ROI_1_LRC
+      byte_offset: 84
+    - name: CHNL_ROI_2_ALPHA
+      byte_offset: 88
+    - name: CHNL_ROI_2_ULC
+      byte_offset: 92
+    - name: CHNL_ROI_2_LRC
+      byte_offset: 96
+    - name: CHNL_ROI_3_ALPHA
+      byte_offset: 100
+    - name: CHNL_ROI_3_ULC
+      byte_offset: 104
+    - name: CHNL_ROI_3_LRC
+      byte_offset: 108
+    - name: CHNL_OUT_BUF1_ADDR_Y
+      byte_offset: 112
+    - name: CHNL_OUT_BUF1_ADDR_U
+      byte_offset: 116
+    - name: CHNL_OUT_BUF1_ADDR_V
+      byte_offset: 120
+    - name: CHNL_OUT_BUF_PITCH
+      byte_offset: 124
+    - name: CHNL_IN_BUF_ADDR
+      byte_offset: 128
+    - name: CHNL_IN_BUF_PITCH
+      byte_offset: 132
+    - name: CHNL_MEM_RD_CTRL
+      byte_offset: 136
+    - name: CHNL_OUT_BUF2_ADDR_Y
+      byte_offset: 140
+    - name: CHNL_OUT_BUF2_ADDR_U
+      byte_offset: 144
+    - name: CHNL_OUT_BUF2_ADDR_V
+      byte_offset: 148
+    - name: CHNL_SCL_IMG_CFG
+      byte_offset: 152
+    - name: CHNL_FLOW_CTRL
+      byte_offset: 156
+fieldset/ISI_CTRL:
+  description: ''
+  fields:
+    - name: SRC
+      bit_offset: 0
+      bit_size: 1
+fieldset/ISI_CTRL_SRC:
+  description: ''
+  fields:
+    - name: TYPE
+      bit_offset: 4
+      bit_size: 1
+fieldset/ISI_CTRL_VER:
+  description: ''
+  fields:
+    - name: ID
+      bit_offset: 18
+      bit_size: 4
+      description: Version ID
+fieldset/ISI_CTRL_RAW_MSB:
+  description: ''
+  fields:
+    - name: ALIGN
+      bit_offset: 22
+      bit_size: 1
+      description: Version ID
+fieldset/ISI_CTRL_SW:
+  description: ''
+  fields:
+    - name: RST
+      bit_offset: 24
+      bit_size: 1
+fieldset/ISI_CTRL_CHNL:
+  description: ''
+  fields:
+    - name: BYPASS
+      bit_offset: 29
+      bit_size: 1
+    - name: EN
+      bit_offset: 31
+      bit_size: 1
+fieldset/ISI_CTRL_CLK:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 30
+      bit_size: 1
+fieldset/ISI_IMG_CTRL_CSC:
+  description: ''
+  fields:
+    - name: BYP
+      bit_offset: 0
+      bit_size: 1
+    - name: MODE
+      bit_offset: 1
+      bit_size: 2
+fieldset/ISI_IMG_CTRL_YCBCR:
+  description: ''
+  fields:
+    - name: MODE
+      bit_offset: 3
+      bit_size: 1
+fieldset/ISI_IMG_CTRL_HFLIP:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 5
+      bit_size: 1
+fieldset/ISI_IMG_CTRL_VFLIP:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 6
+      bit_size: 1
+fieldset/ISI_IMG_CTRL_CROP:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 7
+      bit_size: 1
+fieldset/ISI_IMG_CTRL_DEC:
+  description: ''
+  fields:
+    - name: Y
+      bit_offset: 8
+      bit_size: 2
+    - name: X
+      bit_offset: 10
+      bit_size: 2
+fieldset/ISI_IMG_CTRL:
+  description: ''
+  fields:
+    - name: DEINT
+      bit_offset: 12
+      bit_size: 3
+    - name: FORMAT
+      bit_offset: 24
+      bit_size: 7
+fieldset/ISI_IMG_CTRL_GBL_ALPHA:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 15
+      bit_size: 1
+    - name: VAL
+      bit_offset: 16
+      bit_size: 8
+fieldset/ISI_OUT_BUF_CTRL_PANIC_SET_THD:
+  description: ''
+  fields:
+    - name: Y
+      bit_offset: 0
+      bit_size: 4
+    - name: U
+      bit_offset: 8
+      bit_size: 4
+    - name: V
+      bit_offset: 16
+      bit_size: 4
+fieldset/ISI_OUT_BUF_CTRL_LOAD_BUF1:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 14
+      bit_size: 1
+fieldset/ISI_OUT_BUF_CTRL_LOAD_BUF2:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 15
+      bit_size: 1
+fieldset/ISI_OUT_BUF_CTRL_MAX_WR_BEATS:
+  description: ''
+  fields:
+    - name: UV
+      bit_offset: 30
+      bit_size: 1
+    - name: Y
+      bit_offset: 31
+      bit_size: 1
+fieldset/ISI_IMG_CFG:
+  description: ''
+  fields:
+    - name: WIDTH
+      bit_offset: 0
+      bit_size: 13
+      description: Input Image Width
+    - name: HEIGHT
+      bit_offset: 16
+      bit_size: 13
+      description: Input Image Width
+fieldset/ISI_IER_LATE_VSYNC_ERR:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 16
+      bit_size: 1
+fieldset/ISI_IER_EARLY_VSYNC_ERR:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 17
+      bit_size: 1
+fieldset/ISI_IER_OFLW_Y_BUF:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 18
+      bit_size: 1
+fieldset/ISI_IER_PANIC_Y_BUF:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 19
+      bit_size: 1
+fieldset/ISI_IER_OFLW_U_BUF:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 20
+      bit_size: 1
+fieldset/ISI_IER_PANIC_U_BUF:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 21
+      bit_size: 1
+fieldset/ISI_IER_OFLW_V_BUF:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 22
+      bit_size: 1
+fieldset/ISI_IER_PANIC_V_BUF:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 23
+      bit_size: 1
+fieldset/ISI_IER_AXI_RD_ERR:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 25
+      bit_size: 1
+fieldset/ISI_IER_AXI_WR_ERR_Y:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 26
+      bit_size: 1
+fieldset/ISI_IER_AXI_WR_ERR_U:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 27
+      bit_size: 1
+fieldset/ISI_IER_AXI_WR_ERR_V:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 28
+      bit_size: 1
+fieldset/ISI_IER_FRM_RCVD:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 29
+      bit_size: 1
+fieldset/ISI_IER_LINE_RCVD:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 30
+      bit_size: 1
+fieldset/ISI_IER_MEM_RD_DONE:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 31
+      bit_size: 1
+fieldset/ISI_STS_BUF1:
+  description: ''
+  fields:
+    - name: ACTIVE
+      bit_offset: 8
+      bit_size: 1
+fieldset/ISI_STS_BUF2:
+  description: ''
+  fields:
+    - name: ACTIVE
+      bit_offset: 9
+      bit_size: 1
+fieldset/ISI_STS_MEM_RD:
+  description: ''
+  fields:
+    - name: OFLOW
+      bit_offset: 10
+      bit_size: 1
+    - name: DONE
+      bit_offset: 31
+      bit_size: 1
+fieldset/ISI_STS_LATE_VSYNC:
+  description: ''
+  fields:
+    - name: ERR
+      bit_offset: 16
+      bit_size: 1
+fieldset/ISI_STS_EARLY_VSYNC:
+  description: ''
+  fields:
+    - name: ERR
+      bit_offset: 17
+      bit_size: 1
+fieldset/ISI_STS_OFLW_Y:
+  description: ''
+  fields:
+    - name: BUF
+      bit_offset: 18
+      bit_size: 1
+fieldset/ISI_STS_PANIC_Y:
+  description: ''
+  fields:
+    - name: BUF
+      bit_offset: 19
+      bit_size: 1
+fieldset/ISI_STS_OFLW_U:
+  description: ''
+  fields:
+    - name: BUF
+      bit_offset: 20
+      bit_size: 1
+fieldset/ISI_STS_PANIC_U:
+  description: ''
+  fields:
+    - name: BUF
+      bit_offset: 21
+      bit_size: 1
+fieldset/ISI_STS_OFLW_V:
+  description: ''
+  fields:
+    - name: BUF
+      bit_offset: 22
+      bit_size: 1
+fieldset/ISI_STS_PANIC_V:
+  description: ''
+  fields:
+    - name: BUF
+      bit_offset: 23
+      bit_size: 1
+fieldset/ISI_STS_AXI_RD:
+  description: ''
+  fields:
+    - name: ERR
+      bit_offset: 25
+      bit_size: 1
+fieldset/ISI_STS_AXI_WR_ERR:
+  description: ''
+  fields:
+    - name: Y
+      bit_offset: 26
+      bit_size: 1
+    - name: U
+      bit_offset: 27
+      bit_size: 1
+    - name: V
+      bit_offset: 28
+      bit_size: 1
+fieldset/ISI_STS_FRM:
+  description: ''
+  fields:
+    - name: STRD
+      bit_offset: 29
+      bit_size: 1
+fieldset/ISI_STS_LINE:
+  description: ''
+  fields:
+    - name: STRD
+      bit_offset: 30
+      bit_size: 1
+fieldset/ISI_SCALE_FACTOR_X:
+  description: ''
+  fields:
+    - name: SCALE
+      bit_offset: 0
+      bit_size: 14
+      description: Horizontal Scaling Factor
+fieldset/ISI_SCALE_FACTOR_Y:
+  description: ''
+  fields:
+    - name: SCALE
+      bit_offset: 16
+      bit_size: 14
+      description: Horizontal Scaling Factor
+fieldset/ISI_SCALE_OFFSET_X:
+  description: ''
+  fields:
+    - name: OFFSET
+      bit_offset: 0
+      bit_size: 12
+      description: Horizontal Scaling Offset
+fieldset/ISI_SCALE_OFFSET_Y:
+  description: ''
+  fields:
+    - name: OFFSET
+      bit_offset: 16
+      bit_size: 12
+      description: Horizontal Scaling Offset
+fieldset/ISI_CROP_ULC:
+  description: ''
+  fields:
+    - name: Y
+      bit_offset: 0
+      bit_size: 12
+      description: Upper Left Y-Coordinate
+    - name: X
+      bit_offset: 16
+      bit_size: 12
+      description: Upper Left Y-Coordinate
+fieldset/ISI_CROP_LRC:
+  description: ''
+  fields:
+    - name: Y
+      bit_offset: 0
+      bit_size: 12
+      description: Lower Right Y-Coordinate
+    - name: X
+      bit_offset: 16
+      bit_size: 12
+      description: Lower Right Y-Coordinate
+fieldset/ISI_CSC_COEFF0:
+  description: ''
+  fields:
+    - name: A1
+      bit_offset: 0
+      bit_size: 11
+      description: CSC Coefficient A1 Value
+    - name: A2
+      bit_offset: 16
+      bit_size: 11
+      description: CSC Coefficient A1 Value
+fieldset/ISI_CSC_COEFF1:
+  description: ''
+  fields:
+    - name: A3
+      bit_offset: 0
+      bit_size: 11
+      description: CSC Coefficient A3 Value
+    - name: B1
+      bit_offset: 16
+      bit_size: 11
+      description: CSC Coefficient A3 Value
+fieldset/ISI_CSC_COEFF2:
+  description: ''
+  fields:
+    - name: B2
+      bit_offset: 0
+      bit_size: 11
+      description: CSC Coefficient B2 Value
+    - name: B3
+      bit_offset: 16
+      bit_size: 11
+      description: CSC Coefficient B2 Value
+fieldset/ISI_CSC_COEFF3:
+  description: ''
+  fields:
+    - name: C1
+      bit_offset: 0
+      bit_size: 11
+      description: CSC Coefficient C1 Value
+    - name: C2
+      bit_offset: 16
+      bit_size: 11
+      description: CSC Coefficient C1 Value
+fieldset/ISI_CSC_COEFF4:
+  description: ''
+  fields:
+    - name: C3
+      bit_offset: 0
+      bit_size: 11
+      description: CSC Coefficient C3 Value
+    - name: D1
+      bit_offset: 16
+      bit_size: 9
+      description: CSC Coefficient C3 Value
+fieldset/ISI_CSC_COEFF5:
+  description: ''
+  fields:
+    - name: D2
+      bit_offset: 0
+      bit_size: 9
+      description: CSC Coefficient D2 Value
+    - name: D3
+      bit_offset: 16
+      bit_size: 9
+      description: CSC Coefficient D2 Value
+fieldset/ISI_ROI_0_ALPHA_ALPHA:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 16
+      bit_size: 1
+fieldset/ISI_ROI_0_ALPHA:
+  description: ''
+  fields:
+    - name: ALPHA
+      bit_offset: 24
+      bit_size: 8
+      description: Alpha Value
+fieldset/ISI_ROI_0_ULC:
+  description: ''
+  fields:
+    - name: Y
+      bit_offset: 0
+      bit_size: 12
+      description: Upper Left Y-Coordinate
+    - name: X
+      bit_offset: 16
+      bit_size: 12
+      description: Upper Left Y-Coordinate
+fieldset/ISI_ROI_0_LRC:
+  description: ''
+  fields:
+    - name: Y
+      bit_offset: 0
+      bit_size: 12
+      description: Lower Right Y-Coordinate
+    - name: X
+      bit_offset: 16
+      bit_size: 12
+      description: Lower Right Y-Coordinate
+fieldset/ISI_ROI_1_ALPHA_ALPHA:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 16
+      bit_size: 1
+fieldset/ISI_ROI_1_ALPHA:
+  description: ''
+  fields:
+    - name: ALPHA
+      bit_offset: 24
+      bit_size: 8
+      description: Alpha Value
+fieldset/ISI_ROI_1_ULC:
+  description: ''
+  fields:
+    - name: Y
+      bit_offset: 0
+      bit_size: 12
+      description: Upper Left Y-Coordinate
+    - name: X
+      bit_offset: 16
+      bit_size: 12
+      description: Upper Left Y-Coordinate
+fieldset/ISI_ROI_1_LRC:
+  description: ''
+  fields:
+    - name: Y
+      bit_offset: 0
+      bit_size: 12
+      description: Lower Right Y-Coordinate
+    - name: X
+      bit_offset: 16
+      bit_size: 12
+      description: Lower Right Y-Coordinate
+fieldset/ISI_ROI_2_ALPHA_ALPHA:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 16
+      bit_size: 1
+fieldset/ISI_ROI_2_ALPHA:
+  description: ''
+  fields:
+    - name: ALPHA
+      bit_offset: 24
+      bit_size: 8
+      description: Alpha Value
+fieldset/ISI_ROI_2_ULC:
+  description: ''
+  fields:
+    - name: Y
+      bit_offset: 0
+      bit_size: 12
+      description: Upper Left Y-Coordinate
+    - name: X
+      bit_offset: 16
+      bit_size: 12
+      description: Upper Left Y-Coordinate
+fieldset/ISI_ROI_2_LRC:
+  description: ''
+  fields:
+    - name: Y
+      bit_offset: 0
+      bit_size: 12
+      description: Lower Right Y-Coordinate
+    - name: X
+      bit_offset: 16
+      bit_size: 12
+      description: Lower Right Y-Coordinate
+fieldset/ISI_ROI_3_ALPHA_ALPHA:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 16
+      bit_size: 1
+fieldset/ISI_ROI_3_ALPHA:
+  description: ''
+  fields:
+    - name: ALPHA
+      bit_offset: 24
+      bit_size: 8
+      description: Alpha Value
+fieldset/ISI_ROI_3_ULC:
+  description: ''
+  fields:
+    - name: Y
+      bit_offset: 0
+      bit_size: 12
+      description: Upper Left Y-Coordinate
+    - name: X
+      bit_offset: 16
+      bit_size: 12
+      description: Upper Left Y-Coordinate
+fieldset/ISI_ROI_3_LRC:
+  description: ''
+  fields:
+    - name: Y
+      bit_offset: 0
+      bit_size: 12
+      description: Lower Right Y-Coordinate
+    - name: X
+      bit_offset: 16
+      bit_size: 12
+      description: Lower Right Y-Coordinate
+fieldset/ISI_OUT_BUF1_ADDR_Y:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Address for RGB or Y (Luma)
+fieldset/ISI_OUT_BUF1_ADDR_U:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Address for U/Cb/UV/CbCr
+fieldset/ISI_OUT_BUF1_ADDR_V:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Address for V or Cr
+fieldset/ISI_OUT_BUF_PITCH_LINE:
+  description: ''
+  fields:
+    - name: PITCH
+      bit_offset: 0
+      bit_size: 16
+      description: Output Buffer Line Pitch
+fieldset/ISI_IN_BUF_ADDR:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Starting Address
+fieldset/ISI_IN_BUF_PITCH_LINE:
+  description: ''
+  fields:
+    - name: PITCH
+      bit_offset: 0
+      bit_size: 16
+      description: Line Pitch
+fieldset/ISI_IN_BUF_PITCH_FRM:
+  description: ''
+  fields:
+    - name: PITCH
+      bit_offset: 16
+      bit_size: 16
+      description: Line Pitch
+fieldset/ISI_MEM_RD_CTRL_READ:
+  description: ''
+  fields:
+    - name: MEM
+      bit_offset: 0
+      bit_size: 1
+fieldset/ISI_MEM_RD_CTRL_IMG:
+  description: ''
+  fields:
+    - name: TYPE
+      bit_offset: 28
+      bit_size: 4
+      description: Input Image Format
+fieldset/ISI_OUT_BUF2_ADDR_Y:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Starting Address for RGB or Y
+fieldset/ISI_OUT_BUF2_ADDR_U:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+fieldset/ISI_OUT_BUF2_ADDR_V:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Starting Address for V or Cr
+fieldset/ISI_SCL_IMG_CFG:
+  description: ''
+  fields:
+    - name: WIDTH
+      bit_offset: 0
+      bit_size: 13
+      description: Scaled Image Width (Pixels)
+    - name: HEIGHT
+      bit_offset: 16
+      bit_size: 13
+      description: Scaled Image Width (Pixels)
+fieldset/ISI_FLOW_CTRL_FC:
+  description: ''
+  fields:
+    - name: DENOM
+      bit_offset: 0
+      bit_size: 8
+    - name: NUMER
+      bit_offset: 16
+      bit_size: 8

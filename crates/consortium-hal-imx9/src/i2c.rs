@@ -14,6 +14,12 @@
 //! instance's interrupt to [`on_interrupt`] parameterized with the same
 //! singleton type.
 //!
+//! A transaction follows the `embedded-hal` contract: each run of consecutive
+//! same-direction operations goes out as one segment, with a repeated START
+//! only where the direction changes, and a single STOP at the end. A transfer
+//! that fails, or an async one that is dropped mid-flight, flushes the FIFOs and
+//! releases the bus before returning, so the next transaction starts from idle.
+//!
 //! DMA readiness: the byte primitives below are factored around the LPI2C FIFO
 //! so a DMA-backed transmit/receive can be layered on top using
 //! [`crate::dma::DmaChannel::write_peripheral`] /
@@ -321,26 +327,9 @@ impl I2c {
         }
     }
 
-    fn start_write(&self, address: u8) -> Result<(), Error> {
-        self.wait_tx_ready()?;
-        self.push(cmd::START, address << 1);
-        Ok(())
-    }
-
-    fn start_read(&self, address: u8) -> Result<(), Error> {
-        self.wait_tx_ready()?;
-        self.push(cmd::START, (address << 1) | 1);
-        Ok(())
-    }
-
-    fn write_bytes(&self, bytes: &[u8]) -> Result<(), Error> {
-        for &b in bytes {
-            self.wait_tx_ready()?;
-            self.push(cmd::TRANSMIT, b);
-        }
-        Ok(())
-    }
-
+    /// Queue the commands that receive `buffer.len()` bytes, draining each
+    /// byte as it arrives. A run longer than one `RECEIVE` command's reach is
+    /// split across several; no START separates them.
     fn read_bytes(&self, buffer: &mut [u8]) -> Result<(), Error> {
         for chunk in buffer.chunks_mut(MAX_RX_RUN) {
             self.wait_tx_ready()?;
@@ -366,30 +355,41 @@ impl I2c {
     }
 
     /// Run a transaction as a sequence of operations (blocking).
+    ///
+    /// Each run of consecutive same-direction operations is one segment: a
+    /// single START, then every operation's bytes back to back.
     fn transaction_blocking(
         &mut self,
         address: u8,
         operations: &mut [Operation<'_>],
     ) -> Result<(), Error> {
+        if operations.is_empty() {
+            return Ok(());
+        }
+        let guard = RecoverGuard::new(self.regs);
         self.clear_status();
-        let mut prev_read: Option<bool> = None;
-        for op in operations.iter_mut() {
-            match op {
-                Operation::Write(bytes) => {
-                    if prev_read != Some(false) {
-                        self.start_write(address)?;
+        let mut start = 0;
+        while start < operations.len() {
+            let end = group_end(operations, start);
+            let read = is_read(&operations[start]);
+            self.wait_tx_ready()?;
+            self.push(cmd::START, (address << 1) | u8::from(read));
+            for op in &mut operations[start..end] {
+                match op {
+                    Operation::Write(bytes) => {
+                        for &b in bytes.iter() {
+                            self.wait_tx_ready()?;
+                            self.push(cmd::TRANSMIT, b);
+                        }
                     }
-                    self.write_bytes(bytes)?;
-                    prev_read = Some(false);
-                }
-                Operation::Read(buffer) => {
-                    self.start_read(address)?;
-                    self.read_bytes(buffer)?;
-                    prev_read = Some(true);
+                    Operation::Read(buffer) => self.read_bytes(buffer)?,
                 }
             }
+            start = end;
         }
-        self.stop()
+        self.stop()?;
+        guard.defuse();
+        Ok(())
     }
 
     // --- async primitives ---------------------------------------------------
@@ -458,43 +458,174 @@ impl I2c {
         Ok(byte)
     }
 
+    async fn stop_async(&self) -> Result<(), Error> {
+        self.wait_tx_ready_async().await?;
+        self.push(cmd::STOP, 0);
+        self.wait_for(
+            |r| {
+                r.MIER().modify(|w| {
+                    w.set_SDIE(true);
+                    w.set_NDIE(true);
+                    w.set_ALIE(true);
+                });
+            },
+            |s| match s.check_error() {
+                Err(e) => Some(Err(e)),
+                Ok(()) if s.regs.MSR().read().SDF() => {
+                    s.regs.MSR().write(|w| w.set_SDF(true));
+                    Some(Ok(()))
+                }
+                Ok(()) => None,
+            },
+        )
+        .await
+    }
+
     async fn transaction_async(
         &mut self,
         address: u8,
         operations: &mut [Operation<'_>],
     ) -> Result<(), Error> {
+        if operations.is_empty() {
+            return Ok(());
+        }
+        // Covers an error returned through `?` and a future dropped mid-transfer.
+        let guard = RecoverGuard::new(self.regs);
         self.clear_status();
-        let mut prev_read: Option<bool> = None;
-        for op in operations.iter_mut() {
-            match op {
-                Operation::Write(bytes) => {
-                    if prev_read != Some(false) {
-                        self.wait_tx_ready_async().await?;
-                        self.push(cmd::START, address << 1);
-                    }
-                    for &b in bytes.iter() {
-                        self.wait_tx_ready_async().await?;
-                        self.push(cmd::TRANSMIT, b);
-                    }
-                    prev_read = Some(false);
-                }
-                Operation::Read(buffer) => {
-                    self.wait_tx_ready_async().await?;
-                    self.push(cmd::START, (address << 1) | 1);
-                    for chunk in buffer.chunks_mut(MAX_RX_RUN) {
-                        self.wait_tx_ready_async().await?;
-                        self.push(cmd::RECEIVE, (chunk.len() - 1) as u8);
-                        for slot in chunk.iter_mut() {
-                            *slot = self.wait_rx_async().await?;
+        let mut start = 0;
+        while start < operations.len() {
+            let end = group_end(operations, start);
+            let read = is_read(&operations[start]);
+            self.wait_tx_ready_async().await?;
+            self.push(cmd::START, (address << 1) | u8::from(read));
+            for op in &mut operations[start..end] {
+                match op {
+                    Operation::Write(bytes) => {
+                        for &b in bytes.iter() {
+                            self.wait_tx_ready_async().await?;
+                            self.push(cmd::TRANSMIT, b);
                         }
                     }
-                    prev_read = Some(true);
+                    Operation::Read(buffer) => {
+                        for chunk in buffer.chunks_mut(MAX_RX_RUN) {
+                            self.wait_tx_ready_async().await?;
+                            self.push(cmd::RECEIVE, (chunk.len() - 1) as u8);
+                            for slot in chunk.iter_mut() {
+                                *slot = self.wait_rx_async().await?;
+                            }
+                        }
+                    }
                 }
             }
+            start = end;
         }
-        self.wait_tx_ready_async().await?;
-        self.push(cmd::STOP, 0);
+        self.stop_async().await?;
+        guard.defuse();
         Ok(())
+    }
+}
+
+/// Whether `op` reads from the target.
+fn is_read(op: &Operation<'_>) -> bool {
+    matches!(op, Operation::Read(_))
+}
+
+/// One past the last operation of the run starting at `start` whose operations
+/// all move data in the same direction.
+///
+/// `embedded-hal` requires such a run to go out as one segment, with no
+/// repeated START between its operations.
+fn group_end(operations: &[Operation<'_>], start: usize) -> usize {
+    let read = is_read(&operations[start]);
+    let mut end = start + 1;
+    while end < operations.len() && is_read(&operations[end]) == read {
+        end += 1;
+    }
+    end
+}
+
+/// Upper bound on status polls while waiting for a recovery STOP to reach the
+/// bus. Drop cannot await or read a clock, so this is a spin count: comfortably
+/// more than one byte time plus STOP at 100 kHz on a 300 MHz+ core.
+const RECOVERY_SPINS: u32 = 200_000;
+
+/// Return the controller to idle after a failed or abandoned transfer.
+///
+/// Follows `embassy-mcxa`'s LPI2C recovery: discard whatever commands and data
+/// are still queued, clear the sticky flags (the master starts nothing new
+/// while an error flag is set), and if this master still holds the bus — after
+/// a NACK with an empty FIFO, or a transfer dropped mid-flight — issue a STOP
+/// and give it time to complete. A final FIFO reset drops a STOP the hardware
+/// had no bus to act on.
+fn recover(r: LPI2C) {
+    critical_section::with(|_| {
+        r.MIER().write(|w| {
+            w.set_TDIE(false);
+            w.set_RDIE(false);
+            w.set_NDIE(false);
+            w.set_EPIE(false);
+            w.set_SDIE(false);
+            w.set_ALIE(false);
+        })
+    });
+    let reset_fifos = || {
+        r.MCR().modify(|w| {
+            w.set_RTF(true);
+            w.set_RRF(true);
+        })
+    };
+    let clear_flags = || {
+        r.MSR().write(|w| {
+            w.set_EPF(true);
+            w.set_SDF(true);
+            w.set_NDF(true);
+            w.set_ALF(true);
+            w.set_FEF(true);
+            w.set_PLTF(true);
+            w.set_DMF(true);
+        })
+    };
+    reset_fifos();
+    clear_flags();
+    if r.MSR().read().MBF() {
+        r.MTDR().write_value(LPI2C_MTDR(u32::from(cmd::STOP) << 8));
+        let mut spins = RECOVERY_SPINS;
+        while spins > 0 {
+            let msr = r.MSR().read();
+            if msr.SDF() || !msr.MBF() {
+                break;
+            }
+            spins -= 1;
+        }
+    }
+    reset_fifos();
+    clear_flags();
+}
+
+/// Runs [`recover`] when dropped unless [`defuse`](Self::defuse)d, so an
+/// error propagated with `?` and an async transfer dropped mid-flight both
+/// leave the controller idle and the bus released.
+struct RecoverGuard {
+    regs: LPI2C,
+    armed: bool,
+}
+
+impl RecoverGuard {
+    fn new(regs: LPI2C) -> Self {
+        Self { regs, armed: true }
+    }
+
+    /// The transfer completed cleanly; skip recovery.
+    fn defuse(mut self) {
+        self.armed = false;
+    }
+}
+
+impl Drop for RecoverGuard {
+    fn drop(&mut self) {
+        if self.armed {
+            recover(self.regs);
+        }
     }
 }
 
@@ -524,7 +655,9 @@ impl embedded_hal_async::i2c::I2c<SevenBitAddress> for I2c {
 
 #[cfg(test)]
 mod tests {
-    use super::clock_config;
+    use embedded_hal::i2c::Operation;
+
+    use super::{clock_config, group_end};
 
     #[test]
     fn clock_config_standard_mode() {
@@ -546,5 +679,19 @@ mod tests {
         // Unreachable target: clamps rather than looping forever.
         let cfg = clock_config(1_000_000, 10);
         assert_eq!(cfg.prescale, 7);
+    }
+
+    #[test]
+    fn same_direction_operations_form_one_segment() {
+        let (a, b) = ([1u8], [2u8]);
+        let (mut r1, mut r2) = ([0u8; 1], [0u8; 1]);
+        let ops = [
+            Operation::Read(&mut r1),
+            Operation::Read(&mut r2),
+            Operation::Write(&a),
+            Operation::Write(&b),
+        ];
+        assert_eq!(group_end(&ops, 0), 2);
+        assert_eq!(group_end(&ops, 2), 4);
     }
 }

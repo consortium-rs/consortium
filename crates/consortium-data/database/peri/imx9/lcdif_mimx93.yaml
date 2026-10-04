@@ -1,0 +1,431 @@
+block/LCDIF:
+  description: ''
+  items:
+    - name: CTRL_RW
+      byte_offset: 0
+    - name: CTRL_SET
+      byte_offset: 4
+    - name: CTRL_CLR
+      byte_offset: 8
+    - name: CTRL_TOG
+      byte_offset: 12
+    - name: DISP_PARA
+      byte_offset: 16
+    - name: DISP_SIZE
+      byte_offset: 20
+    - name: HSYN_PARA
+      byte_offset: 24
+    - name: VSYN_PARA
+      byte_offset: 28
+    - name: VSYN_HSYN_WIDTH
+      byte_offset: 32
+    - name: INT_STATUS_D0
+      byte_offset: 36
+      fieldset: LCDIF_INT_STATUS_D0
+    - name: INT_ENABLE_D0
+      byte_offset: 40
+    - name: INT_STATUS_D1
+      byte_offset: 48
+    - name: INT_ENABLE_D1
+      byte_offset: 52
+    - name: CTRLDESCL_1
+      byte_offset: 512
+      array:
+        len: 1
+        stride: 4
+      fieldset: LCDIF_CTRLDESCL_1
+    - name: CTRLDESCL_3
+      byte_offset: 520
+      array:
+        len: 1
+        stride: 4
+      fieldset: LCDIF_CTRLDESCL_3
+    - name: CTRLDESCL_LOW_4
+      byte_offset: 524
+      array:
+        len: 1
+        stride: 4
+    - name: CTRLDESCL_HIGH_4
+      byte_offset: 528
+      array:
+        len: 1
+        stride: 4
+    - name: CTRLDESCL_5
+      byte_offset: 532
+      array:
+        len: 1
+        stride: 4
+      fieldset: LCDIF_CTRLDESCL_5
+    - name: CSC_CTRL
+      byte_offset: 540
+      array:
+        len: 1
+        stride: 4
+      fieldset: LCDIF_CSC_CTRL
+    - name: CSC_COEF0
+      byte_offset: 544
+      array:
+        len: 1
+        stride: 4
+      fieldset: LCDIF_CSC_COEF0
+    - name: CSC_COEF1
+      byte_offset: 548
+      array:
+        len: 1
+        stride: 4
+      fieldset: LCDIF_CSC_COEF1
+    - name: CSC_COEF2
+      byte_offset: 552
+      array:
+        len: 1
+        stride: 4
+      fieldset: LCDIF_CSC_COEF2
+    - name: CSC_COEF3
+      byte_offset: 556
+      array:
+        len: 1
+        stride: 4
+      fieldset: LCDIF_CSC_COEF3
+    - name: CSC_COEF4
+      byte_offset: 560
+      array:
+        len: 1
+        stride: 4
+      fieldset: LCDIF_CSC_COEF4
+    - name: CSC_COEF5
+      byte_offset: 564
+      array:
+        len: 1
+        stride: 4
+      fieldset: LCDIF_CSC_COEF5
+    - name: PANIC_THRES
+      byte_offset: 568
+      array:
+        len: 1
+        stride: 4
+fieldset/LCDIF_CTRL_INV:
+  description: ''
+  fields:
+    - name: HS
+      bit_offset: 0
+      bit_size: 1
+    - name: VS
+      bit_offset: 1
+      bit_size: 1
+    - name: DE
+      bit_offset: 2
+      bit_size: 1
+    - name: PXCK
+      bit_offset: 3
+      bit_size: 1
+fieldset/LCDIF_CTRL:
+  description: ''
+  fields:
+    - name: NEG
+      bit_offset: 4
+      bit_size: 1
+fieldset/LCDIF_CTRL_fetch_start:
+  description: ''
+  fields:
+    - name: option
+      bit_offset: 8
+      bit_size: 2
+fieldset/LCDIF_CTRL_SW:
+  description: ''
+  fields:
+    - name: RESET
+      bit_offset: 31
+      bit_size: 1
+fieldset/LCDIF_DISP_PARA_BGND:
+  description: ''
+  fields:
+    - name: B
+      bit_offset: 0
+      bit_size: 8
+    - name: G
+      bit_offset: 8
+      bit_size: 8
+    - name: R
+      bit_offset: 16
+      bit_size: 8
+fieldset/LCDIF_DISP_PARA_DISP:
+  description: ''
+  fields:
+    - name: MODE
+      bit_offset: 24
+      bit_size: 2
+    - name: 'ON'
+      bit_offset: 31
+      bit_size: 1
+fieldset/LCDIF_DISP_PARA_LINE:
+  description: ''
+  fields:
+    - name: PATTERN
+      bit_offset: 26
+      bit_size: 4
+fieldset/LCDIF_DISP_PARA_SWAP:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 30
+      bit_size: 1
+fieldset/LCDIF_DISP_SIZE_DELTA:
+  description: ''
+  fields:
+    - name: X
+      bit_offset: 0
+      bit_size: 16
+    - name: Y
+      bit_offset: 16
+      bit_size: 16
+fieldset/LCDIF_HSYN_PARA_FP:
+  description: ''
+  fields:
+    - name: H
+      bit_offset: 0
+      bit_size: 16
+fieldset/LCDIF_HSYN_PARA_BP:
+  description: ''
+  fields:
+    - name: H
+      bit_offset: 16
+      bit_size: 16
+fieldset/LCDIF_VSYN_PARA_FP:
+  description: ''
+  fields:
+    - name: V
+      bit_offset: 0
+      bit_size: 16
+fieldset/LCDIF_VSYN_PARA_BP:
+  description: ''
+  fields:
+    - name: V
+      bit_offset: 16
+      bit_size: 16
+fieldset/LCDIF_VSYN_HSYN_WIDTH_PW:
+  description: ''
+  fields:
+    - name: H
+      bit_offset: 0
+      bit_size: 16
+    - name: V
+      bit_offset: 16
+      bit_size: 16
+fieldset/LCDIF_INT_STATUS_D0:
+  description: ''
+  fields:
+    - name: VSYNC
+      bit_offset: 0
+      bit_size: 1
+    - name: UNDERRUN
+      bit_offset: 1
+      bit_size: 1
+fieldset/LCDIF_INT_STATUS_D0_VS:
+  description: ''
+  fields:
+    - name: BLANK
+      bit_offset: 2
+      bit_size: 1
+fieldset/LCDIF_INT_STATUS_D0_DMA:
+  description: ''
+  fields:
+    - name: ERR
+      bit_offset: 8
+      bit_size: 1
+    - name: DONE
+      bit_offset: 16
+      bit_size: 1
+fieldset/LCDIF_INT_STATUS_D0_FIFO:
+  description: ''
+  fields:
+    - name: EMPTY
+      bit_offset: 24
+      bit_size: 1
+fieldset/LCDIF_INT_ENABLE_D0_VSYNC:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+fieldset/LCDIF_INT_ENABLE_D0_UNDERRUN:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 1
+      bit_size: 1
+fieldset/LCDIF_INT_ENABLE_D0_VS_BLANK:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 2
+      bit_size: 1
+fieldset/LCDIF_INT_ENABLE_D0_DMA_ERR:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 8
+      bit_size: 1
+fieldset/LCDIF_INT_ENABLE_D0_DMA_DONE:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 16
+      bit_size: 1
+fieldset/LCDIF_INT_ENABLE_D0_FIFO_EMPTY:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 24
+      bit_size: 1
+fieldset/LCDIF_INT_STATUS_D1_PLANE:
+  description: ''
+  fields:
+    - name: PANIC
+      bit_offset: 0
+      bit_size: 1
+fieldset/LCDIF_INT_ENABLE_D1_PLANE_PANIC:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+fieldset/LCDIF_CTRLDESCL_1:
+  description: ''
+  fields:
+    - name: WIDTH
+      bit_offset: 0
+      bit_size: 16
+      description: Width of the layer in pixels.
+    - name: HEIGHT
+      bit_offset: 16
+      bit_size: 16
+      description: Width of the layer in pixels.
+fieldset/LCDIF_CTRLDESCL_3:
+  description: ''
+  fields:
+    - name: PITCH
+      bit_offset: 0
+      bit_size: 16
+fieldset/LCDIF_CTRLDESCL_3_T:
+  description: ''
+  fields:
+    - name: SIZE
+      bit_offset: 16
+      bit_size: 2
+      description: Transaction Size
+fieldset/LCDIF_CTRLDESCL_3_P:
+  description: ''
+  fields:
+    - name: SIZE
+      bit_offset: 20
+      bit_size: 3
+      description: Transaction Size
+fieldset/LCDIF_CTRLDESCL_LOW_4_ADDR:
+  description: ''
+  fields:
+    - name: LOW
+      bit_offset: 0
+      bit_size: 32
+fieldset/LCDIF_CTRLDESCL_HIGH_4_ADDR:
+  description: ''
+  fields:
+    - name: HIGH
+      bit_offset: 0
+      bit_size: 4
+fieldset/LCDIF_CTRLDESCL_5_YUV:
+  description: ''
+  fields:
+    - name: FORMAT
+      bit_offset: 14
+      bit_size: 2
+fieldset/LCDIF_CTRLDESCL_5:
+  description: ''
+  fields:
+    - name: BPP
+      bit_offset: 24
+      bit_size: 4
+    - name: EN
+      bit_offset: 31
+      bit_size: 1
+fieldset/LCDIF_CTRLDESCL_5_SHADOW_LOAD:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 30
+      bit_size: 1
+      description: Shadow Load Enable
+fieldset/LCDIF_CSC_CTRL:
+  description: ''
+  fields:
+    - name: BYPASS
+      bit_offset: 0
+      bit_size: 1
+fieldset/LCDIF_CSC_CTRL_CSC:
+  description: ''
+  fields:
+    - name: MODE
+      bit_offset: 1
+      bit_size: 2
+fieldset/LCDIF_CSC_COEF0:
+  description: ''
+  fields:
+    - name: A1
+      bit_offset: 0
+      bit_size: 11
+    - name: A2
+      bit_offset: 16
+      bit_size: 11
+fieldset/LCDIF_CSC_COEF1:
+  description: ''
+  fields:
+    - name: A3
+      bit_offset: 0
+      bit_size: 11
+    - name: B1
+      bit_offset: 16
+      bit_size: 11
+fieldset/LCDIF_CSC_COEF2:
+  description: ''
+  fields:
+    - name: B2
+      bit_offset: 0
+      bit_size: 11
+    - name: B3
+      bit_offset: 16
+      bit_size: 11
+fieldset/LCDIF_CSC_COEF3:
+  description: ''
+  fields:
+    - name: C1
+      bit_offset: 0
+      bit_size: 11
+    - name: C2
+      bit_offset: 16
+      bit_size: 11
+fieldset/LCDIF_CSC_COEF4:
+  description: ''
+  fields:
+    - name: C3
+      bit_offset: 0
+      bit_size: 11
+    - name: D1
+      bit_offset: 16
+      bit_size: 9
+fieldset/LCDIF_CSC_COEF5:
+  description: ''
+  fields:
+    - name: D2
+      bit_offset: 0
+      bit_size: 9
+    - name: D3
+      bit_offset: 16
+      bit_size: 9
+fieldset/LCDIF_PANIC_THRES_PANIC_THRES:
+  description: ''
+  fields:
+    - name: HIGH
+      bit_offset: 0
+      bit_size: 9
+    - name: LOW
+      bit_offset: 16
+      bit_size: 9

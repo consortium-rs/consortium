@@ -1,0 +1,916 @@
+block/MEDIAMIX_BLK_CTRL:
+  description: ''
+  items:
+    - name: BUS_CONTROL_LCDIFr
+      byte_offset: 12
+    - name: BUS_CONTROL_PXPr
+      byte_offset: 16
+    - name: BUS_CONTROL_ISI0
+      byte_offset: 20
+    - name: BUS_CONTROL_ISI1
+      byte_offset: 28
+    - name: BUS_CONTROL_LDB_CTRL
+      byte_offset: 32
+    - name: BUS_CONTROL_LVDS
+      byte_offset: 36
+    - name: BUS_CONTROL_LIMITER0
+      byte_offset: 40
+    - name: BUS_CONTROL_LIMITER1
+      byte_offset: 44
+    - name: CLK_RESETN_RESET
+      byte_offset: 0
+    - name: CLK_RESETN_CLK
+      byte_offset: 4
+    - name: GASKET_CAMERA_MUX
+      byte_offset: 48
+    - name: GASKET_PIXEL_CTRL
+      byte_offset: 60
+    - name: GASKET_LINE_CNT
+      byte_offset: 64
+    - name: GASKET_PIXEL_CNT
+      byte_offset: 68
+    - name: GASKET_DISPLAY_MUX
+      byte_offset: 96
+    - name: GASKET_IF_CTRL_REG
+      byte_offset: 112
+    - name: GASKET_INTERFACE_STATUS
+      byte_offset: 116
+    - name: GASKET_INTERFACE_CTRL_REG
+      byte_offset: 120
+    - name: GASKET_INTERFACE_CTRL_REG1
+      byte_offset: 124
+    - name: MIPI_CSI
+      byte_offset: 72
+    - name: MIPI_DSI
+      byte_offset: 76
+    - name: MIPI_DSI_W0
+      byte_offset: 80
+    - name: MIPI_DSI_W1
+      byte_offset: 84
+    - name: MIPI_DSI_R0
+      byte_offset: 88
+    - name: MIPI_DSI_R1
+      byte_offset: 92
+fieldset/MEDIAMIX_BLK_CTRL_LCDIF:
+  description: ''
+  fields:
+    - name: ARCACHE
+      bit_offset: 0
+      bit_size: 4
+      description: ARCACHE value of LCDIF
+fieldset/MEDIAMIX_BLK_CTRL_LCDIF_ARCACHE:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 4
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_LCDIF_CFG:
+  description: ''
+  fields:
+    - name: QOS
+      bit_offset: 8
+      bit_size: 4
+      description: cfg_qos value of LCDIF
+fieldset/MEDIAMIX_BLK_CTRL_LCDIF_DEFAULT:
+  description: ''
+  fields:
+    - name: QOS
+      bit_offset: 12
+      bit_size: 4
+fieldset/MEDIAMIX_BLK_CTRL_PXP:
+  description: ''
+  fields:
+    - name: ARCACHE
+      bit_offset: 0
+      bit_size: 4
+      description: ARCACHE value of PXP
+    - name: AWCACHE
+      bit_offset: 8
+      bit_size: 4
+      description: AWCACHE value of PXP
+fieldset/MEDIAMIX_BLK_CTRL_PXP_ARCACHE:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 4
+      bit_size: 1
+      description: ARCACHE value of PXP
+fieldset/MEDIAMIX_BLK_CTRL_PXP_AWCACHE:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 12
+      bit_size: 1
+      description: AWCACHE value of PXP
+fieldset/MEDIAMIX_BLK_CTRL_PXP_CFG_QOS_OTHER:
+  description: ''
+  fields:
+    - name: W
+      bit_offset: 16
+      bit_size: 4
+    - name: R
+      bit_offset: 24
+      bit_size: 4
+fieldset/MEDIAMIX_BLK_CTRL_PXP_DEFAULT_QOS_OTHER:
+  description: ''
+  fields:
+    - name: W
+      bit_offset: 20
+      bit_size: 4
+    - name: R
+      bit_offset: 28
+      bit_size: 4
+fieldset/MEDIAMIX_BLK_CTRL_ISI0_ARCACHE:
+  description: ''
+  fields:
+    - name: Y
+      bit_offset: 0
+      bit_size: 4
+      description: ARCACHE_Y value of ISI
+fieldset/MEDIAMIX_BLK_CTRL_ISI0_AWCACHE:
+  description: ''
+  fields:
+    - name: Y
+      bit_offset: 4
+      bit_size: 4
+      description: AWCACHE_Y value of ISI
+    - name: U
+      bit_offset: 8
+      bit_size: 4
+      description: AWCACHE_U value of ISI
+    - name: V
+      bit_offset: 12
+      bit_size: 4
+      description: AWCACHE_V value of ISI
+fieldset/MEDIAMIX_BLK_CTRL_ISI0_ARCACHE_Y:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 16
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_ISI0_AWCACHE_Y:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 17
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_ISI0_AWCACHE_U:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 18
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_ISI0_AWCACHE_V:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 19
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_ISI1_CFG_QOS_Y:
+  description: ''
+  fields:
+    - name: W
+      bit_offset: 0
+      bit_size: 4
+      description: cfg_qos_y_w value of ISI
+    - name: R
+      bit_offset: 8
+      bit_size: 4
+      description: CFG_QOS_Y_R value of ISI
+fieldset/MEDIAMIX_BLK_CTRL_ISI1_DEFAULT_QOS_Y:
+  description: ''
+  fields:
+    - name: W
+      bit_offset: 4
+      bit_size: 4
+    - name: R
+      bit_offset: 12
+      bit_size: 4
+fieldset/MEDIAMIX_BLK_CTRL_ISI1_CFG_QOS:
+  description: ''
+  fields:
+    - name: U
+      bit_offset: 16
+      bit_size: 4
+      description: cfg_qos_u value of ISI
+    - name: V
+      bit_offset: 24
+      bit_size: 4
+      description: CFG_QOS_V value of ISI
+fieldset/MEDIAMIX_BLK_CTRL_ISI1_DEFAULT_QOS:
+  description: ''
+  fields:
+    - name: U
+      bit_offset: 20
+      bit_size: 4
+    - name: V
+      bit_offset: 28
+      bit_size: 4
+fieldset/MEDIAMIX_BLK_CTRL_LDB_CTRL_CH0:
+  description: ''
+  fields:
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_LDB_CTRL_CH0_DATA:
+  description: ''
+  fields:
+    - name: WIDTH
+      bit_offset: 5
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_LDB_CTRL_CH0_BIT:
+  description: ''
+  fields:
+    - name: MAPPING
+      bit_offset: 6
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_LDB_CTRL_CH0_VSYNC:
+  description: ''
+  fields:
+    - name: POLARITY
+      bit_offset: 9
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_LDB_CTRL_CH0_FIFO:
+  description: ''
+  fields:
+    - name: RESET
+      bit_offset: 11
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_LDB_CTRL_ASYNC_FIFO:
+  description: ''
+  fields:
+    - name: ENABLE
+      bit_offset: 24
+      bit_size: 1
+    - name: THRESHOLD
+      bit_offset: 25
+      bit_size: 3
+fieldset/MEDIAMIX_BLK_CTRL_LVDS_CH0:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_LVDS_LVDS:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 1
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_LVDS_BG:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 2
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_LVDS_HS:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 3
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_LVDS_PRE_EMPH:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 4
+      bit_size: 1
+    - name: ADJ
+      bit_offset: 5
+      bit_size: 3
+fieldset/MEDIAMIX_BLK_CTRL_LVDS_CM:
+  description: ''
+  fields:
+    - name: ADJ
+      bit_offset: 8
+      bit_size: 3
+fieldset/MEDIAMIX_BLK_CTRL_LVDS_CC:
+  description: ''
+  fields:
+    - name: ADJ
+      bit_offset: 11
+      bit_size: 3
+      description: Output current adjustment
+fieldset/MEDIAMIX_BLK_CTRL_LVDS_SLEW:
+  description: ''
+  fields:
+    - name: ADJ
+      bit_offset: 14
+      bit_size: 3
+      description: Output current adjustment
+fieldset/MEDIAMIX_BLK_CTRL_LVDS_VBG:
+  description: ''
+  fields:
+    - name: ADJ
+      bit_offset: 17
+      bit_size: 3
+      description: Bandgap adjustment
+fieldset/MEDIAMIX_BLK_CTRL_LVDS_SPARE:
+  description: ''
+  fields:
+    - name: IN
+      bit_offset: 25
+      bit_size: 3
+      description: Bandgap adjustment
+fieldset/MEDIAMIX_BLK_CTRL_LIMITER0_EN:
+  description: ''
+  fields:
+    - name: SF
+      bit_offset: 0
+      bit_size: 1
+    - name: PXP
+      bit_offset: 1
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_LIMITER1_THRESH:
+  description: ''
+  fields:
+    - name: PXP
+      bit_offset: 0
+      bit_size: 16
+    - name: SF
+      bit_offset: 16
+      bit_size: 16
+fieldset/MEDIAMIX_BLK_CTRL_RESET_bus_apb:
+  description: ''
+  fields:
+    - name: en
+      bit_offset: 0
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_RESET_bus_blk:
+  description: ''
+  fields:
+    - name: en
+      bit_offset: 1
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_RESET_isi_apb:
+  description: ''
+  fields:
+    - name: en
+      bit_offset: 2
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_RESET_isi_proc:
+  description: ''
+  fields:
+    - name: en
+      bit_offset: 3
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_RESET_lcdif_apb:
+  description: ''
+  fields:
+    - name: en
+      bit_offset: 4
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_RESET_lcdif_axi:
+  description: ''
+  fields:
+    - name: en
+      bit_offset: 5
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_RESET_lcdif_pix:
+  description: ''
+  fields:
+    - name: en
+      bit_offset: 6
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_RESET_pxp_apb:
+  description: ''
+  fields:
+    - name: en
+      bit_offset: 7
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_RESET_pxp_axi:
+  description: ''
+  fields:
+    - name: en
+      bit_offset: 8
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_RESET_csi_apb:
+  description: ''
+  fields:
+    - name: en
+      bit_offset: 9
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_RESET_cam_clk:
+  description: ''
+  fields:
+    - name: en
+      bit_offset: 10
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_RESET_dsi_apb:
+  description: ''
+  fields:
+    - name: en
+      bit_offset: 11
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_RESET_ref_clk:
+  description: ''
+  fields:
+    - name: en
+      bit_offset: 12
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_CLK_bus_apb:
+  description: ''
+  fields:
+    - name: en
+      bit_offset: 0
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_CLK_bus_blk:
+  description: ''
+  fields:
+    - name: en
+      bit_offset: 1
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_CLK_isi_apb:
+  description: ''
+  fields:
+    - name: en
+      bit_offset: 2
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_CLK_isi_proc:
+  description: ''
+  fields:
+    - name: en
+      bit_offset: 3
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_CLK_lcdif_apb:
+  description: ''
+  fields:
+    - name: en
+      bit_offset: 4
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_CLK_lcdif_axi:
+  description: ''
+  fields:
+    - name: en
+      bit_offset: 5
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_CLK_lcdif_pix:
+  description: ''
+  fields:
+    - name: en
+      bit_offset: 6
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_CLK_pxp_apb:
+  description: ''
+  fields:
+    - name: en
+      bit_offset: 7
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_CLK_pxp_axi:
+  description: ''
+  fields:
+    - name: en
+      bit_offset: 8
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_CLK_csi_apb:
+  description: ''
+  fields:
+    - name: en
+      bit_offset: 9
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_CLK_cam_clk:
+  description: ''
+  fields:
+    - name: en
+      bit_offset: 10
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_CLK_dsi_apb:
+  description: ''
+  fields:
+    - name: en
+      bit_offset: 11
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_CLK_ref_clk:
+  description: ''
+  fields:
+    - name: en
+      bit_offset: 12
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_CAMERA_MUX_DATA:
+  description: ''
+  fields:
+    - name: TYPE
+      bit_offset: 3
+      bit_size: 6
+fieldset/MEDIAMIX_BLK_CTRL_CAMERA_MUX:
+  description: ''
+  fields:
+    - name: INTERLACE
+      bit_offset: 9
+      bit_size: 2
+    - name: ENABLE
+      bit_offset: 16
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_CAMERA_MUX_VC:
+  description: ''
+  fields:
+    - name: IDENTIFY
+      bit_offset: 11
+      bit_size: 2
+fieldset/MEDIAMIX_BLK_CTRL_CAMERA_MUX_EMBED:
+  description: ''
+  fields:
+    - name: SWAP
+      bit_offset: 13
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_CAMERA_MUX_LEFT_JUST:
+  description: ''
+  fields:
+    - name: MODE
+      bit_offset: 14
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_CAMERA_MUX_SOURCE:
+  description: ''
+  fields:
+    - name: TYPE
+      bit_offset: 17
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_PIXEL_CTRL_PIXEL:
+  description: ''
+  fields:
+    - name: CTRL
+      bit_offset: 0
+      bit_size: 12
+fieldset/MEDIAMIX_BLK_CTRL_LINE_CNT_LINE:
+  description: ''
+  fields:
+    - name: CNT
+      bit_offset: 0
+      bit_size: 32
+fieldset/MEDIAMIX_BLK_CTRL_PIXEL_CNT_PIXEL:
+  description: ''
+  fields:
+    - name: CNT
+      bit_offset: 0
+      bit_size: 32
+fieldset/MEDIAMIX_BLK_CTRL_DISPLAY_MUX_LCDIF_CROSS_LINE:
+  description: ''
+  fields:
+    - name: PATTERN
+      bit_offset: 0
+      bit_size: 4
+fieldset/MEDIAMIX_BLK_CTRL_DISPLAY_MUX_MIPI_DSI_RGB565_MAP:
+  description: ''
+  fields:
+    - name: CFG
+      bit_offset: 4
+      bit_size: 2
+fieldset/MEDIAMIX_BLK_CTRL_DISPLAY_MUX_MIPI_DSI_RGB666_MAP:
+  description: ''
+  fields:
+    - name: CFG
+      bit_offset: 6
+      bit_size: 2
+fieldset/MEDIAMIX_BLK_CTRL_DISPLAY_MUX_PARALLEL_DISP:
+  description: ''
+  fields:
+    - name: FORMAT
+      bit_offset: 8
+      bit_size: 3
+fieldset/MEDIAMIX_BLK_CTRL_IF_CTRL_REG_DATA_TYPE:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 8
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_IF_CTRL_REG_DATA:
+  description: ''
+  fields:
+    - name: TYPE
+      bit_offset: 9
+      bit_size: 5
+fieldset/MEDIAMIX_BLK_CTRL_INTERFACE_STATUS_FIELD_TOGGLE:
+  description: ''
+  fields:
+    - name: STATUS
+      bit_offset: 0
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_INTERFACE_STATUS_ECC_ERROR:
+  description: ''
+  fields:
+    - name: STATUS
+      bit_offset: 1
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_INTERFACE_CTRL_REG_CSI:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_INTERFACE_CTRL_REG_PIXEL_CLK:
+  description: ''
+  fields:
+    - name: POL
+      bit_offset: 1
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_INTERFACE_CTRL_REG_HSYNC:
+  description: ''
+  fields:
+    - name: POL
+      bit_offset: 2
+      bit_size: 1
+    - name: PULSE
+      bit_offset: 19
+      bit_size: 3
+fieldset/MEDIAMIX_BLK_CTRL_INTERFACE_CTRL_REG_VSYNC:
+  description: ''
+  fields:
+    - name: POL
+      bit_offset: 3
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_INTERFACE_CTRL_REG_DE:
+  description: ''
+  fields:
+    - name: POL
+      bit_offset: 4
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_INTERFACE_CTRL_REG_PIXEL_DATA:
+  description: ''
+  fields:
+    - name: POL
+      bit_offset: 5
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_INTERFACE_CTRL_REG_CCIR_EXT_VSYNC:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 6
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_INTERFACE_CTRL_REG_CCIR:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 7
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_INTERFACE_CTRL_REG_CCIR_VIDEO:
+  description: ''
+  fields:
+    - name: MODE
+      bit_offset: 8
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_INTERFACE_CTRL_REG_CCIR_NTSC:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 9
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_INTERFACE_CTRL_REG_CCIR_VSYNC_RST:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 10
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_INTERFACE_CTRL_REG_CCIR_ECC_CORR:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 11
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_INTERFACE_CTRL_REG_HSYNC_FORCE:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 12
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_INTERFACE_CTRL_REG_VSYNC_FORCE:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 13
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_INTERFACE_CTRL_REG_GCLK_MODE:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 14
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_INTERFACE_CTRL_REG_VALID:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 15
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_INTERFACE_CTRL_REG_RAW_OUT:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 16
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_INTERFACE_CTRL_REG_HSYNC_OUT:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 17
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_INTERFACE_CTRL_REG_UV_SWAP:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 22
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_INTERFACE_CTRL_REG_DATA_TYPE:
+  description: ''
+  fields:
+    - name: IN
+      bit_offset: 23
+      bit_size: 4
+fieldset/MEDIAMIX_BLK_CTRL_INTERFACE_CTRL_REG_MASK_VSYNC:
+  description: ''
+  fields:
+    - name: CNTR
+      bit_offset: 27
+      bit_size: 2
+fieldset/MEDIAMIX_BLK_CTRL_INTERFACE_CTRL_REG:
+  description: ''
+  fields:
+    - name: SOFTRST
+      bit_offset: 31
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_INTERFACE_CTRL_REG1_VSYNC:
+  description: ''
+  fields:
+    - name: PULSE
+      bit_offset: 0
+      bit_size: 16
+fieldset/MEDIAMIX_BLK_CTRL_INTERFACE_CTRL_REG1_PIXEL:
+  description: ''
+  fields:
+    - name: WIDTH
+      bit_offset: 16
+      bit_size: 16
+fieldset/MEDIAMIX_BLK_CTRL_CSI:
+  description: ''
+  fields:
+    - name: CFGCLKFREQRANGE
+      bit_offset: 0
+      bit_size: 6
+    - name: HSFREQRANGE
+      bit_offset: 8
+      bit_size: 7
+fieldset/MEDIAMIX_BLK_CTRL_CSI_CONT:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 16
+      bit_size: 1
+    - name: DATA
+      bit_offset: 24
+      bit_size: 7
+      description: Continuity data
+fieldset/MEDIAMIX_BLK_CTRL_DSI:
+  description: ''
+  fields:
+    - name: CFGCLKFREQRANGE
+      bit_offset: 0
+      bit_size: 6
+    - name: CLKSEL
+      bit_offset: 6
+      bit_size: 2
+    - name: HSFREQRANGE
+      bit_offset: 8
+      bit_size: 7
+    - name: updatepll
+      bit_offset: 17
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_DSI_CONT:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 16
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_DSI_shadow:
+  description: ''
+  fields:
+    - name: clear
+      bit_offset: 18
+      bit_size: 1
+      description: Shadow registers clear
+fieldset/MEDIAMIX_BLK_CTRL_DSI_gp_clk:
+  description: ''
+  fields:
+    - name: en
+      bit_offset: 19
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_DSI_clk:
+  description: ''
+  fields:
+    - name: ext
+      bit_offset: 20
+      bit_size: 1
+      description: clk_ext
+fieldset/MEDIAMIX_BLK_CTRL_DSI_cont:
+  description: ''
+  fields:
+    - name: data
+      bit_offset: 21
+      bit_size: 11
+      description: clk_ext
+fieldset/MEDIAMIX_BLK_CTRL_DSI_W0:
+  description: ''
+  fields:
+    - name: M
+      bit_offset: 0
+      bit_size: 10
+    - name: N
+      bit_offset: 10
+      bit_size: 4
+fieldset/MEDIAMIX_BLK_CTRL_DSI_W0_VCO:
+  description: ''
+  fields:
+    - name: CNTRL
+      bit_offset: 14
+      bit_size: 6
+fieldset/MEDIAMIX_BLK_CTRL_DSI_W0_PROP:
+  description: ''
+  fields:
+    - name: CNTRL
+      bit_offset: 20
+      bit_size: 6
+fieldset/MEDIAMIX_BLK_CTRL_DSI_W0_INT:
+  description: ''
+  fields:
+    - name: CNTRL
+      bit_offset: 26
+      bit_size: 6
+fieldset/MEDIAMIX_BLK_CTRL_DSI_W1_GMP:
+  description: ''
+  fields:
+    - name: CNTRL
+      bit_offset: 0
+      bit_size: 2
+fieldset/MEDIAMIX_BLK_CTRL_DSI_W1_CPBIAS:
+  description: ''
+  fields:
+    - name: CNTRL
+      bit_offset: 2
+      bit_size: 7
+fieldset/MEDIAMIX_BLK_CTRL_DSI_W1_PLL_SHADOW:
+  description: ''
+  fields:
+    - name: CONTROL
+      bit_offset: 9
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_DSI_W1_FORCE:
+  description: ''
+  fields:
+    - name: LOCK
+      bit_offset: 10
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_DSI_W1:
+  description: ''
+  fields:
+    - name: BISTON
+      bit_offset: 11
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_DSI_R0:
+  description: ''
+  fields:
+    - name: M
+      bit_offset: 0
+      bit_size: 10
+    - name: N
+      bit_offset: 10
+      bit_size: 4
+fieldset/MEDIAMIX_BLK_CTRL_DSI_R0_VCO:
+  description: ''
+  fields:
+    - name: CNTRL
+      bit_offset: 14
+      bit_size: 6
+      description: VCO operating range
+fieldset/MEDIAMIX_BLK_CTRL_DSI_R0_PROP:
+  description: ''
+  fields:
+    - name: CNTRL
+      bit_offset: 20
+      bit_size: 6
+fieldset/MEDIAMIX_BLK_CTRL_DSI_R0_INT:
+  description: ''
+  fields:
+    - name: CNTRL
+      bit_offset: 26
+      bit_size: 6
+fieldset/MEDIAMIX_BLK_CTRL_DSI_R1_GMP:
+  description: ''
+  fields:
+    - name: CNTRL
+      bit_offset: 0
+      bit_size: 2
+fieldset/MEDIAMIX_BLK_CTRL_DSI_R1_CPBIAS:
+  description: ''
+  fields:
+    - name: CNTRL
+      bit_offset: 2
+      bit_size: 7
+fieldset/MEDIAMIX_BLK_CTRL_DSI_R1_PLL_SHADOW:
+  description: ''
+  fields:
+    - name: CONTROL
+      bit_offset: 9
+      bit_size: 1
+fieldset/MEDIAMIX_BLK_CTRL_DSI_R1_LOCK:
+  description: ''
+  fields:
+    - name: PLL
+      bit_offset: 10
+      bit_size: 1

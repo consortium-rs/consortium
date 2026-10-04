@@ -166,6 +166,7 @@ PROVIDE(DISP_IRQSTEER3 = DefaultHandler);
 PROVIDE(DISP_IRQSTEER4 = DefaultHandler);
 PROVIDE(DISP_IRQSTEER7 = DefaultHandler);
 PROVIDE(ISI = DefaultHandler);
+PROVIDE(ISP = DefaultHandler);
 PROVIDE(IRQSTEER_0 = DefaultHandler);
 PROVIDE(IRQSTEER_1 = DefaultHandler);
 PROVIDE(IRQSTEER_2 = DefaultHandler);

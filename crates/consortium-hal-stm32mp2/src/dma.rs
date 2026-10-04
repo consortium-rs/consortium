@@ -107,14 +107,24 @@ impl From<u8> for DmaRequest {
 }
 
 /// Chip-selected STM32MP2 HPDMA request numbers.
+///
+/// Transcribed from STM32CubeMP2's `stm32mp2xx_hal_dma.h`, whose
+/// `#if defined(LPDMA)` branch is STM32MP23/25 and whose `#else` branch is
+/// STM32MP21.
 pub mod request {
     use super::DmaRequest;
 
     macro_rules! requests {
-        ($($name:ident = $value:expr),+ $(,)?) => {$(
-            #[doc = concat!("HPDMA request `", stringify!($name), "`.")]
-            pub const $name: DmaRequest = DmaRequest::new($value);
-        )+};
+        ($($name:ident = $value:expr),+ $(,)?) => {
+            $(
+                #[doc = concat!("HPDMA request `", stringify!($name), "`.")]
+                pub const $name: DmaRequest = DmaRequest::new($value);
+            )+
+
+            /// Every request in this table, for consistency tests.
+            #[cfg(test)]
+            pub(crate) const ALL: &[(&str, DmaRequest)] = &[$((stringify!($name), $name)),+];
+        };
     }
 
     #[cfg(feature = "stm32mp21x")]
@@ -134,10 +144,13 @@ pub mod request {
         TIM16_CH1 = 101, TIM16_UP = 102, TIM17_CH1 = 103, TIM17_UP = 104,
         TIM4_CH4 = 110, TIM2_TRIG = 117, TIM4_TRIG = 118, TIM15_CH2 = 119,
         TIM16_COM = 120, TIM17_COM = 121,
-        LPTIM1_IC1 = 143, LPTIM1_IC2 = 144, LPTIM1_UE = 145,
-        LPTIM2_IC1 = 146, LPTIM2_IC2 = 147, LPTIM2_UE = 148,
-        LPTIM3_IC1 = 174, LPTIM3_IC2 = 175, LPTIM3_UE = 176,
-        LPTIM4_IC1 = 177, LPTIM4_IC2 = 178, LPTIM4_UE = 179
+        // `LPTIM2_IC1` and `LPTIM2_IC2` both read 115 in STM32CubeMP2's
+        // `stm32mp2xx_hal_dma.h`; the skipped 114 suggests a vendor typo, but
+        // the header is the only source, so it is copied verbatim.
+        LPTIM1_IC1 = 111, LPTIM1_IC2 = 112, LPTIM1_UE = 113,
+        LPTIM2_IC1 = 115, LPTIM2_IC2 = 115, LPTIM2_UE = 116,
+        LPTIM3_IC1 = 136, LPTIM3_IC2 = 137, LPTIM3_UE = 138,
+        LPTIM4_IC1 = 139, LPTIM4_IC2 = 140, LPTIM4_UE = 141
     }
 
     #[cfg(any(feature = "stm32mp23x", feature = "stm32mp25x"))]
@@ -159,10 +172,10 @@ pub mod request {
         TIM20_UP = 133, TIM20_TRIG = 134, TIM20_COM = 135,
         TIM4_CH4 = 142, TIM2_TRIG = 149, TIM4_TRIG = 150, TIM15_CH2 = 151,
         TIM16_COM = 152, TIM17_COM = 153,
-        LPTIM1_IC1 = 111, LPTIM1_IC2 = 112, LPTIM1_UE = 113,
-        LPTIM2_IC1 = 115, LPTIM2_IC2 = 115, LPTIM2_UE = 116,
-        LPTIM3_IC1 = 136, LPTIM3_IC2 = 137, LPTIM3_UE = 138,
-        LPTIM4_IC1 = 139, LPTIM4_IC2 = 140, LPTIM4_UE = 141
+        LPTIM1_IC1 = 143, LPTIM1_IC2 = 144, LPTIM1_UE = 145,
+        LPTIM2_IC1 = 146, LPTIM2_IC2 = 147, LPTIM2_UE = 148,
+        LPTIM3_IC1 = 174, LPTIM3_IC2 = 175, LPTIM3_UE = 176,
+        LPTIM4_IC1 = 177, LPTIM4_IC2 = 178, LPTIM4_UE = 179
     }
 }
 
@@ -1048,5 +1061,54 @@ mod tests {
         STATE.on_interrupt();
         assert_eq!(registers[0x60 / 4] & CSR_TCF, CSR_TCF);
         assert_eq!(registers[0x64 / 4] & CCR_IRQ_MASK, 0);
+    }
+
+    /// Two requests sharing a number would route one peripheral's DMA onto
+    /// another's line. STM32MP21 is exempt: ST's own table repeats 115 for
+    /// `LPTIM2_IC1`/`LPTIM2_IC2`.
+    #[cfg(any(feature = "stm32mp23x", feature = "stm32mp25x"))]
+    #[test]
+    fn request_numbers_are_unique() {
+        let all = super::request::ALL;
+        for (i, (a, ra)) in all.iter().enumerate() {
+            for (b, rb) in &all[i + 1..] {
+                assert_ne!(ra.raw(), rb.raw(), "{a} and {b} share a request number");
+            }
+        }
+    }
+
+    #[cfg(any(feature = "stm32mp23x", feature = "stm32mp25x"))]
+    #[test]
+    fn lptim_requests_match_the_mp25_table() {
+        use super::request::*;
+        assert_eq!(LPTIM1_IC1.raw(), 143);
+        assert_eq!(LPTIM2_UE.raw(), 148);
+        assert_eq!(LPTIM3_IC1.raw(), 174);
+        assert_eq!(LPTIM4_UE.raw(), 179);
+    }
+
+    /// ST's MP21 table repeats 115 for `LPTIM2_IC1`/`LPTIM2_IC2`; nothing else
+    /// may collide.
+    #[cfg(feature = "stm32mp21x")]
+    #[test]
+    fn only_the_vendor_duplicate_shares_a_request_number() {
+        let all = super::request::ALL;
+        for (i, (a, ra)) in all.iter().enumerate() {
+            for (b, rb) in &all[i + 1..] {
+                if ra.raw() == rb.raw() {
+                    assert_eq!((*a, *b), ("LPTIM2_IC1", "LPTIM2_IC2"));
+                }
+            }
+        }
+    }
+
+    #[cfg(feature = "stm32mp21x")]
+    #[test]
+    fn lptim_requests_match_the_mp21_table() {
+        use super::request::*;
+        assert_eq!(LPTIM1_IC1.raw(), 111);
+        assert_eq!(LPTIM2_UE.raw(), 116);
+        assert_eq!(LPTIM3_IC1.raw(), 136);
+        assert_eq!(LPTIM4_UE.raw(), 141);
     }
 }

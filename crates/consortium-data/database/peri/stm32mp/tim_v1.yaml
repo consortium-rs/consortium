@@ -114,9 +114,11 @@ block/TIM:
     - name: HWCFGR2
       byte_offset: 1004
       description: TIM hardware configuration 2 register
+      fieldset: TIM_HWCFGR2
     - name: HWCFGR1
       byte_offset: 1008
       description: TIM hardware configuration 1 register
+      fieldset: TIM_HWCFGR1
     - name: VERR
       byte_offset: 1012
       description: TIM version register
@@ -188,8 +190,12 @@ fieldset/TIM_CR2:
       bit_size: 1
       description: Capture/Compare DMA Selection
     - name: MMS
-      bit_offset: 4
-      bit_size: 22
+      bit_offset:
+        - start: 4
+          end: 6
+        - start: 25
+          end: 25
+      bit_size: 4
       description: MMS[3:0] bits (Master Mode Selection)
     - name: TI1S
       bit_offset: 7
@@ -243,12 +249,20 @@ fieldset/TIM_SMCR:
   description: ''
   fields:
     - name: SMS
-      bit_offset: 0
-      bit_size: 17
+      bit_offset:
+        - start: 0
+          end: 2
+        - start: 16
+          end: 16
+      bit_size: 4
       description: SMS[2:0] bits (Slave mode selection)
     - name: TS
-      bit_offset: 4
-      bit_size: 18
+      bit_offset:
+        - start: 4
+          end: 6
+        - start: 20
+          end: 21
+      bit_size: 5
       description: TS[2:0] bits (Trigger selection)
     - name: MSM
       bit_offset: 7
@@ -486,26 +500,6 @@ fieldset/TIM_CCMR1:
       bit_offset: 0
       bit_size: 2
       description: CC1S[1:0] bits (Capture/Compare 1 Selection)
-    - name: CC2S
-      bit_offset: 8
-      bit_size: 2
-      description: CC2S[1:0] bits (Capture/Compare 2 Selection)
-    - name: IC1PSC
-      bit_offset: 2
-      bit_size: 2
-      description: IC1PSC[1:0] bits (Input Capture 1 Prescaler)
-    - name: IC1F
-      bit_offset: 4
-      bit_size: 4
-      description: IC1F[3:0] bits (Input Capture 1 Filter)
-    - name: IC2PSC
-      bit_offset: 10
-      bit_size: 2
-      description: IC2PSC[1:0] bits (Input Capture 2 Prescaler)
-    - name: IC2F
-      bit_offset: 12
-      bit_size: 4
-      description: IC2F[3:0] bits (Input Capture 2 Filter)
     - name: OC1FE
       bit_offset: 2
       bit_size: 1
@@ -515,13 +509,21 @@ fieldset/TIM_CCMR1:
       bit_size: 1
       description: Output Compare 1 Preload enable
     - name: OC1M
-      bit_offset: 4
-      bit_size: 13
+      bit_offset:
+        - start: 4
+          end: 6
+        - start: 16
+          end: 16
+      bit_size: 4
       description: OC1M[2:0] bits (Output Compare 1 Mode)
     - name: OC1CE
       bit_offset: 7
       bit_size: 1
       description: Output Compare 1 Clear Enable
+    - name: CC2S
+      bit_offset: 8
+      bit_size: 2
+      description: CC2S[1:0] bits (Capture/Compare 2 Selection)
     - name: OC2FE
       bit_offset: 10
       bit_size: 1
@@ -531,8 +533,12 @@ fieldset/TIM_CCMR1:
       bit_size: 1
       description: Output Compare 2 Preload enable
     - name: OC2M
-      bit_offset: 12
-      bit_size: 13
+      bit_offset:
+        - start: 12
+          end: 14
+        - start: 24
+          end: 24
+      bit_size: 4
       description: OC2M[2:0] bits (Output Compare 2 Mode)
     - name: OC2CE
       bit_offset: 15
@@ -545,26 +551,6 @@ fieldset/TIM_CCMR2:
       bit_offset: 0
       bit_size: 2
       description: CC3S[1:0] bits (Capture/Compare 3 Selection)
-    - name: CC4S
-      bit_offset: 8
-      bit_size: 2
-      description: CC4S[1:0] bits (Capture/Compare 4 Selection)
-    - name: IC3PSC
-      bit_offset: 2
-      bit_size: 2
-      description: IC3PSC[1:0] bits (Input Capture 3 Prescaler)
-    - name: IC3F
-      bit_offset: 4
-      bit_size: 4
-      description: IC3F[3:0] bits (Input Capture 3 Filter)
-    - name: IC4PSC
-      bit_offset: 10
-      bit_size: 2
-      description: IC4PSC[1:0] bits (Input Capture 4 Prescaler)
-    - name: IC4F
-      bit_offset: 12
-      bit_size: 4
-      description: IC4F[3:0] bits (Input Capture 4 Filter)
     - name: OC3FE
       bit_offset: 2
       bit_size: 1
@@ -574,13 +560,21 @@ fieldset/TIM_CCMR2:
       bit_size: 1
       description: Output Compare 3 Preload enable
     - name: OC3M
-      bit_offset: 4
-      bit_size: 13
+      bit_offset:
+        - start: 4
+          end: 6
+        - start: 16
+          end: 16
+      bit_size: 4
       description: OC3M[2:0] bits (Output Compare 3 Mode)
     - name: OC3CE
       bit_offset: 7
       bit_size: 1
       description: Output Compare 3 Clear Enable
+    - name: CC4S
+      bit_offset: 8
+      bit_size: 2
+      description: CC4S[1:0] bits (Capture/Compare 4 Selection)
     - name: OC4FE
       bit_offset: 10
       bit_size: 1
@@ -590,8 +584,12 @@ fieldset/TIM_CCMR2:
       bit_size: 1
       description: Output Compare 4 Preload enable
     - name: OC4M
-      bit_offset: 12
-      bit_size: 13
+      bit_offset:
+        - start: 12
+          end: 14
+        - start: 24
+          end: 24
+      bit_size: 4
       description: OC4M[2:0] bits (Output Compare 4 Mode)
     - name: OC4CE
       bit_offset: 15
@@ -845,8 +843,12 @@ fieldset/TIM_CCMR3:
       bit_size: 1
       description: Output Compare 5 Preload enable
     - name: OC5M
-      bit_offset: 4
-      bit_size: 13
+      bit_offset:
+        - start: 4
+          end: 6
+        - start: 16
+          end: 16
+      bit_size: 4
       description: OC5M[3:0] bits (Output Compare 5 Mode)
     - name: OC5CE
       bit_offset: 7
@@ -861,8 +863,12 @@ fieldset/TIM_CCMR3:
       bit_size: 1
       description: Output Compare 6 Preload enable
     - name: OC6M
-      bit_offset: 12
-      bit_size: 13
+      bit_offset:
+        - start: 12
+          end: 14
+        - start: 24
+          end: 24
+      bit_size: 4
       description: OC6M[3:0] bits (Output Compare 6 Mode)
     - name: OC6CE
       bit_offset: 15
@@ -955,16 +961,70 @@ fieldset/TIM_DMAR:
       bit_offset: 0
       bit_size: 32
       description: DMA register for burst accesses
+fieldset/TIM_HWCFGR2:
+  description: ''
+  fields:
+    - name: PSC_LINEAR
+      bit_offset: 0
+      bit_size: 4
+      description: Option register number
+    - name: PSC_WIDTH16
+      bit_offset: 4
+      bit_size: 4
+      description: Prescaler width
+    - name: CNT_WIDTH
+      bit_offset: 8
+      bit_size: 8
+      description: Counter width
+    - name: OPTIONREG_OUT
+      bit_offset: 16
+      bit_size: 8
+      description: Option register number
+fieldset/TIM_HWCFGR1:
+  description: ''
+  fields:
+    - name: NB_OF_CC
+      bit_offset: 0
+      bit_size: 4
+      description: Number of capture / compare channel
+    - name: NB_OF_DT
+      bit_offset: 4
+      bit_size: 4
+      description: Number of complementary outputs and dead-time generators
+    - name: NB_OF_SM
+      bit_offset: 8
+      bit_size: 4
+      description: Number of synchronization module
+    - name: RCR_IMPL
+      bit_offset: 12
+      bit_size: 4
+      description: Repetition counter implementation
+    - name: ETR_IMPL
+      bit_offset: 16
+      bit_size: 4
+      description: External trigger implementation
+    - name: BK_IMPL
+      bit_offset: 20
+      bit_size: 4
+      description: Break circuit implementation
+    - name: DMA_IMPL
+      bit_offset: 24
+      bit_size: 4
+      description: DMA features implementation
+    - name: CNT_DIR
+      bit_offset: 28
+      bit_size: 4
+      description: Counter direction
 fieldset/TIM_VERR:
   description: ''
   fields:
     - name: MINREV
       bit_offset: 0
-      bit_size: 3
+      bit_size: 1
       description: TIM Minor version
     - name: MAJREV
       bit_offset: 4
-      bit_size: 3
+      bit_size: 1
       description: TIM Major version
 fieldset/TIM_IPIDR:
   description: ''

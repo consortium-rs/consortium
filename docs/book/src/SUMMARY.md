@@ -44,6 +44,7 @@
       - [Runtime Initialization](maintenance/dev/ipc/runtime_init.md)
       - [GPIO Doorbell](maintenance/dev/ipc/gpio-doorbell.md)
     - [Peripheral Drivers](maintenance/dev/hal/index.md)
+      - [HAL Gap Roadmap](maintenance/dev/hal/embassy-gap-roadmap.md)
     - [TEE Subsystem](maintenance/dev/tee/index.md)
       - [TEE SDK Design](maintenance/dev/tee/tee-sdk-design.md)
       - [TEE Advanced Type System](maintenance/dev/tee/tee-advanced-type-system.md)

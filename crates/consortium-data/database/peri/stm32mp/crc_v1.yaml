@@ -55,6 +55,14 @@ fieldset/CRC_CR:
       bit_offset: 3
       bit_size: 2
       description: Polynomial size bits
+    - name: REV_IN
+      bit_offset: 5
+      bit_size: 2
+      description: REV_IN Reverse Input Data bits
+    - name: REV_OUT
+      bit_offset: 7
+      bit_size: 1
+      description: REV_OUT Reverse Output Data bits
 fieldset/CRC_INIT:
   description: ''
   fields:

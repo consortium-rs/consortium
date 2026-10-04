@@ -434,8 +434,11 @@ impl I3c {
         mode: BusMode,
     ) -> Result<(), Error> {
         self.clear_status();
+        let guard = RecoverGuard::new(self.regs, mode);
         self.write_part(address, bytes, mode)?;
-        self.stop(mode)
+        self.stop(mode)?;
+        guard.defuse();
+        Ok(())
     }
 
     /// Blocking private read followed by STOP.
@@ -446,8 +449,11 @@ impl I3c {
         mode: BusMode,
     ) -> Result<(), Error> {
         self.clear_status();
+        let guard = RecoverGuard::new(self.regs, mode);
         self.read_part(address, bytes, mode)?;
-        self.stop(mode)
+        self.stop(mode)?;
+        guard.defuse();
+        Ok(())
     }
 
     /// Blocking write/read with a repeated START.
@@ -459,9 +465,12 @@ impl I3c {
         mode: BusMode,
     ) -> Result<(), Error> {
         self.clear_status();
+        let guard = RecoverGuard::new(self.regs, mode);
         self.write_part(address, write, mode)?;
         self.read_part(address, read, mode)?;
-        self.stop(mode)
+        self.stop(mode)?;
+        guard.defuse();
+        Ok(())
     }
 
     /// Execute a repeated-start transaction and emit one final STOP.
@@ -475,13 +484,16 @@ impl I3c {
             return Ok(());
         }
         self.clear_status();
+        let guard = RecoverGuard::new(self.regs, mode);
         for operation in operations {
             match operation {
                 Operation::Read(bytes) => self.read_part(address, bytes, mode)?,
                 Operation::Write(bytes) => self.write_part(address, bytes, mode)?,
             }
         }
-        self.stop(mode)
+        self.stop(mode)?;
+        guard.defuse();
+        Ok(())
     }
 
     /// Send one broadcast CCC with no defining byte.
@@ -673,8 +685,11 @@ impl I3c {
     /// Async private write followed by STOP.
     pub async fn write(&mut self, address: u8, bytes: &[u8], mode: BusMode) -> Result<(), Error> {
         self.clear_status();
+        let guard = RecoverGuard::new(self.regs, mode);
         self.write_part_async(address, bytes, mode).await?;
-        self.stop_async(mode).await
+        self.stop_async(mode).await?;
+        guard.defuse();
+        Ok(())
     }
 
     /// Async private read followed by STOP.
@@ -685,8 +700,11 @@ impl I3c {
         mode: BusMode,
     ) -> Result<(), Error> {
         self.clear_status();
+        let guard = RecoverGuard::new(self.regs, mode);
         self.read_part_async(address, bytes, mode).await?;
-        self.stop_async(mode).await
+        self.stop_async(mode).await?;
+        guard.defuse();
+        Ok(())
     }
 
     /// Async write/read with a repeated START.
@@ -698,9 +716,12 @@ impl I3c {
         mode: BusMode,
     ) -> Result<(), Error> {
         self.clear_status();
+        let guard = RecoverGuard::new(self.regs, mode);
         self.write_part_async(address, write, mode).await?;
         self.read_part_async(address, read, mode).await?;
-        self.stop_async(mode).await
+        self.stop_async(mode).await?;
+        guard.defuse();
+        Ok(())
     }
 
     /// Async repeated-start transaction.
@@ -714,13 +735,88 @@ impl I3c {
             return Ok(());
         }
         self.clear_status();
+        let guard = RecoverGuard::new(self.regs, mode);
         for operation in operations {
             match operation {
                 Operation::Read(bytes) => self.read_part_async(address, bytes, mode).await?,
                 Operation::Write(bytes) => self.write_part_async(address, bytes, mode).await?,
             }
         }
-        self.stop_async(mode).await
+        self.stop_async(mode).await?;
+        guard.defuse();
+        Ok(())
+    }
+}
+
+/// Upper bound on status polls while waiting for a recovery STOP. Drop cannot
+/// await or read a clock, so this is a spin count: comfortably more than one
+/// open-drain byte plus STOP at the slowest supported I2C rate.
+const RECOVERY_SPINS: u32 = 200_000;
+
+/// Return the controller to idle after a failed or abandoned transfer.
+///
+/// Follows `embassy-mcxa`'s `blocking_remediation`: drop whatever the FIFOs
+/// still hold, then, if the controller has not returned to idle (a NACK, or a
+/// transfer dropped mid-flight, leaves it holding the bus), emit a STOP and
+/// give it time to complete.
+fn recover(r: I3C, mode: BusMode) {
+    r.MINTCLR()
+        .write_value(pac::peripherals::i3c::I3C_MINTCLR(u32::MAX));
+    r.MDATACTRL().modify(|w| {
+        w.set_FLUSHTB(true);
+        w.set_FLUSHFB(true);
+    });
+    let clear = || {
+        r.MSTATUS().write_value(pac::peripherals::i3c::I3C_MSTATUS(
+            (1 << 8) | (1 << 9) | (1 << 10) | (1 << 15),
+        ));
+        r.MERRWARN()
+            .write_value(pac::peripherals::i3c::I3C_MERRWARN(u32::MAX));
+    };
+    clear();
+    if r.MSTATUS().read().STATE() != 0 {
+        r.MCONFIG().modify(|w| w.set_ODSTOP(mode == BusMode::I2c));
+        r.MCTRL().write(|w| {
+            w.set_REQUEST(REQUEST_STOP);
+            w.set_TYPE(mode.type_bits());
+        });
+        let mut spins = RECOVERY_SPINS;
+        while spins > 0 && !r.MSTATUS().read().MCTRLDONE() {
+            spins -= 1;
+        }
+    }
+    clear();
+}
+
+/// Runs [`recover`] when dropped unless [`defuse`](Self::defuse)d, so an
+/// error propagated with `?` and an async transfer dropped mid-flight both
+/// leave the controller idle and the bus released.
+struct RecoverGuard {
+    regs: I3C,
+    mode: BusMode,
+    armed: bool,
+}
+
+impl RecoverGuard {
+    fn new(regs: I3C, mode: BusMode) -> Self {
+        Self {
+            regs,
+            mode,
+            armed: true,
+        }
+    }
+
+    /// The transfer completed cleanly; skip recovery.
+    fn defuse(mut self) {
+        self.armed = false;
+    }
+}
+
+impl Drop for RecoverGuard {
+    fn drop(&mut self) {
+        if self.armed {
+            recover(self.regs, self.mode);
+        }
     }
 }
 

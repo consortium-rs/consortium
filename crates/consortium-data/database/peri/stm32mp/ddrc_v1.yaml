@@ -8,15 +8,18 @@ block/DDRC:
     - name: STAT
       byte_offset: 4
       description: DDRCTRL operating mode status register
+      fieldset: DDRC_STAT
     - name: MRCTRL0
       byte_offset: 16
       description: DDRCTRL mode register read/write control register 0
+      fieldset: DDRC_MRCTRL0
     - name: MRCTRL1
       byte_offset: 20
       description: DDRCTRL mode register read/write control register 1
     - name: MRSTAT
       byte_offset: 24
       description: DDRCTRL mode register read/write status register
+      fieldset: DDRC_MRSTAT
     - name: MRCTRL2
       byte_offset: 28
       description: DDRCTRL mode register read/write control register 2
@@ -32,12 +35,15 @@ block/DDRC:
     - name: PWRCTL
       byte_offset: 48
       description: DDRCTRL low power control register
+      fieldset: DDRC_PWRCTL
     - name: PWRTMG
       byte_offset: 52
       description: DDRCTRL low power timing register
+      fieldset: DDRC_PWRTMG
     - name: HWLPCTL
       byte_offset: 56
       description: DDRCTRL hardware low power control register
+      fieldset: DDRC_HWLPCTL
     - name: RFSHCTL0
       byte_offset: 80
       description: DDRCTRL refresh control register 0
@@ -47,9 +53,11 @@ block/DDRC:
     - name: RFSHCTL3
       byte_offset: 96
       description: DDRCTRL refresh control register 3
+      fieldset: DDRC_RFSHCTL3
     - name: RFSHTMG
       byte_offset: 100
       description: DDRCTRL refresh timing register
+      fieldset: DDRC_RFSHTMG
     - name: RFSHTMG1
       byte_offset: 104
       description: DDRCTRL refresh timing register 1
@@ -65,6 +73,7 @@ block/DDRC:
     - name: INIT0
       byte_offset: 208
       description: DDRCTRL SDRAM initialization register 0
+      fieldset: DDRC_INIT0
     - name: INIT1
       byte_offset: 212
       description: DDRCTRL SDRAM initialization register 1
@@ -164,6 +173,7 @@ block/DDRC:
     - name: DFILPCFG0
       byte_offset: 408
       description: DDRCTRL low power configuration register 0
+      fieldset: DDRC_DFILPCFG0
     - name: DFILPCFG1
       byte_offset: 412
       description: DDRCTRL low power configuration register 1
@@ -179,6 +189,7 @@ block/DDRC:
     - name: DFIMISC
       byte_offset: 432
       description: DDRCTRL DFI miscellaneous control register
+      fieldset: DDRC_DFIMISC
     - name: DFITMG2
       byte_offset: 436
       description: DDRCTRL DFI timing register 2
@@ -188,6 +199,7 @@ block/DDRC:
     - name: DFISTAT
       byte_offset: 444
       description: DDRCTRL DFI status register
+      fieldset: DDRC_DFISTAT
     - name: DBICTL
       byte_offset: 448
       description: DDRCTRL DM/DBI control register
@@ -263,21 +275,27 @@ block/DDRC:
     - name: DBG1
       byte_offset: 772
       description: DDRCTRL debug register 1
+      fieldset: DDRC_DBG1
     - name: DBGCAM
       byte_offset: 776
       description: DDRCTRL CAM debug register
+      fieldset: DDRC_DBGCAM
     - name: DBGCMD
       byte_offset: 780
       description: DDRCTRL command debug register
+      fieldset: DDRC_DBGCMD
     - name: DBGSTAT
       byte_offset: 784
       description: DDRCTRL status debug register
+      fieldset: DDRC_DBGSTAT
     - name: SWCTL
       byte_offset: 800
       description: DDRCTRL software register programming control enable
+      fieldset: DDRC_SWCTL
     - name: SWSTAT
       byte_offset: 804
       description: DDRCTRL software register programming control status
+      fieldset: DDRC_SWSTAT
     - name: SWCTLSTATIC
       byte_offset: 808
       description: Static Registers Write Enable
@@ -305,6 +323,7 @@ block/DDRC:
     - name: PCTRL_0
       byte_offset: 1168
       description: DDRCTRL port 0 control register
+      fieldset: DDRC_PCTRL_0
     - name: PCFGQOS0_0
       byte_offset: 1172
       description: DDRCTRL port 0 read Q0S configuration register 0
@@ -326,6 +345,7 @@ block/DDRC:
     - name: PCTRL_1
       byte_offset: 1344
       description: DDRCTRL port 1 control register
+      fieldset: DDRC_PCTRL_1
     - name: PCFGQOS0_1
       byte_offset: 1348
       description: DDRCTRL port 1 read Q0S configuration register 0
@@ -359,3 +379,297 @@ fieldset/DDRC_MSTR:
       bit_offset: 5
       bit_size: 1
       description: Selects LPDDR4 SDRAM
+    - name: DATA_BUS_WIDTH
+      bit_offset: 12
+      bit_size: 2
+      description: Selects proportion of DQ bus width that is used by the SDRAM
+    - name: DLL_OFF_MODE
+      bit_offset: 15
+      bit_size: 1
+      description: Set to 1 when the DDRC and DRAM has to be put in DLL-off mode for
+        low frequency operation.
+fieldset/DDRC_STAT:
+  description: ''
+  fields:
+    - name: OPERATING_MODE
+      bit_offset: 0
+      bit_size: 3
+      description:
+        Operating mode. This is 3-bits wide in configurations with mDDR/LPDDR2/LPDDR3/LPDDR4/DDR4
+        support and 2-bits in all other configurations.
+    - name: SELFREF_TYPE
+      bit_offset: 4
+      bit_size: 2
+      description: Flags if Self Refresh (except LPDDR4) or SR-Powerdown (LPDDR4)
+        is entered and if it was under Automatic Self Refresh control only or not.
+    - name: SELFREF_STATE
+      bit_offset: 8
+      bit_size: 2
+      description: SR or SRPD (SR power-down) for LPDDR4. This bitfield is used for
+        frequency change and MRR/MRW access during SR.
+fieldset/DDRC_MRCTRL0:
+  description: ''
+  fields:
+    - name: MR_TYPE
+      bit_offset: 0
+      bit_size: 1
+      description: Indicates whether the mode register operation is read or write.
+        Only used for LPDDR2/LPDDR3/LPDDR4/DDR4.
+    - name: MR_RANK
+      bit_offset: 4
+      bit_size: 1
+      description: Controls which rank is accessed by MRCTRL0.mr_wr. Normally, it
+        is desired to access all ranks, so all bits should be set to 1. However, for
+        multi-rank UDIMMs/RDIMMs/LRDIMMs which implement address mirroring, it may
+        be necessary to access ranks individually.
+    - name: MR_ADDR
+      bit_offset: 12
+      bit_size: 4
+      description: Address of the mode register that is to be written to.
+    - name: MR_WR
+      bit_offset: 31
+      bit_size: 1
+      description: Setting this register bit to 1 triggers a mode register read or
+        write operation. When the MR operation is complete, the DDRC automatically
+        clears this bit. The other register fields of this register must be written
+        in a separate APB transaction, before setting this mr_wr bit. It is recommended
+        NOT to set this signal if in Init, Deep power-down or MPSM operating modes.
+fieldset/DDRC_MRSTAT:
+  description: ''
+  fields:
+    - name: MR_WR_BUSY
+      bit_offset: 0
+      bit_size: 1
+      description: The SoC core may initiate a MR write operation only if this signal
+        is low. This signal goes high in the clock after the DDRC accepts the MRW/MRR
+        request. It goes low when the MRW/MRR command is issued to the SDRAM. It is
+        recommended not to perform MRW/MRR commands when \qMRSTAT.mr_wr_busy\q is
+        high.
+fieldset/DDRC_PWRCTL:
+  description: ''
+  fields:
+    - name: SELFREF_EN
+      bit_offset: 0
+      bit_size: 1
+      description: If true then the DDRC puts the SDRAM into Self Refresh after a
+        programmable number of cycles "maximum idle clocks before Self Refresh (PWRTMG.selfref_to_x32)".
+        This register bit may be re-programmed during the course of normal operation.
+    - name: POWERDOWN_EN
+      bit_offset: 1
+      bit_size: 1
+      description: If true then the DDRC goes into power-down after a programmable
+        number of cycles "maximum idle clocks before power down" (PWRTMG.powerdown_to_x32).
+    - name: EN_DFI_DRAM_CLK_DISABLE
+      bit_offset: 3
+      bit_size: 1
+      description: Enable the assertion of dfi_dram_clk_disable whenever a clock is
+        not required by the SDRAM.
+    - name: SELFREF_SW
+      bit_offset: 5
+      bit_size: 1
+      description: A value of 1 to this register causes system to move to Self Refresh
+        state immediately, as long as it is not in INIT or DPD/MPSM operating_mode.
+        This is referred to as Software Entry/Exit to Self Refresh.
+    - name: STAY_IN_SELFREF
+      bit_offset: 6
+      bit_size: 1
+      description: SR state transition. SR is an intermediate state to enter/exit
+        SRPD state for LPDDR4. This bit controls transition from SR state.
+fieldset/DDRC_PWRTMG:
+  description: ''
+  fields:
+    - name: SELFREF_TO_X32
+      bit_offset: 16
+      bit_size: 8
+      description: After this many clocks of the DDRC command channel being idle the
+        DDRC automatically puts the SDRAM into Self Refresh. The DDRC command channel
+        is considered idle when there are no HIF commands outstanding. This must be
+        enabled in the PWRCTL.selfref_en.
+fieldset/DDRC_HWLPCTL:
+  description: ''
+  fields:
+    - name: HW_LP_EN
+      bit_offset: 0
+      bit_size: 1
+      description: Enable for hardware low power interface.
+    - name: HW_LP_EXIT_IDLE_EN
+      bit_offset: 1
+      bit_size: 1
+      description: Enable for hardware low power interface.
+    - name: HW_LP_IDLE_X32
+      bit_offset: 16
+      bit_size: 10
+      description: Enable for hardware low power interface.
+fieldset/DDRC_RFSHCTL3:
+  description: ''
+  fields:
+    - name: DIS_AUTO_REFRESH
+      bit_offset: 0
+      bit_size: 1
+      description: When \q1\q, disable auto-refresh generated by the DDRC. When auto-refresh
+        is disabled, the SoC core must generate refreshes using the registers DBGCMD.rankn_refresh.
+    - name: REFRESH_UPDATE_LEVEL
+      bit_offset: 1
+      bit_size: 1
+      description: Toggles this signal (either from 0 to 1 or from 1 to 0) to indicate
+        that the refresh register(s) have been updated.
+fieldset/DDRC_RFSHTMG:
+  description: ''
+  fields:
+    - name: T_RFC_NOM_X1_X32
+      bit_offset: 16
+      bit_size: 12
+      description: 'tREFI: Average time interval between refreshes per rank (Specification:
+        7.8us for DDR2, DDR3 and DDR4. See JEDEC specification for mDDR, LPDDR2, LPDDR3
+        and LPDDR4).'
+    - name: T_RFC_NOM_X1_SEL
+      bit_offset: 31
+      bit_size: 1
+      description: Specifies whether the t_rfc_nom_x1_x32 register value is x1 or
+        x32.
+fieldset/DDRC_INIT0:
+  description: ''
+  fields:
+    - name: SKIP_DRAM_INIT
+      bit_offset: 30
+      bit_size: 2
+      description: If lower bit is enabled the SDRAM initialization routine is skipped.
+        The upper bit decides what state the controller starts up in when reset is
+        removed
+fieldset/DDRC_DFILPCFG0:
+  description: ''
+  fields:
+    - name: DFI_LP_EN_SR
+      bit_offset: 8
+      bit_size: 1
+      description: DFI low-power interface handshaking during SR entry/exit.
+fieldset/DDRC_DFIMISC:
+  description: ''
+  fields:
+    - name: DFI_INIT_COMPLETE_EN
+      bit_offset: 0
+      bit_size: 1
+      description: PHY initialization complete enable signal.
+    - name: DFI_INIT_START
+      bit_offset: 5
+      bit_size: 1
+      description: PHY init start request signal.When asserted it triggers the PHY
+        init start request
+    - name: DFI_FREQUENCY
+      bit_offset: 8
+      bit_size: 5
+      description: PHY system operating frequency
+fieldset/DDRC_DFISTAT:
+  description: ''
+  fields:
+    - name: DFI_INIT_COMPLETE
+      bit_offset: 0
+      bit_size: 1
+      description: The status flag register which announces when the DFI initialization
+        has been completed. The DFI INIT triggered by dfi_init_start signal and then
+        the dfi_init_complete flag is polled to know when the initialization is done.
+    - name: DFI_LP_ACK
+      bit_offset: 1
+      bit_size: 1
+      description: Stores the value of dfi_lp_ack input to the controller.
+fieldset/DDRC_DBG1:
+  description: ''
+  fields:
+    - name: DIS_DQ
+      bit_offset: 0
+      bit_size: 1
+      description: When 1, DDRC does not dequeue any transactions from the CAM. Bypass
+        is also disabled. All transactions are queued in the CAM. No reads or writes
+        are issued to SDRAM as long as this bit is asserted.
+    - name: DIS_HIF
+      bit_offset: 1
+      bit_size: 1
+      description: When 1, DDRC asserts the HIF command signal hif_cmd_stall. DDRC
+        ignores the hif_cmd_valid and all other associated request signals.
+fieldset/DDRC_DBGCAM:
+  description: ''
+  fields:
+    - name: DBG_HPR_Q_DEPTH
+      bit_offset: 0
+      bit_size: 5
+      description: High priority read queue depth
+    - name: DBG_LPR_Q_DEPTH
+      bit_offset: 8
+      bit_size: 5
+      description: Low priority read queue depth
+    - name: DBG_RD_Q_EMPTY
+      bit_offset: 25
+      bit_size: 1
+      description: When 1, all the Read command queues and Read data buffers inside
+        DDRC are empty. This register is to be used for debug purpose.
+    - name: DBG_WR_Q_EMPTY
+      bit_offset: 26
+      bit_size: 1
+      description: When 1, all the Write command queues and Write data buffers inside
+        DDRC are empty. This register is to be used for debug purpose.
+    - name: RD_DATA_PIPELINE_EMPTY
+      bit_offset: 28
+      bit_size: 1
+      description: This bit indicates that the read data pipeline on the DFI interface
+        is empty. This register is intended to be polled at least twice after setting
+        DBG1.dis_dq, to ensure that all remaining commands/data have completed.
+    - name: WR_DATA_PIPELINE_EMPTY
+      bit_offset: 29
+      bit_size: 1
+      description: This bit indicates that the write data pipeline on the DFI interface
+        is empty. This register is intended to be polled at least twice after setting
+        DBG1.dis_dq, to ensure that all remaining commands/data have completed.
+fieldset/DDRC_DBGCMD:
+  description: ''
+  fields:
+    - name: RANK0_REFRESH
+      bit_offset: 0
+      bit_size: 1
+      description: Setting this register bit to 1 indicates to the DDRC to issue a
+        refresh to rank 0. Writing to this bit causes DBGSTAT.rank0_refresh_busy to
+        be set. When DBGSTAT.rank0_refresh_busy is cleared, the command has been stored
+        in DDRC.
+fieldset/DDRC_DBGSTAT:
+  description: ''
+  fields:
+    - name: RANK0_REFRESH_BUSY
+      bit_offset: 0
+      bit_size: 1
+      description: SoC core may initiate a rank0_refresh operation (refresh operation
+        to rank 0) only if this signal is low. This signal goes high in the clock
+        after DBGCMD.rank0_refresh is set to one. It goes low when the rank0_refresh
+        operation is stored in the DDRC. It is recommended not to perform rank0_refresh
+        operations when this signal is high.
+fieldset/DDRC_SWCTL:
+  description: ''
+  fields:
+    - name: SW_DONE
+      bit_offset: 0
+      bit_size: 1
+      description: Enable quasi-dynamic register programming outside reset. Program
+        register to 0 to enable quasi-dynamic programming. Set back register to 1
+        once programming is done.
+fieldset/DDRC_SWSTAT:
+  description: ''
+  fields:
+    - name: SW_DONE_ACK
+      bit_offset: 0
+      bit_size: 1
+      description: Register programming done. This register is the echo of SWCTL.sw_done.
+        Wait for sw_done value 1 to propagate to sw_done_ack at the end of the programming
+        sequence to ensure that the correct registers values are propagated to the
+        destination clock domains.
+fieldset/DDRC_PCTRL_0:
+  description: ''
+  fields:
+    - name: PORT_EN
+      bit_offset: 0
+      bit_size: 1
+      description: Enables AXI port n.
+fieldset/DDRC_PCTRL_1:
+  description: ''
+  fields:
+    - name: PORT_EN
+      bit_offset: 0
+      bit_size: 1
+      description: Enables AXI port n.

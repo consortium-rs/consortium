@@ -1,11 +1,12 @@
 //! SPI master driver backed by an STM32MP2 SPI (full-feature "SPI2S v2")
 //! instance.
 //!
-//! Select an instance by passing its MMIO base to [`Spi::new`] together with a
-//! `&'static` [`State`]. Blocking transfers ([`embedded_hal::spi::SpiBus`])
-//! work without interrupts. Async transfers
-//! ([`embedded_hal_async::spi::SpiBus`]) require the caller to route the
-//! instance's interrupt to `State::on_interrupt`.
+//! Select an instance by handing its peripheral singleton to [`Spi::new`].
+//! Blocking transfers ([`embedded_hal::spi::SpiBus`]) work without interrupts.
+//! Async transfers ([`embedded_hal_async::spi::SpiBus`]) require the caller to
+//! route the instance's interrupt to [`on_interrupt`]. A transaction that fails,
+//! or an async one dropped mid-flight, is suspended and the peripheral disabled
+//! before control returns, so no half-finished transfer outlives the call.
 //!
 //! This is a byte-oriented full-duplex master. Each `SpiBus` method programs
 //! `CR2.TSIZE` with the frame count and issues one `CR1.CSTART`, so it reads as
@@ -284,6 +285,7 @@ impl Spi {
     fn chunk_blocking(&mut self, read: &mut [u8], write: &[u8]) -> Result<(), Error> {
         let len = read.len().max(write.len());
         self.start(len);
+        let guard = AbortGuard::new(self.regs);
         for i in 0..len {
             let tx = write.get(i).copied().unwrap_or(0);
             loop {
@@ -309,6 +311,7 @@ impl Spi {
             }
         }
         self.finish();
+        guard.defuse();
         Ok(())
     }
 
@@ -389,6 +392,7 @@ impl Spi {
     async fn chunk_async(&mut self, read: &mut [u8], write: &[u8]) -> Result<(), Error> {
         let len = read.len().max(write.len());
         self.start(len);
+        let guard = AbortGuard::new(self.regs);
         for i in 0..len {
             let tx = write.get(i).copied().unwrap_or(0);
             self.wait_txp().await?;
@@ -402,6 +406,7 @@ impl Spi {
             }
         }
         self.finish();
+        guard.defuse();
         Ok(())
     }
 
@@ -417,6 +422,74 @@ impl Spi {
             self.chunk_async(r_head, w_head).await?;
             read = r_tail;
             write = w_tail;
+        }
+    }
+}
+
+/// Upper bound on status polls while waiting for a suspend request to take
+/// effect. Drop cannot await or read a clock, so this is a spin count: well
+/// beyond one frame at the slowest `MBR` divider.
+const ABORT_SPINS: u32 = 200_000;
+
+/// Stop a transaction that ended early, by error or by a dropped future.
+///
+/// RM0457 has a master stop an ongoing transaction by suspending it (`CSUSP`,
+/// then `SUSP`) before clearing `SPE`; clearing `SPE` resets the FIFOs. Every
+/// interrupt enable and status flag is cleared too, so the next transfer starts
+/// from the same state [`Spi::new`] leaves.
+fn abort(r: SPI) {
+    critical_section::with(|_| {
+        r.IER().write(|w| {
+            w.set_TXPIE(false);
+            w.set_RXPIE(false);
+            w.set_EOTIE(false);
+            w.set_OVRIE(false);
+            w.set_MODFIE(false);
+            w.set_TIFREIE(false);
+        })
+    });
+    if r.CR1().read().CSTART() {
+        r.CR1().modify(|w| w.set_CSUSP(true));
+        let mut spins = ABORT_SPINS;
+        while spins > 0 && !r.SR().read().SUSP() && !r.SR().read().EOT() {
+            spins -= 1;
+        }
+    }
+    r.IFCR().write(|w| {
+        w.set_EOTC(true);
+        w.set_TXTFC(true);
+        w.set_UDRC(true);
+        w.set_OVRC(true);
+        w.set_TIFREC(true);
+        w.set_MODFC(true);
+        w.set_SUSPC(true);
+    });
+    r.CR1().modify(|w| w.set_SPE(false));
+}
+
+/// Runs [`abort`] when dropped unless [`defuse`](Self::defuse)d, so an error
+/// propagated with `?` and an async transfer dropped mid-flight both leave the
+/// peripheral disabled with empty FIFOs.
+struct AbortGuard {
+    regs: SPI,
+    armed: bool,
+}
+
+impl AbortGuard {
+    fn new(regs: SPI) -> Self {
+        Self { regs, armed: true }
+    }
+
+    /// The transaction completed cleanly; skip the abort.
+    fn defuse(mut self) {
+        self.armed = false;
+    }
+}
+
+impl Drop for AbortGuard {
+    fn drop(&mut self) {
+        if self.armed {
+            abort(self.regs);
         }
     }
 }
@@ -466,6 +539,7 @@ impl embedded_hal::spi::SpiBus<u8> for Spi {
 impl Spi {
     fn chunk_in_place_blocking(&mut self, words: &mut [u8]) -> Result<(), Error> {
         self.start(words.len());
+        let guard = AbortGuard::new(self.regs);
         for word in words.iter_mut() {
             loop {
                 self.check_error()?;
@@ -485,11 +559,13 @@ impl Spi {
             *word = unsafe { self.rxdr().read_volatile() };
         }
         self.finish();
+        guard.defuse();
         Ok(())
     }
 
     async fn chunk_in_place_async(&mut self, words: &mut [u8]) -> Result<(), Error> {
         self.start(words.len());
+        let guard = AbortGuard::new(self.regs);
         for word in words.iter_mut() {
             self.wait_txp().await?;
             // SAFETY: byte store to this instance's `TXDR` pushes one frame.
@@ -499,6 +575,7 @@ impl Spi {
             *word = unsafe { self.rxdr().read_volatile() };
         }
         self.finish();
+        guard.defuse();
         Ok(())
     }
 }

@@ -1,0 +1,2280 @@
+block/DDRC:
+  description: ''
+  items:
+    - name: CS_BNDS_CS_BNDS
+      byte_offset: 0
+      array:
+        len: 2
+        stride: 8
+    - name: REMAP_0A
+      byte_offset: 32
+    - name: REMAP_0B
+      byte_offset: 36
+    - name: REMAP_1A
+      byte_offset: 40
+    - name: REMAP_1B
+      byte_offset: 44
+    - name: REMAP_2A
+      byte_offset: 48
+    - name: REMAP_2B
+      byte_offset: 52
+    - name: REMAP_3A
+      byte_offset: 56
+    - name: REMAP_3B
+      byte_offset: 60
+    - name: DDR_ADDR_DEC_0
+      byte_offset: 64
+    - name: DDR_ADDR_DEC_1
+      byte_offset: 68
+    - name: DDR_ADDR_DEC_2
+      byte_offset: 72
+    - name: DDR_ADDR_DEC_3
+      byte_offset: 76
+    - name: DDR_ADDR_DEC_4
+      byte_offset: 80
+    - name: DDR_ADDR_DEC_5
+      byte_offset: 84
+    - name: DDR_ADDR_DEC_6
+      byte_offset: 88
+    - name: DDR_ADDR_DEC_7
+      byte_offset: 92
+    - name: DDR_ADDR_DEC_8
+      byte_offset: 96
+    - name: DDR_ADDR_DEC_9
+      byte_offset: 100
+    - name: CS_CONFIG
+      byte_offset: 128
+      array:
+        len: 2
+        stride: 4
+    - name: TIMING_CFG_3
+      byte_offset: 256
+    - name: TIMING_CFG_0
+      byte_offset: 260
+      fieldset: DDRC_TIMING_CFG_0
+    - name: TIMING_CFG_1
+      byte_offset: 264
+      fieldset: DDRC_TIMING_CFG_1
+    - name: TIMING_CFG_2
+      byte_offset: 268
+    - name: DDR_SDRAM_CFG
+      byte_offset: 272
+      fieldset: DDRC_DDR_SDRAM_CFG
+    - name: DDR_SDRAM_CFG_2
+      byte_offset: 276
+    - name: DDR_SDRAM_MD_CNTL
+      byte_offset: 288
+    - name: DDR_SDRAM_INTERVAL
+      byte_offset: 292
+      fieldset: DDRC_DDR_SDRAM_INTERVAL
+    - name: DDR_DATA_INIT
+      byte_offset: 296
+    - name: TIMING_CFG_4
+      byte_offset: 352
+      fieldset: DDRC_TIMING_CFG_4
+    - name: TIMING_CFG_7
+      byte_offset: 364
+      fieldset: DDRC_TIMING_CFG_7
+    - name: DDR_ZQ_CNTL
+      byte_offset: 368
+      fieldset: DDRC_DDR_ZQ_CNTL
+    - name: DDR_SR_CNTR
+      byte_offset: 380
+    - name: TIMING_CFG_8
+      byte_offset: 592
+    - name: TIMING_CFG_9
+      byte_offset: 596
+    - name: TIMING_CFG_10
+      byte_offset: 600
+    - name: TIMING_CFG_11
+      byte_offset: 604
+      fieldset: DDRC_TIMING_CFG_11
+    - name: DDR_SDRAM_CFG_3
+      byte_offset: 608
+    - name: DDR_SDRAM_CFG_4
+      byte_offset: 612
+    - name: DDR_SDRAM_REF_RATE
+      byte_offset: 704
+    - name: TIMING_CFG_12
+      byte_offset: 768
+    - name: TIMING_CFG_13
+      byte_offset: 772
+    - name: TIMING_CFG_14
+      byte_offset: 776
+    - name: TX_CFG_1
+      byte_offset: 2048
+      fieldset: DDRC_TX_CFG_1
+    - name: DDRDSR_2
+      byte_offset: 2852
+      fieldset: DDRC_DDRDSR_2
+    - name: DDR_IP_REV1
+      byte_offset: 3064
+    - name: DDR_MTCR
+      byte_offset: 3328
+    - name: DDR_MTP
+      byte_offset: 3360
+      array:
+        len: 10
+        stride: 4
+    - name: DDR_MT_ST_EXT_ADDR
+      byte_offset: 3424
+    - name: DDR_MT_ST_ADDR
+      byte_offset: 3428
+    - name: DDR_MT_END_EXT_ADDR
+      byte_offset: 3432
+    - name: DDR_MT_END_ADDR
+      byte_offset: 3436
+    - name: PMGC0
+      byte_offset: 3584
+      fieldset: DDRC_PMGC0
+    - name: PMLCA0
+      byte_offset: 3600
+      fieldset: DDRC_PMLCA0
+    - name: PMLCB0
+      byte_offset: 3604
+      fieldset: DDRC_PMLCB0
+    - name: PMC0A
+      byte_offset: 3608
+      fieldset: DDRC_PMC0A
+    - name: PMC0B
+      byte_offset: 3612
+      fieldset: DDRC_PMC0B
+    - name: PMLCA1
+      byte_offset: 3616
+      fieldset: DDRC_PMLCA1
+    - name: PMLCB1
+      byte_offset: 3620
+      fieldset: DDRC_PMLCB1
+    - name: PMC1
+      byte_offset: 3624
+      fieldset: DDRC_PMC1
+    - name: PMLCA2
+      byte_offset: 3632
+      fieldset: DDRC_PMLCA2
+    - name: PMLCB2
+      byte_offset: 3636
+      fieldset: DDRC_PMLCB2
+    - name: PMC2
+      byte_offset: 3640
+      fieldset: DDRC_PMC2
+    - name: PMLCA3
+      byte_offset: 3648
+      fieldset: DDRC_PMLCA3
+    - name: PMLCB3
+      byte_offset: 3652
+      fieldset: DDRC_PMLCB3
+    - name: PMC3
+      byte_offset: 3656
+      fieldset: DDRC_PMC3
+    - name: PMLCA4
+      byte_offset: 3664
+      fieldset: DDRC_PMLCA4
+    - name: PMLCB4
+      byte_offset: 3668
+      fieldset: DDRC_PMLCB4
+    - name: PMC4
+      byte_offset: 3672
+      fieldset: DDRC_PMC4
+    - name: PMLCA5
+      byte_offset: 3680
+      fieldset: DDRC_PMLCA5
+    - name: PMLCB5
+      byte_offset: 3684
+      fieldset: DDRC_PMLCB5
+    - name: PMC5
+      byte_offset: 3688
+      fieldset: DDRC_PMC5
+    - name: PMLCA6
+      byte_offset: 3696
+      fieldset: DDRC_PMLCA6
+    - name: PMLCB6
+      byte_offset: 3700
+      fieldset: DDRC_PMLCB6
+    - name: PMC6
+      byte_offset: 3704
+      fieldset: DDRC_PMC6
+    - name: PMLCA7
+      byte_offset: 3712
+      fieldset: DDRC_PMLCA7
+    - name: PMLCB7
+      byte_offset: 3716
+      fieldset: DDRC_PMLCB7
+    - name: PMC7
+      byte_offset: 3720
+      fieldset: DDRC_PMC7
+    - name: PMLCA8
+      byte_offset: 3728
+      fieldset: DDRC_PMLCA8
+    - name: PMLCB8
+      byte_offset: 3732
+      fieldset: DDRC_PMLCB8
+    - name: PMC8
+      byte_offset: 3736
+      fieldset: DDRC_PMC8
+    - name: PMLCA9
+      byte_offset: 3744
+      fieldset: DDRC_PMLCA9
+    - name: PMLCB9
+      byte_offset: 3748
+      fieldset: DDRC_PMLCB9
+    - name: PMC9
+      byte_offset: 3752
+      fieldset: DDRC_PMC9
+    - name: PMLCA10
+      byte_offset: 3760
+      fieldset: DDRC_PMLCA10
+    - name: PMLCB10
+      byte_offset: 3764
+      fieldset: DDRC_PMLCB10
+    - name: PMC10
+      byte_offset: 3768
+      fieldset: DDRC_PMC10
+    - name: ERR_EN
+      byte_offset: 4096
+    - name: DATA_ERR_INJECT_HI
+      byte_offset: 4352
+      fieldset: DDRC_DATA_ERR_INJECT_HI
+    - name: DATA_ERR_INJECT_LO
+      byte_offset: 4356
+      fieldset: DDRC_DATA_ERR_INJECT_LO
+    - name: ERR_INJECT
+      byte_offset: 4360
+      fieldset: DDRC_ERR_INJECT
+    - name: ADDR_ERR_INJ
+      byte_offset: 4364
+      fieldset: DDRC_ADDR_ERR_INJ
+    - name: CAPTURE_EXT_DATA_HI
+      byte_offset: 4376
+      fieldset: DDRC_CAPTURE_EXT_DATA_HI
+    - name: CAPTURE_EXT_DATA_LO
+      byte_offset: 4380
+      fieldset: DDRC_CAPTURE_EXT_DATA_LO
+    - name: CAPTURE_DATA_HI
+      byte_offset: 4384
+      fieldset: DDRC_CAPTURE_DATA_HI
+    - name: CAPTURE_DATA_LO
+      byte_offset: 4388
+      fieldset: DDRC_CAPTURE_DATA_LO
+    - name: CAPTURE_ECC
+      byte_offset: 4392
+      fieldset: DDRC_CAPTURE_ECC
+    - name: ERR_DETECT
+      byte_offset: 4416
+      fieldset: DDRC_ERR_DETECT
+    - name: ERR_DISABLE
+      byte_offset: 4420
+      fieldset: DDRC_ERR_DISABLE
+    - name: ERR_INT_EN
+      byte_offset: 4424
+      fieldset: DDRC_ERR_INT_EN
+    - name: CAPTURE_ATTRIBUTES
+      byte_offset: 4428
+      fieldset: DDRC_CAPTURE_ATTRIBUTES
+    - name: CAPTURE_ADDRESS
+      byte_offset: 4432
+      fieldset: DDRC_CAPTURE_ADDRESS
+    - name: CAPTURE_EXT_ADDRESS
+      byte_offset: 4436
+      fieldset: DDRC_CAPTURE_EXT_ADDRESS
+    - name: ERR_SBE
+      byte_offset: 4440
+      fieldset: DDRC_ERR_SBE
+    - name: ECC_REG_0
+      byte_offset: 4672
+    - name: ECC_REG_1
+      byte_offset: 4676
+    - name: ECC_REG_2
+      byte_offset: 4680
+    - name: ECC_REG_3
+      byte_offset: 4684
+    - name: ECC_REG_4
+      byte_offset: 4688
+    - name: ECC_REG_5
+      byte_offset: 4692
+    - name: ECC_REG_6
+      byte_offset: 4696
+    - name: ECC_REG_7
+      byte_offset: 4700
+fieldset/DDRC_CS_BNDS:
+  description: ''
+  fields:
+    - name: EA
+      bit_offset: 0
+      bit_size: 16
+      description: Ending Address
+    - name: SA
+      bit_offset: 16
+      bit_size: 16
+      description: Ending Address
+fieldset/DDRC_REMAP_0A_REG_0_REMAP:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 12
+    - name: EN
+      bit_offset: 31
+      bit_size: 1
+fieldset/DDRC_REMAP_0B_REG_0:
+  description: ''
+  fields:
+    - name: EA
+      bit_offset: 0
+      bit_size: 12
+      description: Region 0 Ending Address
+    - name: SA
+      bit_offset: 16
+      bit_size: 12
+      description: Region 0 Ending Address
+fieldset/DDRC_REMAP_1A_REG_1_REMAP:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 12
+    - name: EN
+      bit_offset: 31
+      bit_size: 1
+fieldset/DDRC_REMAP_1B_REG_1:
+  description: ''
+  fields:
+    - name: EA
+      bit_offset: 0
+      bit_size: 12
+      description: Region 1 Ending Address
+    - name: SA
+      bit_offset: 16
+      bit_size: 12
+      description: Region 1 Ending Address
+fieldset/DDRC_REMAP_2A_REG_2_REMAP:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 12
+    - name: EN
+      bit_offset: 31
+      bit_size: 1
+fieldset/DDRC_REMAP_2B_REG_2:
+  description: ''
+  fields:
+    - name: EA
+      bit_offset: 0
+      bit_size: 12
+      description: Region 2 Ending Address
+    - name: SA
+      bit_offset: 16
+      bit_size: 12
+      description: Region 2 Ending Address
+fieldset/DDRC_REMAP_3A_REG_3_REMAP:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 12
+    - name: EN
+      bit_offset: 31
+      bit_size: 1
+fieldset/DDRC_REMAP_3B_REG_3:
+  description: ''
+  fields:
+    - name: EA
+      bit_offset: 0
+      bit_size: 12
+      description: Region 3 Ending Address
+    - name: SA
+      bit_offset: 16
+      bit_size: 12
+      description: Region 3 Ending Address
+fieldset/DDRC_DDR_ADDR_DEC_0_ROW14:
+  description: ''
+  fields:
+    - name: OVRD
+      bit_offset: 2
+      bit_size: 6
+      description: Row 14 Override
+fieldset/DDRC_DDR_ADDR_DEC_0_ROW15:
+  description: ''
+  fields:
+    - name: OVRD
+      bit_offset: 10
+      bit_size: 6
+      description: Row 14 Override
+fieldset/DDRC_DDR_ADDR_DEC_0_ROW16:
+  description: ''
+  fields:
+    - name: OVRD
+      bit_offset: 18
+      bit_size: 6
+      description: Row 15 Override
+fieldset/DDRC_DDR_ADDR_DEC_0_ROW17:
+  description: ''
+  fields:
+    - name: OVRD
+      bit_offset: 26
+      bit_size: 6
+      description: Row 16 Override
+fieldset/DDRC_DDR_ADDR_DEC_1_ROW10:
+  description: ''
+  fields:
+    - name: OVRD
+      bit_offset: 2
+      bit_size: 6
+      description: Row 10 Override
+fieldset/DDRC_DDR_ADDR_DEC_1_ROW11:
+  description: ''
+  fields:
+    - name: OVRD
+      bit_offset: 10
+      bit_size: 6
+      description: Row 10 Override
+fieldset/DDRC_DDR_ADDR_DEC_1_ROW12:
+  description: ''
+  fields:
+    - name: OVRD
+      bit_offset: 18
+      bit_size: 6
+      description: Row 11 Override
+fieldset/DDRC_DDR_ADDR_DEC_1_ROW13:
+  description: ''
+  fields:
+    - name: OVRD
+      bit_offset: 26
+      bit_size: 6
+      description: Row 12 Override
+fieldset/DDRC_DDR_ADDR_DEC_2_ROW6:
+  description: ''
+  fields:
+    - name: OVRD
+      bit_offset: 2
+      bit_size: 6
+      description: Row 6 Override
+fieldset/DDRC_DDR_ADDR_DEC_2_ROW7:
+  description: ''
+  fields:
+    - name: OVRD
+      bit_offset: 10
+      bit_size: 6
+      description: Row 6 Override
+fieldset/DDRC_DDR_ADDR_DEC_2_ROW8:
+  description: ''
+  fields:
+    - name: OVRD
+      bit_offset: 18
+      bit_size: 6
+      description: Row 7 Override
+fieldset/DDRC_DDR_ADDR_DEC_2_ROW9:
+  description: ''
+  fields:
+    - name: OVRD
+      bit_offset: 26
+      bit_size: 6
+      description: Row 8 Override
+fieldset/DDRC_DDR_ADDR_DEC_3_ROW2:
+  description: ''
+  fields:
+    - name: OVRD
+      bit_offset: 2
+      bit_size: 6
+      description: Row 2 Override
+fieldset/DDRC_DDR_ADDR_DEC_3_ROW3:
+  description: ''
+  fields:
+    - name: OVRD
+      bit_offset: 10
+      bit_size: 6
+      description: Row 2 Override
+fieldset/DDRC_DDR_ADDR_DEC_3_ROW4:
+  description: ''
+  fields:
+    - name: OVRD
+      bit_offset: 18
+      bit_size: 6
+      description: Row 3 Override
+fieldset/DDRC_DDR_ADDR_DEC_3_ROW5:
+  description: ''
+  fields:
+    - name: OVRD
+      bit_offset: 26
+      bit_size: 6
+      description: Row 4 Override
+fieldset/DDRC_DDR_ADDR_DEC_4_COL9:
+  description: ''
+  fields:
+    - name: OVRD
+      bit_offset: 2
+      bit_size: 6
+      description: Col 9 Override
+fieldset/DDRC_DDR_ADDR_DEC_4_COL10:
+  description: ''
+  fields:
+    - name: OVRD
+      bit_offset: 10
+      bit_size: 6
+      description: Col 9 Override
+fieldset/DDRC_DDR_ADDR_DEC_4_ROW0:
+  description: ''
+  fields:
+    - name: OVRD
+      bit_offset: 18
+      bit_size: 6
+      description: Col 10 Override
+fieldset/DDRC_DDR_ADDR_DEC_4_ROW1:
+  description: ''
+  fields:
+    - name: OVRD
+      bit_offset: 26
+      bit_size: 6
+      description: Row 0 Override
+fieldset/DDRC_DDR_ADDR_DEC_5_COL5:
+  description: ''
+  fields:
+    - name: OVRD
+      bit_offset: 2
+      bit_size: 6
+      description: Col 5 Override
+fieldset/DDRC_DDR_ADDR_DEC_5_COL6:
+  description: ''
+  fields:
+    - name: OVRD
+      bit_offset: 10
+      bit_size: 6
+      description: Col 5 Override
+fieldset/DDRC_DDR_ADDR_DEC_5_COL7:
+  description: ''
+  fields:
+    - name: OVRD
+      bit_offset: 18
+      bit_size: 6
+      description: Col 6 Override
+fieldset/DDRC_DDR_ADDR_DEC_5_COL8:
+  description: ''
+  fields:
+    - name: OVRD
+      bit_offset: 26
+      bit_size: 6
+      description: Col 7 Override
+fieldset/DDRC_DDR_ADDR_DEC_6_COL1:
+  description: ''
+  fields:
+    - name: OVRD
+      bit_offset: 2
+      bit_size: 6
+      description: Col 1 Override
+fieldset/DDRC_DDR_ADDR_DEC_6_COL2:
+  description: ''
+  fields:
+    - name: OVRD
+      bit_offset: 10
+      bit_size: 6
+      description: Col 1 Override
+fieldset/DDRC_DDR_ADDR_DEC_6_COL3:
+  description: ''
+  fields:
+    - name: OVRD
+      bit_offset: 18
+      bit_size: 6
+      description: Col 2 Override
+fieldset/DDRC_DDR_ADDR_DEC_6_COL4:
+  description: ''
+  fields:
+    - name: OVRD
+      bit_offset: 26
+      bit_size: 6
+      description: Col 3 Override
+fieldset/DDRC_DDR_ADDR_DEC_7_CID1:
+  description: ''
+  fields:
+    - name: OVRD
+      bit_offset: 2
+      bit_size: 6
+      description: CID 1 Override
+fieldset/DDRC_DDR_ADDR_DEC_7_BA0:
+  description: ''
+  fields:
+    - name: OVRD
+      bit_offset: 10
+      bit_size: 6
+      description: CID 1 Override
+fieldset/DDRC_DDR_ADDR_DEC_7_BA1:
+  description: ''
+  fields:
+    - name: OVRD
+      bit_offset: 18
+      bit_size: 6
+      description: Bank 0 Override
+fieldset/DDRC_DDR_ADDR_DEC_7_COL0:
+  description: ''
+  fields:
+    - name: OVRD
+      bit_offset: 26
+      bit_size: 6
+      description: Bank 1 Override
+fieldset/DDRC_DDR_ADDR_DEC_8_BG1:
+  description: ''
+  fields:
+    - name: OVRD
+      bit_offset: 2
+      bit_size: 6
+      description: Bank Group 1 Override
+fieldset/DDRC_DDR_ADDR_DEC_8_CS0:
+  description: ''
+  fields:
+    - name: OVRD
+      bit_offset: 10
+      bit_size: 6
+      description: Bank Group 1 Override
+fieldset/DDRC_DDR_ADDR_DEC_8_CS1:
+  description: ''
+  fields:
+    - name: OVRD
+      bit_offset: 18
+      bit_size: 6
+fieldset/DDRC_DDR_ADDR_DEC_8_CID0:
+  description: ''
+  fields:
+    - name: OVRD
+      bit_offset: 26
+      bit_size: 6
+      description: CID 0 Override
+fieldset/DDRC_DDR_ADDR_DEC_9_ADDR_DEC:
+  description: ''
+  fields:
+    - name: OVRD
+      bit_offset: 0
+      bit_size: 1
+fieldset/DDRC_DDR_ADDR_DEC_9_BG0:
+  description: ''
+  fields:
+    - name: OVRD
+      bit_offset: 26
+      bit_size: 6
+      description: Bank Group 0 Override
+fieldset/DDRC_CS_CONFIG_COL_BITS:
+  description: ''
+  fields:
+    - name: CS
+      bit_offset: 0
+      bit_size: 3
+fieldset/DDRC_CS_CONFIG_BG_BITS:
+  description: ''
+  fields:
+    - name: CS
+      bit_offset: 4
+      bit_size: 2
+fieldset/DDRC_CS_CONFIG_ROW_BITS:
+  description: ''
+  fields:
+    - name: CS
+      bit_offset: 8
+      bit_size: 3
+fieldset/DDRC_CS_CONFIG_AP:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 23
+      bit_size: 1
+fieldset/DDRC_CS_CONFIG_CS:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 31
+      bit_size: 1
+fieldset/DDRC_TIMING_CFG_3_EXT:
+  description: ''
+  fields:
+    - name: WRTORD
+      bit_offset: 0
+      bit_size: 1
+    - name: ACTTOACT
+      bit_offset: 1
+      bit_size: 1
+    - name: WRREC
+      bit_offset: 8
+      bit_size: 2
+      description: Extended MCKE Pulse
+    - name: CASLAT
+      bit_offset: 12
+      bit_size: 3
+      description: Extended CAS Latency
+    - name: REFREC
+      bit_offset: 16
+      bit_size: 6
+      description: Extended CAS Latency
+    - name: ACTTORW
+      bit_offset: 22
+      bit_size: 2
+    - name: ACTTOPRE
+      bit_offset: 24
+      bit_size: 3
+    - name: PRETOACT
+      bit_offset: 28
+      bit_size: 2
+fieldset/DDRC_TIMING_CFG_3_EXT_FOUR:
+  description: ''
+  fields:
+    - name: ACT
+      bit_offset: 3
+      bit_size: 1
+      description: Extended Four Activate
+fieldset/DDRC_TIMING_CFG_3_EXT_CKE:
+  description: ''
+  fields:
+    - name: PLS
+      bit_offset: 4
+      bit_size: 2
+      description: Extended MCKE Pulse
+fieldset/DDRC_TIMING_CFG_0_MRS:
+  description: ''
+  fields:
+    - name: CYC
+      bit_offset: 0
+      bit_size: 6
+fieldset/DDRC_TIMING_CFG_0_EXT_ACT_PD:
+  description: ''
+  fields:
+    - name: EXIT
+      bit_offset: 12
+      bit_size: 1
+fieldset/DDRC_TIMING_CFG_0_EXT_PRE_PD:
+  description: ''
+  fields:
+    - name: EXIT
+      bit_offset: 14
+      bit_size: 2
+fieldset/DDRC_TIMING_CFG_0_PRE_PD:
+  description: ''
+  fields:
+    - name: EXIT
+      bit_offset: 16
+      bit_size: 4
+fieldset/DDRC_TIMING_CFG_0_ACT_PD:
+  description: ''
+  fields:
+    - name: EXIT
+      bit_offset: 20
+      bit_size: 4
+fieldset/DDRC_TIMING_CFG_0:
+  description: ''
+  fields:
+    - name: WWT
+      bit_offset: 24
+      bit_size: 2
+    - name: RRT
+      bit_offset: 26
+      bit_size: 2
+      description: Write-To-Write Turnaround To Different Ranks
+    - name: WRT
+      bit_offset: 28
+      bit_size: 2
+      description: Read-To-Read Turnaround To Different Ranks
+    - name: RWT
+      bit_offset: 30
+      bit_size: 2
+      description: Write-To-Read Turnaround
+fieldset/DDRC_TIMING_CFG_1:
+  description: ''
+  fields:
+    - name: WRTORD
+      bit_offset: 0
+      bit_size: 4
+    - name: ACTTOACT
+      bit_offset: 4
+      bit_size: 4
+    - name: WRREC
+      bit_offset: 8
+      bit_size: 4
+      description: Write Recovery
+    - name: REFREC
+      bit_offset: 12
+      bit_size: 4
+      description: Write Recovery
+    - name: CASLAT
+      bit_offset: 17
+      bit_size: 3
+      description: Refresh Recovery
+    - name: ACTTORW
+      bit_offset: 20
+      bit_size: 4
+      description: CAS Latency
+    - name: ACTTOPRE
+      bit_offset: 24
+      bit_size: 4
+      description: Activate-To-Precharge Time
+    - name: PRETOACT
+      bit_offset: 28
+      bit_size: 4
+      description: Activate-To-Precharge Time
+fieldset/DDRC_TIMING_CFG_2_FOUR:
+  description: ''
+  fields:
+    - name: ACT
+      bit_offset: 0
+      bit_size: 6
+      description: Four Activate
+fieldset/DDRC_TIMING_CFG_2_CKE:
+  description: ''
+  fields:
+    - name: PLS
+      bit_offset: 6
+      bit_size: 3
+      description: Four Activate
+fieldset/DDRC_TIMING_CFG_2_RD_TO:
+  description: ''
+  fields:
+    - name: PRE
+      bit_offset: 13
+      bit_size: 5
+      description: MCKE Pulse
+fieldset/DDRC_TIMING_CFG_2_EXT_WR:
+  description: ''
+  fields:
+    - name: LAT
+      bit_offset: 18
+      bit_size: 1
+      description: Extended Write Latency
+fieldset/DDRC_TIMING_CFG_2_WR:
+  description: ''
+  fields:
+    - name: LAT
+      bit_offset: 19
+      bit_size: 4
+      description: Extended Write Latency
+fieldset/DDRC_TIMING_CFG_2_DERATE:
+  description: ''
+  fields:
+    - name: VAL
+      bit_offset: 28
+      bit_size: 4
+      description: Write Latency
+fieldset/DDRC_DDR_SDRAM_CFG:
+  description: ''
+  fields:
+    - name: BI
+      bit_offset: 0
+      bit_size: 1
+    - name: DBW
+      bit_offset: 19
+      bit_size: 2
+    - name: SREN
+      bit_offset: 30
+      bit_size: 1
+fieldset/DDRC_DDR_SDRAM_CFG_MEM:
+  description: ''
+  fields:
+    - name: HALT
+      bit_offset: 1
+      bit_size: 1
+    - name: EN
+      bit_offset: 31
+      bit_size: 1
+fieldset/DDRC_DDR_SDRAM_CFG_BA_INTLV:
+  description: ''
+  fields:
+    - name: CTL
+      bit_offset: 8
+      bit_size: 7
+fieldset/DDRC_DDR_SDRAM_CFG_DYN:
+  description: ''
+  fields:
+    - name: PWR
+      bit_offset: 21
+      bit_size: 1
+fieldset/DDRC_DDR_SDRAM_CFG_SDRAM:
+  description: ''
+  fields:
+    - name: TYPE
+      bit_offset: 24
+      bit_size: 3
+fieldset/DDRC_DDR_SDRAM_CFG_2_D:
+  description: ''
+  fields:
+    - name: INIT
+      bit_offset: 4
+      bit_size: 1
+fieldset/DDRC_DDR_SDRAM_CFG_2_NUM:
+  description: ''
+  fields:
+    - name: PR
+      bit_offset: 12
+      bit_size: 4
+fieldset/DDRC_DDR_SDRAM_CFG_2_MCK:
+  description: ''
+  fields:
+    - name: DIS
+      bit_offset: 24
+      bit_size: 4
+      description: MCK Disable
+fieldset/DDRC_DDR_SDRAM_CFG_2_FRC:
+  description: ''
+  fields:
+    - name: SR
+      bit_offset: 31
+      bit_size: 1
+      description: MCK Disable
+fieldset/DDRC_DDR_SDRAM_MD_CNTL_MD:
+  description: ''
+  fields:
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 18
+      description: Mode Register Value
+    - name: SEL
+      bit_offset: 24
+      bit_size: 4
+    - name: EN
+      bit_offset: 31
+      bit_size: 1
+fieldset/DDRC_DDR_SDRAM_MD_CNTL_CKE:
+  description: ''
+  fields:
+    - name: CNTL
+      bit_offset: 20
+      bit_size: 2
+      description: Mode Register Value
+fieldset/DDRC_DDR_SDRAM_MD_CNTL_SET:
+  description: ''
+  fields:
+    - name: PRE
+      bit_offset: 22
+      bit_size: 1
+    - name: REF
+      bit_offset: 23
+      bit_size: 1
+fieldset/DDRC_DDR_SDRAM_MD_CNTL_CS:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 28
+      bit_size: 3
+fieldset/DDRC_DDR_SDRAM_INTERVAL:
+  description: ''
+  fields:
+    - name: BSTOPRE
+      bit_offset: 0
+      bit_size: 14
+      description: Precharge Interval
+    - name: REFINT
+      bit_offset: 16
+      bit_size: 16
+      description: Precharge Interval
+fieldset/DDRC_DDR_DATA_INIT_INIT:
+  description: ''
+  fields:
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 32
+      description: Initialization Value
+fieldset/DDRC_TIMING_CFG_4_DLL:
+  description: ''
+  fields:
+    - name: LOCK
+      bit_offset: 0
+      bit_size: 2
+fieldset/DDRC_TIMING_CFG_4_EXT:
+  description: ''
+  fields:
+    - name: REFINT
+      bit_offset: 4
+      bit_size: 1
+    - name: WWT
+      bit_offset: 8
+      bit_size: 2
+    - name: RRT
+      bit_offset: 10
+      bit_size: 2
+    - name: WRT
+      bit_offset: 12
+      bit_size: 2
+      description: Extended Read-To-Read Turnaround
+    - name: RWT
+      bit_offset: 14
+      bit_size: 2
+fieldset/DDRC_TIMING_CFG_4:
+  description: ''
+  fields:
+    - name: WWT
+      bit_offset: 16
+      bit_size: 4
+    - name: RRT
+      bit_offset: 20
+      bit_size: 4
+      description: Write-To-Write Turnaround For Same Rank
+    - name: WRT
+      bit_offset: 24
+      bit_size: 4
+      description: Read-To-Read Turnaround For Same Rank
+    - name: RWT
+      bit_offset: 28
+      bit_size: 4
+      description: Write-To-Read Turnaround For Same Rank
+fieldset/DDRC_TIMING_CFG_7:
+  description: ''
+  fields:
+    - name: CKSRX
+      bit_offset: 20
+      bit_size: 4
+    - name: CKSRE
+      bit_offset: 24
+      bit_size: 4
+fieldset/DDRC_TIMING_CFG_7_CKE:
+  description: ''
+  fields:
+    - name: RST
+      bit_offset: 28
+      bit_size: 2
+fieldset/DDRC_DDR_ZQ_CNTL_ZQCS:
+  description: ''
+  fields:
+    - name: INT
+      bit_offset: 0
+      bit_size: 4
+fieldset/DDRC_DDR_ZQ_CNTL:
+  description: ''
+  fields:
+    - name: ZQCS
+      bit_offset: 8
+      bit_size: 4
+    - name: ZQOPER
+      bit_offset: 16
+      bit_size: 4
+    - name: ZQINIT
+      bit_offset: 24
+      bit_size: 4
+fieldset/DDRC_DDR_ZQ_CNTL_ZQ:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 31
+      bit_size: 1
+fieldset/DDRC_DDR_SR_CNTR_SR:
+  description: ''
+  fields:
+    - name: IT
+      bit_offset: 16
+      bit_size: 4
+      description: Self-Refresh Idle Threshold
+fieldset/DDRC_TIMING_CFG_8_PRE_ALL:
+  description: ''
+  fields:
+    - name: REC
+      bit_offset: 0
+      bit_size: 6
+fieldset/DDRC_TIMING_CFG_9_REFTOREF:
+  description: ''
+  fields:
+    - name: PB
+      bit_offset: 0
+      bit_size: 10
+fieldset/DDRC_TIMING_CFG_9_REFREC:
+  description: ''
+  fields:
+    - name: PB
+      bit_offset: 16
+      bit_size: 10
+fieldset/DDRC_TIMING_CFG_10_T:
+  description: ''
+  fields:
+    - name: STAB
+      bit_offset: 0
+      bit_size: 15
+      description: Stabilization Wait Time
+fieldset/DDRC_TIMING_CFG_11:
+  description: ''
+  fields:
+    - name: MWWT
+      bit_offset: 0
+      bit_size: 4
+fieldset/DDRC_TIMING_CFG_11_PRE_TO:
+  description: ''
+  fields:
+    - name: PRE
+      bit_offset: 8
+      bit_size: 4
+fieldset/DDRC_DDR_SDRAM_CFG_3_SR_FAST_WK:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 1
+      bit_size: 1
+fieldset/DDRC_DDR_SDRAM_CFG_3_DYN_REF_RATE:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 7
+      bit_size: 1
+fieldset/DDRC_DDR_SDRAM_CFG_3_DRAIN_FOR:
+  description: ''
+  fields:
+    - name: SR
+      bit_offset: 11
+      bit_size: 1
+fieldset/DDRC_DDR_SDRAM_CFG_3_DM:
+  description: ''
+  fields:
+    - name: CFG
+      bit_offset: 12
+      bit_size: 3
+fieldset/DDRC_DDR_SDRAM_CFG_3_DDRC:
+  description: ''
+  fields:
+    - name: RST
+      bit_offset: 31
+      bit_size: 1
+fieldset/DDRC_DDR_SDRAM_CFG_4_FRQCH:
+  description: ''
+  fields:
+    - name: RET
+      bit_offset: 12
+      bit_size: 5
+fieldset/DDRC_DDR_SDRAM_REF_RATE_REF_RATE:
+  description: ''
+  fields:
+    - name: CS1
+      bit_offset: 0
+      bit_size: 8
+      description: Refresh Rate Rank 1
+    - name: CS0
+      bit_offset: 8
+      bit_size: 8
+      description: Refresh Rate Rank 0
+fieldset/DDRC_TIMING_CFG_12_CASLAT:
+  description: ''
+  fields:
+    - name: HS
+      bit_offset: 0
+      bit_size: 6
+      description: CAS Latency For Half Speed
+fieldset/DDRC_TIMING_CFG_12_ACTTORW:
+  description: ''
+  fields:
+    - name: HS
+      bit_offset: 8
+      bit_size: 6
+fieldset/DDRC_TIMING_CFG_12_ACTTOPRE:
+  description: ''
+  fields:
+    - name: HS
+      bit_offset: 16
+      bit_size: 7
+fieldset/DDRC_TIMING_CFG_12_PRETOACT:
+  description: ''
+  fields:
+    - name: HS
+      bit_offset: 24
+      bit_size: 6
+fieldset/DDRC_TIMING_CFG_13_ACTTOACT:
+  description: ''
+  fields:
+    - name: HS
+      bit_offset: 0
+      bit_size: 5
+fieldset/DDRC_TIMING_CFG_13_WRREC:
+  description: ''
+  fields:
+    - name: HS
+      bit_offset: 8
+      bit_size: 6
+fieldset/DDRC_TIMING_CFG_13_REFREC:
+  description: ''
+  fields:
+    - name: HS
+      bit_offset: 16
+      bit_size: 10
+fieldset/DDRC_TIMING_CFG_14_REFINT:
+  description: ''
+  fields:
+    - name: HS
+      bit_offset: 0
+      bit_size: 17
+fieldset/DDRC_TIMING_CFG_14_RD_TO_PRE:
+  description: ''
+  fields:
+    - name: HS
+      bit_offset: 18
+      bit_size: 5
+fieldset/DDRC_TIMING_CFG_14_WRLAT:
+  description: ''
+  fields:
+    - name: HS
+      bit_offset: 24
+      bit_size: 6
+fieldset/DDRC_TX_CFG_1:
+  description: ''
+  fields:
+    - name: WWATER
+      bit_offset: 0
+      bit_size: 4
+      description: Write Watermark.
+fieldset/DDRC_TX_CFG_1_TS:
+  description: ''
+  fields:
+    - name: DEPTH
+      bit_offset: 7
+      bit_size: 5
+      description: Write Watermark.
+fieldset/DDRC_DDRDSR_2_RPD:
+  description: ''
+  fields:
+    - name: END
+      bit_offset: 0
+      bit_size: 1
+    - name: ST
+      bit_offset: 1
+      bit_size: 1
+fieldset/DDRC_DDRDSR_2_PHY_INIT:
+  description: ''
+  fields:
+    - name: CMPLT
+      bit_offset: 2
+      bit_size: 1
+fieldset/DDRC_DDRDSR_2:
+  description: ''
+  fields:
+    - name: NML
+      bit_offset: 30
+      bit_size: 1
+    - name: IDLE
+      bit_offset: 31
+      bit_size: 1
+fieldset/DDRC_DDR_IP_REV1_IP:
+  description: ''
+  fields:
+    - name: MN
+      bit_offset: 0
+      bit_size: 8
+      description: Minor Revision
+    - name: MJ
+      bit_offset: 8
+      bit_size: 8
+      description: Minor Revision
+    - name: ID
+      bit_offset: 16
+      bit_size: 16
+      description: Major Revision
+fieldset/DDRC_DDR_MTCR_MT:
+  description: ''
+  fields:
+    - name: STAT
+      bit_offset: 0
+      bit_size: 1
+    - name: TRNARND
+      bit_offset: 16
+      bit_size: 4
+    - name: TYP
+      bit_offset: 24
+      bit_size: 2
+    - name: EN
+      bit_offset: 31
+      bit_size: 1
+fieldset/DDRC_DDR_MTCR_MT_ADDR:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 9
+      bit_size: 1
+fieldset/DDRC_DDR_MTP_DDR:
+  description: ''
+  fields:
+    - name: PATT
+      bit_offset: 0
+      bit_size: 32
+      description: DDR SDRAM Pattern
+fieldset/DDRC_DDR_MT_ST_EXT_ADDR_MT_ST_EXT:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 8
+fieldset/DDRC_DDR_MT_ST_ADDR_MT_ST:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Memory Test Start Address
+fieldset/DDRC_DDR_MT_END_EXT_ADDR_MT_END_EXT:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 8
+fieldset/DDRC_DDR_MT_END_ADDR_MT_END:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Memory Test End Address
+fieldset/DDRC_PMGC0:
+  description: ''
+  fields:
+    - name: FCECE
+      bit_offset: 29
+      bit_size: 1
+    - name: PMIE
+      bit_offset: 30
+      bit_size: 1
+    - name: FAC
+      bit_offset: 31
+      bit_size: 1
+fieldset/DDRC_PMLCA0:
+  description: ''
+  fields:
+    - name: CE
+      bit_offset: 26
+      bit_size: 1
+    - name: FC
+      bit_offset: 31
+      bit_size: 1
+fieldset/DDRC_PMLCB0:
+  description: ''
+  fields:
+    - name: TRIGOFFCNTL
+      bit_offset: 16
+      bit_size: 2
+    - name: TRIGONCNTL
+      bit_offset: 18
+      bit_size: 2
+    - name: TRIGOFFSEL
+      bit_offset: 20
+      bit_size: 4
+      description: Trigger-Off Select
+    - name: TRIGONSEL
+      bit_offset: 26
+      bit_size: 4
+      description: Trigger-Off Select
+fieldset/DDRC_PMC0A:
+  description: ''
+  fields:
+    - name: PMC0
+      bit_offset: 0
+      bit_size: 32
+      description: Counter 0
+fieldset/DDRC_PMC0B:
+  description: ''
+  fields:
+    - name: PMC0
+      bit_offset: 0
+      bit_size: 32
+      description: Counter 0
+fieldset/DDRC_PMLCA1:
+  description: ''
+  fields:
+    - name: BDIST
+      bit_offset: 0
+      bit_size: 6
+      description: Burst Distance
+    - name: BGRAN
+      bit_offset: 6
+      bit_size: 5
+      description: Burst Distance
+    - name: BSIZE
+      bit_offset: 11
+      bit_size: 5
+      description: Burst Granularity
+    - name: EVENT
+      bit_offset: 16
+      bit_size: 7
+      description: Burst Size
+    - name: CE
+      bit_offset: 26
+      bit_size: 1
+      description: Event Selector
+    - name: FC
+      bit_offset: 31
+      bit_size: 1
+fieldset/DDRC_PMLCB1:
+  description: ''
+  fields:
+    - name: THRESHOLD
+      bit_offset: 0
+      bit_size: 6
+      description: Threshold
+    - name: TBMULT
+      bit_offset: 8
+      bit_size: 3
+      description: Threshold
+    - name: TRIGOFFCNTL
+      bit_offset: 16
+      bit_size: 2
+    - name: TRIGONCNTL
+      bit_offset: 18
+      bit_size: 2
+    - name: TRIGOFFSEL
+      bit_offset: 20
+      bit_size: 4
+      description: Trigger-Off Select
+    - name: TRIGONSEL
+      bit_offset: 26
+      bit_size: 4
+      description: Trigger-Off Select
+fieldset/DDRC_PMC1:
+  description: ''
+  fields:
+    - name: PMC1
+      bit_offset: 0
+      bit_size: 32
+      description: Event Count
+fieldset/DDRC_PMLCA2:
+  description: ''
+  fields:
+    - name: BDIST
+      bit_offset: 0
+      bit_size: 6
+      description: Burst Distance
+    - name: BGRAN
+      bit_offset: 6
+      bit_size: 5
+      description: Burst Distance
+    - name: BSIZE
+      bit_offset: 11
+      bit_size: 5
+      description: Burst Granularity
+    - name: EVENT
+      bit_offset: 16
+      bit_size: 7
+      description: Burst Size
+    - name: CE
+      bit_offset: 26
+      bit_size: 1
+      description: Event Selector
+    - name: FC
+      bit_offset: 31
+      bit_size: 1
+fieldset/DDRC_PMLCB2:
+  description: ''
+  fields:
+    - name: THRESHOLD
+      bit_offset: 0
+      bit_size: 6
+      description: Threshold
+    - name: TBMULT
+      bit_offset: 8
+      bit_size: 3
+      description: Threshold
+    - name: TRIGOFFCNTL
+      bit_offset: 16
+      bit_size: 2
+    - name: TRIGONCNTL
+      bit_offset: 18
+      bit_size: 2
+    - name: TRIGOFFSEL
+      bit_offset: 20
+      bit_size: 4
+      description: Trigger-Off Select
+    - name: TRIGONSEL
+      bit_offset: 26
+      bit_size: 4
+      description: Trigger-Off Select
+fieldset/DDRC_PMC2:
+  description: ''
+  fields:
+    - name: PMC2
+      bit_offset: 0
+      bit_size: 32
+      description: Event Count
+fieldset/DDRC_PMLCA3:
+  description: ''
+  fields:
+    - name: BDIST
+      bit_offset: 0
+      bit_size: 6
+      description: Burst Distance
+    - name: BGRAN
+      bit_offset: 6
+      bit_size: 5
+      description: Burst Distance
+    - name: BSIZE
+      bit_offset: 11
+      bit_size: 5
+      description: Burst Granularity
+    - name: EVENT
+      bit_offset: 16
+      bit_size: 7
+      description: Burst Size
+    - name: CE
+      bit_offset: 26
+      bit_size: 1
+      description: Event Selector
+    - name: FC
+      bit_offset: 31
+      bit_size: 1
+fieldset/DDRC_PMLCB3:
+  description: ''
+  fields:
+    - name: THRESHOLD
+      bit_offset: 0
+      bit_size: 6
+      description: Threshold
+    - name: TBMULT
+      bit_offset: 8
+      bit_size: 3
+      description: Threshold
+    - name: TRIGOFFCNTL
+      bit_offset: 16
+      bit_size: 2
+    - name: TRIGONCNTL
+      bit_offset: 18
+      bit_size: 2
+    - name: TRIGOFFSEL
+      bit_offset: 20
+      bit_size: 4
+      description: Trigger-Off Select
+    - name: TRIGONSEL
+      bit_offset: 26
+      bit_size: 4
+      description: Trigger-Off Select
+fieldset/DDRC_PMC3:
+  description: ''
+  fields:
+    - name: PMC3
+      bit_offset: 0
+      bit_size: 32
+      description: Event Count
+fieldset/DDRC_PMLCA4:
+  description: ''
+  fields:
+    - name: BDIST
+      bit_offset: 0
+      bit_size: 6
+      description: Burst Distance
+    - name: BGRAN
+      bit_offset: 6
+      bit_size: 5
+      description: Burst Distance
+    - name: BSIZE
+      bit_offset: 11
+      bit_size: 5
+      description: Burst Granularity
+    - name: EVENT
+      bit_offset: 16
+      bit_size: 7
+      description: Burst Size
+    - name: CE
+      bit_offset: 26
+      bit_size: 1
+      description: Event Selector
+    - name: FC
+      bit_offset: 31
+      bit_size: 1
+fieldset/DDRC_PMLCB4:
+  description: ''
+  fields:
+    - name: THRESHOLD
+      bit_offset: 0
+      bit_size: 6
+      description: Threshold
+    - name: TBMULT
+      bit_offset: 8
+      bit_size: 3
+      description: Threshold
+    - name: TRIGOFFCNTL
+      bit_offset: 16
+      bit_size: 2
+    - name: TRIGONCNTL
+      bit_offset: 18
+      bit_size: 2
+    - name: TRIGOFFSEL
+      bit_offset: 20
+      bit_size: 4
+      description: Trigger-Off Select
+    - name: TRIGONSEL
+      bit_offset: 26
+      bit_size: 4
+      description: Trigger-Off Select
+fieldset/DDRC_PMC4:
+  description: ''
+  fields:
+    - name: PMC4
+      bit_offset: 0
+      bit_size: 32
+      description: Event Count
+fieldset/DDRC_PMLCA5:
+  description: ''
+  fields:
+    - name: BDIST
+      bit_offset: 0
+      bit_size: 6
+      description: Burst Distance
+    - name: BGRAN
+      bit_offset: 6
+      bit_size: 5
+      description: Burst Distance
+    - name: BSIZE
+      bit_offset: 11
+      bit_size: 5
+      description: Burst Granularity
+    - name: EVENT
+      bit_offset: 16
+      bit_size: 7
+      description: Burst Size
+    - name: CE
+      bit_offset: 26
+      bit_size: 1
+      description: Event Selector
+    - name: FC
+      bit_offset: 31
+      bit_size: 1
+fieldset/DDRC_PMLCB5:
+  description: ''
+  fields:
+    - name: THRESHOLD
+      bit_offset: 0
+      bit_size: 6
+      description: Threshold
+    - name: TBMULT
+      bit_offset: 8
+      bit_size: 3
+      description: Threshold
+    - name: TRIGOFFCNTL
+      bit_offset: 16
+      bit_size: 2
+    - name: TRIGONCNTL
+      bit_offset: 18
+      bit_size: 2
+    - name: TRIGOFFSEL
+      bit_offset: 20
+      bit_size: 4
+      description: Trigger-Off Select
+    - name: TRIGONSEL
+      bit_offset: 26
+      bit_size: 4
+      description: Trigger-Off Select
+fieldset/DDRC_PMC5:
+  description: ''
+  fields:
+    - name: PMC5
+      bit_offset: 0
+      bit_size: 32
+      description: Event Count
+fieldset/DDRC_PMLCA6:
+  description: ''
+  fields:
+    - name: BDIST
+      bit_offset: 0
+      bit_size: 6
+      description: Burst Distance
+    - name: BGRAN
+      bit_offset: 6
+      bit_size: 5
+      description: Burst Distance
+    - name: BSIZE
+      bit_offset: 11
+      bit_size: 5
+      description: Burst Granularity
+    - name: EVENT
+      bit_offset: 16
+      bit_size: 7
+      description: Burst Size
+    - name: CE
+      bit_offset: 26
+      bit_size: 1
+      description: Event Selector
+    - name: FC
+      bit_offset: 31
+      bit_size: 1
+fieldset/DDRC_PMLCB6:
+  description: ''
+  fields:
+    - name: THRESHOLD
+      bit_offset: 0
+      bit_size: 6
+      description: Threshold
+    - name: TBMULT
+      bit_offset: 8
+      bit_size: 3
+      description: Threshold
+    - name: TRIGOFFCNTL
+      bit_offset: 16
+      bit_size: 2
+    - name: TRIGONCNTL
+      bit_offset: 18
+      bit_size: 2
+    - name: TRIGOFFSEL
+      bit_offset: 20
+      bit_size: 4
+      description: Trigger-Off Select
+    - name: TRIGONSEL
+      bit_offset: 26
+      bit_size: 4
+      description: Trigger-Off Select
+fieldset/DDRC_PMC6:
+  description: ''
+  fields:
+    - name: PMC6
+      bit_offset: 0
+      bit_size: 32
+      description: Event Count
+fieldset/DDRC_PMLCA7:
+  description: ''
+  fields:
+    - name: BDIST
+      bit_offset: 0
+      bit_size: 6
+      description: Burst Distance
+    - name: BGRAN
+      bit_offset: 6
+      bit_size: 5
+      description: Burst Distance
+    - name: BSIZE
+      bit_offset: 11
+      bit_size: 5
+      description: Burst Granularity
+    - name: EVENT
+      bit_offset: 16
+      bit_size: 7
+      description: Burst Size
+    - name: CE
+      bit_offset: 26
+      bit_size: 1
+      description: Event Selector
+    - name: FC
+      bit_offset: 31
+      bit_size: 1
+fieldset/DDRC_PMLCB7:
+  description: ''
+  fields:
+    - name: THRESHOLD
+      bit_offset: 0
+      bit_size: 6
+      description: Threshold
+    - name: TBMULT
+      bit_offset: 8
+      bit_size: 3
+      description: Threshold
+    - name: TRIGOFFCNTL
+      bit_offset: 16
+      bit_size: 2
+    - name: TRIGONCNTL
+      bit_offset: 18
+      bit_size: 2
+    - name: TRIGOFFSEL
+      bit_offset: 20
+      bit_size: 4
+      description: Trigger-Off Select
+    - name: TRIGONSEL
+      bit_offset: 26
+      bit_size: 4
+      description: Trigger-Off Select
+fieldset/DDRC_PMC7:
+  description: ''
+  fields:
+    - name: PMC7
+      bit_offset: 0
+      bit_size: 32
+      description: Event Count
+fieldset/DDRC_PMLCA8:
+  description: ''
+  fields:
+    - name: BDIST
+      bit_offset: 0
+      bit_size: 6
+      description: Burst Distance
+    - name: BGRAN
+      bit_offset: 6
+      bit_size: 5
+      description: Burst Distance
+    - name: BSIZE
+      bit_offset: 11
+      bit_size: 5
+      description: Burst Granularity
+    - name: EVENT
+      bit_offset: 16
+      bit_size: 7
+      description: Burst Size
+    - name: CE
+      bit_offset: 26
+      bit_size: 1
+      description: Event Selector
+    - name: FC
+      bit_offset: 31
+      bit_size: 1
+fieldset/DDRC_PMLCB8:
+  description: ''
+  fields:
+    - name: THRESHOLD
+      bit_offset: 0
+      bit_size: 6
+      description: Threshold
+    - name: TBMULT
+      bit_offset: 8
+      bit_size: 3
+      description: Threshold
+    - name: TRIGOFFCNTL
+      bit_offset: 16
+      bit_size: 2
+    - name: TRIGONCNTL
+      bit_offset: 18
+      bit_size: 2
+    - name: TRIGOFFSEL
+      bit_offset: 20
+      bit_size: 4
+      description: Trigger-Off Select
+    - name: TRIGONSEL
+      bit_offset: 26
+      bit_size: 4
+      description: Trigger-Off Select
+fieldset/DDRC_PMC8:
+  description: ''
+  fields:
+    - name: PMC8
+      bit_offset: 0
+      bit_size: 32
+      description: Event Count
+fieldset/DDRC_PMLCA9:
+  description: ''
+  fields:
+    - name: BDIST
+      bit_offset: 0
+      bit_size: 6
+      description: Burst Distance
+    - name: BGRAN
+      bit_offset: 6
+      bit_size: 5
+      description: Burst Distance
+    - name: BSIZE
+      bit_offset: 11
+      bit_size: 5
+      description: Burst Granularity
+    - name: EVENT
+      bit_offset: 16
+      bit_size: 7
+      description: Burst Size
+    - name: CE
+      bit_offset: 26
+      bit_size: 1
+      description: Event Selector
+    - name: FC
+      bit_offset: 31
+      bit_size: 1
+fieldset/DDRC_PMLCB9:
+  description: ''
+  fields:
+    - name: THRESHOLD
+      bit_offset: 0
+      bit_size: 6
+      description: Threshold
+    - name: TBMULT
+      bit_offset: 8
+      bit_size: 3
+      description: Threshold
+    - name: TRIGOFFCNTL
+      bit_offset: 16
+      bit_size: 2
+    - name: TRIGONCNTL
+      bit_offset: 18
+      bit_size: 2
+    - name: TRIGOFFSEL
+      bit_offset: 20
+      bit_size: 4
+      description: Trigger-Off Select
+    - name: TRIGONSEL
+      bit_offset: 26
+      bit_size: 4
+      description: Trigger-Off Select
+fieldset/DDRC_PMC9:
+  description: ''
+  fields:
+    - name: PMC9
+      bit_offset: 0
+      bit_size: 32
+      description: Event Count
+fieldset/DDRC_PMLCA10:
+  description: ''
+  fields:
+    - name: BDIST
+      bit_offset: 0
+      bit_size: 6
+      description: Burst Distance
+    - name: BGRAN
+      bit_offset: 6
+      bit_size: 5
+      description: Burst Distance
+    - name: BSIZE
+      bit_offset: 11
+      bit_size: 5
+      description: Burst Granularity
+    - name: EVENT
+      bit_offset: 16
+      bit_size: 7
+      description: Burst Size
+    - name: CE
+      bit_offset: 26
+      bit_size: 1
+      description: Event Selector
+    - name: FC
+      bit_offset: 31
+      bit_size: 1
+fieldset/DDRC_PMLCB10:
+  description: ''
+  fields:
+    - name: THRESHOLD
+      bit_offset: 0
+      bit_size: 6
+      description: Threshold
+    - name: TBMULT
+      bit_offset: 8
+      bit_size: 3
+      description: Threshold
+    - name: TRIGOFFCNTL
+      bit_offset: 16
+      bit_size: 2
+    - name: TRIGONCNTL
+      bit_offset: 18
+      bit_size: 2
+    - name: TRIGOFFSEL
+      bit_offset: 20
+      bit_size: 4
+      description: Trigger-Off Select
+    - name: TRIGONSEL
+      bit_offset: 26
+      bit_size: 4
+      description: Trigger-Off Select
+fieldset/DDRC_PMC10:
+  description: ''
+  fields:
+    - name: PMC10
+      bit_offset: 0
+      bit_size: 32
+      description: Event Count
+fieldset/DDRC_ERR_EN_INLINE_ECC:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 30
+      bit_size: 1
+fieldset/DDRC_ERR_EN_ECC:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 31
+      bit_size: 1
+fieldset/DDRC_DATA_ERR_INJECT_HI:
+  description: ''
+  fields:
+    - name: EIMH
+      bit_offset: 0
+      bit_size: 32
+fieldset/DDRC_DATA_ERR_INJECT_LO:
+  description: ''
+  fields:
+    - name: EIML
+      bit_offset: 0
+      bit_size: 32
+fieldset/DDRC_ERR_INJECT:
+  description: ''
+  fields:
+    - name: EEIM
+      bit_offset: 0
+      bit_size: 8
+      description: ECC Error Injection Mask
+    - name: EIEN
+      bit_offset: 8
+      bit_size: 1
+      description: ECC Error Injection Mask
+    - name: FRC2B
+      bit_offset: 23
+      bit_size: 1
+fieldset/DDRC_ERR_INJECT_NUM_ECC:
+  description: ''
+  fields:
+    - name: INJ
+      bit_offset: 12
+      bit_size: 4
+fieldset/DDRC_ERR_INJECT_ECC_INJ:
+  description: ''
+  fields:
+    - name: SRC
+      bit_offset: 21
+      bit_size: 2
+fieldset/DDRC_ERR_INJECT_ADDR:
+  description: ''
+  fields:
+    - name: TEN
+      bit_offset: 31
+      bit_size: 1
+fieldset/DDRC_ADDR_ERR_INJ:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Address
+fieldset/DDRC_CAPTURE_EXT_DATA_HI:
+  description: ''
+  fields:
+    - name: ECEHD
+      bit_offset: 0
+      bit_size: 32
+fieldset/DDRC_CAPTURE_EXT_DATA_LO:
+  description: ''
+  fields:
+    - name: ECELD
+      bit_offset: 0
+      bit_size: 32
+fieldset/DDRC_CAPTURE_DATA_HI:
+  description: ''
+  fields:
+    - name: ECHD
+      bit_offset: 0
+      bit_size: 32
+      description: Error Capture High Data Path
+fieldset/DDRC_CAPTURE_DATA_LO:
+  description: ''
+  fields:
+    - name: ECLD
+      bit_offset: 0
+      bit_size: 32
+      description: Error Capture Low Data Path
+fieldset/DDRC_CAPTURE_ECC:
+  description: ''
+  fields:
+    - name: ECE
+      bit_offset: 0
+      bit_size: 32
+      description: Error Capture ECC
+fieldset/DDRC_ERR_DETECT:
+  description: ''
+  fields:
+    - name: MSE
+      bit_offset: 0
+      bit_size: 1
+    - name: SBE
+      bit_offset: 2
+      bit_size: 1
+    - name: MBE
+      bit_offset: 3
+      bit_size: 1
+    - name: REFRATEE
+      bit_offset: 7
+      bit_size: 1
+    - name: PHYE
+      bit_offset: 16
+      bit_size: 1
+    - name: UPDTMTE
+      bit_offset: 20
+      bit_size: 1
+    - name: SMBE2
+      bit_offset: 22
+      bit_size: 1
+    - name: SMBE1
+      bit_offset: 23
+      bit_size: 1
+    - name: SSBE2
+      bit_offset: 24
+      bit_size: 1
+    - name: SSBE1
+      bit_offset: 25
+      bit_size: 1
+    - name: MME
+      bit_offset: 31
+      bit_size: 1
+fieldset/DDRC_ERR_DISABLE:
+  description: ''
+  fields:
+    - name: MSED
+      bit_offset: 0
+      bit_size: 1
+    - name: SBED
+      bit_offset: 2
+      bit_size: 1
+    - name: MBED
+      bit_offset: 3
+      bit_size: 1
+    - name: REFRATEED
+      bit_offset: 7
+      bit_size: 1
+    - name: PHYED
+      bit_offset: 16
+      bit_size: 1
+    - name: UPDTMTED
+      bit_offset: 20
+      bit_size: 1
+fieldset/DDRC_ERR_INT_EN:
+  description: ''
+  fields:
+    - name: MSEE
+      bit_offset: 0
+      bit_size: 1
+    - name: SBEE
+      bit_offset: 2
+      bit_size: 1
+    - name: MBEE
+      bit_offset: 3
+      bit_size: 1
+    - name: SSBE12E
+      bit_offset: 4
+      bit_size: 1
+    - name: REFRATEEE
+      bit_offset: 7
+      bit_size: 1
+    - name: PHYEE
+      bit_offset: 16
+      bit_size: 1
+    - name: UPDTMTEE
+      bit_offset: 20
+      bit_size: 1
+fieldset/DDRC_CAPTURE_ATTRIBUTES:
+  description: ''
+  fields:
+    - name: VLD
+      bit_offset: 0
+      bit_size: 1
+      description: Valid
+    - name: TTYP
+      bit_offset: 12
+      bit_size: 2
+      description: Valid
+    - name: TSIZ
+      bit_offset: 24
+      bit_size: 3
+    - name: BNUM
+      bit_offset: 28
+      bit_size: 3
+      description: Data Beat Number
+fieldset/DDRC_CAPTURE_ADDRESS:
+  description: ''
+  fields:
+    - name: CADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Captured Address
+fieldset/DDRC_CAPTURE_EXT_ADDRESS:
+  description: ''
+  fields:
+    - name: CEADDR
+      bit_offset: 0
+      bit_size: 8
+      description: Captured Extended Address
+fieldset/DDRC_ERR_SBE:
+  description: ''
+  fields:
+    - name: SBEC
+      bit_offset: 0
+      bit_size: 8
+      description: SBE Counter
+    - name: SBET
+      bit_offset: 16
+      bit_size: 8
+      description: SBE Counter
+fieldset/DDRC_ECC_REG_0_REG_0:
+  description: ''
+  fields:
+    - name: EA
+      bit_offset: 0
+      bit_size: 12
+      description: Region 0 End Address
+    - name: SA
+      bit_offset: 16
+      bit_size: 12
+      description: Region 0 End Address
+    - name: EN
+      bit_offset: 31
+      bit_size: 1
+      description: Region 0 Start Address
+fieldset/DDRC_ECC_REG_1_REG_1:
+  description: ''
+  fields:
+    - name: EA
+      bit_offset: 0
+      bit_size: 12
+      description: Region 1 End Address
+    - name: SA
+      bit_offset: 16
+      bit_size: 12
+      description: Region 1 End Address
+    - name: EN
+      bit_offset: 31
+      bit_size: 1
+      description: Region 1 Start Address
+fieldset/DDRC_ECC_REG_2_REG_2:
+  description: ''
+  fields:
+    - name: EA
+      bit_offset: 0
+      bit_size: 12
+      description: Region 2 End Address
+    - name: SA
+      bit_offset: 16
+      bit_size: 12
+      description: Region 2 End Address
+    - name: EN
+      bit_offset: 31
+      bit_size: 1
+      description: Region 2 Start Address
+fieldset/DDRC_ECC_REG_3_REG_3:
+  description: ''
+  fields:
+    - name: EA
+      bit_offset: 0
+      bit_size: 12
+      description: Region 3 End Address
+    - name: SA
+      bit_offset: 16
+      bit_size: 12
+      description: Region 3 End Address
+    - name: EN
+      bit_offset: 31
+      bit_size: 1
+      description: Region 3 Start Address
+fieldset/DDRC_ECC_REG_4_REG_4:
+  description: ''
+  fields:
+    - name: EA
+      bit_offset: 0
+      bit_size: 12
+      description: Region 4 End Address
+    - name: SA
+      bit_offset: 16
+      bit_size: 12
+      description: Region 4 End Address
+    - name: EN
+      bit_offset: 31
+      bit_size: 1
+      description: Region 4 Start Address
+fieldset/DDRC_ECC_REG_5_REG_5:
+  description: ''
+  fields:
+    - name: EA
+      bit_offset: 0
+      bit_size: 12
+      description: Region 5 End Address
+    - name: SA
+      bit_offset: 16
+      bit_size: 12
+      description: Region 5 End Address
+    - name: EN
+      bit_offset: 31
+      bit_size: 1
+      description: Region 5 Start Address
+fieldset/DDRC_ECC_REG_6_REG_6:
+  description: ''
+  fields:
+    - name: EA
+      bit_offset: 0
+      bit_size: 12
+      description: Region 6 End Address
+    - name: SA
+      bit_offset: 16
+      bit_size: 12
+      description: Region 6 End Address
+    - name: EN
+      bit_offset: 31
+      bit_size: 1
+      description: Region 6 Start Address
+fieldset/DDRC_ECC_REG_7_REG_7:
+  description: ''
+  fields:
+    - name: EA
+      bit_offset: 0
+      bit_size: 12
+      description: Region 7 End Address
+    - name: SA
+      bit_offset: 16
+      bit_size: 12
+      description: Region 7 End Address
+    - name: EN
+      bit_offset: 31
+      bit_size: 1
+      description: Region 7 Start Address

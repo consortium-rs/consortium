@@ -56,258 +56,343 @@ block/LVDS:
     - name: PMGCR
       byte_offset: 4096
       description: LVDS PHY-Master global control register
+      fieldset: LVDS_PMGCR
     - name: PMPEACR
       byte_offset: 4100
       description: LVDS PHY-Master pre-emphasis amplitude control register
+      fieldset: LVDS_PMPEACR
     - name: PMPETCR
       byte_offset: 4104
       description: LVDS PHY-Master pre-emphasis time control register
+      fieldset: LVDS_PMPETCR
     - name: PMCMCR1
       byte_offset: 4108
       description: LVDS PHY-Master current mode control register 1
+      fieldset: LVDS_PMCMCR1
     - name: PMCMCR2
       byte_offset: 4112
       description: LVDS PHY-Master current mode control register 2
+      fieldset: LVDS_PMCMCR2
     - name: PMRLPCR
       byte_offset: 4116
       description: LVDS PHY-Master Rx loopback control register
+      fieldset: LVDS_PMRLPCR
     - name: PMRLPSR
       byte_offset: 4120
       description: LVDS PHY-master Rx loopback status register
+      fieldset: LVDS_PMRLPSR
     - name: PMFCR
       byte_offset: 4124
       description: LVDS PHY-Master flipedge control register
+      fieldset: LVDS_PMFCR
     - name: PMSCR
       byte_offset: 4128
       description: LVDS PHY-Master serial control register
+      fieldset: LVDS_PMSCR
     - name: PMSCR1
       byte_offset: 4132
       description: LVDS PHY-Master spare control register 1
+      fieldset: LVDS_PMSCR1
     - name: PMSCR2
       byte_offset: 4136
       description: LVDS PHY-Master spare control register 2
+      fieldset: LVDS_PMSCR2
     - name: PMBCR1
       byte_offset: 4140
       description: LVDS PHY-Master bias control register 1
+      fieldset: LVDS_PMBCR1
     - name: PMBCR2
       byte_offset: 4144
       description: LVDS PHY-Master bias control register 2
+      fieldset: LVDS_PMBCR2
     - name: PMBCR3
       byte_offset: 4148
       description: LVDS PHY-Master bias control register 3
+      fieldset: LVDS_PMBCR3
     - name: PMBCR4
       byte_offset: 4152
       description: LVDS PHY-Master bias control register 4
+      fieldset: LVDS_PMBCR4
     - name: PMBCR5
       byte_offset: 4156
       description: LVDS PHY-Master bias control register 5
+      fieldset: LVDS_PMBCR5
     - name: PMICR
       byte_offset: 4160
       description: LVDS PHY-Master impedance control register
+      fieldset: LVDS_PMICR
     - name: PMMBCCR
       byte_offset: 4164
       description: LVDS PHY-Master monitor bandgap current control register
+      fieldset: LVDS_PMMBCCR
     - name: PMMBCSR
       byte_offset: 4168
       description: LVDS PHY-Master monitor bandgap current status register
+      fieldset: LVDS_PMMBCSR
     - name: PMMBLCR
       byte_offset: 4172
       description: LVDS PHY-Master monitor bandgap loop control register
+      fieldset: LVDS_PMMBLCR
     - name: PMMBLSR
       byte_offset: 4176
       description: LVDS PHY-Master monitor bandgap loop status register
+      fieldset: LVDS_PMMBLSR
     - name: PMMBOVCR
       byte_offset: 4180
       description: LVDS PHY-Master monitor bandgap output voltage control register
+      fieldset: LVDS_PMMBOVCR
     - name: PMMBOVSR
       byte_offset: 4184
       description: LVDS PHY-Master monitor bandgap output voltage status register
+      fieldset: LVDS_PMMBOVSR
     - name: PMMPLOVCR
       byte_offset: 4188
       description: LVDS PHY-Master monitor PLL LDO output voltage control register
+      fieldset: LVDS_PMMPLOVCR
     - name: PMMPLOVSR
       byte_offset: 4192
       description: LVDS PHY-Master monitor PLL LDO output voltage status register
+      fieldset: LVDS_PMMPLOVSR
     - name: PMMPLCR
       byte_offset: 4196
       description: LVDS PHY-Master monitor PLL lock control register
+      fieldset: LVDS_PMMPLCR
     - name: PMMPLSR
       byte_offset: 4200
       description: LVDS PHY-Master monitor PLL lock status register
+      fieldset: LVDS_PMMPLSR
     - name: PMMPROCR
       byte_offset: 4204
       description: LVDS PHY-Master monitor PLL reference OK control register
+      fieldset: LVDS_PMMPROCR
     - name: PMMPROSR
       byte_offset: 4208
       description: LVDS PHY-Master monitor PLL reference OK status register
+      fieldset: LVDS_PMMPROSR
     - name: PMMSCCR
       byte_offset: 4212
       description: LVDS PHY-Master monitor serializer clock control register
+      fieldset: LVDS_PMMSCCR
     - name: PMMSCSR
       byte_offset: 4216
       description: LVDS PHY-Master monitor serializer clock status register
+      fieldset: LVDS_PMMSCSR
     - name: PMMSCR
       byte_offset: 4220
       description: LVDS PHY-Master monitor serializer control register
+      fieldset: LVDS_PMMSCR
     - name: PMMSSR
       byte_offset: 4224
       description: LVDS PHY-Master monitor serializer status register
+      fieldset: LVDS_PMMSSR
     - name: PMDCR
       byte_offset: 4228
       description: LVDS PHY-Master debug control register
+      fieldset: LVDS_PMDCR
     - name: PMSSR1
       byte_offset: 4232
       description: LVDS PHY-Master spare status register 1
+      fieldset: LVDS_PMSSR1
     - name: PMSSR2
       byte_offset: 4236
       description: LVDS PHY-Master spare status register 2
+      fieldset: LVDS_PMSSR2
     - name: PMCFGCR
       byte_offset: 4256
       description: LVDS PHY-Master configuration control register
+      fieldset: LVDS_PMCFGCR
     - name: PMPLLCR1
       byte_offset: 4288
       description: LVDS PHY-Master PLL_MODE 1 control register
+      fieldset: LVDS_PMPLLCR1
     - name: PMPLLCR2
       byte_offset: 4292
       description: LVDS PHY-Master PLL_MODE 2 control register
+      fieldset: LVDS_PMPLLCR2
     - name: PMPLLSR
       byte_offset: 4296
       description: LVDS PHY-Master PLL status register
+      fieldset: LVDS_PMPLLSR
     - name: PMPLLSDCR1
       byte_offset: 4300
       description: LVDS PHY-Master PLL_SD_1 control register
+      fieldset: LVDS_PMPLLSDCR1
     - name: PMPLLSDCR2
       byte_offset: 4304
       description: LVDS PHY-Master PLL_SD_2 control register
+      fieldset: LVDS_PMPLLSDCR2
     - name: PMPLLTWGCR1
       byte_offset: 4308
       description: LVDS PHY-Master PLL_TWG_1 control register
+      fieldset: LVDS_PMPLLTWGCR1
     - name: PMPLLTWGCR2
       byte_offset: 4312
       description: LVDS PHY-Master PLL_TWG_2 control register
+      fieldset: LVDS_PMPLLTWGCR2
     - name: PMPLLLDOCR
       byte_offset: 4316
       description: LVDS PHY-Master PLL_LDO control register
+      fieldset: LVDS_PMPLLLDOCR
     - name: PMPLLCPCR
       byte_offset: 4320
       description: LVDS PHY-Master PLL_CP control register
+      fieldset: LVDS_PMPLLCPCR
     - name: PMPLLCFGCR
       byte_offset: 4324
       description: LVDS PHY-Master PLL_CFG control register
+      fieldset: LVDS_PMPLLCFGCR
     - name: PMPLLTESTCR
       byte_offset: 4328
       description: LVDS PHY-Master PLL_TEST control register
+      fieldset: LVDS_PMPLLTESTCR
     - name: PSGCR
       byte_offset: 4352
       description: LVDS PHY-Slave global control register
+      fieldset: LVDS_PSGCR
     - name: PSPEACR
       byte_offset: 4356
       description: LVDS PHY-Slave pre-emphasis amplitude control register
+      fieldset: LVDS_PSPEACR
     - name: PSPETCR
       byte_offset: 4360
       description: LVDS PHY-Slave pre-emphasis time control register
+      fieldset: LVDS_PSPETCR
     - name: PSCMCR1
       byte_offset: 4364
       description: LVDS PHY-Slave current mode control register 1
+      fieldset: LVDS_PSCMCR1
     - name: PSCMCR2
       byte_offset: 4368
       description: LVDS PHY-Slave current mode control register 2
+      fieldset: LVDS_PSCMCR2
     - name: PSRLPCR
       byte_offset: 4372
       description: LVDS PHY-Slave Rx loopback control register
+      fieldset: LVDS_PSRLPCR
     - name: PSRLPSR
       byte_offset: 4376
       description: LVDS PHY-slave Rx loopback status register
+      fieldset: LVDS_PSRLPSR
     - name: PSFCR
       byte_offset: 4380
       description: LVDS PHY-Slave flipedge control register
+      fieldset: LVDS_PSFCR
     - name: PSSCR
       byte_offset: 4384
       description: LVDS PHY-Slave serial control register
+      fieldset: LVDS_PSSCR
     - name: PSSCR1
       byte_offset: 4388
       description: LVDS PHY-Slave spare control register 1
+      fieldset: LVDS_PSSCR1
     - name: PSSCR2
       byte_offset: 4392
       description: LVDS PHY-Slave spare control register 2
+      fieldset: LVDS_PSSCR2
     - name: PSBCR1
       byte_offset: 4396
       description: LVDS PHY-Slave bias control register 1
+      fieldset: LVDS_PSBCR1
     - name: PSBCR2
       byte_offset: 4400
       description: LVDS PHY-Slave bias control register 2
+      fieldset: LVDS_PSBCR2
     - name: PSBCR3
       byte_offset: 4404
       description: LVDS PHY-Slave bias control register 3
+      fieldset: LVDS_PSBCR3
     - name: PSBCR4
       byte_offset: 4408
       description: LVDS PHY-Slave bias control register 4
+      fieldset: LVDS_PSBCR4
     - name: PSBCR5
       byte_offset: 4412
       description: LVDS PHY-Slave bias control register 5
+      fieldset: LVDS_PSBCR5
     - name: PSICR
       byte_offset: 4416
       description: LVDS PHY-Slave impedance control register
+      fieldset: LVDS_PSICR
     - name: PSMBCCR
       byte_offset: 4420
       description: LVDS PHY-Slave monitor bandgap current control register
+      fieldset: LVDS_PSMBCCR
     - name: PSMBCSR
       byte_offset: 4424
       description: LVDS PHY-Slave monitor bandgap current status register
+      fieldset: LVDS_PSMBCSR
     - name: PSMBLCR
       byte_offset: 4428
       description: LVDS PHY-Slave monitor bandgap loop control register
+      fieldset: LVDS_PSMBLCR
     - name: PSMBLSR
       byte_offset: 4432
       description: LVDS PHY-Slave monitor bandgap loop status register
+      fieldset: LVDS_PSMBLSR
     - name: PSMBOVCR
       byte_offset: 4436
       description: LVDS PHY-Slave monitor bandgap output voltage control register
+      fieldset: LVDS_PSMBOVCR
     - name: PSMBOVSR
       byte_offset: 4440
       description: LVDS PHY-Slave monitor bandgap output voltage status register
+      fieldset: LVDS_PSMBOVSR
     - name: PSMPLOVCR
       byte_offset: 4444
       description: LVDS PHY-Slave monitor PLL LDO output voltage control register
+      fieldset: LVDS_PSMPLOVCR
     - name: PSMPLOVSR
       byte_offset: 4448
       description: LVDS PHY-Slave monitor PLL LDO output voltage status register
+      fieldset: LVDS_PSMPLOVSR
     - name: PSMPLCR
       byte_offset: 4452
       description: LVDS PHY-Slave monitor PLL lock control register
+      fieldset: LVDS_PSMPLCR
     - name: PSMPLSR
       byte_offset: 4456
       description: LVDS PHY-Slave monitor PLL lock status register
+      fieldset: LVDS_PSMPLSR
     - name: PSMPROCR
       byte_offset: 4460
       description: LVDS PHY-Slave monitor PLL reference OK control register
+      fieldset: LVDS_PSMPROCR
     - name: PSMPROSR
       byte_offset: 4464
       description: LVDS PHY-Slave monitor PLL reference OK status register
+      fieldset: LVDS_PSMPROSR
     - name: PSMSCCR
       byte_offset: 4468
       description: LVDS PHY-Slave monitor serializer clock control register
+      fieldset: LVDS_PSMSCCR
     - name: PSMSCSR
       byte_offset: 4472
       description: LVDS PHY-Slave monitor serializer clock status register
+      fieldset: LVDS_PSMSCSR
     - name: PSMSCR
       byte_offset: 4476
       description: LVDS PHY-Slave monitor serializer control register
+      fieldset: LVDS_PSMSCR
     - name: PSMSSR
       byte_offset: 4480
       description: LVDS PHY-Slave monitor serializer status register
+      fieldset: LVDS_PSMSSR
     - name: PSDCR
       byte_offset: 4484
       description: LVDS PHY-Slave debug control register
+      fieldset: LVDS_PSDCR
     - name: PSSSR1
       byte_offset: 4488
       description: LVDS PHY-Slave spare status register 1
+      fieldset: LVDS_PSSSR1
     - name: PSSSR2
       byte_offset: 4492
       description: LVDS PHY-Slave spare status register 2
+      fieldset: LVDS_PSSSR2
     - name: PSCFGCR
       byte_offset: 4512
       description: LVDS PHY-Slave configuration control register
+      fieldset: LVDS_PSCFGCR
     - name: WCLKCR
       byte_offset: 4528
       description: LVDS wrapper clock control register
@@ -315,36 +400,47 @@ block/LVDS:
     - name: PSPLLCR1
       byte_offset: 4544
       description: LVDS PHY-Slave PLL_MODE 1 control register
+      fieldset: LVDS_PSPLLCR1
     - name: PSPLLCR2
       byte_offset: 4548
       description: LVDS PHY-Slave PLL_MODE 2 control register
+      fieldset: LVDS_PSPLLCR2
     - name: PSPLLSR
       byte_offset: 4552
       description: LVDS PHY-Slave PLL status register
+      fieldset: LVDS_PSPLLSR
     - name: PSPLLSDCR1
       byte_offset: 4556
       description: LVDS PHY-Slave PLL_SD_1 control register
+      fieldset: LVDS_PSPLLSDCR1
     - name: PSPLLSDCR2
       byte_offset: 4560
       description: LVDS PHY-Slave PLL_SD_2 control register
+      fieldset: LVDS_PSPLLSDCR2
     - name: PSPLLTWGCR1
       byte_offset: 4564
       description: LVDS PHY-Slave PLL_TWG_1 control register
+      fieldset: LVDS_PSPLLTWGCR1
     - name: PSPLLTWGCR2
       byte_offset: 4568
       description: LVDS PHY-Slave PLL_TWG_2 control register
+      fieldset: LVDS_PSPLLTWGCR2
     - name: PSPLLLDOCR
       byte_offset: 4572
       description: LVDS PHY-Slave PLL_LDO control register
+      fieldset: LVDS_PSPLLLDOCR
     - name: PSPLLCPCR
       byte_offset: 4576
       description: LVDS PHY-Slave PLL_CP control register
+      fieldset: LVDS_PSPLLCPCR
     - name: PSPLLCFGCR
       byte_offset: 4580
       description: LVDS PHY-Slave PLL_CFG control register
+      fieldset: LVDS_PSPLLCFGCR
     - name: PSPLLTESTCR
       byte_offset: 4584
       description: LVDS PHY-Slave PLL_TEST control register
+      fieldset: LVDS_PSPLLTESTCR
     - name: PMATCR1
       byte_offset: 4608
       description: LVDS PHY-Master analog test control register 1
@@ -423,8 +519,8 @@ fieldset/LVDS_CR:
     - name: CI
       bit_offset: 4
       bit_size: 1
-      description: Control Internal (software controlled bit, that can be inserted among
-        output data)
+      description: Control Internal (software controlled bit, that can be inserted
+        among output data)
     - name: LKMOD
       bit_offset: 5
       bit_size: 1
@@ -663,13 +759,1824 @@ fieldset/LVDS_CDL2CR:
       bit_offset: 24
       bit_size: 2
       description: PRBS polynome type
+fieldset/LVDS_PMGCR:
+  description: ''
+  fields:
+    - name: MST_BIT_CLK_OUT_ENABLE
+      bit_offset: 0
+      bit_size: 1
+      description: Enable LVDS-PHY bit_clk clock
+    - name: MST_LS_CLK_OUT_ENABLE
+      bit_offset: 4
+      bit_size: 1
+      description: Enable LVDS-PHY ls_clk clock
+    - name: MST_DP_CLK_OUT_ENABLE
+      bit_offset: 8
+      bit_size: 1
+      description: Enable LVDS-PHY dp_clk clock
+    - name: MST_RSTZ
+      bit_offset: 24
+      bit_size: 1
+      description: When set to 0, this bit places the digital section of the LVDS-PHY
+        in the reset state
+    - name: MST_DIVIDERS_RSTN
+      bit_offset: 25
+      bit_size: 1
+      description: 'Resets the Output Dividers:'
+fieldset/LVDS_PMPEACR:
+  description: ''
+  fields:
+    - name: MST_PRE_EMPH_AMP_DL0
+      bit_offset: 0
+      bit_size: 4
+      description: Amplitude control for pre-emphasis for lane0
+    - name: MST_PRE_EMPH_AMP_DL1
+      bit_offset: 4
+      bit_size: 4
+      description: Amplitude control for pre-emphasis for lane1
+    - name: MST_PRE_EMPH_AMP_DL2
+      bit_offset: 8
+      bit_size: 4
+      description: Amplitude control for pre-emphasis for lane2
+    - name: MST_PRE_EMPH_AMP_DL3
+      bit_offset: 12
+      bit_size: 4
+      description: Amplitude control for pre-emphasis for lane3
+    - name: MST_PRE_EMPH_AMP_DL4
+      bit_offset: 16
+      bit_size: 4
+      description: Amplitude control for pre-emphasis for lane4
+fieldset/LVDS_PMPETCR:
+  description: ''
+  fields:
+    - name: MST_PRE_EMPH_TIME_DL0
+      bit_offset: 0
+      bit_size: 2
+      description: Time duration control for pre-emphasis for lane0
+    - name: MST_PRE_EMPH_TIME_DL1
+      bit_offset: 4
+      bit_size: 2
+      description: Time duration control for pre-emphasis for lane1
+    - name: MST_PRE_EMPH_TIME_DL2
+      bit_offset: 8
+      bit_size: 2
+      description: Time duration control for pre-emphasis for lane2
+    - name: MST_PRE_EMPH_TIME_DL3
+      bit_offset: 12
+      bit_size: 2
+      description: Time duration control for pre-emphasis for lane3
+    - name: MST_PRE_EMPH_TIME_DL4
+      bit_offset: 16
+      bit_size: 2
+      description: Time duration control for pre-emphasis for lane4
+fieldset/LVDS_PMCMCR1:
+  description: ''
+  fields:
+    - name: MST_CM_AMP_CTRL_DL0
+      bit_offset: 0
+      bit_size: 4
+      description: Amplitude control for current mode driver, data lane0
+    - name: MST_CM_EN_DL0
+      bit_offset: 4
+      bit_size: 1
+      description: Enable for current mode driver, data lane0
+    - name: MST_CM_USE_VDD_REF_DL0
+      bit_offset: 5
+      bit_size: 1
+      description: 'common mode of datalane0: when high, reference is derived from
+        AVDD_IO voltage'
+    - name: MST_CM_USE_VM_VMID_DL0
+      bit_offset: 6
+      bit_size: 1
+      description: 'common mode of datalane0: when high, reference is mid voltage
+        of the driver levels'
+    - name: MST_CM_AMP_CTRL_DL1
+      bit_offset: 8
+      bit_size: 4
+      description: Amplitude control for current mode driver, data lane1
+    - name: MST_CM_EN_DL1
+      bit_offset: 12
+      bit_size: 1
+      description: Enable for current mode driver, data lane1
+    - name: MST_CM_USE_VDD_REF_DL1
+      bit_offset: 13
+      bit_size: 1
+      description: 'common mode of datalane1: when high, reference is derived from
+        AVDD_IO voltage'
+    - name: MST_CM_USE_VM_VMID_DL1
+      bit_offset: 14
+      bit_size: 1
+      description: 'common mode of datalane1: when high, reference is mid voltage
+        of the driver levels'
+    - name: MST_CM_AMP_CTRL_DL2
+      bit_offset: 16
+      bit_size: 4
+      description: Amplitude control for current mode driver, data lane2
+    - name: MST_CM_EN_DL2
+      bit_offset: 20
+      bit_size: 1
+      description: Enable for current mode driver, data lane2
+    - name: MST_CM_USE_VDD_REF_DL2
+      bit_offset: 21
+      bit_size: 1
+      description: 'common mode of datalane2: when high, reference is derived from
+        AVDD_IO voltage'
+    - name: MST_CM_USE_VM_VMID_DL2
+      bit_offset: 22
+      bit_size: 1
+      description: 'common mode of datalane2: when high, reference is mid voltage
+        of the driver levels'
+    - name: MST_CM_AMP_CTRL_DL3
+      bit_offset: 24
+      bit_size: 4
+      description: Amplitude control for current mode driver, data lane3
+    - name: MST_CM_EN_DL3
+      bit_offset: 28
+      bit_size: 1
+      description: Enable for current mode driver, data lane3
+    - name: MST_CM_USE_VDD_REF_DL3
+      bit_offset: 29
+      bit_size: 1
+      description: 'common mode of datalane3: when high, reference is derived from
+        AVDD_IO voltage'
+    - name: MST_CM_USE_VM_VMID_DL3
+      bit_offset: 30
+      bit_size: 1
+      description: 'common mode of datalane3: when high, reference is mid voltage
+        of the driver levels'
+fieldset/LVDS_PMCMCR2:
+  description: ''
+  fields:
+    - name: MST_CM_AMP_CTRL_DL4
+      bit_offset: 0
+      bit_size: 4
+      description: Amplitude control for current mode driver, data lane4
+    - name: MST_CM_EN_DL4
+      bit_offset: 4
+      bit_size: 1
+      description: Enable for current mode driver, data lane4
+    - name: MST_CM_USE_VDD_REF_DL4
+      bit_offset: 5
+      bit_size: 1
+      description: 'common mode of datalane4: when high, reference is derived from
+        AVDD_IO voltage'
+    - name: MST_CM_USE_VM_VMID_DL4
+      bit_offset: 6
+      bit_size: 1
+      description: 'common mode of datalane4: when high, reference is mid voltage
+        of the driver levels'
+    - name: MST_AC_COUPLING_MODE
+      bit_offset: 16
+      bit_size: 1
+      description: AC Coupling Mode.
+fieldset/LVDS_PMRLPCR:
+  description: ''
+  fields:
+    - name: MST_RX_LOOP_BACK_CFG_DL0
+      bit_offset: 0
+      bit_size: 4
+      description: Rx loop back configuration for datalane0
+    - name: MST_RX_LOOP_BACK_CFG_DL1
+      bit_offset: 4
+      bit_size: 4
+      description: Rx loop back configuration for datalane1
+    - name: MST_RX_LOOP_BACK_CFG_DL2
+      bit_offset: 8
+      bit_size: 4
+      description: Rx loop back configuration for datalane2
+    - name: MST_RX_LOOP_BACK_CFG_DL3
+      bit_offset: 12
+      bit_size: 4
+      description: Rx loop back configuration for datalane3
+    - name: MST_RX_LOOP_BACK_CFG_DL4
+      bit_offset: 16
+      bit_size: 4
+      description: Rx loop back configuration for datalane4
+    - name: MST_EN_LOOP_BACK_DL0
+      bit_offset: 24
+      bit_size: 1
+      description: Enable the loop back RX used for continuous monitoring, data lane0
+    - name: MST_EN_LOOP_BACK_DL1
+      bit_offset: 25
+      bit_size: 1
+      description: Enable the loop back RX used for continuous monitoring, data lane1
+    - name: MST_EN_LOOP_BACK_DL2
+      bit_offset: 26
+      bit_size: 1
+      description: Enable the loop back RX used for continuous monitoring, data lane2
+    - name: MST_EN_LOOP_BACK_DL3
+      bit_offset: 27
+      bit_size: 1
+      description: Enable the loop back RX used for continuous monitoring, data lane3
+    - name: MST_EN_LOOP_BACK_DL4
+      bit_offset: 28
+      bit_size: 1
+      description: Enable the loop back RX used for continuous monitoring, data lane4
+fieldset/LVDS_PMRLPSR:
+  description: ''
+  fields:
+    - name: MST_RX_LOOP_BACK_A_DL0
+      bit_offset: 0
+      bit_size: 1
+      description: Rx loop back output for lane0
+    - name: MST_RX_LOOP_BACK_A_DL1
+      bit_offset: 4
+      bit_size: 1
+      description: Rx loop back output for lane1
+    - name: MST_RX_LOOP_BACK_A_DL2
+      bit_offset: 8
+      bit_size: 1
+      description: Rx loop back output for lane2
+    - name: MST_RX_LOOP_BACK_A_DL3
+      bit_offset: 12
+      bit_size: 1
+      description: Rx loop back output for lane3
+    - name: MST_RX_LOOP_BACK_A_DL4
+      bit_offset: 16
+      bit_size: 1
+      description: Rx loop back output for lane4
+fieldset/LVDS_PMFCR:
+  description: ''
+  fields:
+    - name: MST_FLIP_CLK_EDGE_ANA_DL0
+      bit_offset: 0
+      bit_size: 1
+      description: Flips the clock edge used by the pre-driver, data lane0
+    - name: MST_FLIP_CLK_EDGE_ANA_DL1
+      bit_offset: 1
+      bit_size: 1
+      description: Flips the clock edge used by the pre-driver, data lane1
+    - name: MST_FLIP_CLK_EDGE_ANA_DL2
+      bit_offset: 2
+      bit_size: 1
+      description: Flips the clock edge used by the pre-driver, data lane2
+    - name: MST_FLIP_CLK_EDGE_ANA_DL3
+      bit_offset: 3
+      bit_size: 1
+      description: Flips the clock edge used by the pre-driver, data lane3
+    - name: MST_FLIP_CLK_EDGE_ANA_DL4
+      bit_offset: 4
+      bit_size: 1
+      description: Flips the clock edge used by the pre-driver, data lane4
+    - name: MST_FLIP_CLK_EDGE_DL0
+      bit_offset: 16
+      bit_size: 1
+      description: Flips the clock edge used by the first analog stage to resample
+        the incoming data stream, data lane0
+    - name: MST_FLIP_CLK_EDGE_DL1
+      bit_offset: 17
+      bit_size: 1
+      description: Flips the clock edge used by the first analog stage to resample
+        the incoming data stream, data lane1
+    - name: MST_FLIP_CLK_EDGE_DL2
+      bit_offset: 18
+      bit_size: 1
+      description: Flips the clock edge used by the first analog stage to resample
+        the incoming data stream, data lane2
+    - name: MST_FLIP_CLK_EDGE_DL3
+      bit_offset: 19
+      bit_size: 1
+      description: Flips the clock edge used by the first analog stage to resample
+        the incoming data stream, data lane3
+    - name: MST_FLIP_CLK_EDGE_DL4
+      bit_offset: 20
+      bit_size: 1
+      description: Flips the clock edge used by the first analog stage to resample
+        the incoming data stream, data lane4
+fieldset/LVDS_PMSCR:
+  description: ''
+  fields:
+    - name: MST_SER_SWAP_DPDN
+      bit_offset: 0
+      bit_size: 5
+      description: Inverts output data
+    - name: MST_SER_DATA_OK
+      bit_offset: 16
+      bit_size: 1
+      description: Indicates transmission of data
+fieldset/LVDS_PMSCR1:
+  description: ''
+  fields:
+    - name: MST_DRV_A0_SPARE
+      bit_offset: 0
+      bit_size: 8
+      description: Spare inputs for data lane0
+    - name: MST_DRV_A1_SPARE
+      bit_offset: 8
+      bit_size: 8
+      description: Spare inputs for data lane1
+    - name: MST_DRV_A2_SPARE
+      bit_offset: 16
+      bit_size: 8
+      description: Spare inputs for data lane2
+    - name: MST_DRV_A3_SPARE
+      bit_offset: 24
+      bit_size: 8
+      description: Spare inputs for data lane3
+fieldset/LVDS_PMSCR2:
+  description: ''
+  fields:
+    - name: MST_DRV_A4_SPARE
+      bit_offset: 0
+      bit_size: 8
+      description: Spare inputs for data lane4
+fieldset/LVDS_PMBCR1:
+  description: ''
+  fields:
+    - name: MST_EN_BIAS_DL0
+      bit_offset: 0
+      bit_size: 1
+      description: Enable the local bias at data lane0
+    - name: MST_EN_BIAS_DL1
+      bit_offset: 4
+      bit_size: 1
+      description: Enable the local bias at data lane1
+    - name: MST_EN_BIAS_DL2
+      bit_offset: 8
+      bit_size: 1
+      description: Enable the local bias at data lane2
+    - name: MST_EN_BIAS_DL3
+      bit_offset: 12
+      bit_size: 1
+      description: Enable the local bias at data lane3
+    - name: MST_EN_BIAS_DL4
+      bit_offset: 16
+      bit_size: 1
+      description: Enable the local bias at data lane4
+fieldset/LVDS_PMBCR2:
+  description: ''
+  fields:
+    - name: MST_BIAS_TRIM
+      bit_offset: 0
+      bit_size: 15
+      description: '0x0: 27.71uA'
+    - name: MST_BIAS_VREFTRIM
+      bit_offset: 16
+      bit_size: 12
+      description: '0x1: 0.3961V 27.01 uA'
+    - name: MST_BIAS_EN
+      bit_offset: 28
+      bit_size: 1
+      description: lvds macro global bias enable
+    - name: MST_BIAS_VREF_SEL
+      bit_offset: 29
+      bit_size: 1
+      description: Selection for current generation internal reference
+fieldset/LVDS_PMBCR3:
+  description: ''
+  fields:
+    - name: MST_VM_EN_DL0
+      bit_offset: 0
+      bit_size: 1
+      description: Enable the voltage mode driver for data lane0
+    - name: MST_VM_BOOST_BIAS_DL0
+      bit_offset: 1
+      bit_size: 1
+      description: Bias booster for the voltage mode driver LDOS, data lane0
+    - name: MST_VM_USE_VDD_REF_DL0
+      bit_offset: 2
+      bit_size: 1
+      description: Sets the voltage mode driver to use a reference derived from the
+        power supply, data lane0
+    - name: MST_VM_EN_DL1
+      bit_offset: 4
+      bit_size: 1
+      description: Enable the voltage mode driver for data lane1
+    - name: MST_VM_BOOST_BIAS_DL1
+      bit_offset: 5
+      bit_size: 1
+      description: Bias booster for the voltage mode driver LDOS, data lane1
+    - name: MST_VM_USE_VDD_REF_DL1
+      bit_offset: 6
+      bit_size: 1
+      description: Sets the voltage mode driver to use a reference derived from the
+        power supply, data lane1
+    - name: MST_VM_EN_DL2
+      bit_offset: 8
+      bit_size: 1
+      description: Enable the voltage mode driver for data lane2
+    - name: MST_VM_BOOST_BIAS_DL2
+      bit_offset: 9
+      bit_size: 1
+      description: Bias booster for the voltage mode driver LDOS, data lane2
+    - name: MST_VM_USE_VDD_REF_DL2
+      bit_offset: 10
+      bit_size: 1
+      description: Sets the voltage mode driver to use a reference derived from the
+        power supply, data lane2
+    - name: MST_VM_EN_DL3
+      bit_offset: 12
+      bit_size: 1
+      description: Enable the voltage mode driver for data lane3
+    - name: MST_VM_BOOST_BIAS_DL3
+      bit_offset: 13
+      bit_size: 1
+      description: Bias booster for the voltage mode driver LDOS, data lane3
+    - name: MST_VM_USE_VDD_REF_DL3
+      bit_offset: 14
+      bit_size: 1
+      description: Sets the voltage mode driver to use a reference derived from the
+        power supply, data lane3
+    - name: MST_VM_EN_DL4
+      bit_offset: 16
+      bit_size: 1
+      description: Enable the voltage mode driver for data lane4
+    - name: MST_VM_BOOST_BIAS_DL4
+      bit_offset: 17
+      bit_size: 1
+      description: Bias booster for the voltage mode driver LDOS, data lane4
+    - name: MST_VM_USE_VDD_REF_DL4
+      bit_offset: 18
+      bit_size: 1
+      description: Sets the voltage mode driver to use a reference derived from the
+        power supply, data lane4
+fieldset/LVDS_PMBCR4:
+  description: ''
+  fields:
+    - name: MST_VM_VOUT_VOH_CTRL_DL0
+      bit_offset: 0
+      bit_size: 4
+      description: Fine tuning for the voltage mode driver VOH, data lane0
+    - name: MST_VM_VOUT_VOH_CTRL_DL1
+      bit_offset: 4
+      bit_size: 4
+      description: Fine tuning for the voltage mode driver VOH, data lane1
+    - name: MST_VM_VOUT_VOH_CTRL_DL2
+      bit_offset: 8
+      bit_size: 4
+      description: Fine tuning for the voltage mode driver VOH, data lane2
+    - name: MST_VM_VOUT_VOH_CTRL_DL3
+      bit_offset: 12
+      bit_size: 4
+      description: Fine tuning for the voltage mode driver VOH, data lane3
+    - name: MST_VM_VOUT_VOH_CTRL_DL4
+      bit_offset: 16
+      bit_size: 4
+      description: Fine tuning for the voltage mode driver VOH, data lane4
+fieldset/LVDS_PMBCR5:
+  description: ''
+  fields:
+    - name: MST_VM_VOUT_VOL_CTRL_DL0
+      bit_offset: 0
+      bit_size: 4
+      description: Fine tuning for the voltage mode driver VOL, data lane0
+    - name: MST_VM_VOUT_VOL_CTRL_DL1
+      bit_offset: 4
+      bit_size: 4
+      description: Fine tuning for the voltage mode driver VOL, data lane1
+    - name: MST_VM_VOUT_VOL_CTRL_DL2
+      bit_offset: 8
+      bit_size: 4
+      description: Fine tuning for the voltage mode driver VOL, data lane2
+    - name: MST_VM_VOUT_VOL_CTRL_DL3
+      bit_offset: 12
+      bit_size: 4
+      description: Fine tuning for the voltage mode driver VOL, data lane3
+    - name: MST_VM_VOUT_VOL_CTRL_DL4
+      bit_offset: 16
+      bit_size: 4
+      description: Fine tuning for the voltage mode driver VOL, data lane4
+fieldset/LVDS_PMICR:
+  description: ''
+  fields:
+    - name: MST_IMP_CTRL_DL0
+      bit_offset: 0
+      bit_size: 3
+      description: Impedance control for data lane0
+    - name: MST_IMP_CTRL_DL1
+      bit_offset: 4
+      bit_size: 3
+      description: Impedance control for data lane1
+    - name: MST_IMP_CTRL_DL2
+      bit_offset: 8
+      bit_size: 3
+      description: Impedance control for data lane0
+    - name: MST_IMP_CTRL_DL3
+      bit_offset: 12
+      bit_size: 3
+      description: Impedance control for data lane3
+    - name: MST_IMP_CTRL_DL4
+      bit_offset: 16
+      bit_size: 3
+      description: Impedance control for data lane4
+fieldset/LVDS_PMMBCCR:
+  description: ''
+  fields:
+    - name: MST_MON_BG_CURR_FORCE_FAULT
+      bit_offset: 0
+      bit_size: 1
+      description: Bandgap current monitor force fault
+    - name: MST_MON_BG_CURR_CLEAR_FAULT
+      bit_offset: 4
+      bit_size: 1
+      description: Bandgap current monitor clear fault
+    - name: MST_MON_BG_CURR_UNMASK_TUNE
+      bit_offset: 16
+      bit_size: 9
+      description: Bandgap current timing control for the monitor unmask after startup
+fieldset/LVDS_PMMBCSR:
+  description: ''
+  fields:
+    - name: MST_MON_BG_CURR_PERMANENT_FAULT
+      bit_offset: 0
+      bit_size: 1
+      description: Bandgap current monitor permanent fault
+    - name: MST_MON_BG_CURR_FAULT
+      bit_offset: 4
+      bit_size: 1
+      description: Bandgap current monitor fault
+fieldset/LVDS_PMMBLCR:
+  description: ''
+  fields:
+    - name: MST_MON_BG_LOOP_FORCE_FAULT
+      bit_offset: 0
+      bit_size: 1
+      description: Bandgap loop monitor force fault
+    - name: MST_MON_BG_LOOP_CLEAR_FAULT
+      bit_offset: 4
+      bit_size: 1
+      description: Bandgap loop monitor clear fault
+    - name: MST_MON_BG_LOOP_UNMASK_TUNE
+      bit_offset: 16
+      bit_size: 9
+      description: Bandgap loop timing control for the monitor unmask after startup
+fieldset/LVDS_PMMBLSR:
+  description: ''
+  fields:
+    - name: MST_MON_BG_LOOP_PERMANENT_FAULT
+      bit_offset: 0
+      bit_size: 1
+      description: Bandgap loop monitor permanent fault
+    - name: MST_MON_BG_LOOP_FAULT
+      bit_offset: 4
+      bit_size: 1
+      description: Bandgap loop monitor fault
+fieldset/LVDS_PMMBOVCR:
+  description: ''
+  fields:
+    - name: MST_MON_BG_VOLT_FORCE_FAULT
+      bit_offset: 0
+      bit_size: 1
+      description: Bandgap output voltage monitor force fault
+    - name: MST_MON_BG_VOLT_CLEAR_FAULT
+      bit_offset: 4
+      bit_size: 1
+      description: Bandgap output voltage monitor clear fault
+    - name: MST_MON_BG_VOLT_UNMASK_TUNE
+      bit_offset: 16
+      bit_size: 9
+      description: Bandgap output voltage timing control for the monitor unmask after
+        startup
+fieldset/LVDS_PMMBOVSR:
+  description: ''
+  fields:
+    - name: MST_MON_BG_VOLT_PERMANENT_FAULT
+      bit_offset: 0
+      bit_size: 1
+      description: Bandgap output voltage monitor permanent fault
+    - name: MST_MON_BG_VOLT_FAULT
+      bit_offset: 4
+      bit_size: 1
+      description: Bandgap output voltage monitor fault
+fieldset/LVDS_PMMPLOVCR:
+  description: ''
+  fields:
+    - name: MST_MON_LDO_OK_FORCE_FAULT
+      bit_offset: 0
+      bit_size: 1
+      description: PLL LDO output voltage monitor force fault
+    - name: MST_MON_LDO_OK_CLEAR_FAULT
+      bit_offset: 4
+      bit_size: 1
+      description: PLL LDO output voltage monitor clear fault
+    - name: MST_MON_LDO_OK_UNMASK_TUNE
+      bit_offset: 16
+      bit_size: 9
+      description: PLL LDO output voltage timing control for the monitor unmask after
+        startup
+fieldset/LVDS_PMMPLOVSR:
+  description: ''
+  fields:
+    - name: MST_MON_LDO_OK_PERMANENT_FAULT
+      bit_offset: 0
+      bit_size: 1
+      description: PLL LDO Output Voltage monitor permanent fault
+    - name: MST_MON_LDO_OK_FAULT
+      bit_offset: 4
+      bit_size: 1
+      description: PLL LDO output voltage monitor fault
+fieldset/LVDS_PMMPLCR:
+  description: ''
+  fields:
+    - name: MST_MON_PLL_LOCK_FORCE_FAULT
+      bit_offset: 0
+      bit_size: 1
+      description: PLL Lock monitor force fault
+    - name: MST_MON_PLL_LOCK_CLEAR_FAULT
+      bit_offset: 4
+      bit_size: 1
+      description: PLL Lock monitor clear fault
+    - name: MST_MON_PLL_LOCK_UNMASK_TUNE
+      bit_offset: 16
+      bit_size: 9
+      description: PLL Lock timing control for the monitor unmask after startup
+fieldset/LVDS_PMMPLSR:
+  description: ''
+  fields:
+    - name: MST_MON_PLL_LOCK_PERMANENT_FAULT
+      bit_offset: 0
+      bit_size: 1
+      description: PLL Lock monitor permanent fault
+    - name: MST_MON_PLL_LOCK_FAULT
+      bit_offset: 4
+      bit_size: 1
+      description: PLL Lock monitor fault
+fieldset/LVDS_PMMPROCR:
+  description: ''
+  fields:
+    - name: MST_MON_REF_OK_FORCE_FAULT
+      bit_offset: 0
+      bit_size: 1
+      description: PLL Reference monitor force fault
+    - name: MST_MON_REF_OK_CLEAR_FAULT
+      bit_offset: 4
+      bit_size: 1
+      description: PLL Reference monitor clear fault
+    - name: MST_MON_REF_OK_UNMASK_TUNE
+      bit_offset: 16
+      bit_size: 9
+      description: PLL Reference timing control for the monitor unmask after startup
+fieldset/LVDS_PMMPROSR:
+  description: ''
+  fields:
+    - name: MST_MON_REF_OK_PERMANENT_FAULT
+      bit_offset: 0
+      bit_size: 1
+      description: PLL Reference OK monitor permanent fault
+    - name: MST_MON_REF_OK_FAULT
+      bit_offset: 4
+      bit_size: 1
+      description: PLL Reference OK monitor fault
+fieldset/LVDS_PMMSCCR:
+  description: ''
+  fields:
+    - name: MST_SER_CLK_ERROR_INJ
+      bit_offset: 0
+      bit_size: 1
+      description: Serializer clock checking error injection
+    - name: MST_SER_CLK_CLEAR_FAULT
+      bit_offset: 4
+      bit_size: 1
+      description: Serializer Clock checking fault clearing
+fieldset/LVDS_PMMSCSR:
+  description: ''
+  fields:
+    - name: MST_SER_CLK_FAULT
+      bit_offset: 0
+      bit_size: 1
+      description: Serializer Clock checking fault
+fieldset/LVDS_PMMSCR:
+  description: ''
+  fields:
+    - name: MST_SER_ERROR_INJ
+      bit_offset: 0
+      bit_size: 5
+      description: Serializer error injection
+    - name: MST_SER_FAULT_CLEAR
+      bit_offset: 8
+      bit_size: 5
+      description: Serializer fault clearing
+    - name: MST_SER_LPBCK
+      bit_offset: 16
+      bit_size: 5
+      description: Serializer fault loopback
+fieldset/LVDS_PMMSSR:
+  description: ''
+  fields:
+    - name: MST_SER_FAULT
+      bit_offset: 0
+      bit_size: 5
+      description: Serializer fault
+fieldset/LVDS_PMDCR:
+  description: ''
+  fields:
+    - name: MST_FORCE_ANALOG_OK
+      bit_offset: 0
+      bit_size: 1
+      description: When set to 1, this bit masks some functions in the LVDS-PHY. This
+        bit can be used as a work around to functional problems with some of the monitor
+        blocks
+    - name: MST_PLL_FORCE_LDO_OK
+      bit_offset: 4
+      bit_size: 1
+      description: When set to 1, this bit masks some functions in the LVDS-PHY. This
+        bit can be used as a work around to functional problems with some of the monitor
+        blocks
+    - name: MST_PLL_FORCE_LOCK
+      bit_offset: 8
+      bit_size: 1
+      description: When set to 1, this bit masks some functions in the LVDS-PHY. This
+        bit can be used as a work around to functional problems with some of the monitor
+        blocks
+    - name: MST_POWER_OK
+      bit_offset: 12
+      bit_size: 1
+      description: When set to 1, this bit masks some functions in the LVDS-PHY. This
+        bit can be used as a work around to functional problems with some of the monitor
+        blocks
+fieldset/LVDS_PMSSR1:
+  description: ''
+  fields:
+    - name: MST_DRV_A0_SPARE_RD
+      bit_offset: 0
+      bit_size: 8
+      description: Spare outputs for data lane0
+    - name: MST_DRV_A1_SPARE_RD
+      bit_offset: 8
+      bit_size: 8
+      description: Spare outputs for data lane1
+    - name: MST_DRV_A2_SPARE_RD
+      bit_offset: 16
+      bit_size: 8
+      description: Spare outputs for data lane2
+    - name: MST_DRV_A3_SPARE_RD
+      bit_offset: 24
+      bit_size: 8
+      description: Spare outputs for data lane3
+fieldset/LVDS_PMSSR2:
+  description: ''
+  fields:
+    - name: MST_DRV_A4_SPARE_RD
+      bit_offset: 0
+      bit_size: 8
+      description: Spare outputs for data lane4
+fieldset/LVDS_PMCFGCR:
+  description: ''
+  fields:
+    - name: MST_EN_DIG_DL
+      bit_offset: 0
+      bit_size: 5
+      description: Enables Digital DataLanes DL4..DL0
+fieldset/LVDS_PMPLLCR1:
+  description: ''
+  fields:
+    - name: MST_PLL_ENABLE
+      bit_offset: 0
+      bit_size: 1
+      description: '0x0: LVDS-PHY PLL Disable'
+    - name: MST_PLL_SD_ENABLE
+      bit_offset: 1
+      bit_size: 1
+      description: sigma-delta enable
+    - name: MST_PLL_TWG_ENABLE
+      bit_offset: 2
+      bit_size: 1
+      description: Triangular wave pattern used to modulate MDIV
+    - name: MST_PLL_BYPASS
+      bit_offset: 4
+      bit_size: 1
+      description: '0x0: from VCO output'
+    - name: MST_PLL_DIVIDERS_ENABLE
+      bit_offset: 8
+      bit_size: 1
+      description: '0x0: Dividers disabled'
+    - name: MST_PLL_BYPASS_START_DECT
+      bit_offset: 12
+      bit_size: 1
+      description: Bypass start DECT.
+    - name: MST_LVDS_PLL_USE_BIT_CLK_IN_SYNC
+      bit_offset: 16
+      bit_size: 1
+      description: Bypass control for the bit clock.
+    - name: MST_LVDS_PLL_USE_LS_CLK_IN_SYNC
+      bit_offset: 24
+      bit_size: 1
+      description: Bypass control for the ls clock.
+fieldset/LVDS_PMPLLCR2:
+  description: ''
+  fields:
+    - name: MST_PLL_BIT_DIV
+      bit_offset: 0
+      bit_size: 10
+      description: PLL Output Clock Divider (BDIV, divides output VCO)
+    - name: MST_PLL_INPUT_DIV
+      bit_offset: 16
+      bit_size: 10
+      description: PLL Input Clock Divider (NDIV, divides input reference clock)
+fieldset/LVDS_PMPLLSR:
+  description: ''
+  fields:
+    - name: MST_PLL_LOCK
+      bit_offset: 0
+      bit_size: 1
+      description: PLL lock During a certain number of cycles of reference clock,
+        pll_lock is asserted high and then goes low waiting for the LVDS-PHY PLL t0
+        lock
+    - name: MST_PLL_REF_OK
+      bit_offset: 4
+      bit_size: 1
+      description: PLL reference ok
+    - name: MST_PLL_LDO_OK
+      bit_offset: 8
+      bit_size: 1
+      description: PLL LDO ok
+fieldset/LVDS_PMPLLSDCR1:
+  description: ''
+  fields:
+    - name: MST_PLL_SD_INT_RATIO
+      bit_offset: 0
+      bit_size: 10
+      description: Integer Setting of PLL Feedback Clock Divider (MDIV, divides VCO
+        clock for feedback).
+fieldset/LVDS_PMPLLSDCR2:
+  description: ''
+  fields:
+    - name: MST_PLL_SD_INPUT_CODE_BYPASS
+      bit_offset: 0
+      bit_size: 23
+      description: Fractional Setting of PLL Feedback Clock Divider (MDIV, divides
+        VCO clock for feedback)
+    - name: MST_PLL_SD_BYPASS_VCO_MUX
+      bit_offset: 24
+      bit_size: 2
+      description: Bypass control for the PLL sigma delta VCO mux
+    - name: MST_PLL_SD_BYPASS_FB_CLK
+      bit_offset: 26
+      bit_size: 1
+      description: Bypass start SD feedback clock.
+    - name: MST_PLL_SD_CLK_EDGE_CNTRL
+      bit_offset: 28
+      bit_size: 1
+      description: Sigma Delta Edge Control.
+fieldset/LVDS_PMPLLTWGCR1:
+  description: ''
+  fields:
+    - name: MST_PLL_TWG_STEP
+      bit_offset: 0
+      bit_size: 20
+      description: MDIV divdier used in integer N and Fractional N PLL modes
+    - name: MST_PLL_TWG_DOWN_SPREAD
+      bit_offset: 20
+      bit_size: 1
+      description: TWG pattern spreading
+fieldset/LVDS_PMPLLTWGCR2:
+  description: ''
+  fields:
+    - name: MST_PLL_TWG_THRESHOLD
+      bit_offset: 0
+      bit_size: 23
+      description: TWG_THRESHOLD setting
+fieldset/LVDS_PMPLLLDOCR:
+  description: ''
+  fields:
+    - name: MST_PLL_LDO_FRREGVTRIM
+      bit_offset: 0
+      bit_size: 3
+      description: 'PLL LDO output voltage fine tuning:'
+fieldset/LVDS_PMPLLCPCR:
+  description: ''
+  fields:
+    - name: MST_PLL_CPCTRL
+      bit_offset: 0
+      bit_size: 4
+      description: PLL charge pump control, default=1.
+fieldset/LVDS_PMPLLCFGCR:
+  description: ''
+  fields:
+    - name: MST_PLL_CFG
+      bit_offset: 0
+      bit_size: 8
+      description: PLL configuration
+fieldset/LVDS_PMPLLTESTCR:
+  description: ''
+  fields:
+    - name: MST_PLL_TEST_CLK_EN
+      bit_offset: 0
+      bit_size: 1
+      description: lvds_pll_test_clk enable
+    - name: MST_PLL_TEST_DIV_EN
+      bit_offset: 8
+      bit_size: 1
+      description: lvds_pll_test_clk dividers enable
+    - name: MST_PLL_TEST_DIV_SETTINGS
+      bit_offset: 16
+      bit_size: 10
+      description: lvds_pll_test_clk dividers value
+fieldset/LVDS_PSGCR:
+  description: ''
+  fields:
+    - name: SLV_BIT_CLK_OUT_ENABLE
+      bit_offset: 0
+      bit_size: 1
+      description: Enable LVDS-PHY bit_clk clock
+    - name: SLV_LS_CLK_OUT_ENABLE
+      bit_offset: 4
+      bit_size: 1
+      description: Enable LVDS-PHY ls_clk clock
+    - name: SLV_DP_CLK_OUT_ENABLE
+      bit_offset: 8
+      bit_size: 1
+      description: Enable LVDS-PHY dp_clk clock
+    - name: SLV_RSTZ
+      bit_offset: 24
+      bit_size: 1
+      description: When set to 0, this bit places the digital section of the LVDS-PHY
+        in the reset state
+    - name: SLV_DIVIDERS_RSTN
+      bit_offset: 25
+      bit_size: 1
+      description: When set to 0, reset the output dividers
+fieldset/LVDS_PSPEACR:
+  description: ''
+  fields:
+    - name: SLV_PRE_EMPH_AMP_DL0
+      bit_offset: 0
+      bit_size: 4
+      description: Amplitude control for pre-emphasis for lane0
+    - name: SLV_PRE_EMPH_AMP_DL1
+      bit_offset: 4
+      bit_size: 4
+      description: Amplitude control for pre-emphasis for lane1
+    - name: SLV_PRE_EMPH_AMP_DL2
+      bit_offset: 8
+      bit_size: 4
+      description: Amplitude control for pre-emphasis for lane2
+    - name: SLV_PRE_EMPH_AMP_DL3
+      bit_offset: 12
+      bit_size: 4
+      description: Amplitude control for pre-emphasis for lane3
+    - name: SLV_PRE_EMPH_AMP_DL4
+      bit_offset: 16
+      bit_size: 4
+      description: Amplitude control for pre-emphasis for lane4
+fieldset/LVDS_PSPETCR:
+  description: ''
+  fields:
+    - name: SLV_PRE_EMPH_TIME_DL0
+      bit_offset: 0
+      bit_size: 2
+      description: Time duration control for pre-emphasis for lane0
+    - name: SLV_PRE_EMPH_TIME_DL1
+      bit_offset: 4
+      bit_size: 2
+      description: Time duration control for pre-emphasis for lane1
+    - name: SLV_PRE_EMPH_TIME_DL2
+      bit_offset: 8
+      bit_size: 2
+      description: Time duration control for pre-emphasis for lane2
+    - name: SLV_PRE_EMPH_TIME_DL3
+      bit_offset: 12
+      bit_size: 2
+      description: Time duration control for pre-emphasis for lane3
+    - name: SLV_PRE_EMPH_TIME_DL4
+      bit_offset: 16
+      bit_size: 2
+      description: Time duration control for pre-emphasis for lane4
+fieldset/LVDS_PSCMCR1:
+  description: ''
+  fields:
+    - name: SLV_CM_AMP_CTRL_DL0
+      bit_offset: 0
+      bit_size: 4
+      description: Amplitude control for current mode driver, data lane0
+    - name: SLV_CM_EN_DL0
+      bit_offset: 4
+      bit_size: 1
+      description: Enable for current mode driver, data lane0
+    - name: SLV_CM_USE_VDD_REF_DL0
+      bit_offset: 5
+      bit_size: 1
+      description: 'common mode of datalane0: when high, reference is derived from
+        AVDD_IO voltage'
+    - name: SLV_CM_USE_VM_VMID_DL0
+      bit_offset: 6
+      bit_size: 1
+      description: 'common mode of datalane0: when high, reference is mid voltage
+        of the driver levels'
+    - name: SLV_CM_AMP_CTRL_DL1
+      bit_offset: 8
+      bit_size: 4
+      description: Amplitude control for current mode driver, data lane1
+    - name: SLV_CM_EN_DL1
+      bit_offset: 12
+      bit_size: 1
+      description: Enable for current mode driver, data lane1
+    - name: SLV_CM_USE_VDD_REF_DL1
+      bit_offset: 13
+      bit_size: 1
+      description: 'common mode of datalane1: when high, reference is derived from
+        AVDD_IO voltage'
+    - name: SLV_CM_USE_VM_VMID_DL1
+      bit_offset: 14
+      bit_size: 1
+      description: 'common mode of datalane1: when high, reference is mid voltage
+        of the driver levels'
+    - name: SLV_CM_AMP_CTRL_DL2
+      bit_offset: 16
+      bit_size: 4
+      description: Amplitude control for current mode driver, data lane2
+    - name: SLV_CM_EN_DL2
+      bit_offset: 20
+      bit_size: 1
+      description: Enable for current mode driver, data lane2
+    - name: SLV_CM_USE_VDD_REF_DL2
+      bit_offset: 21
+      bit_size: 1
+      description: 'common mode of datalane2: when high, reference is derived from
+        AVDD_IO voltage'
+    - name: SLV_CM_USE_VM_VMID_DL2
+      bit_offset: 22
+      bit_size: 1
+      description: 'common mode of datalane2: when high, reference is mid voltage
+        of the driver levels'
+    - name: SLV_CM_AMP_CTRL_DL3
+      bit_offset: 24
+      bit_size: 4
+      description: Amplitude control for current mode driver, data lane3
+    - name: SLV_CM_EN_DL3
+      bit_offset: 28
+      bit_size: 1
+      description: Enable for current mode driver, data lane3
+    - name: SLV_CM_USE_VDD_REF_DL3
+      bit_offset: 29
+      bit_size: 1
+      description: 'common mode of datalane3: when high, reference is derived from
+        AVDD_IO voltage'
+    - name: SLV_CM_USE_VM_VMID_DL3
+      bit_offset: 30
+      bit_size: 1
+      description: 'common mode of datalane3: when high, reference is mid voltage
+        of the driver levels'
+fieldset/LVDS_PSCMCR2:
+  description: ''
+  fields:
+    - name: SLV_CM_AMP_CTRL_DL4
+      bit_offset: 0
+      bit_size: 4
+      description: Amplitude control for current mode driver, data lane4
+    - name: SLV_CM_EN_DL4
+      bit_offset: 4
+      bit_size: 1
+      description: Enable for current mode driver, data lane4
+    - name: SLV_CM_USE_VDD_REF_DL4
+      bit_offset: 5
+      bit_size: 1
+      description: 'common mode of datalane4: when high, reference is derived from
+        AVDD_IO voltage'
+    - name: SLV_CM_USE_VM_VMID_DL4
+      bit_offset: 6
+      bit_size: 1
+      description: 'common mode of datalane4: when high, reference is mid voltage
+        of the driver levels'
+    - name: SLV_AC_COUPLING_MODE
+      bit_offset: 16
+      bit_size: 1
+      description: AC Coupling Mode.
+fieldset/LVDS_PSRLPCR:
+  description: ''
+  fields:
+    - name: SLV_RX_LOOP_BACK_CFG_DL0
+      bit_offset: 0
+      bit_size: 4
+      description: Rx loop back configuration for datalane0
+    - name: SLV_RX_LOOP_BACK_CFG_DL1
+      bit_offset: 4
+      bit_size: 4
+      description: Rx loop back configuration for datalane1
+    - name: SLV_RX_LOOP_BACK_CFG_DL2
+      bit_offset: 8
+      bit_size: 4
+      description: Rx loop back configuration for datalane2
+    - name: SLV_RX_LOOP_BACK_CFG_DL3
+      bit_offset: 12
+      bit_size: 4
+      description: Rx loop back configuration for datalane3
+    - name: SLV_RX_LOOP_BACK_CFG_DL4
+      bit_offset: 16
+      bit_size: 4
+      description: Rx loop back configuration for datalane4
+    - name: SLV_EN_LOOP_BACK_DL0
+      bit_offset: 24
+      bit_size: 1
+      description: Enable the loop back RX used for continuous monitoring, data lane0
+    - name: SLV_EN_LOOP_BACK_DL1
+      bit_offset: 25
+      bit_size: 1
+      description: Enable the loop back RX used for continuous monitoring, data lane1
+    - name: SLV_EN_LOOP_BACK_DL2
+      bit_offset: 26
+      bit_size: 1
+      description: Enable the loop back RX used for continuous monitoring, data lane2
+    - name: SLV_EN_LOOP_BACK_DL3
+      bit_offset: 27
+      bit_size: 1
+      description: Enable the loop back RX used for continuous monitoring, data lane3
+    - name: SLV_EN_LOOP_BACK_DL4
+      bit_offset: 28
+      bit_size: 1
+      description: Enable the loop back RX used for continuous monitoring, data lane4
+fieldset/LVDS_PSRLPSR:
+  description: ''
+  fields:
+    - name: SLV_RX_LOOP_BACK_A_DL0
+      bit_offset: 0
+      bit_size: 1
+      description: Rx loop back output for lane0
+    - name: SLV_RX_LOOP_BACK_A_DL1
+      bit_offset: 4
+      bit_size: 1
+      description: Rx loop back output for lane1
+    - name: SLV_RX_LOOP_BACK_A_DL2
+      bit_offset: 8
+      bit_size: 1
+      description: Rx loop back output for lane2
+    - name: SLV_RX_LOOP_BACK_A_DL3
+      bit_offset: 12
+      bit_size: 1
+      description: Rx loop back output for lane3
+    - name: SLV_RX_LOOP_BACK_A_DL4
+      bit_offset: 16
+      bit_size: 1
+      description: Rx loop back output for lane4
+fieldset/LVDS_PSFCR:
+  description: ''
+  fields:
+    - name: SLV_FLIP_CLK_EDGE_ANA_DL0
+      bit_offset: 0
+      bit_size: 1
+      description: Flips the clock edge used by the pre-driver, data lane0
+    - name: SLV_FLIP_CLK_EDGE_ANA_DL1
+      bit_offset: 1
+      bit_size: 1
+      description: Flips the clock edge used by the pre-driver, data lane1
+    - name: SLV_FLIP_CLK_EDGE_ANA_DL2
+      bit_offset: 2
+      bit_size: 1
+      description: Flips the clock edge used by the pre-driver, data lane2
+    - name: SLV_FLIP_CLK_EDGE_ANA_DL3
+      bit_offset: 3
+      bit_size: 1
+      description: Flips the clock edge used by the pre-driver, data lane3
+    - name: SLV_FLIP_CLK_EDGE_ANA_DL4
+      bit_offset: 4
+      bit_size: 1
+      description: Flips the clock edge used by the pre-driver, data lane4
+    - name: SLV_FLIP_CLK_EDGE_DL0
+      bit_offset: 16
+      bit_size: 1
+      description: Flips the clock edge used by the first analog stage to resample
+        the incoming data stream, data lane0
+    - name: SLV_FLIP_CLK_EDGE_DL1
+      bit_offset: 17
+      bit_size: 1
+      description: Flips the clock edge used by the first analog stage to resample
+        the incoming data stream, data lane1
+    - name: SLV_FLIP_CLK_EDGE_DL2
+      bit_offset: 18
+      bit_size: 1
+      description: Flips the clock edge used by the first analog stage to resample
+        the incoming data stream, data lane2
+    - name: SLV_FLIP_CLK_EDGE_DL3
+      bit_offset: 19
+      bit_size: 1
+      description: Flips the clock edge used by the first analog stage to resample
+        the incoming data stream, data lane3
+    - name: SLV_FLIP_CLK_EDGE_DL4
+      bit_offset: 20
+      bit_size: 1
+      description: Flips the clock edge used by the first analog stage to resample
+        the incoming data stream, data lane4
+fieldset/LVDS_PSSCR:
+  description: ''
+  fields:
+    - name: SLV_SER_SWAP_DPDN
+      bit_offset: 0
+      bit_size: 5
+      description: Inverts output data
+    - name: SLV_SER_DATA_OK
+      bit_offset: 16
+      bit_size: 1
+      description: Indicates transmission of data
+fieldset/LVDS_PSSCR1:
+  description: ''
+  fields:
+    - name: SLV_DRV_A0_SPARE
+      bit_offset: 0
+      bit_size: 8
+      description: Spare inputs for data lane0
+    - name: SLV_DRV_A1_SPARE
+      bit_offset: 8
+      bit_size: 8
+      description: Spare inputs for data lane1
+    - name: SLV_DRV_A2_SPARE
+      bit_offset: 16
+      bit_size: 8
+      description: Spare inputs for data lane2
+    - name: SLV_DRV_A3_SPARE
+      bit_offset: 24
+      bit_size: 8
+      description: Spare inputs for data lane3
+fieldset/LVDS_PSSCR2:
+  description: ''
+  fields:
+    - name: SLV_DRV_A4_SPARE
+      bit_offset: 0
+      bit_size: 8
+      description: Spare inputs for data lane4
+fieldset/LVDS_PSBCR1:
+  description: ''
+  fields:
+    - name: SLV_EN_BIAS_DL0
+      bit_offset: 0
+      bit_size: 1
+      description: Enable the local bias at data lane0
+    - name: SLV_EN_BIAS_DL1
+      bit_offset: 4
+      bit_size: 1
+      description: Enable the local bias at data lane1
+    - name: SLV_EN_BIAS_DL2
+      bit_offset: 8
+      bit_size: 1
+      description: Enable the local bias at data lane2
+    - name: SLV_EN_BIAS_DL3
+      bit_offset: 12
+      bit_size: 1
+      description: Enable the local bias at data lane3
+    - name: SLV_EN_BIAS_DL4
+      bit_offset: 16
+      bit_size: 1
+      description: Enable the local bias at data lane4
+fieldset/LVDS_PSBCR2:
+  description: ''
+  fields:
+    - name: SLV_BIAS_TRIM
+      bit_offset: 0
+      bit_size: 15
+      description: '0x0: 27.71uA'
+    - name: SLV_BIAS_VREFTRIM
+      bit_offset: 16
+      bit_size: 12
+      description: '0x1: 0.3961V 27.01 uA'
+    - name: SLV_BIAS_EN
+      bit_offset: 28
+      bit_size: 1
+      description: lvds macro global bias enable
+    - name: SLV_BIAS_VREF_SEL
+      bit_offset: 29
+      bit_size: 1
+      description: Selection for current generation internal reference
+fieldset/LVDS_PSBCR3:
+  description: ''
+  fields:
+    - name: SLV_VM_EN_DL0
+      bit_offset: 0
+      bit_size: 1
+      description: Enable the voltage mode driver for data lane0
+    - name: SLV_VM_BOOST_BIAS_DL0
+      bit_offset: 1
+      bit_size: 1
+      description: Bias booster for the voltage mode driver LDOS, data lane0
+    - name: SLV_VM_USE_VDD_REF_DL0
+      bit_offset: 2
+      bit_size: 1
+      description: Sets the voltage mode driver to use a reference derived from the
+        power supply, data lane0
+    - name: SLV_VM_EN_DL1
+      bit_offset: 4
+      bit_size: 1
+      description: Enable the voltage mode driver for data lane1
+    - name: SLV_VM_BOOST_BIAS_DL1
+      bit_offset: 5
+      bit_size: 1
+      description: Bias booster for the voltage mode driver LDOS, data lane1
+    - name: SLV_VM_USE_VDD_REF_DL1
+      bit_offset: 6
+      bit_size: 1
+      description: Sets the voltage mode driver to use a reference derived from the
+        power supply, data lane1
+    - name: SLV_VM_EN_DL2
+      bit_offset: 8
+      bit_size: 1
+      description: Enable the voltage mode driver for data lane2
+    - name: SLV_VM_BOOST_BIAS_DL2
+      bit_offset: 9
+      bit_size: 1
+      description: Bias booster for the voltage mode driver LDOS, data lane2
+    - name: SLV_VM_USE_VDD_REF_DL2
+      bit_offset: 10
+      bit_size: 1
+      description: Sets the voltage mode driver to use a reference derived from the
+        power supply, data lane2
+    - name: SLV_VM_EN_DL3
+      bit_offset: 12
+      bit_size: 1
+      description: Enable the voltage mode driver for data lane3
+    - name: SLV_VM_BOOST_BIAS_DL3
+      bit_offset: 13
+      bit_size: 1
+      description: Bias booster for the voltage mode driver LDOS, data lane3
+    - name: SLV_VM_USE_VDD_REF_DL3
+      bit_offset: 14
+      bit_size: 1
+      description: Sets the voltage mode driver to use a reference derived from the
+        power supply, data lane3
+    - name: SLV_VM_EN_DL4
+      bit_offset: 16
+      bit_size: 1
+      description: Enable the voltage mode driver for data lane4
+    - name: SLV_VM_BOOST_BIAS_DL4
+      bit_offset: 17
+      bit_size: 1
+      description: Bias booster for the voltage mode driver LDOS, data lane4
+    - name: SLV_VM_USE_VDD_REF_DL4
+      bit_offset: 18
+      bit_size: 1
+      description: Sets the voltage mode driver to use a reference derived from the
+        power supply, data lane4
+fieldset/LVDS_PSBCR4:
+  description: ''
+  fields:
+    - name: SLV_VM_VOUT_VOH_CTRL_DL0
+      bit_offset: 0
+      bit_size: 4
+      description: Fine tuning for the voltage mode driver VOH, data lane0
+    - name: SLV_VM_VOUT_VOH_CTRL_DL1
+      bit_offset: 4
+      bit_size: 4
+      description: Fine tuning for the voltage mode driver VOH, data lane1
+    - name: SLV_VM_VOUT_VOH_CTRL_DL2
+      bit_offset: 8
+      bit_size: 4
+      description: Fine tuning for the voltage mode driver VOH, data lane2
+    - name: SLV_VM_VOUT_VOH_CTRL_DL3
+      bit_offset: 12
+      bit_size: 4
+      description: Fine tuning for the voltage mode driver VOH, data lane3
+    - name: SLV_VM_VOUT_VOH_CTRL_DL4
+      bit_offset: 16
+      bit_size: 4
+      description: Fine tuning for the voltage mode driver VOH, data lane4
+fieldset/LVDS_PSBCR5:
+  description: ''
+  fields:
+    - name: SLV_VM_VOUT_VOL_CTRL_DL0
+      bit_offset: 0
+      bit_size: 4
+      description: Fine tuning for the voltage mode driver VOL, data lane0
+    - name: SLV_VM_VOUT_VOL_CTRL_DL1
+      bit_offset: 4
+      bit_size: 4
+      description: Fine tuning for the voltage mode driver VOL, data lane1
+    - name: SLV_VM_VOUT_VOL_CTRL_DL2
+      bit_offset: 8
+      bit_size: 4
+      description: Fine tuning for the voltage mode driver VOL, data lane2
+    - name: SLV_VM_VOUT_VOL_CTRL_DL3
+      bit_offset: 12
+      bit_size: 4
+      description: Fine tuning for the voltage mode driver VOL, data lane3
+    - name: SLV_VM_VOUT_VOL_CTRL_DL4
+      bit_offset: 16
+      bit_size: 4
+      description: Fine tuning for the voltage mode driver VOL, data lane4
+fieldset/LVDS_PSICR:
+  description: ''
+  fields:
+    - name: SLV_IMP_CTRL_DL0
+      bit_offset: 0
+      bit_size: 3
+      description: Impedance control for data lane0
+    - name: SLV_IMP_CTRL_DL1
+      bit_offset: 4
+      bit_size: 3
+      description: Impedance control for data lane1
+    - name: SLV_IMP_CTRL_DL2
+      bit_offset: 8
+      bit_size: 3
+      description: Impedance control for data lane0
+    - name: SLV_IMP_CTRL_DL3
+      bit_offset: 12
+      bit_size: 3
+      description: Impedance control for data lane3
+    - name: SLV_IMP_CTRL_DL4
+      bit_offset: 16
+      bit_size: 3
+      description: Impedance control for data lane4
+fieldset/LVDS_PSMBCCR:
+  description: ''
+  fields:
+    - name: SLV_MON_BG_CURR_FORCE_FAULT
+      bit_offset: 0
+      bit_size: 1
+      description: Bandgap current monitor force fault
+    - name: SLV_MON_BG_CURR_CLEAR_FAULT
+      bit_offset: 4
+      bit_size: 1
+      description: Bandgap current monitor clear fault
+    - name: SLV_MON_BG_CURR_UNMASK_TUNE
+      bit_offset: 16
+      bit_size: 9
+      description: Bandgap current timing control for the monitor unmask after startup
+fieldset/LVDS_PSMBCSR:
+  description: ''
+  fields:
+    - name: SLV_MON_BG_CURR_PERMANENT_FAULT
+      bit_offset: 0
+      bit_size: 1
+      description: Bandgap current monitor permanent fault
+    - name: SLV_MON_BG_CURR_FAULT
+      bit_offset: 4
+      bit_size: 1
+      description: Bandgap current monitor fault
+fieldset/LVDS_PSMBLCR:
+  description: ''
+  fields:
+    - name: SLV_MON_BG_LOOP_FORCE_FAULT
+      bit_offset: 0
+      bit_size: 1
+      description: Bandgap loop monitor force fault
+    - name: SLV_MON_BG_LOOP_CLEAR_FAULT
+      bit_offset: 4
+      bit_size: 1
+      description: Bandgap loop monitor clear fault
+    - name: SLV_MON_BG_LOOP_UNMASK_TUNE
+      bit_offset: 16
+      bit_size: 9
+      description: Bandgap loop timing control for the monitor unmask after startup
+fieldset/LVDS_PSMBLSR:
+  description: ''
+  fields:
+    - name: SLV_MON_BG_LOOP_PERMANENT_FAULT
+      bit_offset: 0
+      bit_size: 1
+      description: Bandgap loop monitor permanent fault
+    - name: SLV_MON_BG_LOOP_FAULT
+      bit_offset: 4
+      bit_size: 1
+      description: Bandgap loop monitor fault
+fieldset/LVDS_PSMBOVCR:
+  description: ''
+  fields:
+    - name: SLV_MON_BG_VOLT_FORCE_FAULT
+      bit_offset: 0
+      bit_size: 1
+      description: Bandgap output voltage monitor force fault
+    - name: SLV_MON_BG_VOLT_CLEAR_FAULT
+      bit_offset: 4
+      bit_size: 1
+      description: Bandgap output voltage monitor clear fault
+    - name: SLV_MON_BG_VOLT_UNMASK_TUNE
+      bit_offset: 16
+      bit_size: 9
+      description: Bandgap output voltage timing control for the monitor unmask after
+        startup
+fieldset/LVDS_PSMBOVSR:
+  description: ''
+  fields:
+    - name: SLV_MON_BG_VOLT_PERMANENT_FAULT
+      bit_offset: 0
+      bit_size: 1
+      description: Bandgap output voltage monitor permanent fault
+    - name: SLV_MON_BG_VOLT_FAULT
+      bit_offset: 4
+      bit_size: 1
+      description: Bandgap output voltage monitor fault
+fieldset/LVDS_PSMPLOVCR:
+  description: ''
+  fields:
+    - name: SLV_MON_LDO_OK_FORCE_FAULT
+      bit_offset: 0
+      bit_size: 1
+      description: PLL LDO output voltage monitor force fault
+    - name: SLV_MON_LDO_OK_CLEAR_FAULT
+      bit_offset: 4
+      bit_size: 1
+      description: PLL LDO output voltage monitor clear fault
+    - name: SLV_MON_LDO_OK_UNMASK_TUNE
+      bit_offset: 16
+      bit_size: 9
+      description: PLL LDO output voltage timing control for the monitor unmask after
+        startup
+fieldset/LVDS_PSMPLOVSR:
+  description: ''
+  fields:
+    - name: SLV_MON_LDO_OK_PERMANENT_FAULT
+      bit_offset: 0
+      bit_size: 1
+      description: PLL LDO Output Voltage monitor permanent fault
+    - name: SLV_MON_LDO_OK_FAULT
+      bit_offset: 4
+      bit_size: 1
+      description: PLL LDO output voltage monitor fault
+fieldset/LVDS_PSMPLCR:
+  description: ''
+  fields:
+    - name: SLV_MON_PLL_LOCK_FORCE_FAULT
+      bit_offset: 0
+      bit_size: 1
+      description: PLL Lock monitor force fault
+    - name: SLV_MON_PLL_LOCK_CLEAR_FAULT
+      bit_offset: 4
+      bit_size: 1
+      description: PLL Lock monitor clear fault
+    - name: SLV_MON_PLL_LOCK_UNMASK_TUNE
+      bit_offset: 16
+      bit_size: 9
+      description: PLL Lock timing control for the monitor unmask after startup
+fieldset/LVDS_PSMPLSR:
+  description: ''
+  fields:
+    - name: SLV_MON_PLL_LOCK_PERMANENT_FAULT
+      bit_offset: 0
+      bit_size: 1
+      description: PLL Lock monitor permanent fault
+    - name: SLV_MON_PLL_LOCK_FAULT
+      bit_offset: 4
+      bit_size: 1
+      description: PLL Lock monitor fault
+fieldset/LVDS_PSMPROCR:
+  description: ''
+  fields:
+    - name: SLV_MON_REF_OK_FORCE_FAULT
+      bit_offset: 0
+      bit_size: 1
+      description: PLL Reference monitor force fault
+    - name: SLV_MON_REF_OK_CLEAR_FAULT
+      bit_offset: 4
+      bit_size: 1
+      description: PLL Reference monitor clear fault
+    - name: SLV_MON_REF_OK_UNMASK_TUNE
+      bit_offset: 16
+      bit_size: 9
+      description: PLL Reference timing control for the monitor unmask after startup
+fieldset/LVDS_PSMPROSR:
+  description: ''
+  fields:
+    - name: SLV_MON_REF_OK_PERMANENT_FAULT
+      bit_offset: 0
+      bit_size: 1
+      description: PLL Reference OK monitor permanent fault
+    - name: SLV_MON_REF_OK_FAULT
+      bit_offset: 4
+      bit_size: 1
+      description: PLL Reference OK monitor fault
+fieldset/LVDS_PSMSCCR:
+  description: ''
+  fields:
+    - name: SLV_SER_CLK_ERROR_INJ
+      bit_offset: 0
+      bit_size: 1
+      description: Serializer clock checking error injection
+    - name: SLV_SER_CLK_CLEAR_FAULT
+      bit_offset: 4
+      bit_size: 1
+      description: Serializer Clock checking fault clearing
+fieldset/LVDS_PSMSCSR:
+  description: ''
+  fields:
+    - name: SLV_SER_CLK_FAULT
+      bit_offset: 0
+      bit_size: 1
+      description: Serializer Clock checking fault
+fieldset/LVDS_PSMSCR:
+  description: ''
+  fields:
+    - name: SLV_SER_ERROR_INJ
+      bit_offset: 0
+      bit_size: 5
+      description: Serializer error injection
+    - name: SLV_SER_FAULT_CLEAR
+      bit_offset: 8
+      bit_size: 5
+      description: Serializer fault clearing
+    - name: SLV_SER_LPBCK
+      bit_offset: 16
+      bit_size: 5
+      description: Serializer fault loopback
+fieldset/LVDS_PSMSSR:
+  description: ''
+  fields:
+    - name: SLV_SER_FAULT
+      bit_offset: 0
+      bit_size: 5
+      description: Serializer fault
+fieldset/LVDS_PSDCR:
+  description: ''
+  fields:
+    - name: SLV_FORCE_ANALOG_OK
+      bit_offset: 0
+      bit_size: 1
+      description: When set to 1, this bit masks some functions in the LVDS-PHY. This
+        bit can be used as a work around to functional problems with some of the monitor
+        blocks
+    - name: SLV_PLL_FORCE_LDO_OK
+      bit_offset: 4
+      bit_size: 1
+      description: When set to 1, this bit masks some functions in the LVDS PHY .
+        This bit can be used as a work around to functional problems with some of
+        the monitor blocks
+    - name: SLV_PLL_FORCE_LOCK
+      bit_offset: 8
+      bit_size: 1
+      description: When set to 1, this bit masks some functions in the LVDS PHY .
+        This bit can be used as a work around to functional problems with some of
+        the monitor blocks
+    - name: SLV_POWER_OK
+      bit_offset: 12
+      bit_size: 1
+      description: When set to 1, this bit masks some functions in the LVDS-PHY. This
+        bit can be used as a work around to functional problems with some of the monitor
+        blocks
+fieldset/LVDS_PSSSR1:
+  description: ''
+  fields:
+    - name: SLV_DRV_A0_SPARE_RD
+      bit_offset: 0
+      bit_size: 8
+      description: Spare outputs for data lane0
+    - name: SLV_DRV_A1_SPARE_RD
+      bit_offset: 8
+      bit_size: 8
+      description: Spare outputs for data lane1
+    - name: SLV_DRV_A2_SPARE_RD
+      bit_offset: 16
+      bit_size: 8
+      description: Spare outputs for data lane2
+    - name: SLV_DRV_A3_SPARE_RD
+      bit_offset: 24
+      bit_size: 8
+      description: Spare outputs for data lane3
+fieldset/LVDS_PSSSR2:
+  description: ''
+  fields:
+    - name: SLV_DRV_A4_SPARE_RD
+      bit_offset: 0
+      bit_size: 8
+      description: Spare outputs for data lane4
+fieldset/LVDS_PSCFGCR:
+  description: ''
+  fields:
+    - name: SLV_EN_DIG_DL
+      bit_offset: 0
+      bit_size: 5
+      description: Enables Digital DataLanes DL4..DL0
 fieldset/LVDS_WCLKCR:
   description: ''
   fields:
+    - name: SLV_CLKPIX_SEL
+      bit_offset: 0
+      bit_size: 1
+      description: 'Pixel clock selection:'
     - name: SRCSEL
       bit_offset: 8
       bit_size: 1
-      description: 'Source Selection for the Pixel Clock, between master and slave PHY:'
+      description: 'Source Selection for the Pixel Clock, between master and slave
+        PHY:'
+fieldset/LVDS_PSPLLCR1:
+  description: ''
+  fields:
+    - name: SLV_PLL_ENABLE
+      bit_offset: 0
+      bit_size: 1
+      description: '0x0: LVDS-PHY PLL Disable'
+    - name: SLV_PLL_SD_ENABLE
+      bit_offset: 1
+      bit_size: 1
+      description: sigma-delta enable
+    - name: SLV_PLL_TWG_ENABLE
+      bit_offset: 2
+      bit_size: 1
+      description: Triangular wave pattern used to modulate MDIV
+    - name: SLV_PLL_BYPASS
+      bit_offset: 4
+      bit_size: 1
+      description: '0x0: from VCO output'
+    - name: SLV_PLL_DIVIDERS_ENABLE
+      bit_offset: 8
+      bit_size: 1
+      description: '0x0: Dividers disabled'
+    - name: SLV_PLL_BYPASS_START_DECT
+      bit_offset: 12
+      bit_size: 1
+      description: Bypass start DECT.
+    - name: SLV_LVDS_PLL_USE_BIT_CLK_IN_SYNC
+      bit_offset: 16
+      bit_size: 1
+      description: Bypass control for the bit clock.
+    - name: SLV_LVDS_PLL_USE_LS_CLK_IN_SYNC
+      bit_offset: 24
+      bit_size: 1
+      description: Bypass control for the ls clock.
+fieldset/LVDS_PSPLLCR2:
+  description: ''
+  fields:
+    - name: SLV_PLL_BIT_DIV
+      bit_offset: 0
+      bit_size: 10
+      description: PLL Output Clock Divider (BDIV, divides output VCO)
+    - name: SLV_PLL_INPUT_DIV
+      bit_offset: 16
+      bit_size: 10
+      description: PLL Input Clock Divider (NDIV, divides input reference clock)
+fieldset/LVDS_PSPLLSR:
+  description: ''
+  fields:
+    - name: SLV_PLL_LOCK
+      bit_offset: 0
+      bit_size: 1
+      description: PLL lock During a certain number of cycles of reference clock,
+        pll_lock is asserted high and then goes low waiting for the LVDS-PHY PLL t0
+        lock
+    - name: SLV_PLL_REF_OK
+      bit_offset: 4
+      bit_size: 1
+      description: PLL reference ok
+    - name: SLV_PLL_LDO_OK
+      bit_offset: 8
+      bit_size: 1
+      description: PLL LDO ok
+fieldset/LVDS_PSPLLSDCR1:
+  description: ''
+  fields:
+    - name: SLV_PLL_SD_INT_RATIO
+      bit_offset: 0
+      bit_size: 10
+      description: Integer Setting of PLL Feedback Clock Divider (MDIV, divides VCO
+        clock for feedback).
+fieldset/LVDS_PSPLLSDCR2:
+  description: ''
+  fields:
+    - name: SLV_PLL_SD_INPUT_CODE_BYPASS
+      bit_offset: 0
+      bit_size: 23
+      description: Fractional Setting of PLL Feedback Clock Divider (MDIV, divides
+        VCO clock for feedback)
+    - name: SLV_PLL_SD_BYPASS_VCO_MUX
+      bit_offset: 24
+      bit_size: 2
+      description: Bypass control for the PLL sigma delta VCO mux
+    - name: SLV_PLL_SD_BYPASS_FB_CLK
+      bit_offset: 26
+      bit_size: 1
+      description: Bypass start SD feedback clock.
+    - name: SLV_PLL_SD_CLK_EDGE_CNTRL
+      bit_offset: 28
+      bit_size: 1
+      description: Sigma Delta Edge Control.
+fieldset/LVDS_PSPLLTWGCR1:
+  description: ''
+  fields:
+    - name: SLV_PLL_TWG_STEP
+      bit_offset: 0
+      bit_size: 20
+      description: MDIV divdier used in integer N and Fractional N PLL modes
+    - name: SLV_PLL_TWG_DOWN_SPREAD
+      bit_offset: 20
+      bit_size: 1
+      description: TWG pattern spreading
+fieldset/LVDS_PSPLLTWGCR2:
+  description: ''
+  fields:
+    - name: SLV_PLL_TWG_THRESHOLD
+      bit_offset: 0
+      bit_size: 23
+      description: TWG_THRESHOLD setting
+fieldset/LVDS_PSPLLLDOCR:
+  description: ''
+  fields:
+    - name: SLV_PLL_LDO_FRREGVTRIM
+      bit_offset: 0
+      bit_size: 3
+      description: 'PLL LDO output voltage fine tuning:'
+fieldset/LVDS_PSPLLCPCR:
+  description: ''
+  fields:
+    - name: SLV_PLL_CPCTRL
+      bit_offset: 0
+      bit_size: 4
+      description: PLL charge pump control, default=1.
+fieldset/LVDS_PSPLLCFGCR:
+  description: ''
+  fields:
+    - name: SLV_PLL_CFG
+      bit_offset: 0
+      bit_size: 8
+      description: PLL configuration
+fieldset/LVDS_PSPLLTESTCR:
+  description: ''
+  fields:
+    - name: SLV_PLL_TEST_CLK_EN
+      bit_offset: 0
+      bit_size: 1
+      description: lvds_pll_test_clk enable
+    - name: SLV_PLL_TEST_DIV_EN
+      bit_offset: 8
+      bit_size: 1
+      description: lvds_pll_test_clk dividers enable
+    - name: SLV_PLL_TEST_DIV_SETTINGS
+      bit_offset: 16
+      bit_size: 10
+      description: lvds_pll_test_clk dividers value
 fieldset/LVDS_PMATCR1:
   description: ''
   fields:
@@ -862,8 +2769,8 @@ fieldset/LVDS_HWCFGR:
     - name: LANES
       bit_offset: 4
       bit_size: 4
-      description: amount of LVDS PHY Lanes (including the LVDS PHY ClockLane) in one
-        Link.
+      description: amount of LVDS PHY Lanes (including the LVDS PHY ClockLane) in
+        one Link.
     - name: LINKS
       bit_offset: 8
       bit_size: 4

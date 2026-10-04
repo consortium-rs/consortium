@@ -74,12 +74,15 @@ block/RCC:
     - name: CPUBOOTCR
       byte_offset: 1076
       description: RCC CPU Boot Control Register
+      fieldset: RCC_CPUBOOTCR
     - name: STBYBOOTCR
       byte_offset: 1080
       description: RCC Standby Boot Control Register
+      fieldset: RCC_STBYBOOTCR
     - name: LEGBOOTCR
       byte_offset: 1084
       description: RCC Legacy Boot Control Register
+      fieldset: RCC_LEGBOOTCR
     - name: BDCR
       byte_offset: 1088
       description: RCC Backup Domain Control Register
@@ -123,33 +126,43 @@ block/RCC:
     - name: IWDGC1FZSETR
       byte_offset: 1128
       description: RCC IWDG CPU1 Clock Freeze Set Register
+      fieldset: RCC_IWDGC1FZSETR
     - name: IWDGC1FZCLRR
       byte_offset: 1132
       description: RCC IWDG CPU1 Clock Freeze Clear Register
+      fieldset: RCC_IWDGC1FZCLRR
     - name: IWDGC1CFGSETR
       byte_offset: 1136
       description: RCC IWDG CPU1 Configuration Set Register
+      fieldset: RCC_IWDGC1CFGSETR
     - name: IWDGC1CFGCLRR
       byte_offset: 1140
       description: RCC IWDG CPU1 Configuration Clear Register
+      fieldset: RCC_IWDGC1CFGCLRR
     - name: IWDGC2FZSETR
       byte_offset: 1144
       description: RCC IWDG CPU2 Clock Freeze Set Register
+      fieldset: RCC_IWDGC2FZSETR
     - name: IWDGC2FZCLRR
       byte_offset: 1148
       description: RCC IWDG CPU2 Clock Freeze Clear Register
+      fieldset: RCC_IWDGC2FZCLRR
     - name: IWDGC2CFGSETR
       byte_offset: 1152
       description: RCC IWDG CPU2 Configuration Set Register
+      fieldset: RCC_IWDGC2CFGSETR
     - name: IWDGC2CFGCLRR
       byte_offset: 1156
       description: RCC IWDG CPU2 Configuration Clear Register
+      fieldset: RCC_IWDGC2CFGCLRR
     - name: IWDGC3CFGSETR
       byte_offset: 1160
       description: RCC IWDG CPU3 Configuration Set Register
+      fieldset: RCC_IWDGC3CFGSETR
     - name: IWDGC3CFGCLRR
       byte_offset: 1164
       description: RCC IWDG CPU3 Configuration Clear Register
+      fieldset: RCC_IWDGC3CFGCLRR
     - name: C3CFGR
       byte_offset: 1168
       description: RCC CPU3 Configuration Register
@@ -1545,6 +1558,14 @@ fieldset/RCC_C2BOOTRSTSCLRR:
 fieldset/RCC_C1SREQSETR:
   description: ''
   fields:
+    - name: STPREQ_P0
+      bit_offset: 0
+      bit_size: 1
+      description: Stop request for CPU1 processor core 0
+    - name: STPREQ_P1
+      bit_offset: 1
+      bit_size: 1
+      description: Stop request for CPU1 processor core 1
     - name: ESLPREQ
       bit_offset: 16
       bit_size: 1
@@ -1552,10 +1573,60 @@ fieldset/RCC_C1SREQSETR:
 fieldset/RCC_C1SREQCLRR:
   description: ''
   fields:
+    - name: STPREQ_P0
+      bit_offset: 0
+      bit_size: 1
+      description: Stop request for CPU1 processor core 0
+    - name: STPREQ_P1
+      bit_offset: 1
+      bit_size: 1
+      description: Stop request for CPU1 processor core 1
     - name: ESLPREQ
       bit_offset: 16
       bit_size: 1
       description: Enhanced CSleep request for CPU1 subsystem
+fieldset/RCC_CPUBOOTCR:
+  description: ''
+  fields:
+    - name: BOOT_CPU2
+      bit_offset: 0
+      bit_size: 1
+      description: CPU2 to boot
+    - name: BOOT_CPU1
+      bit_offset: 1
+      bit_size: 1
+      description: CPU1 boot
+fieldset/RCC_STBYBOOTCR:
+  description: ''
+  fields:
+    - name: CPU_BEN_SEL
+      bit_offset: 1
+      bit_size: 1
+      description: CPU boot select
+    - name: COLD_CPU2
+      bit_offset: 2
+      bit_size: 1
+      description: CPU2 cold boot
+    - name: CPU2_HW_BEN
+      bit_offset: 4
+      bit_size: 1
+      description: CPU2 hardware boot enable
+    - name: CPU1_HW_BEN
+      bit_offset: 5
+      bit_size: 1
+      description: CPU1 hardware boot enable
+    - name: RET_CRCERR_RSTEN
+      bit_offset: 8
+      bit_size: 1
+      description: RETRAM CRC error system reset enable
+fieldset/RCC_LEGBOOTCR:
+  description: ''
+  fields:
+    - name: LEGACY_BEN
+      bit_offset: 0
+      bit_size: 1
+      description: Enable of the legacy selection mode to choose the first CPU to
+        boot
 fieldset/RCC_BDCR:
   description: ''
   fields:
@@ -1671,6 +1742,10 @@ fieldset/RCC_C1MSRDCR:
 fieldset/RCC_PWRLPDLYCR:
   description: ''
   fields:
+    - name: PWRLP_DLY
+      bit_offset: 0
+      bit_size: 22
+      description: PWR_LP delay value
     - name: CPU2TMPSKP
       bit_offset: 24
       bit_size: 1
@@ -1927,6 +2002,124 @@ fieldset/RCC_C2CIFCLRR:
       bit_offset: 20
       bit_size: 1
       description: CPU2 wake-up from CStop interrupt flag
+fieldset/RCC_IWDGC1FZSETR:
+  description: ''
+  fields:
+    - name: FZ_IWDG1
+      bit_offset: 0
+      bit_size: 1
+      description: Freeze of IWDG1 clock
+    - name: FZ_IWDG2
+      bit_offset: 1
+      bit_size: 1
+      description: Freeze of IWDG2 clock
+fieldset/RCC_IWDGC1FZCLRR:
+  description: ''
+  fields:
+    - name: FZ_IWDG1
+      bit_offset: 0
+      bit_size: 1
+      description: Unfreeze IWDG1 clock
+    - name: FZ_IWDG2
+      bit_offset: 1
+      bit_size: 1
+      description: Unfreeze IWDG2 clock
+fieldset/RCC_IWDGC1CFGSETR:
+  description: ''
+  fields:
+    - name: IWDG1_SYSRSTEN
+      bit_offset: 0
+      bit_size: 1
+      description: Enable of IWDG1 timeout event to reset the application
+    - name: IWDG2_SYSRSTEN
+      bit_offset: 2
+      bit_size: 1
+      description: Enable of IWDG2 timeout event to reset the application
+    - name: IWDG2_KERRST
+      bit_offset: 18
+      bit_size: 1
+      description: IWDG2 kernel reset
+fieldset/RCC_IWDGC1CFGCLRR:
+  description: ''
+  fields:
+    - name: IWDG1_SYSRSTEN
+      bit_offset: 0
+      bit_size: 1
+      description: Clear of IWDG1 timeout event to reset the application
+    - name: IWDG2_SYSRSTEN
+      bit_offset: 2
+      bit_size: 1
+      description: Clear of IWDG2 timeout event to reset the application
+    - name: IWDG2_KERRST
+      bit_offset: 18
+      bit_size: 1
+      description: IWDG2 kernel reset
+fieldset/RCC_IWDGC2FZSETR:
+  description: ''
+  fields:
+    - name: FZ_IWDG3
+      bit_offset: 0
+      bit_size: 1
+      description: Freeze of IWDG3 clock
+    - name: FZ_IWDG4
+      bit_offset: 1
+      bit_size: 1
+      description: Freeze of IWDG4 clock
+fieldset/RCC_IWDGC2FZCLRR:
+  description: ''
+  fields:
+    - name: FZ_IWDG3
+      bit_offset: 0
+      bit_size: 1
+      description: Unfreeze of IWDG3 clock
+    - name: FZ_IWDG4
+      bit_offset: 1
+      bit_size: 1
+      description: Unfreeze of IWDG4 clock
+fieldset/RCC_IWDGC2CFGSETR:
+  description: ''
+  fields:
+    - name: IWDG3_SYSRSTEN
+      bit_offset: 0
+      bit_size: 1
+      description: Enable of IWDG3 timeout event to reset the application
+    - name: IWDG4_SYSRSTEN
+      bit_offset: 2
+      bit_size: 1
+      description: Enable of IWDG4 timeout event to reset the application
+    - name: IWDG4_KERRST
+      bit_offset: 18
+      bit_size: 1
+      description: IWDG4 kernel reset
+fieldset/RCC_IWDGC2CFGCLRR:
+  description: ''
+  fields:
+    - name: IWDG3_SYSRSTEN
+      bit_offset: 0
+      bit_size: 1
+      description: Clear of IWDG3 timeout event to reset the application
+    - name: IWDG4_SYSRSTEN
+      bit_offset: 2
+      bit_size: 1
+      description: Clear of IWDG4 timeout event to reset the application
+    - name: IWDG4_KERRST
+      bit_offset: 18
+      bit_size: 1
+      description: IWDG4 kernel reset
+fieldset/RCC_IWDGC3CFGSETR:
+  description: ''
+  fields:
+    - name: IWDG5_SYSRSTEN
+      bit_offset: 0
+      bit_size: 1
+      description: Enable of IWDG5 timeout event to reset the application
+fieldset/RCC_IWDGC3CFGCLRR:
+  description: ''
+  fields:
+    - name: IWDG5_SYSRSTEN
+      bit_offset: 0
+      bit_size: 1
+      description: Clear of IWDG5 timeout event to reset the application
 fieldset/RCC_C3CFGR:
   description: ''
   fields:
@@ -2429,8 +2622,8 @@ fieldset/RCC_OSPI1CFGR:
     - name: OSPI1LPEN
       bit_offset: 2
       bit_size: 1
-      description: "OCTOSPI1, OTFDEC1 and OCTOSPI1 delay (DLYBOSPI1) clock enable during\xEF\
-        \xBF\xBDCSleep"
+      description: "OCTOSPI1, OTFDEC1 and OCTOSPI1 delay (DLYBOSPI1) clock enable\
+        \ during\xEF\xBF\xBDCSleep"
     - name: OTFDEC1RST
       bit_offset: 8
       bit_size: 1

@@ -4,6 +4,7 @@ block/DDRDBG:
     - name: LP_DISABLE
       byte_offset: 0
       description: DDRDBG low-power disable register
+      fieldset: DDRDBG_LP_DISABLE
     - name: BYPASS_PCLKEN
       byte_offset: 4
       description: DDRDBG bypass PCLKEN register
@@ -11,9 +12,11 @@ block/DDRDBG:
     - name: DDRC_AUTO_SR_DELAY
       byte_offset: 8
       description: DDRDBG DDRC auto SR delay register
+      fieldset: DDRDBG_DDRC_AUTO_SR_DELAY
     - name: OBSP_CTRL
       byte_offset: 12
       description: DDRDBG OBSP control register
+      fieldset: DDRDBG_OBSP_CTRL
     - name: FRAC_PLL_LOCK
       byte_offset: 16
       description: DDRDBG FRAC PLL lock register
@@ -25,42 +28,96 @@ block/DDRDBG:
     - name: DFI_ERRORS_CTRL
       byte_offset: 48
       description: DDRDBG DFI error control register
+      fieldset: DDRDBG_DFI_ERRORS_CTRL
     - name: DFI_ERROR_STATUS
       byte_offset: 52
       description: DDRDBG DFI error status register
+      fieldset: DDRDBG_DFI_ERROR_STATUS
     - name: DFI_ERROR_MSK
       byte_offset: 56
       description: DDRDBG DFI error mask register
+      fieldset: DDRDBG_DFI_ERROR_MSK
     - name: DDR34_AC_SWIZZLE_ADD3_0
       byte_offset: 256
       description: DDRDBG DDR34 AC swizzle ADD3_0 register
+      fieldset: DDRDBG_DDR34_AC_SWIZZLE_ADD3_0
     - name: DDR34_AC_SWIZZLE_ADD7_4
       byte_offset: 260
       description: DDRDBG DDR34 AC swizzle ADD7_4 register
+      fieldset: DDRDBG_DDR34_AC_SWIZZLE_ADD7_4
     - name: DDR34_AC_SWIZZLE_ADD11_8
       byte_offset: 264
       description: DDRDBG DDR34 AC swizzle ADD11_8 register
+      fieldset: DDRDBG_DDR34_AC_SWIZZLE_ADD11_8
     - name: DDR34_AC_SWIZZLE_ADD15_12
       byte_offset: 268
       description: DDRDBG DDR34 AC swizzle ADD15_12 register
+      fieldset: DDRDBG_DDR34_AC_SWIZZLE_ADD15_12
     - name: DDR34_AC_SWIZZLE_BK2_0_ACTN
       byte_offset: 272
       description: DDRDBG DDR34 AC swizzle BK2 0 ACTN register
+      fieldset: DDRDBG_DDR34_AC_SWIZZLE_BK2_0_ACTN
     - name: DDR34_AC_SWIZZLE_RASN_CASN_BG1_0
       byte_offset: 276
       description: DDRDBG DDR34 AC swizzle RASN CASN BG1_0 register
+      fieldset: DDRDBG_DDR34_AC_SWIZZLE_RASN_CASN_BG1_0
     - name: DDR34_AC_SWIZZLE_WEN
       byte_offset: 280
       description: DDRDBG DDR34 AC swizzle WEN register
+      fieldset: DDRDBG_DDR34_AC_SWIZZLE_WEN
+fieldset/DDRDBG_LP_DISABLE:
+  description: ''
+  fields:
+    - name: LPI_XPI_DISABLE
+      bit_offset: 0
+      bit_size: 1
+      description: Disables the possibility to automatically (out of RCC control)
+        gate down the DDRC clock when an inactivity period is detected.
+    - name: LPI_DDRC_DISABLE
+      bit_offset: 8
+      bit_size: 1
+      description: Disables the possibility to automatically (out of RCC control)
+        gate down the XPI port axi_clock when an inactivity period is detected.
 fieldset/DDRDBG_BYPASS_PCLKEN:
   description: ''
   fields:
     - name: ENABLE
       bit_offset: 0
       bit_size: 1
-      description: The DDRPHYC Bypass_Pclken is active. The targeted data rate is less
-        than 666 MT/s. The clock fed to the SDRAM interface is the one coming directly
-        from the interfan frac pll, and the DDRPHYC does not alter it.
+      description: The DDRPHYC Bypass_Pclken is active. The targeted data rate is
+        less than 666 MT/s. The clock fed to the SDRAM interface is the one coming
+        directly from the interfan frac pll, and the DDRPHYC does not alter it.
+fieldset/DDRDBG_DDRC_AUTO_SR_DELAY:
+  description: ''
+  fields:
+    - name: DELAY_CYCLES
+      bit_offset: 0
+      bit_size: 7
+      description: Number of delay cycles to wait before to gate down the DDRC clock
+        when in auto self-refresh.
+fieldset/DDRDBG_OBSP_CTRL:
+  description: ''
+  fields:
+    - name: OBSP0_SEL
+      bit_offset: 0
+      bit_size: 5
+      description: Selects which of the input observable signal is forwarded to the
+        HDP on selectable observability line 0.
+    - name: OBSP1_SEL
+      bit_offset: 8
+      bit_size: 5
+      description: Selects which of the input observable signal is forwarded to the
+        HDP on selectable observability line 1.
+    - name: OBSP2_SEL
+      bit_offset: 16
+      bit_size: 5
+      description: Selects which of the input observable signal is forwarded to the
+        HDP on selectable observability line 2.
+    - name: OBSP3_SEL
+      bit_offset: 24
+      bit_size: 5
+      description: Selects which of the input observable signal is forwarded to the
+        HDP on selectable observability line 3.
 fieldset/DDRDBG_FRAC_PLL_LOCK:
   description: ''
   fields:
@@ -76,3 +133,167 @@ fieldset/DDRDBG_DTO_OUTPUT:
       bit_size: 1
       description: DDRPHYC DTO output is stored in this register. Among other signals
         of interests, the DDRPHYC PLL lock can be observed on this register.
+fieldset/DDRDBG_DFI_ERRORS_CTRL:
+  description: ''
+  fields:
+    - name: DFI_ERROR0_CLEAR
+      bit_offset: 0
+      bit_size: 1
+      description: Clears the interrupt linked with dfi_error0.
+    - name: DFI_ERROR0_SET
+      bit_offset: 1
+      bit_size: 1
+      description: Triggers the interrupt linked with dfi_error0.
+    - name: DFI_ERROR1_CLEAR
+      bit_offset: 8
+      bit_size: 1
+      description: Clears the interrupt linked with dfi_error1.
+    - name: DFI_ERROR1_SET
+      bit_offset: 9
+      bit_size: 1
+      description: Triggers the interrupt linked with dfi_error1.
+fieldset/DDRDBG_DFI_ERROR_STATUS:
+  description: ''
+  fields:
+    - name: DFI_ERROR0_STATUS
+      bit_offset: 0
+      bit_size: 1
+      description: Gets the status of the interrupt linked with dfi_error0.
+    - name: DFI_ERROR1_STATUS
+      bit_offset: 8
+      bit_size: 1
+      description: Gets the status of the interrupt linked with dfi_error1.
+fieldset/DDRDBG_DFI_ERROR_MSK:
+  description: ''
+  fields:
+    - name: DFI_ERROR0_MASK
+      bit_offset: 0
+      bit_size: 1
+      description: Interrupt linked to dfi_error0 is masked. Clears the interrupt
+        linked with dfi_error0.
+    - name: DFI_ERROR1_MASK
+      bit_offset: 8
+      bit_size: 1
+      description: Interrupt linked to dfi_error1 is masked. Clears the interrupt
+        linked with dfi_error1.
+fieldset/DDRDBG_DDR34_AC_SWIZZLE_ADD3_0:
+  description: ''
+  fields:
+    - name: DDR34_AC_SWIZZLING_ADD0
+      bit_offset: 0
+      bit_size: 5
+      description: Remapping input bit on add0 DDRPHYC input at the DFI interface.
+    - name: DDR34_AC_SWIZZLING_ADD1
+      bit_offset: 8
+      bit_size: 5
+      description: Remapping input bit on add1 DDRPHYC input at the DFI interface.
+    - name: DDR34_AC_SWIZZLING_ADD2
+      bit_offset: 16
+      bit_size: 5
+      description: Remapping input bit on add2 DDRPHYC input at the DFI interface.
+    - name: DDR34_AC_SWIZZLING_ADD3
+      bit_offset: 24
+      bit_size: 5
+      description: Remapping input bit on add3 DDRPHYC input at the DFI interface.
+fieldset/DDRDBG_DDR34_AC_SWIZZLE_ADD7_4:
+  description: ''
+  fields:
+    - name: DDR34_AC_SWIZZLING_ADD4
+      bit_offset: 0
+      bit_size: 5
+      description: Remapping input bit on add4 DDRPHYC input at the DFI interface.
+    - name: DDR34_AC_SWIZZLING_ADD5
+      bit_offset: 8
+      bit_size: 5
+      description: Remapping input bit on add5 DDRPHYC input at the DFI interface.
+    - name: DDR34_AC_SWIZZLING_ADD6
+      bit_offset: 16
+      bit_size: 5
+      description: Remapping input bit on add6 DDRPHYC input at the DFI interface.
+    - name: DDR34_AC_SWIZZLING_ADD7
+      bit_offset: 24
+      bit_size: 5
+      description: Remapping input bit on add7 DDRPHYC input at the DFI interface.
+fieldset/DDRDBG_DDR34_AC_SWIZZLE_ADD11_8:
+  description: ''
+  fields:
+    - name: DDR34_AC_SWIZZLING_ADD8
+      bit_offset: 0
+      bit_size: 5
+      description: Remapping input bit on add8 DDRPHYC input at the DFI interface.
+    - name: DDR34_AC_SWIZZLING_ADD9
+      bit_offset: 8
+      bit_size: 5
+      description: Remapping input bit on add9 DDRPHYC input at the DFI interface.
+    - name: DDR34_AC_SWIZZLING_ADD10
+      bit_offset: 16
+      bit_size: 5
+      description: Remapping input bit on add10 DDRPHYC input at the DFI interface.
+    - name: DDR34_AC_SWIZZLING_ADD11
+      bit_offset: 24
+      bit_size: 5
+      description: Remapping input bit on add11 DDRPHYC input at the DFI interface.
+fieldset/DDRDBG_DDR34_AC_SWIZZLE_ADD15_12:
+  description: ''
+  fields:
+    - name: DDR34_AC_SWIZZLING_ADD12
+      bit_offset: 0
+      bit_size: 5
+      description: Remapping input bit on add12 DDRPHYC input at the DFI interface.
+    - name: DDR34_AC_SWIZZLING_ADD13
+      bit_offset: 8
+      bit_size: 5
+      description: Remapping input bit on add13 DDRPHYC input at the DFI interface.
+    - name: DDR34_AC_SWIZZLING_ADD14
+      bit_offset: 16
+      bit_size: 5
+      description: Remapping input bit on add14 DDRPHYC input at the DFI interface.
+    - name: DDR34_AC_SWIZZLING_ADD15
+      bit_offset: 24
+      bit_size: 5
+      description: Remapping input bit on add15 DDRPHYC input at the DFI interface.
+fieldset/DDRDBG_DDR34_AC_SWIZZLE_BK2_0_ACTN:
+  description: ''
+  fields:
+    - name: DDR34_AC_SWIZZLING_ACTN
+      bit_offset: 0
+      bit_size: 5
+      description: Remapping input bit on actn DDRPHYC input at the DFI interface.
+    - name: DDR34_AC_SWIZZLING_BK0
+      bit_offset: 8
+      bit_size: 5
+      description: Remapping input bit on bk0 DDRPHYC input at the DFI interface.
+    - name: DDR34_AC_SWIZZLING_BK1
+      bit_offset: 16
+      bit_size: 5
+      description: Remapping input bit on bk1 DDRPHYC input at the DFI interface.
+    - name: DDR34_AC_SWIZZLING_BK2
+      bit_offset: 24
+      bit_size: 5
+      description: Remapping input bit on bk2 DDRPHYC input at the DFI interface.
+fieldset/DDRDBG_DDR34_AC_SWIZZLE_RASN_CASN_BG1_0:
+  description: ''
+  fields:
+    - name: DDR34_AC_SWIZZLING_BG0
+      bit_offset: 0
+      bit_size: 5
+      description: Remapping input bit on bg0 DDRPHYC input at the DFI interface.
+    - name: DDR34_AC_SWIZZLING_BG1
+      bit_offset: 8
+      bit_size: 5
+      description: Remapping input bit on bg1 DDRPHYC input at the DFI interface.
+    - name: DDR34_AC_SWIZZLING_CASN
+      bit_offset: 16
+      bit_size: 5
+      description: Remapping input bit on casn DDRPHYC input at the DFI interface.
+    - name: DDR34_AC_SWIZZLING_RASN
+      bit_offset: 24
+      bit_size: 5
+      description: Remapping input bit on rasn DDRPHYC input at the DFI interface.
+fieldset/DDRDBG_DDR34_AC_SWIZZLE_WEN:
+  description: ''
+  fields:
+    - name: DDR34_AC_SWIZZLING_WEN
+      bit_offset: 0
+      bit_size: 5
+      description: Remapping input bit on wen DDRPHYC input at the DFI interface.

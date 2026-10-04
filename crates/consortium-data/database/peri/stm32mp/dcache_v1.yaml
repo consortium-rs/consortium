@@ -69,8 +69,8 @@ fieldset/DCACHE_CR:
     - name: CACHECMD
       bit_offset: 8
       bit_size: 3
-      description: cache command maintenance operation (cleans and/or invalidates an
-        address range)
+      description: cache command maintenance operation (cleans and/or invalidates
+        an address range)
     - name: STARTCMD
       bit_offset: 11
       bit_size: 1

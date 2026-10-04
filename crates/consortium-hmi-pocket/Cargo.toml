@@ -21,11 +21,10 @@ license.workspace = true
 name              = "consortium-hmi-pocket"
 version.workspace = true
 # PocketJS is not on crates.io yet, so this crate pins it to an upstream commit.
-# The pin is a SHA rather than the `v0.7.0` tag because the host touch entry
-# (`Guest::frame_with_touches`, needed to deliver pointer coordinates to the
-# guest) landed after that tag and upstream has not cut a release since; move
-# back to a tag once one includes it. cargo refuses to publish a package with a
-# git dependency, so this stays unpublished until PocketJS lands on the
+# The pin is the upstream `main` commit `submodules/pocketjs` is checked out at
+# (after `v0.13.0`), so the Rust crates and the bun-built `<app>.js`/`.pak` come
+# from one PocketJS revision; bump both together. cargo refuses to publish a
+# package with a git dependency, so this stays unpublished until PocketJS lands on the
 # registry; at that point the three `pocket*` deps become plain version
 # requirements and this line goes away.
 publish                = false
@@ -46,9 +45,9 @@ shell = ["dep:winit"]
 [dependencies]
 consortium-hmi       = { path = "../consortium-hmi", version = "0.4.0" }
 consortium-hmi-input = { path = "../consortium-hmi-input", version = "0.4.0" }
-pocket-mod           = { git = "https://github.com/pocket-stack/pocketjs.git", rev = "5bfaff7091e63a1cd93fe46fd5a4f8b61b46b335" }
-pocket-ui-wgpu       = { git = "https://github.com/pocket-stack/pocketjs.git", rev = "5bfaff7091e63a1cd93fe46fd5a4f8b61b46b335" }
-pocket3d             = { default-features = false, git = "https://github.com/pocket-stack/pocketjs.git", rev = "5bfaff7091e63a1cd93fe46fd5a4f8b61b46b335" }
+pocket-mod           = { git = "https://github.com/pocket-stack/pocketjs.git", rev = "b21bd28dd0a2fcb717757241d69b9901c4f7e1b5" }
+pocket-ui-wgpu       = { git = "https://github.com/pocket-stack/pocketjs.git", rev = "b21bd28dd0a2fcb717757241d69b9901c4f7e1b5" }
+pocket3d             = { default-features = false, git = "https://github.com/pocket-stack/pocketjs.git", rev = "b21bd28dd0a2fcb717757241d69b9901c4f7e1b5" }
 thiserror            = "2.0.18"
 tokio                = { features = ["rt", "sync"], version = "1" }
 winit                = { optional = true, version = "0.30" }

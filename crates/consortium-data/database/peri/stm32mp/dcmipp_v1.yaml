@@ -704,6 +704,10 @@ fieldset/DCMIPP_IPGR1:
       bit_offset: 0
       bit_size: 3
       description: 'Memory page size, as power of 2 of 64-byte units:'
+    - name: QOS_MODE
+      bit_offset: 24
+      bit_size: 1
+      description: Quality of service
 fieldset/DCMIPP_IPGR2:
   description: ''
   fields:
@@ -1184,11 +1188,13 @@ fieldset/DCMIPP_CMSR1:
     - name: P0LSTLINE
       bit_offset: 8
       bit_size: 1
-      description: Last Line LSB bit, sampled at Frame capture complete event for Pipe0
+      description: Last Line LSB bit, sampled at Frame capture complete event for
+        Pipe0
     - name: P0LSTFRM
       bit_offset: 9
       bit_size: 1
-      description: Last frame LSB bit, sampled at Frame capture complete event for Pipe0
+      description: Last frame LSB bit, sampled at Frame capture complete event for
+        Pipe0
     - name: P0LSTVCID
       bit_offset: 10
       bit_size: 2
@@ -1201,11 +1207,13 @@ fieldset/DCMIPP_CMSR1:
     - name: P1LSTLINE
       bit_offset: 16
       bit_size: 1
-      description: Last Line LSB bit, sampled at Frame capture complete event for Pipe1
+      description: Last Line LSB bit, sampled at Frame capture complete event for
+        Pipe1
     - name: P1LSTFRM
       bit_offset: 17
       bit_size: 1
-      description: Last frame LSB bit, sampled at frame capture complete event for Pipe1
+      description: Last frame LSB bit, sampled at frame capture complete event for
+        Pipe1
     - name: P1LSTVCID
       bit_offset: 18
       bit_size: 2
@@ -1218,11 +1226,13 @@ fieldset/DCMIPP_CMSR1:
     - name: P2LSTLINE
       bit_offset: 24
       bit_size: 1
-      description: Last line LSB bit, sampled at Frame capture complete event for Pipe2
+      description: Last line LSB bit, sampled at Frame capture complete event for
+        Pipe2
     - name: P2LSTFRM
       bit_offset: 25
       bit_size: 1
-      description: Last frame LSB bit, sampled at frame capture complete event for Pipe2
+      description: Last frame LSB bit, sampled at frame capture complete event for
+        Pipe2
     - name: P2LSTVCID
       bit_offset: 26
       bit_size: 2
@@ -2111,46 +2121,46 @@ fieldset/DCMIPP_P1CTCR2:
     - name: LUM4
       bit_offset: 1
       bit_size: 6
-      description: Luminance increase for input luminance of 128 (increase is idle with
-        LUMx = 16)
+      description: Luminance increase for input luminance of 128 (increase is idle
+        with LUMx = 16)
     - name: LUM3
       bit_offset: 9
       bit_size: 6
-      description: Luminance increase for input luminance of 96 (increase is idle with
-        LUMx = 16)
+      description: Luminance increase for input luminance of 96 (increase is idle
+        with LUMx = 16)
     - name: LUM2
       bit_offset: 17
       bit_size: 6
-      description: Luminance increase for input luminance of 64 (increase is idle with
-        LUMx = 16)
+      description: Luminance increase for input luminance of 64 (increase is idle
+        with LUMx = 16)
     - name: LUM1
       bit_offset: 25
       bit_size: 6
-      description: Luminance increase for input luminance of 32 (increase is idle with
-        LUMx = 16)
+      description: Luminance increase for input luminance of 32 (increase is idle
+        with LUMx = 16)
 fieldset/DCMIPP_P1CTCR3:
   description: ''
   fields:
     - name: LUM8
       bit_offset: 1
       bit_size: 6
-      description: Luminance increase for input luminance of 256 (increase is idle with
-        LUMx = 16)
+      description: Luminance increase for input luminance of 256 (increase is idle
+        with LUMx = 16)
     - name: LUM7
       bit_offset: 9
       bit_size: 6
-      description: Luminance increase for input luminance of 224 (increase is idle with
-        LUMx = 16)
+      description: Luminance increase for input luminance of 224 (increase is idle
+        with LUMx = 16)
     - name: LUM6
       bit_offset: 17
       bit_size: 6
-      description: Luminance increase for input luminance of 192 (increase is idle with
-        LUMx = 16)
+      description: Luminance increase for input luminance of 192 (increase is idle
+        with LUMx = 16)
     - name: LUM5
       bit_offset: 25
       bit_size: 6
-      description: Luminance increase for input luminance of 160 (increase is idle with
-        LUMx = 16)
+      description: Luminance increase for input luminance of 160 (increase is idle
+        with LUMx = 16)
 fieldset/DCMIPP_P1FCTCR:
   description: ''
   fields:
@@ -2762,46 +2772,46 @@ fieldset/DCMIPP_P1CCTCR2:
     - name: LUM4
       bit_offset: 1
       bit_size: 6
-      description: Current luminance increase for input luminance of 128 (increase is
-        idle with LUMx = 16)
+      description: Current luminance increase for input luminance of 128 (increase
+        is idle with LUMx = 16)
     - name: LUM3
       bit_offset: 9
       bit_size: 6
-      description: Current luminance increase for input luminance of 96 (increase is
-        idle with LUMx = 16)
+      description: Current luminance increase for input luminance of 96 (increase
+        is idle with LUMx = 16)
     - name: LUM2
       bit_offset: 17
       bit_size: 6
-      description: Current luminance increase for input luminance of 64 (increase is
-        idle with LUMx = 16)
+      description: Current luminance increase for input luminance of 64 (increase
+        is idle with LUMx = 16)
     - name: LUM1
       bit_offset: 25
       bit_size: 6
-      description: Current luminance increase for input luminance of 32 (increase is
-        idle with LUMx = 16)
+      description: Current luminance increase for input luminance of 32 (increase
+        is idle with LUMx = 16)
 fieldset/DCMIPP_P1CCTCR3:
   description: ''
   fields:
     - name: LUM8
       bit_offset: 1
       bit_size: 6
-      description: Luminance increase for input luminance of 256 (increase is idle with
-        LUMx = 16)
+      description: Luminance increase for input luminance of 256 (increase is idle
+        with LUMx = 16)
     - name: LUM7
       bit_offset: 9
       bit_size: 6
-      description: Luminance increase for input luminance of 224 (increase is idle with
-        LUMx = 16)
+      description: Luminance increase for input luminance of 224 (increase is idle
+        with LUMx = 16)
     - name: LUM6
       bit_offset: 17
       bit_size: 6
-      description: Luminance increase for input luminance of 192 (increase is idle with
-        LUMx = 16)
+      description: Luminance increase for input luminance of 192 (increase is idle
+        with LUMx = 16)
     - name: LUM5
       bit_offset: 25
       bit_size: 6
-      description: Luminance increase for input luminance of 160 (increase is idle with
-        LUMx = 16)
+      description: Luminance increase for input luminance of 160 (increase is idle
+        with LUMx = 16)
 fieldset/DCMIPP_P1CFCTCR:
   description: ''
   fields:
@@ -3226,10 +3236,6 @@ fieldset/DCMIPP_P2CFSCR:
       bit_offset: 31
       bit_size: 1
       description: Current activation of PipeN
-    - name: DTIDA
-      bit_offset: 0
-      bit_size: 6
-      description: Current data type ID
 fieldset/DCMIPP_P2CFCTCR:
   description: ''
   fields:
@@ -3447,7 +3453,8 @@ fieldset/DCMIPP_IPIDR:
     - name: IDR
       bit_offset: 0
       bit_size: 32
-      description: Parallel camera interface (DCMI) and optional pixel processing (PP)
+      description: Parallel camera interface (DCMI) and optional pixel processing
+        (PP)
 fieldset/DCMIPP_SIDR:
   description: ''
   fields:

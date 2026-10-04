@@ -4,15 +4,19 @@ block/CA35SYSCFG:
     - name: ETR_LPI_CR
       byte_offset: 0
       description: CA35SS ETR low-power interface control register
+      fieldset: CA35SYSCFG_ETR_LPI_CR
     - name: ETR_LPI_SR
       byte_offset: 4
       description: CA35SS ETR low-power interface status register
+      fieldset: CA35SYSCFG_ETR_LPI_SR
     - name: STM_NSGUAREN_CR
       byte_offset: 8
       description: CA35SS STM non-secure guaranteed access register
+      fieldset: CA35SYSCFG_STM_NSGUAREN_CR
     - name: TRACE_CLK_DIV_CR
       byte_offset: 12
       description: CA35SS TPIU export clock divider register
+      fieldset: CA35SYSCFG_TRACE_CLK_DIV_CR
     - name: DBGPWR_CR
       byte_offset: 16
       description: CA35SS Cortex-A35 core debug power mode register
@@ -28,6 +32,7 @@ block/CA35SYSCFG:
     - name: EDBGACK_SR
       byte_offset: 28
       description: CA35SS Cortex-A35 debug mode status register
+      fieldset: CA35SYSCFG_EDBGACK_SR
     - name: AARCH_MODE_CR
       byte_offset: 128
       description: CA35SS architecture mode register
@@ -39,9 +44,11 @@ block/CA35SYSCFG:
     - name: M33_ACCESS_CR
       byte_offset: 136
       description: Cortex-M33 boot register access rights register
+      fieldset: CA35SYSCFG_M33_ACCESS_CR
     - name: M33_TZEN_CR
       byte_offset: 160
       description: Cortex-M33 secure extension enable register
+      fieldset: CA35SYSCFG_M33_TZEN_CR
     - name: M33_INITSVTOR_CR
       byte_offset: 164
       description: Cortex-M33 secure vector address register
@@ -62,6 +69,31 @@ block/CA35SYSCFG:
       byte_offset: 508
       description: CA35SS Size ID register
       fieldset: CA35SYSCFG_SIDR
+fieldset/CA35SYSCFG_ETR_LPI_CR:
+  description: ''
+  fields:
+    - name: ETR_CSYSREQ
+      bit_offset: 0
+      bit_size: 1
+fieldset/CA35SYSCFG_ETR_LPI_SR:
+  description: ''
+  fields:
+    - name: ETR_CSYSACK
+      bit_offset: 0
+      bit_size: 1
+fieldset/CA35SYSCFG_STM_NSGUAREN_CR:
+  description: ''
+  fields:
+    - name: STM_NSGUAREN
+      bit_offset: 0
+      bit_size: 1
+fieldset/CA35SYSCFG_TRACE_CLK_DIV_CR:
+  description: ''
+  fields:
+    - name: TRACE_CLK_DIV_VALUE
+      bit_offset: 0
+      bit_size: 6
+      description: '0x1 to 0x3F: Divider ratio from 2 to 64'
 fieldset/CA35SYSCFG_DBGPWR_CR:
   description: ''
   fields:
@@ -92,6 +124,15 @@ fieldset/CA35SYSCFG_DBGPWR_SR:
     - name: DBGPWRUPREQ1
       bit_offset: 3
       bit_size: 1
+fieldset/CA35SYSCFG_EDBGACK_SR:
+  description: ''
+  fields:
+    - name: DBGACK_C0
+      bit_offset: 0
+      bit_size: 1
+    - name: DBGACK_C1
+      bit_offset: 1
+      bit_size: 1
 fieldset/CA35SYSCFG_AARCH_MODE_CR:
   description: ''
   fields:
@@ -106,6 +147,21 @@ fieldset/CA35SYSCFG_VBAR_CR:
       bit_size: 30
       description: Set the value of reset vector at the boundaries of the Cortex-A35
         cores
+fieldset/CA35SYSCFG_M33_ACCESS_CR:
+  description: ''
+  fields:
+    - name: M33CFG_SEC
+      bit_offset: 0
+      bit_size: 1
+    - name: M33CFG_PRIV
+      bit_offset: 1
+      bit_size: 1
+fieldset/CA35SYSCFG_M33_TZEN_CR:
+  description: ''
+  fields:
+    - name: CFG_SECEXT
+      bit_offset: 0
+      bit_size: 1
 fieldset/CA35SYSCFG_M33_INITSVTOR_CR:
   description: ''
   fields:

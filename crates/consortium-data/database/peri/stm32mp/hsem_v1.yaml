@@ -220,10 +220,6 @@ fieldset/HSEM_C1IER:
       bit_offset: 0
       bit_size: 1
       description: semaphore 0 , interrupt 0 enable bit.
-    - name: ISE1
-      bit_offset: 1
-      bit_size: 1
-      description: semaphore 1 , interrupt 0 enable bit.
     - name: ISE2
       bit_offset: 2
       bit_size: 1
@@ -331,8 +327,8 @@ fieldset/HSEM_SC1MISR:
     - name: SMISF
       bit_offset: 0
       bit_size: 16
-      description: Secure masked interrupt(n) semaphore x status bit after enable (mask).
-        (x = 0 to 15)
+      description: Secure masked interrupt(n) semaphore x status bit after enable
+        (mask). (x = 0 to 15)
 fieldset/HSEM_SECCFGR:
   description: ''
   fields:
@@ -420,6 +416,10 @@ fieldset/HSEM_G0CIDCFGR:
       bit_offset: 0
       bit_size: 1
       description: Semaphore group p global CID filtering enable.
+    - name: SEM_WLIST_C
+      bit_offset: 16
+      bit_size: 3
+      description: Semaphore group p CID filtering enable.
 fieldset/HSEM_G1CIDCFGR:
   description: ''
   fields:
@@ -427,6 +427,10 @@ fieldset/HSEM_G1CIDCFGR:
       bit_offset: 0
       bit_size: 1
       description: Semaphore group p global CID filtering enable.
+    - name: SEM_WLIST_C
+      bit_offset: 16
+      bit_size: 3
+      description: Semaphore group p CID filtering enable.
 fieldset/HSEM_G2CIDCFGR:
   description: ''
   fields:
@@ -434,6 +438,10 @@ fieldset/HSEM_G2CIDCFGR:
       bit_offset: 0
       bit_size: 1
       description: Semaphore group p global CID filtering enable.
+    - name: SEM_WLIST_C
+      bit_offset: 16
+      bit_size: 3
+      description: Semaphore group p CID filtering enable.
 fieldset/HSEM_G3CIDCFGR:
   description: ''
   fields:
@@ -441,6 +449,10 @@ fieldset/HSEM_G3CIDCFGR:
       bit_offset: 0
       bit_size: 1
       description: Semaphore group p global CID filtering enable.
+    - name: SEM_WLIST_C
+      bit_offset: 16
+      bit_size: 3
+      description: Semaphore group p CID filtering enable.
 fieldset/HSEM_HWCFGR2:
   description: ''
   fields:
@@ -470,8 +482,12 @@ fieldset/HSEM_HWCFGR1:
     - name: NBINT
       bit_offset: 8
       bit_size: 4
-      description: Hardware configuration number of interrupts/supported number of master
-        ID
+      description: Hardware configuration number of interrupts/supported number of
+        master ID
+    - name: CID_WIDTH
+      bit_offset: 12
+      bit_size: 4
+      description: Hardware Configuration compartment isolation bus width
     - name: SECEN
       bit_offset: 16
       bit_size: 1

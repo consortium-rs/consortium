@@ -8,6 +8,7 @@ block/SYSCFG:
     - name: BOOTCR
       byte_offset: 4
       description: SYSCFG Boot pins control register
+      fieldset: SYSCFG_BOOTCR
     - name: DLYBSD1CR
       byte_offset: 1024
       description: SYSCFG DLYBSD1 control register
@@ -19,6 +20,7 @@ block/SYSCFG:
     - name: SDMMC1CR
       byte_offset: 1032
       description: SYSCFG SDMMC1 control register
+      fieldset: SYSCFG_SDMMC1CR
     - name: DLYBSD2CR
       byte_offset: 2048
       description: SYSCFG DLYBSD2 control register
@@ -30,6 +32,7 @@ block/SYSCFG:
     - name: SDMMC2CR
       byte_offset: 2056
       description: SYSCFG SDMMC2 control register
+      fieldset: SYSCFG_SDMMC2CR
     - name: DLYBSD3CR
       byte_offset: 3072
       description: SYSCFG DLYBSD3 control register
@@ -57,6 +60,7 @@ block/SYSCFG:
     - name: VDERAMCR
       byte_offset: 6144
       description: SYSCFG Video decoder encoder RAM control register
+      fieldset: SYSCFG_VDERAMCR
     - name: POTTAMPRSTCR
       byte_offset: 6148
       description: SYSCFG Potential tamper reset control register
@@ -68,24 +72,30 @@ block/SYSCFG:
     - name: ICNQPCR1
       byte_offset: 8192
       description: SYSCFG ICN QOS priority control register 1
+      fieldset: SYSCFG_ICNQPCR1
     - name: ICNQPCR2
       byte_offset: 8196
       description: SYSCFG ICN QOS priority control register 2
+      fieldset: SYSCFG_ICNQPCR2
     - name: ICNEWRCR
       byte_offset: 8200
       description: SYSCFG ICN early write response control register
+      fieldset: SYSCFG_ICNEWRCR
     - name: ICNCGCR
       byte_offset: 8204
       description: SYSCFG ICN clock gating control register
+      fieldset: SYSCFG_ICNCGCR
     - name: ICNGPUBWLCR
       byte_offset: 8208
       description: SYSCFG ICN GPU bandwidth limiter control register
     - name: ICNE2EBWRCR
       byte_offset: 8212
       description: SYSCFG ICN end-to-end bandwidth regulation control register
+      fieldset: SYSCFG_ICNE2EBWRCR
     - name: SAFERSTCR
       byte_offset: 8216
       description: SYSCFG safe reset control register
+      fieldset: SYSCFG_SAFERSTCR
     - name: ICNPCIBWLCR
       byte_offset: 8220
       description: SYSCFG ICN PCI bandwidth limiter control register
@@ -114,6 +124,7 @@ block/SYSCFG:
     - name: USB2PHY1BCCR
       byte_offset: 9220
       description: SYSCFG USB2PHY1 battery charging control register
+      fieldset: SYSCFG_USB2PHY1BCCR
     - name: USB2PHY1BCSR
       byte_offset: 9224
       description: SYSCFG USB2PHY1 battery charging status register
@@ -129,6 +140,7 @@ block/SYSCFG:
     - name: USBHCR
       byte_offset: 9248
       description: SYSCFG USBH control register
+      fieldset: SYSCFG_USBHCR
     - name: USB2PHY2CR
       byte_offset: 10240
       description: SYSCFG USB2PHY2 control register
@@ -144,21 +156,27 @@ block/SYSCFG:
     - name: OCTOSPIAMCR
       byte_offset: 11264
       description: SYSCFG OCTOSPI address mapping control register
+      fieldset: SYSCFG_OCTOSPIAMCR
     - name: ETH1CR
       byte_offset: 12288
       description: SYSCFG Ethernet1 control register
+      fieldset: SYSCFG_ETH1CR
     - name: ETH1SR
       byte_offset: 12304
       description: SYSCFG Ethernet1 status register
+      fieldset: SYSCFG_ETH1SR
     - name: ETH2CR
       byte_offset: 13312
       description: SYSCFG Ethernet2 configuration register
+      fieldset: SYSCFG_ETH2CR
     - name: ETH2SR
       byte_offset: 13328
       description: SYSCFG Ethernet2 status register
+      fieldset: SYSCFG_ETH2SR
     - name: ETHSWCR
       byte_offset: 14336
       description: SYSCFG Ethernet switch configuration register
+      fieldset: SYSCFG_ETHSWCR
     - name: VDDIO3CCCR
       byte_offset: 16384
       description: SYSCFG VDDIO3 compensation cell control register
@@ -206,54 +224,71 @@ block/SYSCFG:
     - name: USB3DRCR
       byte_offset: 18432
       description: SYSCFG USB3DR control register
+      fieldset: SYSCFG_USB3DRCR
     - name: USB3DRSR
       byte_offset: 18436
       description: SYSCFG USB3DR status register
+      fieldset: SYSCFG_USB3DRSR
     - name: COMBOPHYCR1
       byte_offset: 19456
       description: SYSCFG COMBOPHY control register 1
+      fieldset: SYSCFG_COMBOPHYCR1
     - name: COMBOPHYCR2
       byte_offset: 19460
       description: SYSCFG COMBOPHY control register 2
+      fieldset: SYSCFG_COMBOPHYCR2
     - name: COMBOPHYCR3
       byte_offset: 19464
       description: SYSCFG COMBOPHY control register 3
+      fieldset: SYSCFG_COMBOPHYCR3
     - name: COMBOPHYCR4
       byte_offset: 19468
       description: SYSCFG COMBOPHY control register 4
+      fieldset: SYSCFG_COMBOPHYCR4
     - name: COMBOPHYCR5
       byte_offset: 19472
       description: SYSCFG COMBOPHY control register 5
+      fieldset: SYSCFG_COMBOPHYCR5
     - name: COMBOPHYSR
       byte_offset: 19476
       description: SYSCFG COMBOPHY status register
+      fieldset: SYSCFG_COMBOPHYSR
     - name: DISPLAYCLKCR
       byte_offset: 20480
       description: SYSCFG display clock control register
+      fieldset: SYSCFG_DISPLAYCLKCR
     - name: PCIECR
       byte_offset: 24576
       description: SYSCFG PCIE control register
+      fieldset: SYSCFG_PCIECR
     - name: PCIEPMEMSICR
       byte_offset: 24580
       description: SYSCFG PCIE CFG_PME_MSI control register
+      fieldset: SYSCFG_PCIEPMEMSICR
     - name: PCIEAERRCMSICR
       byte_offset: 24584
       description: SYSCFG PCIE CFG_AER_RC_ERR_MSI control register
+      fieldset: SYSCFG_PCIEAERRCMSICR
     - name: PCIESYSRCCR
       byte_offset: 24588
       description: SYSCFG PCIE CFG_SYS_ERR_RC control register
+      fieldset: SYSCFG_PCIESYSRCCR
     - name: PCIEPTMIRQCR
       byte_offset: 24592
       description: SYSCFG PCIE PTM interrupt control register
+      fieldset: SYSCFG_PCIEPTMIRQCR
     - name: PCIEPRGCR
       byte_offset: 24704
       description: SYSCFG PCIE PRG control register
+      fieldset: SYSCFG_PCIEPRGCR
     - name: PCIESR1
       byte_offset: 24832
       description: SYSCFG PCIE status register 1
+      fieldset: SYSCFG_PCIESR1
     - name: PCIESR2
       byte_offset: 24836
       description: SYSCFG PCIE interrupt status register 2
+      fieldset: SYSCFG_PCIESR2
     - name: IDC
       byte_offset: 25600
       description: SYSCFG device ID register
@@ -288,6 +323,25 @@ fieldset/SYSCFG_BOOTSR:
       bit_offset: 3
       bit_size: 1
       description: BOOT3 pin value
+fieldset/SYSCFG_BOOTCR:
+  description: ''
+  fields:
+    - name: BOOT0_PD
+      bit_offset: 0
+      bit_size: 1
+      description: BOOT0 pin pull-down disable
+    - name: BOOT1_PD
+      bit_offset: 1
+      bit_size: 1
+      description: BOOT1 pin pull-down disable
+    - name: BOOT2_PD
+      bit_offset: 2
+      bit_size: 1
+      description: BOOT2 pin pull-down disable
+    - name: BOOT3_PD
+      bit_offset: 3
+      bit_size: 1
+      description: BOOT3 pin pull-down disable
 fieldset/SYSCFG_DLYBSD1CR:
   description: ''
   fields:
@@ -295,6 +349,22 @@ fieldset/SYSCFG_DLYBSD1CR:
       bit_offset: 0
       bit_size: 1
       description: When 1, DLL is enabled
+    - name: RX_TAP_SEL
+      bit_offset: 1
+      bit_size: 6
+      description: selection of TAP number for RX clock
+    - name: BYP_EN
+      bit_offset: 16
+      bit_size: 1
+      description: When 1, DLL bypass mode is enabled
+    - name: BYP_CMD
+      bit_offset: 17
+      bit_size: 5
+      description: value of the delay unit when in DLL bypass mode
+    - name: ANTIGLITCH_EN
+      bit_offset: 22
+      bit_size: 1
+      description: When 1, the anti-glitch logic is enabled
 fieldset/SYSCFG_DLYBSD1SR:
   description: ''
   fields:
@@ -302,6 +372,22 @@ fieldset/SYSCFG_DLYBSD1SR:
       bit_offset: 0
       bit_size: 1
       description: When 1, DLL is locked
+    - name: RX_TAP_SEL_ACK
+      bit_offset: 1
+      bit_size: 1
+      description: "When \xE2\x80\x981\xE2\x80\x98, the RX delay has switched to the\
+        \ tap value specified in RX_TAP_SEL[5:0]"
+fieldset/SYSCFG_SDMMC1CR:
+  description: ''
+  fields:
+    - name: SDMMC1_VSEL
+      bit_offset: 0
+      bit_size: 1
+      description: Voltage Selection
+    - name: HSLVEN_SDMMC1
+      bit_offset: 1
+      bit_size: 1
+      description: High Speed Low Voltage Pad mode Enable
 fieldset/SYSCFG_DLYBSD2CR:
   description: ''
   fields:
@@ -309,6 +395,22 @@ fieldset/SYSCFG_DLYBSD2CR:
       bit_offset: 0
       bit_size: 1
       description: When 1, DLL is enabled
+    - name: RX_TAP_SEL
+      bit_offset: 1
+      bit_size: 6
+      description: selection of TAP delay for RX clock
+    - name: BYP_EN
+      bit_offset: 16
+      bit_size: 1
+      description: When 1, DLL bypass mode is enabled
+    - name: BYP_CMD
+      bit_offset: 17
+      bit_size: 5
+      description: value of the delay unit when in DLL bypass mode
+    - name: ANTIGLITCH_EN
+      bit_offset: 22
+      bit_size: 1
+      description: When 1, the anti-glitch logic is enabled
 fieldset/SYSCFG_DLYBSD2SR:
   description: ''
   fields:
@@ -316,6 +418,22 @@ fieldset/SYSCFG_DLYBSD2SR:
       bit_offset: 0
       bit_size: 1
       description: When 1, DLL is locked
+    - name: RX_TAP_SEL_ACK
+      bit_offset: 1
+      bit_size: 1
+      description: "When \xE2\x80\x981\xE2\x80\x98, the RX delay has switched to the\
+        \ tap value specified in RX_TAP_SEL[5:0]"
+fieldset/SYSCFG_SDMMC2CR:
+  description: ''
+  fields:
+    - name: SDMMC2_VSEL
+      bit_offset: 0
+      bit_size: 1
+      description: Voltage Selection
+    - name: HSLVEN_SDMMC2
+      bit_offset: 1
+      bit_size: 1
+      description: High Speed Low Voltage Pad mode Enable
 fieldset/SYSCFG_DLYBSD3CR:
   description: ''
   fields:
@@ -323,6 +441,22 @@ fieldset/SYSCFG_DLYBSD3CR:
       bit_offset: 0
       bit_size: 1
       description: When 1, DLL is enabled
+    - name: RX_TAP_SEL
+      bit_offset: 1
+      bit_size: 6
+      description: selection of TAP delay for RX clock
+    - name: BYP_EN
+      bit_offset: 16
+      bit_size: 1
+      description: When 1, DLL bypass mode is enabled
+    - name: BYP_CMD
+      bit_offset: 17
+      bit_size: 5
+      description: value of the delay unit when in DLL bypass mode
+    - name: ANTIGLITCH_EN
+      bit_offset: 22
+      bit_size: 1
+      description: When 1, the anti-glitch logic is enabled
 fieldset/SYSCFG_DLYBSD3SR:
   description: ''
   fields:
@@ -330,6 +464,11 @@ fieldset/SYSCFG_DLYBSD3SR:
       bit_offset: 0
       bit_size: 1
       description: When 1, DLL is locked
+    - name: RX_TAP_SEL_ACK
+      bit_offset: 1
+      bit_size: 1
+      description: "When \xE2\x80\x981\xE2\x80\x98, the RX delay has switched to the\
+        \ tap value specified in RX_TAP_SEL[5:0]"
 fieldset/SYSCFG_DLYBOS1CR:
   description: ''
   fields:
@@ -337,6 +476,22 @@ fieldset/SYSCFG_DLYBOS1CR:
       bit_offset: 0
       bit_size: 1
       description: When 1, DLL is enabled
+    - name: RX_TAP_SEL
+      bit_offset: 1
+      bit_size: 6
+      description: selection of TAP delay for RX clock
+    - name: TX_TAP_SEL
+      bit_offset: 7
+      bit_size: 6
+      description: selection of TAP delay for TX clock
+    - name: BYP_EN
+      bit_offset: 16
+      bit_size: 1
+      description: When 1, DLL bypass mode is enabled
+    - name: BYP_CMD
+      bit_offset: 17
+      bit_size: 5
+      description: value of the delay unit when in DLL bypass mode
 fieldset/SYSCFG_DLYBOS1SR:
   description: ''
   fields:
@@ -344,6 +499,16 @@ fieldset/SYSCFG_DLYBOS1SR:
       bit_offset: 0
       bit_size: 1
       description: When 1, DLL is locked
+    - name: RX_TAP_SEL_ACK
+      bit_offset: 1
+      bit_size: 1
+      description: "When \xE2\x80\x981\xE2\x80\x98, the RX delay has switched to the\
+        \ tap value specified in RX_TAP_SEL[5:0]"
+    - name: TX_TAP_SEL_ACK
+      bit_offset: 2
+      bit_size: 1
+      description: "When \xE2\x80\x981\xE2\x80\x98, the TX delay has switched to the\
+        \ tap value specified in TX_TAP_SEL[5:0]"
 fieldset/SYSCFG_DLYBOS2CR:
   description: ''
   fields:
@@ -351,6 +516,22 @@ fieldset/SYSCFG_DLYBOS2CR:
       bit_offset: 0
       bit_size: 1
       description: When 1, DLL is enabled
+    - name: RX_TAP_SEL
+      bit_offset: 1
+      bit_size: 6
+      description: selection of TAP delay for RX clock
+    - name: TX_TAP_SEL
+      bit_offset: 7
+      bit_size: 6
+      description: selection of TAP delay for TX clock
+    - name: BYP_EN
+      bit_offset: 16
+      bit_size: 1
+      description: DLL bypass mode is enabled
+    - name: BYP_CMD
+      bit_offset: 17
+      bit_size: 5
+      description: value of the delay unit when in DLL bypass mode
 fieldset/SYSCFG_DLYBOS2SR:
   description: ''
   fields:
@@ -358,17 +539,38 @@ fieldset/SYSCFG_DLYBOS2SR:
       bit_offset: 0
       bit_size: 1
       description: When 1, DLL is locked
+    - name: RX_TAP_SEL_ACK
+      bit_offset: 1
+      bit_size: 1
+      description: "When \xE2\x80\x981\xE2\x80\x98, the RX delay has switched to the\
+        \ tap value specified in RX_TAP_SEL[5:0]"
+    - name: TX_TAP_SEL_ACK
+      bit_offset: 2
+      bit_size: 1
+      description: "When \xE2\x80\x981\xE2\x80\x98, the TX delay has switched to the\
+        \ tap value specified in TX_TAP_SEL[5:0]"
+fieldset/SYSCFG_VDERAMCR:
+  description: ''
+  fields:
+    - name: VDERAM_EN
+      bit_offset: 0
+      bit_size: 1
+      description: VDEC / VENC RAM enable
 fieldset/SYSCFG_POTTAMPRSTCR:
   description: ''
   fields:
     - name: POTTAMPRESETMASK
       bit_offset: 0
       bit_size: 1
-      description: This bit can be set by software to mask PKA, SAES, CRYP1/2 and HASH
-        reset in case of potential tamp
+      description: This bit can be set by software to mask PKA, SAES, CRYP1/2 and
+        HASH reset in case of potential tamp
 fieldset/SYSCFG_M33SSCR:
   description: ''
   fields:
+    - name: FPU_IT_EN
+      bit_offset: 0
+      bit_size: 6
+      description: Floating point unit interrupts enable bits
     - name: LOCKSVTAIRCR
       bit_offset: 16
       bit_size: 1
@@ -389,6 +591,170 @@ fieldset/SYSCFG_M33SSCR:
       bit_offset: 20
       bit_size: 1
       description: Prevent changes to Secure SAU memory regions already programmed
+fieldset/SYSCFG_ICNQPCR1:
+  description: ''
+  fields:
+    - name: A35_QOS
+      bit_offset: 0
+      bit_size: 4
+      description: A35 Read / Write channels QoS setting
+    - name: TRACE_QOS
+      bit_offset: 4
+      bit_size: 4
+      description: TRACE Read / Write channels QoS setting
+    - name: HPDMA1_QOS
+      bit_offset: 8
+      bit_size: 4
+      description: HPDMA1 Read / Write channels QoS setting
+    - name: HPDMA2_QOS
+      bit_offset: 12
+      bit_size: 4
+      description: HPDMA2 Read / Write channels QoS setting
+    - name: HPDMA3_QOS
+      bit_offset: 16
+      bit_size: 4
+      description: HPDMA3 Read / Write channels QoS setting
+    - name: SDMMC1_QOS
+      bit_offset: 20
+      bit_size: 4
+      description: SDMMC1 Read / Write channels QoS setting
+    - name: SDMMC2_QOS
+      bit_offset: 24
+      bit_size: 4
+      description: SDMMC2 Read / Write channels QoS setting
+    - name: SDMMC3_QOS
+      bit_offset: 28
+      bit_size: 4
+      description: SDMMC3 Read / Write channels QoS setting
+fieldset/SYSCFG_ICNQPCR2:
+  description: ''
+  fields:
+    - name: USBH_QOS
+      bit_offset: 0
+      bit_size: 4
+      description: USBH Read / Write channels QoS setting
+    - name: USB3DR_QOS
+      bit_offset: 4
+      bit_size: 4
+      description: USB3DR Read / Write channels QoS setting
+    - name: PCIE_QOS
+      bit_offset: 8
+      bit_size: 4
+      description: PCIe Read / Write channels QoS setting
+    - name: DCMIPP_QOS
+      bit_offset: 12
+      bit_size: 4
+      description: DCMIPP Write channel QoS setting
+    - name: LTDC_QOS
+      bit_offset: 16
+      bit_size: 4
+      description: LTDC Read / Write channels QoS setting
+    - name: VENC_QOS
+      bit_offset: 20
+      bit_size: 4
+      description: VENC Read / Write channels QoS setting
+    - name: VDEC_QOS
+      bit_offset: 24
+      bit_size: 4
+      description: VDEC Read / Write channels QoS setting
+    - name: GPU_QOS
+      bit_offset: 28
+      bit_size: 4
+      description: GPU Read / Write channels QoS setting
+fieldset/SYSCFG_ICNEWRCR:
+  description: ''
+  fields:
+    - name: USB2_EARLY_WR_RSP_ENABLE
+      bit_offset: 0
+      bit_size: 1
+      description: USB2 early write response enable
+    - name: SDMMC1_EARLY_WR_RSP_ENABLE
+      bit_offset: 1
+      bit_size: 1
+      description: SDMMC1 early write response enable
+    - name: SDMMC2_EARLY_WR_RSP_ENABLE
+      bit_offset: 2
+      bit_size: 1
+      description: SDMMC2 early write response enable
+    - name: SDMMC3_EARLY_WR_RSP_ENABLE
+      bit_offset: 3
+      bit_size: 1
+      description: SDMMC3 early write response enable
+fieldset/SYSCFG_ICNCGCR:
+  description: ''
+  fields:
+    - name: ALWAYS_ON_CLK_ICN_DDR
+      bit_offset: 0
+      bit_size: 1
+      description: "When set to \xE2\x80\x981\xE2\x80\x98, ICN automatic clock gating\
+        \ on clk_icn_ddr domain is OFF"
+    - name: ALWAYS_ON_CLK_ICN_DISPLAY
+      bit_offset: 1
+      bit_size: 1
+      description: "When set to \xE2\x80\x981\xE2\x80\x98, ICN automatic clock gating\
+        \ on clk_icn_display domain is OFF"
+    - name: ALWAYS_ON_CLK_ICN_HSL
+      bit_offset: 2
+      bit_size: 1
+      description: "When set to \xE2\x80\x981\xE2\x80\x98, ICN automatic clock gating\
+        \ on clk_icn_hsl domain is OFF"
+    - name: ALWAYS_ON_CLK_ICN_MCU
+      bit_offset: 3
+      bit_size: 1
+      description: "When set to \xE2\x80\x981\xE2\x80\x98, ICN automatic clock gating\
+        \ on clk_icn_mcu domain is OFF"
+    - name: ALWAYS_ON_CLK_ICN_SYSATB
+      bit_offset: 4
+      bit_size: 1
+      description: "When set to \xE2\x80\x981\xE2\x80\x98, ICN automatic clock gating\
+        \ on clk_icn_sysatb domain is OFF"
+    - name: ALWAYS_ON_CLK_ICN_SDMMC
+      bit_offset: 5
+      bit_size: 1
+      description: "When set to \xE2\x80\x981\xE2\x80\x98, ICN automatic clock gating\
+        \ on clk_icn_sdmmc domain is OFF"
+    - name: ALWAYS_ON_CLK_ICN_BUSPERFM
+      bit_offset: 6
+      bit_size: 1
+      description: "When set to \xE2\x80\x981\xE2\x80\x98, ICN automatic clock gating\
+        \ on clk_icn_busperfm domain is OFF"
+    - name: ALWAYS_ON_CLK_ICN_VID
+      bit_offset: 7
+      bit_size: 1
+      description: "When set to \xE2\x80\x981\xE2\x80\x98, ICN automatic clock gating\
+        \ on clk_icn_vid domain is OFF"
+fieldset/SYSCFG_ICNE2EBWRCR:
+  description: ''
+  fields:
+    - name: CFG_ENABLE
+      bit_offset: 0
+      bit_size: 1
+      description: Activates the End-to-end Bandwidth Regulation of the SoC
+    - name: CFG_MODEL
+      bit_offset: 1
+      bit_size: 2
+      description: Defines the reactivity of the feedback of the Regulation
+    - name: CFG_ALL_TGT
+      bit_offset: 4
+      bit_size: 3
+      description: Defines the Amount of Empty CAM Slots (in the DDR-CTRL), that the
+        Regulation targets
+    - name: CFG_CPU1_BW
+      bit_offset: 8
+      bit_size: 1
+      description: Allows to triple the Bandwidth allowed to the CPU1 by the Regulation
+    - name: CFG_HPDMA_BW
+      bit_offset: 9
+      bit_size: 1
+      description: Allows to triple the Bandwidth allowed to the HPDMA1/2/3 by the
+        Regulation
+fieldset/SYSCFG_SAFERSTCR:
+  description: ''
+  fields:
+    - name: CFG_ENABLE
+      bit_offset: 0
+      bit_size: 1
+      description: Activates Safe Reset connector of the SoC
 fieldset/SYSCFG_USB2PHY1CR:
   description: ''
   fields:
@@ -408,14 +774,33 @@ fieldset/SYSCFG_USB2PHY1CR:
       bit_offset: 4
       bit_size: 3
       description: 'PHY refclk speed setting:'
+fieldset/SYSCFG_USB2PHY1BCCR:
+  description: ''
+  fields:
+    - name: H_CDPEN
+      bit_offset: 0
+      bit_size: 1
+      description: Enable CDP behavior for Host port
+    - name: H_CDPDETEN
+      bit_offset: 1
+      bit_size: 1
+      description: Enable of voltage detector on DP for CDP port
+    - name: H_VDMSRCEN
+      bit_offset: 2
+      bit_size: 1
+      description: Enable of voltage source on DM for CDP port
+    - name: H_FORCEBCMODE
+      bit_offset: 3
+      bit_size: 1
+      description: Forces USB2PHY1 in non-driving, suspend mode
 fieldset/SYSCFG_USB2PHY1BCSR:
   description: ''
   fields:
     - name: CHGDET
       bit_offset: 0
       bit_size: 1
-      description: Comparison of voltage on DP with VDAT_REF threshold as defined in
-        BC v1
+      description: Comparison of voltage on DP with VDAT_REF threshold as defined
+        in BC v1
     - name: FSVPLUS
       bit_offset: 1
       bit_size: 1
@@ -484,6 +869,17 @@ fieldset/SYSCFG_USB2PHY1TRIM2CR:
       bit_offset: 2
       bit_size: 1
       description: HS Transmitter Pre Emphasis Duration Control
+fieldset/SYSCFG_USBHCR:
+  description: ''
+  fields:
+    - name: USBH_OVRCUR_POLARITY
+      bit_offset: 0
+      bit_size: 1
+      description: 'Polarity of USBH_OVRCUR alternate function:'
+    - name: USBH_VBUSEN_POLARITY
+      bit_offset: 1
+      bit_size: 1
+      description: 'Polarity of USBH_VBUSEN alternate function:'
 fieldset/SYSCFG_USB2PHY2CR:
   description: ''
   fields:
@@ -513,6 +909,10 @@ fieldset/SYSCFG_USB2PHY2CR:
       bit_size: 1
       description: Voltage comparison result when an external voltage comparator is
         used
+    - name: FILTER_BYPASS
+      bit_offset: 7
+      bit_size: 4
+      description: Internal debounce logic is enabled (default)
     - name: USB2PHY2SEL
       bit_offset: 12
       bit_size: 3
@@ -583,6 +983,92 @@ fieldset/SYSCFG_USB2PHY2TRIM2CR:
       bit_offset: 2
       bit_size: 1
       description: HS Transmitter Pre Emphasis Duration Control
+fieldset/SYSCFG_OCTOSPIAMCR:
+  description: ''
+  fields:
+    - name: OCTOSPI_ADDRESS_MAPPING
+      bit_offset: 0
+      bit_size: 3
+      description: OCTOSPI1 and OCTOSPI2 address mapping
+fieldset/SYSCFG_ETH1CR:
+  description: ''
+  fields:
+    - name: ETH1_REF_CLK_SEL
+      bit_offset: 0
+      bit_size: 1
+      description: Ethernet reference / RX clock selection
+    - name: ETH1_CLK_SEL
+      bit_offset: 1
+      bit_size: 1
+      description: RGMII 125MHz clock selection
+    - name: ETH1_PTP_CLK_SEL
+      bit_offset: 2
+      bit_size: 1
+      description: PTP (IEEE1588) clock selection
+    - name: ETH1_SEL
+      bit_offset: 4
+      bit_size: 3
+      description: Ethernet 1 PHY interface selection
+fieldset/SYSCFG_ETH1SR:
+  description: ''
+  fields:
+    - name: ETH1_TX_CLK_GATING_CTRL
+      bit_offset: 0
+      bit_size: 1
+      description: Asserted when the MAC has entered Tx LPI mode
+    - name: ETH1_PWR_DOWN_ACK
+      bit_offset: 1
+      bit_size: 1
+      description: Asserted when the power-down sequence start has been acknowledged
+fieldset/SYSCFG_ETH2CR:
+  description: ''
+  fields:
+    - name: ETH2_REF_CLK_SEL
+      bit_offset: 0
+      bit_size: 1
+      description: Reference/RX clock selection
+    - name: ETH2_CLK_SEL
+      bit_offset: 1
+      bit_size: 1
+      description: RGMII 125MHz clock selection
+    - name: ETH2_PTP_CLK_SEL
+      bit_offset: 2
+      bit_size: 1
+      description: PTP (IEEE1588) clock selection
+    - name: ETH2_SEL
+      bit_offset: 4
+      bit_size: 3
+      description: Ethernet 2 PHY interface selection
+fieldset/SYSCFG_ETH2SR:
+  description: ''
+  fields:
+    - name: ETH2_TX_CLK_GATING_CTRL
+      bit_offset: 0
+      bit_size: 1
+      description: Asserted when the MAC has entered Tx LPI mode
+    - name: ETH2_PWR_DOWN_ACK
+      bit_offset: 1
+      bit_size: 1
+      description: Asserted when the power-down sequence start has been acknowledged
+fieldset/SYSCFG_ETHSWCR:
+  description: ''
+  fields:
+    - name: ETH1_DIRECT
+      bit_offset: 0
+      bit_size: 1
+      description: This bit allow to bypass the Ethernet switch
+    - name: ETHSW_CFG_IF_SEL
+      bit_offset: 1
+      bit_size: 1
+      description: Select PHY interface type for external ports
+    - name: ETHSW_CLK_SEL
+      bit_offset: 2
+      bit_size: 1
+      description: Select clock source for 125 MHz
+    - name: ETHSW_REF_SEL
+      bit_offset: 3
+      bit_size: 1
+      description: Select clock source for RMII 50MHz
 fieldset/SYSCFG_VDDIO3CCCR:
   description: ''
   fields:
@@ -772,6 +1258,411 @@ fieldset/SYSCFG_CBR:
       bit_offset: 4
       bit_size: 1
       description: Retention SRAM double ECC error lock bit
+fieldset/SYSCFG_USB3DRCR:
+  description: ''
+  fields:
+    - name: USB3DR_HOST_PORT_POWER_CONTROL_PRESENT
+      bit_offset: 0
+      bit_size: 1
+      description: This port defines the bit [3] of Capability Parameters (HCCPARAMS)
+    - name: USB3DR_OVRCUR_POLARITY
+      bit_offset: 1
+      bit_size: 1
+      description: 'Polarity of USB3DR_OVRCUR alternate function:'
+    - name: USB3DR_VBUSEN_POLARITY
+      bit_offset: 2
+      bit_size: 1
+      description: 'Polarity of USB3DR_VBUSEN alternate function:'
+    - name: USB3DR_USB2ONLYH
+      bit_offset: 3
+      bit_size: 1
+      description: '- 0: USB3DR controller used in USB3 mode'
+    - name: USB3DR_USB2ONLYD
+      bit_offset: 4
+      bit_size: 1
+      description: '- 0: USB3DR controller used in USB3 mode'
+    - name: USB3DR_DEBUG_BUS_SEL
+      bit_offset: 8
+      bit_size: 3
+      description: Selection of USB3DR/USBH debug signals
+    - name: USB3DR_NOTPCIE_DEBUG_BUS
+      bit_offset: 11
+      bit_size: 1
+      description: Selection of USB3DR or PCIe debug signals
+fieldset/SYSCFG_USB3DRSR:
+  description: ''
+  fields:
+    - name: USB3DR_CLK_GATE_CTRL
+      bit_offset: 0
+      bit_size: 3
+      description: USB3DR Debug register - Clock gating control
+fieldset/SYSCFG_COMBOPHYCR1:
+  description: ''
+  fields:
+    - name: COMBOPHY_REFUSEPAD
+      bit_offset: 0
+      bit_size: 1
+      description: Selection of the source of the COMBOPHY reference clock
+    - name: COMBOPHY_MPLLMULTIPLIER
+      bit_offset: 1
+      bit_size: 7
+      description: Parameter for the frequency selection of the reference clock
+    - name: COMBOPHY_SSCREFCLKSEL
+      bit_offset: 8
+      bit_size: 9
+      description: Parameter for the frequency selection of the reference clock
+    - name: COMBOPHY_REFCLKDIV2
+      bit_offset: 17
+      bit_size: 1
+      description: Parameter for the frequency selection of the reference clock
+    - name: COMBOPHY_REFSSPEN
+      bit_offset: 18
+      bit_size: 1
+      description: Reference clock enable
+    - name: COMBOPHY_SSCEN
+      bit_offset: 19
+      bit_size: 1
+      description: Spread Spectrum enable
+    - name: COMBOPHY_SSCRANGE
+      bit_offset: 20
+      bit_size: 3
+      description: Selects the range of the Spread Spectrum modulation
+fieldset/SYSCFG_COMBOPHYCR2:
+  description: ''
+  fields:
+    - name: COMBOPHY_MODESEL
+      bit_offset: 0
+      bit_size: 2
+      description: Selection of the COMBOPHY mode
+    - name: COMBOPHY_ISO_DIS
+      bit_offset: 15
+      bit_size: 1
+      description: COMBOPHY Isolation cells disable
+    - name: COMBOPHY_TEST_POWERDOWN
+      bit_offset: 31
+      bit_size: 1
+      description: Force the entire PHY into its lowest power state by turning everything
+        off
+fieldset/SYSCFG_COMBOPHYCR3:
+  description: ''
+  fields:
+    - name: COMBOPHY_PCSRXLOSMASKVAL
+      bit_offset: 0
+      bit_size: 10
+      description: Masks the incoming LFPS for the number of reference clock cycles
+        equal to the value of this bitfiel
+    - name: COMBOPHY_PCSTXDEEMPH3P5DB
+      bit_offset: 10
+      bit_size: 6
+      description: TX De-emphasis at 3
+    - name: COMBOPHY_PCSTXDEEMPH6DB
+      bit_offset: 16
+      bit_size: 6
+      description: TX De-emphasis at 6 dB (USB3 use case)
+    - name: COMBOPHY_PCSTXSWINGFULL
+      bit_offset: 22
+      bit_size: 7
+      description: TX amplitude (full swing mode) (USB3 and PCIe use cases)
+    - name: COMBOPHY_RXLOSLFPSEN
+      bit_offset: 29
+      bit_size: 1
+      description: Enables the RX LOS LFPS mode
+    - name: COMBOPHY_RTUNE_REQ
+      bit_offset: 30
+      bit_size: 1
+      description: Instructs the combo PHY to perform a termination calibration
+fieldset/SYSCFG_COMBOPHYCR4:
+  description: ''
+  fields:
+    - name: COMBOPHY_RX0_EQ
+      bit_offset: 0
+      bit_size: 3
+      description: RX Equalizer Setting
+    - name: COMBOPHY_LOS_LEVEL
+      bit_offset: 3
+      bit_size: 5
+      description: Loss-of-Signal Detector Sensitivity Level Control
+    - name: COMBOPHY_LOS_BIAS
+      bit_offset: 8
+      bit_size: 3
+      description: Loss-of-Signal Detector Threshold Level Control
+    - name: COMBOPHY_PCS_TX_DEEMPH_GEN1
+      bit_offset: 11
+      bit_size: 6
+      description: TX De-emphasis at 3
+    - name: COMBOPHY_PCS_TX_SWING_LOW
+      bit_offset: 17
+      bit_size: 7
+      description: TX amplitude (low swing mode) (PCIe use case)
+    - name: COMBOPHY_TX_TERM_OFFSET
+      bit_offset: 24
+      bit_size: 5
+      description: Transmitter termination offset
+    - name: COMBOPHY_TX_VBOOST_LEVEL
+      bit_offset: 29
+      bit_size: 3
+      description: TX voltage boost level
+fieldset/SYSCFG_COMBOPHYCR5:
+  description: ''
+  fields:
+    - name: COMBOPHY_PCS_TX_DEEMPH_GEN2_3P5DB
+      bit_offset: 0
+      bit_size: 6
+      description: TX De-emphasis at 3
+    - name: COMBOPHY_PCS_TX_DEEMPH_GEN2_6DB
+      bit_offset: 6
+      bit_size: 6
+      description: TX De-emphasis at 6 dB (PCIe gen2 use case)
+    - name: COMBOPHY_PCS_COMMON_CLOCKS
+      bit_offset: 12
+      bit_size: 1
+      description: Select Common Clock Mode for PCIe Receive Data path
+    - name: COMBOPHY_LANE0_EXT_PCLK_REQ
+      bit_offset: 13
+      bit_size: 1
+      description: 'USB3 use case: external PIPE clock enable request'
+    - name: COMBOPHY_LANE0_TX2RX_LOOPBK
+      bit_offset: 14
+      bit_size: 1
+      description: 'USB3 use case: when this bit is equal to 1, data from the transmit
+        predriver is looped back to the'
+    - name: COMBOPHY_PIPE0_TX2RX_LOOPBK
+      bit_offset: 15
+      bit_size: 1
+      description: 'PCIe use case: when this bit is equal to 1, data from the transmit
+        predriver is looped back to the'
+fieldset/SYSCFG_COMBOPHYSR:
+  description: ''
+  fields:
+    - name: COMBOPHY_RTUNE_ACK
+      bit_offset: 0
+      bit_size: 1
+      description: Indicates the end of the termination calibration step
+    - name: COMBOPHY_PIPE0_PHYSTATUS
+      bit_offset: 1
+      bit_size: 1
+      description: 'Communicates completion of several PHY functions: pipe0_pclk is
+        up and stable, power management sta'
+fieldset/SYSCFG_DISPLAYCLKCR:
+  description: ''
+  fields:
+    - name: PIXEL_CLK_SEL
+      bit_offset: 0
+      bit_size: 2
+      description: Control of pixel clock output selection
+fieldset/SYSCFG_PCIECR:
+  description: ''
+  fields:
+    - name: APP_INIT_RST
+      bit_offset: 1
+      bit_size: 1
+      description: Request from the application to send a Hot Reset to the downstream
+        device
+    - name: APP_LTSSM_ENABLE
+      bit_offset: 2
+      bit_size: 1
+      description: After application has finished initializing the core configuration
+        registers, it should assert app_
+    - name: APP_REQ_RETRY_EN
+      bit_offset: 3
+      bit_size: 1
+      description: Provides a capability to defer incoming Configuration Requests
+        until initialization is complete
+    - name: SYS_INT
+      bit_offset: 4
+      bit_size: 1
+      description: When pcie_sys_int goes from low to high, the core generates an
+        Assert_INTx Message
+    - name: DEBUG_BUS_SEL
+      bit_offset: 5
+      bit_size: 2
+      description: selection of PCIe observation points
+    - name: APP_CLK_REQ_N
+      bit_offset: 7
+      bit_size: 1
+      description: If the application does not want to remove the reference clock
+        it should set this signal to 0
+    - name: DEVICE_TYPE
+      bit_offset: 8
+      bit_size: 4
+      description: Device/port type
+    - name: APP_DEV_NUM
+      bit_offset: 12
+      bit_size: 5
+      description: The device number in the Requester ID for an RC port
+    - name: APP_BUS_NUM
+      bit_offset: 17
+      bit_size: 8
+      description: The bus number in the Requester ID for RC port
+    - name: APP_DBI_RO_WR_DISABLE
+      bit_offset: 25
+      bit_size: 1
+      description: DBI Read-only Write Disable
+fieldset/SYSCFG_PCIEPMEMSICR:
+  description: ''
+  fields:
+    - name: RST_CFG_PME_MSI_INT
+      bit_offset: 0
+      bit_size: 1
+      description: Reset the pcie_cfg_pme_msi interrupt logic
+fieldset/SYSCFG_PCIEAERRCMSICR:
+  description: ''
+  fields:
+    - name: RST_CFG_AER_RC_ERR_MSI_INT
+      bit_offset: 0
+      bit_size: 1
+      description: Reset the pcie_cfg_aer_rc_err_msi interrupt logic
+fieldset/SYSCFG_PCIESYSRCCR:
+  description: ''
+  fields:
+    - name: RST_CFG_SYS_ERR_RC_INT
+      bit_offset: 0
+      bit_size: 1
+      description: Reset the pcie_cfg_sys_err_rc interrupt logic
+    - name: RST_CFG_LINK_AUTO_BW_MSI_INT
+      bit_offset: 1
+      bit_size: 1
+      description: Reset the cfg_link_auto_bw_msi interrupt logic
+    - name: RST_CFG_BW_MGT_MSI_INT
+      bit_offset: 2
+      bit_size: 1
+      description: Reset the cfg_bw_mgt_msi interrupt logic
+    - name: RST_RADM_QOVERFLOW
+      bit_offset: 31
+      bit_size: 1
+      description: Reset the radm_qoverflow interrupt logic
+fieldset/SYSCFG_PCIEPTMIRQCR:
+  description: ''
+  fields:
+    - name: RST_PTM_CLOCK_UPDATED
+      bit_offset: 0
+      bit_size: 1
+      description: Reset the ptm_clock_updated interrupt logic
+    - name: RST_PTM_REQ_RESPONSE_TIMEOUT
+      bit_offset: 1
+      bit_size: 1
+      description: Reset the ptm_req_response_timeout interrupt logic
+    - name: RST_PTM_REQ_DUP_RX
+      bit_offset: 2
+      bit_size: 1
+      description: Reset the ptm_req_dup_rx interrupt logic
+    - name: RST_PTM_REQ_REPLAY_TX
+      bit_offset: 3
+      bit_size: 1
+      description: Reset the ptm_req_replay_rx interrupt logic
+fieldset/SYSCFG_PCIEPRGCR:
+  description: ''
+  fields:
+    - name: PRG_EN
+      bit_offset: 0
+      bit_size: 1
+      description: '- 0: the internal 100 MHz clock PCIe Reference Generator is disabled'
+    - name: PRG_IMP_CTRL
+      bit_offset: 1
+      bit_size: 5
+      description: Control of the impedance of the 100 MHz differential output buffer
+fieldset/SYSCFG_PCIESR1:
+  description: ''
+  fields:
+    - name: PM_DSTATE
+      bit_offset: 0
+      bit_size: 3
+      description: Power Management D-state
+    - name: SMLH_LINK_UP
+      bit_offset: 3
+      bit_size: 1
+      description: PHY link is up
+    - name: CFG_HW_AUTO_SP_DIS
+      bit_offset: 4
+      bit_size: 1
+      description: H/W autonomous speed disable
+    - name: RDLH_LINK_UP
+      bit_offset: 5
+      bit_size: 1
+      description: Data link layer is up
+    - name: MSI_CTRL_INT
+      bit_offset: 6
+      bit_size: 1
+      description: pcie_1_msi_ctrl_int interrupt
+    - name: LINK_RST_INT
+      bit_offset: 7
+      bit_size: 1
+      description: pcie_1_link_rst_int interrupt
+    - name: INTD_INTERRUPT
+      bit_offset: 8
+      bit_size: 1
+      description: pcie_1_intd interrupt
+    - name: INTC_INTERRUPT
+      bit_offset: 9
+      bit_size: 1
+      description: pcie_1_intc interrupt
+    - name: INTB_INTERRUPT
+      bit_offset: 10
+      bit_size: 1
+      description: pcie_1_intb interrupt
+    - name: INTA_INTERRUPT
+      bit_offset: 11
+      bit_size: 1
+      description: pcie_1_inta interrupt
+    - name: CFG_PME_INT
+      bit_offset: 12
+      bit_size: 1
+      description: pcie_1_cfg_pme interrupt
+    - name: CFG_AER_RC_ERR_INT
+      bit_offset: 13
+      bit_size: 1
+      description: pcie_1_cfg_aer_rc_err interrupt
+    - name: RADM_Q_NOT_EMPTY
+      bit_offset: 14
+      bit_size: 1
+      description: Level high indicates that the receive queues contain TLP header/data
+    - name: RADM_QOVERFLOW
+      bit_offset: 15
+      bit_size: 1
+      description: Level high indicates that one or more of the P/NP/CPL receive queues
+        has overflowed
+    - name: PTM_REQ_REPLAY_TX
+      bit_offset: 16
+      bit_size: 1
+      description: PTM Requester detected a TLP replay being sent when ResponseD message
+        in use, and one of the follow
+    - name: PTM_REQ_DUP_RX
+      bit_offset: 17
+      bit_size: 1
+      description: PTM Requester Duplicate TLP Received, when PTM Requester is in
+        the process of updating PTM local cl
+    - name: PTM_REQ_RESPONSE_TIMEOUT
+      bit_offset: 18
+      bit_size: 1
+      description: PTM Requester Response Timeout
+    - name: PTM_CLOCK_UPDATED
+      bit_offset: 19
+      bit_size: 1
+      description: Controller has updated the Local Clock
+    - name: PTM_UPDATING
+      bit_offset: 20
+      bit_size: 1
+      description: PTM update is in progress
+    - name: PTM_RESPONDER_RDY_TO_VALIDATE
+      bit_offset: 21
+      bit_size: 1
+      description: Application software can re-validate the context, because it was
+        invalidated
+fieldset/SYSCFG_PCIESR2:
+  description: ''
+  fields:
+    - name: CFG_PME_MSI_INT_STS
+      bit_offset: 0
+      bit_size: 1
+      description: Indicates status of PCIe cfg_pme_msi interrupt
+    - name: CFG_AER_RC_ERR_MSI_INT_STS
+      bit_offset: 1
+      bit_size: 1
+      description: Indicates status of PCIe cfg_aer_rc_err_msi interrupt
+    - name: CFG_SYS_ERR_RC_INT_STS
+      bit_offset: 2
+      bit_size: 1
+      description: Indicates status of PCIe cfg_sys_err_rc interrupt
 fieldset/SYSCFG_VERR:
   description: ''
   fields:

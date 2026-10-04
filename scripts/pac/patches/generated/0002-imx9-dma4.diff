@@ -1,0 +1,178 @@
+Hand-corrected `consortium-pac-imx9::peripherals::dma4`: keep the eDMA4 per-channel accessors (CH_CSR, CH_ES, CH_INT, CH_SBR, CH_PRI, CH_MUX, CH_MATTR, SADDR, SOFF, NBYTES_MLOFFNO) that the i.MX 93 IR no longer emits.
+The file is otherwise chiptool output; this restores the committed API on top of it.
+--- a/crates/consortium-pac-imx9/src/peripherals/dma4.rs
++++ b/crates/consortium-pac-imx9/src/peripherals/dma4.rs
+@@ -48,6 +48,48 @@
+         unsafe {
+             crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0100usize + n * 4usize) as _)
+         }
++    }
++    #[inline(always)]
++    pub const fn CH_CSR(self) -> crate::common::Reg<DMA4_CH_CSR, crate::common::RW> {
++        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0001_0000usize) as _) }
++    }
++    #[inline(always)]
++    pub const fn CH_ES(self) -> crate::common::Reg<DMA4_CH_ES, crate::common::RW> {
++        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0001_0004usize) as _) }
++    }
++    #[inline(always)]
++    pub const fn CH_INT(self) -> crate::common::Reg<DMA4_CH_INT, crate::common::RW> {
++        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0001_0008usize) as _) }
++    }
++    #[inline(always)]
++    pub const fn CH_SBR(self) -> crate::common::Reg<DMA4_CH_SBR, crate::common::RW> {
++        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0001_000cusize) as _) }
++    }
++    #[inline(always)]
++    pub const fn CH_PRI(self) -> crate::common::Reg<DMA4_CH_PRI, crate::common::RW> {
++        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0001_0010usize) as _) }
++    }
++    #[inline(always)]
++    pub const fn CH_MUX(self) -> crate::common::Reg<DMA4_CH_MUX, crate::common::RW> {
++        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0001_0014usize) as _) }
++    }
++    #[inline(always)]
++    pub const fn CH_MATTR(self) -> crate::common::Reg<DMA4_CH_MATTR, crate::common::RW> {
++        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0001_0018usize) as _) }
++    }
++    #[inline(always)]
++    pub const fn SADDR(self) -> crate::common::Reg<DMA4_SADDR, crate::common::RW> {
++        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0001_0020usize) as _) }
++    }
++    #[inline(always)]
++    pub const fn SOFF(self) -> crate::common::Reg<DMA4_SOFF, crate::common::RW> {
++        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0001_0024usize) as _) }
++    }
++    #[inline(always)]
++    pub const fn NBYTES_MLOFFNO(
++        self,
++    ) -> crate::common::Reg<DMA4_NBYTES_MLOFFNO, crate::common::RW> {
++        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x0001_0028usize) as _) }
+     }
+     #[inline(always)]
+     pub const fn SLAST_SDA(self) -> crate::common::Reg<u32, crate::common::RW> {
+@@ -1833,104 +1875,122 @@
+ #[derive(Copy, Clone, Eq, PartialEq)]
+ pub struct DMA4_TCD_CSR(pub u32);
+ impl DMA4_TCD_CSR {
++    #[doc = "Channel Start"]
+     #[must_use]
+     #[inline(always)]
+     pub const fn START(&self) -> bool {
+         let val = (self.0 >> 0usize) & 0x01;
+         val != 0
+     }
++    #[doc = "Channel Start"]
+     #[inline(always)]
+     pub const fn set_START(&mut self, val: bool) {
+         self.0 = (self.0 & !(0x01 << 0usize)) | (((val as u32) & 0x01) << 0usize);
+     }
++    #[doc = "Interrupt Enable after Major Iteration Count Completion"]
+     #[must_use]
+     #[inline(always)]
+     pub const fn INTMAJOR(&self) -> bool {
+         let val = (self.0 >> 1usize) & 0x01;
+         val != 0
+     }
++    #[doc = "Interrupt Enable after Major Iteration Count Completion"]
+     #[inline(always)]
+     pub const fn set_INTMAJOR(&mut self, val: bool) {
+         self.0 = (self.0 & !(0x01 << 1usize)) | (((val as u32) & 0x01) << 1usize);
+     }
++    #[doc = "Interrupt Enable after Major Counter is Half Complete"]
+     #[must_use]
+     #[inline(always)]
+     pub const fn INTHALF(&self) -> bool {
+         let val = (self.0 >> 2usize) & 0x01;
+         val != 0
+     }
++    #[doc = "Interrupt Enable after Major Counter is Half Complete"]
+     #[inline(always)]
+     pub const fn set_INTHALF(&mut self, val: bool) {
+         self.0 = (self.0 & !(0x01 << 2usize)) | (((val as u32) & 0x01) << 2usize);
+     }
++    #[doc = "Disable Request"]
+     #[must_use]
+     #[inline(always)]
+     pub const fn DREQ(&self) -> bool {
+         let val = (self.0 >> 3usize) & 0x01;
+         val != 0
+     }
++    #[doc = "Disable Request"]
+     #[inline(always)]
+     pub const fn set_DREQ(&mut self, val: bool) {
+         self.0 = (self.0 & !(0x01 << 3usize)) | (((val as u32) & 0x01) << 3usize);
+     }
++    #[doc = "Enable Scatter/Gather Processing"]
+     #[must_use]
+     #[inline(always)]
+     pub const fn ESG(&self) -> bool {
+         let val = (self.0 >> 4usize) & 0x01;
+         val != 0
+     }
++    #[doc = "Enable Scatter/Gather Processing"]
+     #[inline(always)]
+     pub const fn set_ESG(&mut self, val: bool) {
+         self.0 = (self.0 & !(0x01 << 4usize)) | (((val as u32) & 0x01) << 4usize);
+     }
++    #[doc = "Enable Channel-to-Channel Linking on Major Loop Complete"]
+     #[must_use]
+     #[inline(always)]
+     pub const fn MAJORELINK(&self) -> bool {
+         let val = (self.0 >> 5usize) & 0x01;
+         val != 0
+     }
++    #[doc = "Enable Channel-to-Channel Linking on Major Loop Complete"]
+     #[inline(always)]
+     pub const fn set_MAJORELINK(&mut self, val: bool) {
+         self.0 = (self.0 & !(0x01 << 5usize)) | (((val as u32) & 0x01) << 5usize);
+     }
++    #[doc = "Enable End-of-Packet Processing"]
+     #[must_use]
+     #[inline(always)]
+     pub const fn EEOP(&self) -> bool {
+         let val = (self.0 >> 6usize) & 0x01;
+         val != 0
+     }
++    #[doc = "Enable End-of-Packet Processing"]
+     #[inline(always)]
+     pub const fn set_EEOP(&mut self, val: bool) {
+         self.0 = (self.0 & !(0x01 << 6usize)) | (((val as u32) & 0x01) << 6usize);
+     }
++    #[doc = "Enable Store Destination Address"]
+     #[must_use]
+     #[inline(always)]
+     pub const fn ESDA(&self) -> bool {
+         let val = (self.0 >> 7usize) & 0x01;
+         val != 0
+     }
++    #[doc = "Enable Store Destination Address"]
+     #[inline(always)]
+     pub const fn set_ESDA(&mut self, val: bool) {
+         self.0 = (self.0 & !(0x01 << 7usize)) | (((val as u32) & 0x01) << 7usize);
+     }
++    #[doc = "Major Loop Link Channel Number"]
+     #[must_use]
+     #[inline(always)]
+     pub const fn MAJORLINKCH(&self) -> u8 {
+         let val = (self.0 >> 8usize) & 0x3f;
+         val as u8
+     }
++    #[doc = "Major Loop Link Channel Number"]
+     #[inline(always)]
+     pub const fn set_MAJORLINKCH(&mut self, val: u8) {
+         self.0 = (self.0 & !(0x3f << 8usize)) | (((val as u32) & 0x3f) << 8usize);
+     }
+-    #[doc = "Major Loop Link Channel Number"]
++    #[doc = "Transfer Mode Control"]
+     #[must_use]
+     #[inline(always)]
+     pub const fn TMC(&self) -> u8 {
+         let val = (self.0 >> 14usize) & 0x03;
+         val as u8
+     }
+-    #[doc = "Major Loop Link Channel Number"]
++    #[doc = "Transfer Mode Control"]
+     #[inline(always)]
+     pub const fn set_TMC(&mut self, val: u8) {
+         self.0 = (self.0 & !(0x03 << 14usize)) | (((val as u32) & 0x03) << 14usize);

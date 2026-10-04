@@ -1,0 +1,1348 @@
+block/SAR_ADC:
+  description: ''
+  items:
+    - name: MCR
+      byte_offset: 0
+      fieldset: SAR_ADC_MCR
+    - name: MSR
+      byte_offset: 4
+      fieldset: SAR_ADC_MSR
+    - name: ISR
+      byte_offset: 16
+      fieldset: SAR_ADC_ISR
+    - name: CEOCFR0
+      byte_offset: 20
+    - name: CEOCFR1
+      byte_offset: 24
+    - name: IMR
+      byte_offset: 32
+      fieldset: SAR_ADC_IMR
+    - name: CIMR0
+      byte_offset: 36
+      fieldset: SAR_ADC_CIMR0
+    - name: CIMR1
+      byte_offset: 40
+      fieldset: SAR_ADC_CIMR1
+    - name: WTISR
+      byte_offset: 48
+      fieldset: SAR_ADC_WTISR
+    - name: WTIMR
+      byte_offset: 52
+      fieldset: SAR_ADC_WTIMR
+    - name: DMAE
+      byte_offset: 64
+      fieldset: SAR_ADC_DMAE
+    - name: DMAR0
+      byte_offset: 68
+      fieldset: SAR_ADC_DMAR0
+    - name: DMAR1
+      byte_offset: 72
+      fieldset: SAR_ADC_DMAR1
+    - name: THRHLR0
+      byte_offset: 96
+      fieldset: SAR_ADC_THRHLR0
+    - name: THRHLR1
+      byte_offset: 100
+      fieldset: SAR_ADC_THRHLR1
+    - name: THRHLR2
+      byte_offset: 104
+      fieldset: SAR_ADC_THRHLR2
+    - name: THRHLR3
+      byte_offset: 108
+      fieldset: SAR_ADC_THRHLR3
+    - name: PSCR
+      byte_offset: 128
+      fieldset: SAR_ADC_PSCR
+    - name: PSR0
+      byte_offset: 132
+      fieldset: SAR_ADC_PSR0
+    - name: PSR1
+      byte_offset: 136
+      fieldset: SAR_ADC_PSR1
+    - name: CTR0
+      byte_offset: 148
+      fieldset: SAR_ADC_CTR0
+    - name: CTR1
+      byte_offset: 152
+      fieldset: SAR_ADC_CTR1
+    - name: NCMR0
+      byte_offset: 164
+      fieldset: SAR_ADC_NCMR0
+    - name: NCMR1
+      byte_offset: 168
+      fieldset: SAR_ADC_NCMR1
+    - name: JCMR0
+      byte_offset: 180
+      fieldset: SAR_ADC_JCMR0
+    - name: JCMR1
+      byte_offset: 184
+      fieldset: SAR_ADC_JCMR1
+    - name: USROFSGN
+      byte_offset: 192
+      fieldset: SAR_ADC_USROFSGN
+    - name: PDEDR
+      byte_offset: 200
+      fieldset: SAR_ADC_PDEDR
+    - name: PCDR
+      byte_offset: 256
+      array:
+        len: 8
+        stride: 4
+      fieldset: SAR_ADC_PCDR
+    - name: ICDR
+      byte_offset: 384
+      array:
+        len: 8
+        stride: 4
+      fieldset: SAR_ADC_ICDR
+    - name: THRHLR4
+      byte_offset: 640
+      fieldset: SAR_ADC_THRHLR4
+    - name: THRHLR5
+      byte_offset: 644
+      fieldset: SAR_ADC_THRHLR5
+    - name: THRHLR6
+      byte_offset: 648
+      fieldset: SAR_ADC_THRHLR6
+    - name: THRHLR7
+      byte_offset: 652
+      fieldset: SAR_ADC_THRHLR7
+    - name: CWSELR0
+      byte_offset: 688
+    - name: CWSELR4
+      byte_offset: 704
+    - name: CWENR0
+      byte_offset: 736
+      fieldset: SAR_ADC_CWENR0
+    - name: CWENR1
+      byte_offset: 740
+      fieldset: SAR_ADC_CWENR1
+    - name: AWORR0
+      byte_offset: 752
+    - name: AWORR1
+      byte_offset: 756
+    - name: STCR1
+      byte_offset: 832
+    - name: STCR2
+      byte_offset: 836
+      fieldset: SAR_ADC_STCR2
+    - name: STCR3
+      byte_offset: 840
+      fieldset: SAR_ADC_STCR3
+    - name: STBRR
+      byte_offset: 844
+      fieldset: SAR_ADC_STBRR
+    - name: STSR1
+      byte_offset: 848
+      fieldset: SAR_ADC_STSR1
+    - name: STSR2
+      byte_offset: 852
+      fieldset: SAR_ADC_STSR2
+    - name: STSR3
+      byte_offset: 856
+      fieldset: SAR_ADC_STSR3
+    - name: STSR4
+      byte_offset: 860
+      fieldset: SAR_ADC_STSR4
+    - name: STDR1
+      byte_offset: 880
+      fieldset: SAR_ADC_STDR1
+    - name: STDR2
+      byte_offset: 884
+      fieldset: SAR_ADC_STDR2
+    - name: STAW0R
+      byte_offset: 896
+      fieldset: SAR_ADC_STAW0R
+    - name: STAW1AR
+      byte_offset: 900
+      fieldset: SAR_ADC_STAW1AR
+    - name: STAW1BR
+      byte_offset: 904
+      fieldset: SAR_ADC_STAW1BR
+    - name: STAW2R
+      byte_offset: 908
+      fieldset: SAR_ADC_STAW2R
+    - name: STAW3R
+      byte_offset: 912
+    - name: STAW4R
+      byte_offset: 916
+      fieldset: SAR_ADC_STAW4R
+    - name: STAW5R
+      byte_offset: 920
+      fieldset: SAR_ADC_STAW5R
+    - name: CALSTAT
+      byte_offset: 924
+fieldset/SAR_ADC_MCR:
+  description: ''
+  fields:
+    - name: PWDN
+      bit_offset: 0
+      bit_size: 1
+    - name: ACKO
+      bit_offset: 5
+      bit_size: 1
+    - name: ABORT
+      bit_offset: 6
+      bit_size: 1
+    - name: ABORTCHAIN
+      bit_offset: 7
+      bit_size: 1
+    - name: ADCLKSE
+      bit_offset: 8
+      bit_size: 1
+    - name: TSAMP
+      bit_offset: 9
+      bit_size: 2
+    - name: NRSMPL
+      bit_offset: 11
+      bit_size: 2
+    - name: AVGEN
+      bit_offset: 13
+      bit_size: 1
+    - name: CALSTART
+      bit_offset: 14
+      bit_size: 1
+    - name: STCL
+      bit_offset: 15
+      bit_size: 1
+    - name: JSTART
+      bit_offset: 20
+      bit_size: 1
+      description: Start Injection Conversion
+    - name: NSTART
+      bit_offset: 24
+      bit_size: 1
+      description: Start Injection Conversion
+    - name: EDGE
+      bit_offset: 26
+      bit_size: 1
+      description: Normal Conversion Start
+    - name: TRGEN
+      bit_offset: 27
+      bit_size: 1
+    - name: MODE
+      bit_offset: 29
+      bit_size: 1
+    - name: WLSIDE
+      bit_offset: 30
+      bit_size: 1
+    - name: OWREN
+      bit_offset: 31
+      bit_size: 1
+fieldset/SAR_ADC_MSR:
+  description: ''
+  fields:
+    - name: ADCSTATUS
+      bit_offset: 0
+      bit_size: 3
+    - name: ACKO
+      bit_offset: 5
+      bit_size: 1
+    - name: CHADDR
+      bit_offset: 9
+      bit_size: 7
+    - name: JSTART
+      bit_offset: 20
+      bit_size: 1
+    - name: JABORT
+      bit_offset: 23
+      bit_size: 1
+    - name: NSTART
+      bit_offset: 24
+      bit_size: 1
+    - name: CALBUSY
+      bit_offset: 29
+      bit_size: 1
+    - name: CALFAIL
+      bit_offset: 30
+      bit_size: 1
+    - name: CALIBRTD
+      bit_offset: 31
+      bit_size: 1
+fieldset/SAR_ADC_MSR_SELF_TEST:
+  description: ''
+  fields:
+    - name: S
+      bit_offset: 18
+      bit_size: 1
+fieldset/SAR_ADC_ISR:
+  description: ''
+  fields:
+    - name: ECH
+      bit_offset: 0
+      bit_size: 1
+    - name: EOC
+      bit_offset: 1
+      bit_size: 1
+    - name: JECH
+      bit_offset: 2
+      bit_size: 1
+    - name: JEOC
+      bit_offset: 3
+      bit_size: 1
+fieldset/SAR_ADC_CEOCFR0_EOC:
+  description: ''
+  fields:
+    - name: CH0
+      bit_offset: 0
+      bit_size: 1
+    - name: CH1
+      bit_offset: 1
+      bit_size: 1
+    - name: CH2
+      bit_offset: 2
+      bit_size: 1
+    - name: CH3
+      bit_offset: 3
+      bit_size: 1
+    - name: CH4
+      bit_offset: 4
+      bit_size: 1
+    - name: CH5
+      bit_offset: 5
+      bit_size: 1
+    - name: CH6
+      bit_offset: 6
+      bit_size: 1
+    - name: CH7
+      bit_offset: 7
+      bit_size: 1
+fieldset/SAR_ADC_CEOCFR1_EOC:
+  description: ''
+  fields:
+    - name: CH32
+      bit_offset: 0
+      bit_size: 1
+    - name: CH33
+      bit_offset: 1
+      bit_size: 1
+    - name: CH34
+      bit_offset: 2
+      bit_size: 1
+    - name: CH35
+      bit_offset: 3
+      bit_size: 1
+    - name: CH36
+      bit_offset: 4
+      bit_size: 1
+    - name: CH37
+      bit_offset: 5
+      bit_size: 1
+    - name: CH38
+      bit_offset: 6
+      bit_size: 1
+    - name: CH39
+      bit_offset: 7
+      bit_size: 1
+fieldset/SAR_ADC_IMR:
+  description: ''
+  fields:
+    - name: MSKECH
+      bit_offset: 0
+      bit_size: 1
+    - name: MSKEOC
+      bit_offset: 1
+      bit_size: 1
+    - name: MSKJECH
+      bit_offset: 2
+      bit_size: 1
+    - name: MSKJEOC
+      bit_offset: 3
+      bit_size: 1
+fieldset/SAR_ADC_CIMR0:
+  description: ''
+  fields:
+    - name: CIM0
+      bit_offset: 0
+      bit_size: 1
+    - name: CIM1
+      bit_offset: 1
+      bit_size: 1
+    - name: CIM2
+      bit_offset: 2
+      bit_size: 1
+    - name: CIM3
+      bit_offset: 3
+      bit_size: 1
+    - name: CIM4
+      bit_offset: 4
+      bit_size: 1
+    - name: CIM5
+      bit_offset: 5
+      bit_size: 1
+    - name: CIM6
+      bit_offset: 6
+      bit_size: 1
+    - name: CIM7
+      bit_offset: 7
+      bit_size: 1
+fieldset/SAR_ADC_CIMR1:
+  description: ''
+  fields:
+    - name: CIM32
+      bit_offset: 0
+      bit_size: 1
+    - name: CIM33
+      bit_offset: 1
+      bit_size: 1
+    - name: CIM34
+      bit_offset: 2
+      bit_size: 1
+    - name: CIM35
+      bit_offset: 3
+      bit_size: 1
+    - name: CIM36
+      bit_offset: 4
+      bit_size: 1
+    - name: CIM37
+      bit_offset: 5
+      bit_size: 1
+    - name: CIM38
+      bit_offset: 6
+      bit_size: 1
+    - name: CIM39
+      bit_offset: 7
+      bit_size: 1
+fieldset/SAR_ADC_WTISR:
+  description: ''
+  fields:
+    - name: WDG0L
+      bit_offset: 0
+      bit_size: 1
+    - name: WDG0H
+      bit_offset: 1
+      bit_size: 1
+    - name: WDG1L
+      bit_offset: 2
+      bit_size: 1
+    - name: WDG1H
+      bit_offset: 3
+      bit_size: 1
+    - name: WDG2L
+      bit_offset: 4
+      bit_size: 1
+    - name: WDG2H
+      bit_offset: 5
+      bit_size: 1
+    - name: WDG3L
+      bit_offset: 6
+      bit_size: 1
+    - name: WDG3H
+      bit_offset: 7
+      bit_size: 1
+    - name: WDG4L
+      bit_offset: 8
+      bit_size: 1
+    - name: WDG4H
+      bit_offset: 9
+      bit_size: 1
+    - name: WDG5L
+      bit_offset: 10
+      bit_size: 1
+    - name: WDG5H
+      bit_offset: 11
+      bit_size: 1
+    - name: WDG6L
+      bit_offset: 12
+      bit_size: 1
+    - name: WDG6H
+      bit_offset: 13
+      bit_size: 1
+    - name: WDG7L
+      bit_offset: 14
+      bit_size: 1
+    - name: WDG7H
+      bit_offset: 15
+      bit_size: 1
+fieldset/SAR_ADC_WTIMR:
+  description: ''
+  fields:
+    - name: MSKWDG0L
+      bit_offset: 0
+      bit_size: 1
+    - name: MSKWDG0H
+      bit_offset: 1
+      bit_size: 1
+    - name: MSKWDG1L
+      bit_offset: 2
+      bit_size: 1
+    - name: MSKWDG1H
+      bit_offset: 3
+      bit_size: 1
+    - name: MSKWDG2L
+      bit_offset: 4
+      bit_size: 1
+    - name: MSKWDG2H
+      bit_offset: 5
+      bit_size: 1
+    - name: MSKWDG3L
+      bit_offset: 6
+      bit_size: 1
+    - name: MSKWDG3H
+      bit_offset: 7
+      bit_size: 1
+    - name: MSKWDG4L
+      bit_offset: 8
+      bit_size: 1
+    - name: MSKWDG4H
+      bit_offset: 9
+      bit_size: 1
+    - name: MSKWDG5L
+      bit_offset: 10
+      bit_size: 1
+    - name: MSKWDG5H
+      bit_offset: 11
+      bit_size: 1
+    - name: MSKWDG6L
+      bit_offset: 12
+      bit_size: 1
+    - name: MSKWDG6H
+      bit_offset: 13
+      bit_size: 1
+    - name: MSKWDG7L
+      bit_offset: 14
+      bit_size: 1
+    - name: MSKWDG7H
+      bit_offset: 15
+      bit_size: 1
+fieldset/SAR_ADC_DMAE:
+  description: ''
+  fields:
+    - name: DMAEN
+      bit_offset: 0
+      bit_size: 1
+    - name: DCLR
+      bit_offset: 1
+      bit_size: 1
+fieldset/SAR_ADC_DMAR0:
+  description: ''
+  fields:
+    - name: DMA0
+      bit_offset: 0
+      bit_size: 1
+    - name: DMA1
+      bit_offset: 1
+      bit_size: 1
+    - name: DMA2
+      bit_offset: 2
+      bit_size: 1
+    - name: DMA3
+      bit_offset: 3
+      bit_size: 1
+    - name: DMA4
+      bit_offset: 4
+      bit_size: 1
+    - name: DMA5
+      bit_offset: 5
+      bit_size: 1
+    - name: DMA6
+      bit_offset: 6
+      bit_size: 1
+    - name: DMA7
+      bit_offset: 7
+      bit_size: 1
+fieldset/SAR_ADC_DMAR1:
+  description: ''
+  fields:
+    - name: DMA32
+      bit_offset: 0
+      bit_size: 1
+    - name: DMA33
+      bit_offset: 1
+      bit_size: 1
+    - name: DMA34
+      bit_offset: 2
+      bit_size: 1
+    - name: DMA35
+      bit_offset: 3
+      bit_size: 1
+    - name: DMA36
+      bit_offset: 4
+      bit_size: 1
+    - name: DMA37
+      bit_offset: 5
+      bit_size: 1
+    - name: DMA38
+      bit_offset: 6
+      bit_size: 1
+    - name: DMA39
+      bit_offset: 7
+      bit_size: 1
+fieldset/SAR_ADC_THRHLR0:
+  description: ''
+  fields:
+    - name: THRL
+      bit_offset: 0
+      bit_size: 12
+      description: Low Threshold
+    - name: THRH
+      bit_offset: 16
+      bit_size: 12
+      description: Low Threshold
+fieldset/SAR_ADC_THRHLR1:
+  description: ''
+  fields:
+    - name: THRL
+      bit_offset: 0
+      bit_size: 12
+      description: Low Threshold
+    - name: THRH
+      bit_offset: 16
+      bit_size: 12
+      description: Low Threshold
+fieldset/SAR_ADC_THRHLR2:
+  description: ''
+  fields:
+    - name: THRL
+      bit_offset: 0
+      bit_size: 12
+      description: Low Threshold
+    - name: THRH
+      bit_offset: 16
+      bit_size: 12
+      description: Low Threshold
+fieldset/SAR_ADC_THRHLR3:
+  description: ''
+  fields:
+    - name: THRL
+      bit_offset: 0
+      bit_size: 12
+      description: Low Threshold
+    - name: THRH
+      bit_offset: 16
+      bit_size: 12
+      description: Low Threshold
+fieldset/SAR_ADC_PSCR:
+  description: ''
+  fields:
+    - name: PRECONV
+      bit_offset: 0
+      bit_size: 1
+    - name: PREVAL0
+      bit_offset: 1
+      bit_size: 2
+    - name: PREVAL1
+      bit_offset: 3
+      bit_size: 2
+      description: Internal Presampling Voltage Selection
+fieldset/SAR_ADC_PSR0:
+  description: ''
+  fields:
+    - name: PRES0
+      bit_offset: 0
+      bit_size: 1
+    - name: PRES1
+      bit_offset: 1
+      bit_size: 1
+    - name: PRES2
+      bit_offset: 2
+      bit_size: 1
+    - name: PRES3
+      bit_offset: 3
+      bit_size: 1
+    - name: PRES4
+      bit_offset: 4
+      bit_size: 1
+    - name: PRES5
+      bit_offset: 5
+      bit_size: 1
+    - name: PRES6
+      bit_offset: 6
+      bit_size: 1
+    - name: PRES7
+      bit_offset: 7
+      bit_size: 1
+fieldset/SAR_ADC_PSR1:
+  description: ''
+  fields:
+    - name: PRES32
+      bit_offset: 0
+      bit_size: 1
+    - name: PRES33
+      bit_offset: 1
+      bit_size: 1
+    - name: PRES34
+      bit_offset: 2
+      bit_size: 1
+    - name: PRES35
+      bit_offset: 3
+      bit_size: 1
+    - name: PRES36
+      bit_offset: 4
+      bit_size: 1
+    - name: PRES37
+      bit_offset: 5
+      bit_size: 1
+    - name: PRES38
+      bit_offset: 6
+      bit_size: 1
+    - name: PRES39
+      bit_offset: 7
+      bit_size: 1
+fieldset/SAR_ADC_CTR0:
+  description: ''
+  fields:
+    - name: INPSAMP
+      bit_offset: 0
+      bit_size: 8
+      description: Sampling Phase Duration
+fieldset/SAR_ADC_CTR1:
+  description: ''
+  fields:
+    - name: INPSAMP
+      bit_offset: 0
+      bit_size: 8
+      description: Sampling Phase Duration
+fieldset/SAR_ADC_NCMR0:
+  description: ''
+  fields:
+    - name: CH0
+      bit_offset: 0
+      bit_size: 1
+    - name: CH1
+      bit_offset: 1
+      bit_size: 1
+    - name: CH2
+      bit_offset: 2
+      bit_size: 1
+    - name: CH3
+      bit_offset: 3
+      bit_size: 1
+    - name: CH4
+      bit_offset: 4
+      bit_size: 1
+    - name: CH5
+      bit_offset: 5
+      bit_size: 1
+    - name: CH6
+      bit_offset: 6
+      bit_size: 1
+    - name: CH7
+      bit_offset: 7
+      bit_size: 1
+fieldset/SAR_ADC_NCMR1:
+  description: ''
+  fields:
+    - name: CH32
+      bit_offset: 0
+      bit_size: 1
+    - name: CH33
+      bit_offset: 1
+      bit_size: 1
+    - name: CH34
+      bit_offset: 2
+      bit_size: 1
+    - name: CH35
+      bit_offset: 3
+      bit_size: 1
+    - name: CH36
+      bit_offset: 4
+      bit_size: 1
+    - name: CH37
+      bit_offset: 5
+      bit_size: 1
+    - name: CH38
+      bit_offset: 6
+      bit_size: 1
+    - name: CH39
+      bit_offset: 7
+      bit_size: 1
+fieldset/SAR_ADC_JCMR0:
+  description: ''
+  fields:
+    - name: CH0
+      bit_offset: 0
+      bit_size: 1
+    - name: CH1
+      bit_offset: 1
+      bit_size: 1
+    - name: CH2
+      bit_offset: 2
+      bit_size: 1
+    - name: CH3
+      bit_offset: 3
+      bit_size: 1
+    - name: CH4
+      bit_offset: 4
+      bit_size: 1
+    - name: CH5
+      bit_offset: 5
+      bit_size: 1
+    - name: CH6
+      bit_offset: 6
+      bit_size: 1
+    - name: CH7
+      bit_offset: 7
+      bit_size: 1
+fieldset/SAR_ADC_JCMR1:
+  description: ''
+  fields:
+    - name: CH32
+      bit_offset: 0
+      bit_size: 1
+    - name: CH33
+      bit_offset: 1
+      bit_size: 1
+    - name: CH34
+      bit_offset: 2
+      bit_size: 1
+    - name: CH35
+      bit_offset: 3
+      bit_size: 1
+    - name: CH36
+      bit_offset: 4
+      bit_size: 1
+    - name: CH37
+      bit_offset: 5
+      bit_size: 1
+    - name: CH38
+      bit_offset: 6
+      bit_size: 1
+    - name: CH39
+      bit_offset: 7
+      bit_size: 1
+fieldset/SAR_ADC_USROFSGN:
+  description: ''
+  fields:
+    - name: OFFSUSER
+      bit_offset: 0
+      bit_size: 8
+      description: User Defined Offset
+    - name: GAINUSER
+      bit_offset: 16
+      bit_size: 10
+      description: User Defined Offset
+fieldset/SAR_ADC_PDEDR:
+  description: ''
+  fields:
+    - name: PDED
+      bit_offset: 0
+      bit_size: 8
+      description: Power Down Exist Delay
+fieldset/SAR_ADC_PCDR:
+  description: ''
+  fields:
+    - name: CDATA
+      bit_offset: 0
+      bit_size: 12
+      description: Channel Converted Data
+    - name: RESULT
+      bit_offset: 16
+      bit_size: 2
+      description: Channel Converted Data
+    - name: OVERW
+      bit_offset: 18
+      bit_size: 1
+    - name: VALID
+      bit_offset: 19
+      bit_size: 1
+fieldset/SAR_ADC_ICDR:
+  description: ''
+  fields:
+    - name: CDATA
+      bit_offset: 0
+      bit_size: 12
+      description: Channel Converted Data
+    - name: RESULT
+      bit_offset: 16
+      bit_size: 2
+      description: Channel Converted Data
+    - name: OVERW
+      bit_offset: 18
+      bit_size: 1
+    - name: VALID
+      bit_offset: 19
+      bit_size: 1
+fieldset/SAR_ADC_THRHLR4:
+  description: ''
+  fields:
+    - name: THRL
+      bit_offset: 0
+      bit_size: 12
+      description: Low Threshold
+    - name: THRH
+      bit_offset: 16
+      bit_size: 12
+      description: Low Threshold
+fieldset/SAR_ADC_THRHLR5:
+  description: ''
+  fields:
+    - name: THRL
+      bit_offset: 0
+      bit_size: 12
+      description: Low Threshold
+    - name: THRH
+      bit_offset: 16
+      bit_size: 12
+      description: Low Threshold
+fieldset/SAR_ADC_THRHLR6:
+  description: ''
+  fields:
+    - name: THRL
+      bit_offset: 0
+      bit_size: 12
+      description: Low Threshold
+    - name: THRH
+      bit_offset: 16
+      bit_size: 12
+      description: Low Threshold
+fieldset/SAR_ADC_THRHLR7:
+  description: ''
+  fields:
+    - name: THRL
+      bit_offset: 0
+      bit_size: 12
+      description: Low Threshold
+    - name: THRH
+      bit_offset: 16
+      bit_size: 12
+      description: Low Threshold
+fieldset/SAR_ADC_CWSELR0_WSEL:
+  description: ''
+  fields:
+    - name: CH0
+      bit_offset: 0
+      bit_size: 3
+    - name: CH1
+      bit_offset: 4
+      bit_size: 3
+    - name: CH2
+      bit_offset: 8
+      bit_size: 3
+    - name: CH3
+      bit_offset: 12
+      bit_size: 3
+    - name: CH4
+      bit_offset: 16
+      bit_size: 3
+    - name: CH5
+      bit_offset: 20
+      bit_size: 3
+    - name: CH6
+      bit_offset: 24
+      bit_size: 3
+    - name: CH7
+      bit_offset: 28
+      bit_size: 3
+fieldset/SAR_ADC_CWSELR4_WSEL:
+  description: ''
+  fields:
+    - name: CH32
+      bit_offset: 0
+      bit_size: 3
+    - name: CH33
+      bit_offset: 4
+      bit_size: 3
+    - name: CH34
+      bit_offset: 8
+      bit_size: 3
+    - name: CH35
+      bit_offset: 12
+      bit_size: 3
+    - name: CH36
+      bit_offset: 16
+      bit_size: 3
+    - name: CH37
+      bit_offset: 20
+      bit_size: 3
+    - name: CH38
+      bit_offset: 24
+      bit_size: 3
+    - name: CH39
+      bit_offset: 28
+      bit_size: 3
+fieldset/SAR_ADC_CWENR0:
+  description: ''
+  fields:
+    - name: CWEN0
+      bit_offset: 0
+      bit_size: 1
+    - name: CWEN1
+      bit_offset: 1
+      bit_size: 1
+    - name: CWEN2
+      bit_offset: 2
+      bit_size: 1
+    - name: CWEN3
+      bit_offset: 3
+      bit_size: 1
+    - name: CWEN4
+      bit_offset: 4
+      bit_size: 1
+    - name: CWEN5
+      bit_offset: 5
+      bit_size: 1
+    - name: CWEN6
+      bit_offset: 6
+      bit_size: 1
+    - name: CWEN7
+      bit_offset: 7
+      bit_size: 1
+fieldset/SAR_ADC_CWENR1:
+  description: ''
+  fields:
+    - name: CWEN32
+      bit_offset: 0
+      bit_size: 1
+    - name: CWEN33
+      bit_offset: 1
+      bit_size: 1
+    - name: CWEN34
+      bit_offset: 2
+      bit_size: 1
+    - name: CWEN35
+      bit_offset: 3
+      bit_size: 1
+    - name: CWEN36
+      bit_offset: 4
+      bit_size: 1
+    - name: CWEN37
+      bit_offset: 5
+      bit_size: 1
+    - name: CWEN38
+      bit_offset: 6
+      bit_size: 1
+    - name: CWEN39
+      bit_offset: 7
+      bit_size: 1
+fieldset/SAR_ADC_AWORR0_AWOR:
+  description: ''
+  fields:
+    - name: CH0
+      bit_offset: 0
+      bit_size: 1
+    - name: CH1
+      bit_offset: 1
+      bit_size: 1
+    - name: CH2
+      bit_offset: 2
+      bit_size: 1
+    - name: CH3
+      bit_offset: 3
+      bit_size: 1
+    - name: CH4
+      bit_offset: 4
+      bit_size: 1
+    - name: CH5
+      bit_offset: 5
+      bit_size: 1
+    - name: CH6
+      bit_offset: 6
+      bit_size: 1
+    - name: CH7
+      bit_offset: 7
+      bit_size: 1
+fieldset/SAR_ADC_AWORR1_AWOR:
+  description: ''
+  fields:
+    - name: CH32
+      bit_offset: 0
+      bit_size: 1
+    - name: CH33
+      bit_offset: 1
+      bit_size: 1
+    - name: CH34
+      bit_offset: 2
+      bit_size: 1
+    - name: CH35
+      bit_offset: 3
+      bit_size: 1
+    - name: CH36
+      bit_offset: 4
+      bit_size: 1
+    - name: CH37
+      bit_offset: 5
+      bit_size: 1
+    - name: CH38
+      bit_offset: 6
+      bit_size: 1
+    - name: CH39
+      bit_offset: 7
+      bit_size: 1
+fieldset/SAR_ADC_STCR1_INPSAMP:
+  description: ''
+  fields:
+    - name: S
+      bit_offset: 8
+      bit_size: 8
+    - name: C
+      bit_offset: 24
+      bit_size: 8
+fieldset/SAR_ADC_STCR2_FMA:
+  description: ''
+  fields:
+    - name: S
+      bit_offset: 0
+      bit_size: 1
+    - name: C
+      bit_offset: 2
+      bit_size: 1
+    - name: WDTERR
+      bit_offset: 3
+      bit_size: 1
+    - name: WDSERR
+      bit_offset: 4
+      bit_size: 1
+fieldset/SAR_ADC_STCR2:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 7
+      bit_size: 1
+    - name: MSKWDTERR
+      bit_offset: 25
+      bit_size: 1
+    - name: SERR
+      bit_offset: 26
+      bit_size: 1
+    - name: MSKWDSERR
+      bit_offset: 27
+      bit_size: 1
+      description: Error Fault Injection Field (write-only)
+fieldset/SAR_ADC_STCR2_MSKERR:
+  description: ''
+  fields:
+    - name: S0
+      bit_offset: 11
+      bit_size: 1
+    - name: S1
+      bit_offset: 12
+      bit_size: 1
+    - name: S2
+      bit_offset: 13
+      bit_size: 1
+    - name: C
+      bit_offset: 15
+      bit_size: 1
+fieldset/SAR_ADC_STCR2_MSKWDG_EOA:
+  description: ''
+  fields:
+    - name: S
+      bit_offset: 16
+      bit_size: 1
+    - name: C
+      bit_offset: 18
+      bit_size: 1
+fieldset/SAR_ADC_STCR2_MSKST:
+  description: ''
+  fields:
+    - name: EOC
+      bit_offset: 23
+      bit_size: 1
+fieldset/SAR_ADC_STCR3:
+  description: ''
+  fields:
+    - name: MSTEP
+      bit_offset: 0
+      bit_size: 5
+      description: Self-Test Step Select
+    - name: ALG
+      bit_offset: 8
+      bit_size: 2
+      description: Self-Test Step Select
+fieldset/SAR_ADC_STBRR:
+  description: ''
+  fields:
+    - name: BR
+      bit_offset: 0
+      bit_size: 8
+      description: Algorithm Baud Rate
+    - name: WDT
+      bit_offset: 16
+      bit_size: 3
+      description: Algorithm Baud Rate
+fieldset/SAR_ADC_STSR1_STEP:
+  description: ''
+  fields:
+    - name: C
+      bit_offset: 5
+      bit_size: 5
+      description: Algorithm C Step Number Error
+fieldset/SAR_ADC_STSR1_ERR:
+  description: ''
+  fields:
+    - name: S0
+      bit_offset: 11
+      bit_size: 1
+      description: Algorithm C Step Number Error
+    - name: S1
+      bit_offset: 12
+      bit_size: 1
+    - name: S2
+      bit_offset: 13
+      bit_size: 1
+    - name: C
+      bit_offset: 15
+      bit_size: 1
+fieldset/SAR_ADC_STSR1_WDG_EOA:
+  description: ''
+  fields:
+    - name: S
+      bit_offset: 16
+      bit_size: 1
+    - name: C
+      bit_offset: 18
+      bit_size: 1
+fieldset/SAR_ADC_STSR1_ST:
+  description: ''
+  fields:
+    - name: EOC
+      bit_offset: 23
+      bit_size: 1
+fieldset/SAR_ADC_STSR1:
+  description: ''
+  fields:
+    - name: OVERWR
+      bit_offset: 24
+      bit_size: 1
+    - name: WDTERR
+      bit_offset: 25
+      bit_size: 1
+    - name: WDSERR
+      bit_offset: 27
+      bit_size: 1
+fieldset/SAR_ADC_STSR2:
+  description: ''
+  fields:
+    - name: DATA0
+      bit_offset: 0
+      bit_size: 12
+    - name: DATA1
+      bit_offset: 16
+      bit_size: 12
+    - name: OVFL
+      bit_offset: 31
+      bit_size: 1
+fieldset/SAR_ADC_STSR3:
+  description: ''
+  fields:
+    - name: DATA0
+      bit_offset: 0
+      bit_size: 12
+    - name: DATA1
+      bit_offset: 16
+      bit_size: 12
+fieldset/SAR_ADC_STSR4:
+  description: ''
+  fields:
+    - name: DATA1
+      bit_offset: 16
+      bit_size: 12
+fieldset/SAR_ADC_STDR1:
+  description: ''
+  fields:
+    - name: TCDATA
+      bit_offset: 0
+      bit_size: 12
+      description: Test Channel Converted Data
+    - name: OWERWR
+      bit_offset: 18
+      bit_size: 1
+      description: Test Channel Converted Data
+    - name: VALID
+      bit_offset: 19
+      bit_size: 1
+fieldset/SAR_ADC_STDR2:
+  description: ''
+  fields:
+    - name: IDATA
+      bit_offset: 0
+      bit_size: 12
+      description: Integer Data
+    - name: OVERWR
+      bit_offset: 18
+      bit_size: 1
+      description: Integer Data
+    - name: VALID
+      bit_offset: 19
+      bit_size: 1
+    - name: FDATA
+      bit_offset: 20
+      bit_size: 12
+      description: Fractional Data
+fieldset/SAR_ADC_STAW0R:
+  description: ''
+  fields:
+    - name: THRL
+      bit_offset: 0
+      bit_size: 12
+    - name: THRH
+      bit_offset: 16
+      bit_size: 12
+      description: Low Threshold Value for Algorithm S Step0
+    - name: WDTE
+      bit_offset: 30
+      bit_size: 1
+      description: High Threshold Value for Algorithm S Step0
+    - name: AWDE
+      bit_offset: 31
+      bit_size: 1
+fieldset/SAR_ADC_STAW1AR:
+  description: ''
+  fields:
+    - name: THRL
+      bit_offset: 0
+      bit_size: 12
+    - name: THRH
+      bit_offset: 16
+      bit_size: 12
+      description: Low Threshold Value for Algorithm S Step1
+    - name: AWDE
+      bit_offset: 31
+      bit_size: 1
+      description: High Threshold Value for Algorithm S Step1
+fieldset/SAR_ADC_STAW1BR:
+  description: ''
+  fields:
+    - name: THRL
+      bit_offset: 0
+      bit_size: 12
+    - name: THRH
+      bit_offset: 16
+      bit_size: 12
+      description: Low Threshold Value for Algorithm S Step1
+fieldset/SAR_ADC_STAW2R:
+  description: ''
+  fields:
+    - name: THRL
+      bit_offset: 0
+      bit_size: 12
+      description: Threshold level low
+    - name: AWDE
+      bit_offset: 31
+      bit_size: 1
+      description: Threshold level low
+fieldset/SAR_ADC_STAW4R:
+  description: ''
+  fields:
+    - name: THRL
+      bit_offset: 0
+      bit_size: 12
+    - name: THRH
+      bit_offset: 16
+      bit_size: 12
+      description: Low Threshold Value for Step0 of Algorithm C
+    - name: WDTE
+      bit_offset: 30
+      bit_size: 1
+      description: High Threshold Value for Step0 of Algorithm C
+    - name: AWDE
+      bit_offset: 31
+      bit_size: 1
+fieldset/SAR_ADC_STAW5R:
+  description: ''
+  fields:
+    - name: THRL
+      bit_offset: 0
+      bit_size: 12
+    - name: THRH
+      bit_offset: 16
+      bit_size: 12
+      description: Low Threshold Value for Step0 of Algorithm C
+fieldset/SAR_ADC_CALSTAT_TEST:
+  description: ''
+  fields:
+    - name: RESULT
+      bit_offset: 16
+      bit_size: 16
+      description: TEST_RESULT

@@ -12,6 +12,7 @@ block/UCPD:
     - name: CFG3
       byte_offset: 8
       description: UCPD configuration register 3
+      fieldset: UCPD_CFG3
     - name: CR
       byte_offset: 12
       description: UCPD control register
@@ -87,6 +88,10 @@ fieldset/UCPD_CFG1:
       bit_offset: 11
       bit_size: 5
       description: Number of cycles (minus 1) of the half bit clock
+    - name: PSC_UCPDCLK
+      bit_offset: 17
+      bit_size: 3
+      description: Prescaler for UCPDCLK
     - name: RXORDSETEN
       bit_offset: 20
       bit_size: 9
@@ -126,6 +131,25 @@ fieldset/UCPD_CFG2:
       bit_offset: 8
       bit_size: 1
       description: RX Analog Filter enable
+fieldset/UCPD_CFG3:
+  description: ''
+  fields:
+    - name: TRIM_CC1_RD
+      bit_offset: 0
+      bit_size: 4
+      description: SW trim value for RD resistor (CC1)
+    - name: TRIM_CC1_RP
+      bit_offset: 9
+      bit_size: 4
+      description: SW trim value for RP current sources (CC1)
+    - name: TRIM_CC2_RD
+      bit_offset: 16
+      bit_size: 4
+      description: SW trim value for RD resistor (CC2)
+    - name: TRIM_CC2_RP
+      bit_offset: 25
+      bit_size: 4
+      description: SW trim value for RP current sources (CC2)
 fieldset/UCPD_CR:
   description: ''
   fields:
@@ -327,6 +351,14 @@ fieldset/UCPD_SR:
       bit_offset: 15
       bit_size: 1
       description: Type C voltage level event on CC2
+    - name: TYPEC_VSTATE_CC1
+      bit_offset: 16
+      bit_size: 2
+      description: Status of DC level on CC1 pin
+    - name: TYPEC_VSTATE_CC2
+      bit_offset: 18
+      bit_size: 2
+      description: Status of DC level on CC2 pin
     - name: FRSEVT
       bit_offset: 20
       bit_size: 1

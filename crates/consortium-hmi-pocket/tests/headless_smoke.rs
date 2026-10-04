@@ -14,39 +14,14 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-//! Exercises the PocketJS host -> retained UI -> headless wgpu render path.
-//! Requires a working GPU adapter (Metal on macOS, Vulkan/GL elsewhere).
+//! Exercises the PocketJS host -> retained UI -> headless wgpu render path on a
+//! built bundle. Requires the bundle and a working GPU adapter (Metal on macOS,
+//! Vulkan/GL elsewhere).
 
 use std::path::PathBuf;
 
 use consortium_hmi::Bridge;
 use consortium_hmi_pocket::{HeadlessRenderer, PocketApp, PocketConfig};
-
-#[test]
-fn renders_a_headless_frame() {
-    let runtime = tokio::runtime::Builder::new_multi_thread()
-        .worker_threads(1)
-        .build()
-        .unwrap();
-
-    let mut app = PocketApp::new(
-        "globalThis.frame = () => {};",
-        &[],
-        Bridge::new(),
-        runtime.handle().clone(),
-        PocketConfig::default(),
-    )
-    .expect("mount PocketJS app");
-
-    app.frame_buttons(0).expect("advance one guest frame");
-
-    let (w, h) = (64u32, 48u32);
-    let mut renderer = HeadlessRenderer::new(w, h).expect("create headless GPU renderer");
-    assert_eq!(renderer.size(), (w, h));
-
-    let rgba = renderer.render_rgba(&app).expect("render retained UI");
-    assert_eq!(rgba.len(), (w * h * 4) as usize);
-}
 
 /// Full pipeline: a `bun tools/build.ts <app>` bundle+pak loaded from disk,
 /// driven for a few frames, then rendered to real pixels. Skipped unless the

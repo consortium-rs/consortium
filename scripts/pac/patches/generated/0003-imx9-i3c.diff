@@ -1,0 +1,50 @@
+Hand-corrected `consortium-pac-imx9::peripherals::i3c`: keep the I3C data registers MWDATAH1, SWDATAH1, MWMSG_SDR_DATA and MWMSG_DDR_{CONTROL2,DATA} that share offsets with other registers and drop out of the IR.
+The file is otherwise chiptool output; this restores the committed API on top of it.
+--- a/crates/consortium-pac-imx9/src/peripherals/i3c.rs
++++ b/crates/consortium-pac-imx9/src/peripherals/i3c.rs
+@@ -87,6 +87,10 @@
+         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x54usize) as _) }
+     }
+     #[inline(always)]
++    pub const fn SWDATAH1(self) -> crate::common::Reg<I3C_SWDATAH1, crate::common::RW> {
++        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x54usize) as _) }
++    }
++    #[inline(always)]
+     pub const fn SCAPABILITIES2(self) -> crate::common::Reg<I3C_SCAPABILITIES2, crate::common::RW> {
+         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x5cusize) as _) }
+     }
+@@ -187,9 +191,17 @@
+         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0xccusize) as _) }
+     }
+     #[inline(always)]
++    pub const fn MWDATAH1(self) -> crate::common::Reg<I3C_MWDATAH1, crate::common::RW> {
++        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0xccusize) as _) }
++    }
++    #[inline(always)]
+     pub const fn MWMSG_SDR_CONTROL(
+         self,
+     ) -> crate::common::Reg<I3C_MWMSG_SDR_CONTROL, crate::common::RW> {
++        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0xd0usize) as _) }
++    }
++    #[inline(always)]
++    pub const fn MWMSG_SDR_DATA(self) -> crate::common::Reg<I3C_MWMSG_SDR_DATA, crate::common::RW> {
+         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0xd0usize) as _) }
+     }
+     #[inline(always)]
+@@ -200,6 +212,16 @@
+     pub const fn MWMSG_DDR_CONTROL(
+         self,
+     ) -> crate::common::Reg<I3C_MWMSG_DDR_CONTROL, crate::common::RW> {
++        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0xd8usize) as _) }
++    }
++    #[inline(always)]
++    pub const fn MWMSG_DDR_CONTROL2(
++        self,
++    ) -> crate::common::Reg<I3C_MWMSG_DDR_CONTROL2, crate::common::RW> {
++        unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0xd8usize) as _) }
++    }
++    #[inline(always)]
++    pub const fn MWMSG_DDR_DATA(self) -> crate::common::Reg<I3C_MWMSG_DDR_DATA, crate::common::RW> {
+         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0xd8usize) as _) }
+     }
+     #[inline(always)]

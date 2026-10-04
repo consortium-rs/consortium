@@ -100,12 +100,12 @@ impl LPTIM {
     }
     #[doc = "LPTIM peripheral type identification register"]
     #[inline(always)]
-    pub const fn PIDR(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn PIDR(self) -> crate::common::Reg<LPTIM_PIDR, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x03f8usize) as _) }
     }
     #[doc = "LPTIM registers map size identification register"]
     #[inline(always)]
-    pub const fn SIDR(self) -> crate::common::Reg<u32, crate::common::RW> {
+    pub const fn SIDR(self) -> crate::common::Reg<LPTIM_SIDR, crate::common::RW> {
         unsafe { crate::common::Reg::from_ptr(self.ptr.wrapping_add(0x03fcusize) as _) }
     }
 }
@@ -1665,6 +1665,43 @@ impl defmt::Format for LPTIM_ISR {
 #[doc = ""]
 #[repr(transparent)]
 #[derive(Copy, Clone, Eq, PartialEq)]
+pub struct LPTIM_PIDR(pub u32);
+impl LPTIM_PIDR {
+    #[doc = "Peripheral type identifier"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn P_ID(&self) -> u32 {
+        let val = (self.0 >> 0usize) & 0xffff_ffff;
+        val as u32
+    }
+    #[doc = "Peripheral type identifier"]
+    #[inline(always)]
+    pub const fn set_P_ID(&mut self, val: u32) {
+        self.0 = (self.0 & !(0xffff_ffff << 0usize)) | (((val as u32) & 0xffff_ffff) << 0usize);
+    }
+}
+impl Default for LPTIM_PIDR {
+    #[inline(always)]
+    fn default() -> LPTIM_PIDR {
+        LPTIM_PIDR(0)
+    }
+}
+impl core::fmt::Debug for LPTIM_PIDR {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("LPTIM_PIDR")
+            .field("P_ID", &self.P_ID())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for LPTIM_PIDR {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(f, "LPTIM_PIDR {{ P_ID: {=u32:?} }}", self.P_ID())
+    }
+}
+#[doc = ""]
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
 pub struct LPTIM_RCR(pub u32);
 impl LPTIM_RCR {
     #[doc = "Repetition register value"]
@@ -1697,6 +1734,43 @@ impl core::fmt::Debug for LPTIM_RCR {
 impl defmt::Format for LPTIM_RCR {
     fn format(&self, f: defmt::Formatter) {
         defmt::write!(f, "LPTIM_RCR {{ REP: {=u8:?} }}", self.REP())
+    }
+}
+#[doc = ""]
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq)]
+pub struct LPTIM_SIDR(pub u32);
+impl LPTIM_SIDR {
+    #[doc = "Registers map size identifier"]
+    #[must_use]
+    #[inline(always)]
+    pub const fn S_ID(&self) -> u32 {
+        let val = (self.0 >> 0usize) & 0xffff_ffff;
+        val as u32
+    }
+    #[doc = "Registers map size identifier"]
+    #[inline(always)]
+    pub const fn set_S_ID(&mut self, val: u32) {
+        self.0 = (self.0 & !(0xffff_ffff << 0usize)) | (((val as u32) & 0xffff_ffff) << 0usize);
+    }
+}
+impl Default for LPTIM_SIDR {
+    #[inline(always)]
+    fn default() -> LPTIM_SIDR {
+        LPTIM_SIDR(0)
+    }
+}
+impl core::fmt::Debug for LPTIM_SIDR {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("LPTIM_SIDR")
+            .field("S_ID", &self.S_ID())
+            .finish()
+    }
+}
+#[cfg(feature = "defmt")]
+impl defmt::Format for LPTIM_SIDR {
+    fn format(&self, f: defmt::Formatter) {
+        defmt::write!(f, "LPTIM_SIDR {{ S_ID: {=u32:?} }}", self.S_ID())
     }
 }
 #[doc = ""]

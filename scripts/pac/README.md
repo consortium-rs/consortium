@@ -2,6 +2,29 @@
 
 Python scripts to parse CMSIS C headers into chiptool IR YAML and chip descriptor JSON files.
 
+## Reproducible regeneration
+
+Every committed PAC output is exactly what `just pac-regen` produces from the pinned
+submodules, and `just pac-verify` fails when it is not. The pipeline, in order:
+
+1. Apply vendor-header patches (`patches/<submodule>/*.diff`), stage the headers into
+   `./data` (`prepare.sh`), and revert the patches.
+2. Rewrite `crates/consortium-data/database/{chip,peri}/` from scratch with
+   `parse_stm32.py --all` and `parse_nxp.py --all`.
+3. Apply IR corrections (`patches/ir/*.diff`), before anything reads the chip dumps.
+4. `gen_interrupts.py` and `gen_peripherals.py` write the PAC interrupt tables and the
+   HAL singleton maps; `gen_blocks.py` runs the pinned chiptool over the `BLOCKS` map.
+5. Format the Rust (`rustfmt`), apply corrections to it (`patches/generated/*.diff`),
+   and format the IR with `vp fmt`.
+
+Correct the parsers where you can. Where you cannot — a register the header omits, an
+API the HAL relies on that the IR folds away — add a patch whose header says why. A
+patch is the diff from the raw pipeline output to the committed file, so regenerate,
+edit, and capture it with `diff -u --label a/<path> --label b/<path>`.
+
+`gen_blocks.py` refuses to run unless chiptool is the revision pinned by
+`just setup-chiptool`, because chiptool stamps its revision into every file.
+
 ## Scripts
 
 ### `parse_stm32.py`
@@ -32,6 +55,17 @@ python scripts/parse_stm32.py --all                     # Parse all families
 6. Link structs to fieldsets
 7. Emit YAML and JSON outputs
 
+Fields that `chiptool check` would reject as overlapping are resolved while linking:
+
+- A mask with gaps (`TIM_SMCR_TS` is bits 4-6 and 20-21) becomes a split field, whose
+  `bit_offset` is a list of `{start, end}` ranges.
+- Two names for exactly the same bits (an alias such as `PPSCTRL`/`PPSCMD`, or a value
+  constant such as `VLC_VLANTAGREPLACE`) keep only the one the header defines first.
+- A capture/compare mode register (`TIM_CCMRx`) keeps its output-compare fields, and
+  its input-capture fields become a separate `<register>_INPUT` fieldset.
+
+Errors in the header itself are fixed by a patch under `patches/STM32CubeMP2/`.
+
 ### `parse_nxp.py`
 
 Parses NXP MCUX CMSIS headers (split format: PERI\_\*.h + COMMON.h).
@@ -56,6 +90,12 @@ python scripts/parse_nxp.py --all                  # Parse all families
 4. Extract base addresses and instance mappings
 5. Link chip includes to peripherals
 6. Emit YAML and JSON outputs
+
+### `gen_blocks.py`
+
+Generates each PAC register-block module with chiptool from the IR file named in its
+`BLOCKS` map, then runs `rustfmt`. Modules listed in `HAND_MAINTAINED` (STM32MP2
+`timer`, i.MX 9 `dma`) are skipped; any other module missing from the map is an error.
 
 ### `common.py`
 

@@ -18,6 +18,7 @@ extend-exclude = [
   # Vendor reference sources (STM32Cube drivers, MCUX board files).
   "references",
   "scripts/.venv",
+  "scripts/pac/patches",                # vendor CMSIS text and git blob hashes
   "sim/renode/stm32mp257/firmware.elf",
   "submodules",
   "target",

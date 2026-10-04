@@ -16,6 +16,7 @@ block/SAI:
     - name: HWCFGR
       byte_offset: 1008
       description: SAI HW Configuration register
+      fieldset: SAI_HWCFGR
     - name: VERR
       byte_offset: 1012
       description: SAI Version register
@@ -101,6 +102,21 @@ fieldset/SAI_PDMDLY:
       bit_offset: 28
       bit_size: 3
       description: DLYM4R[2:0] (Delay line adjust for right microphone of pair 4)
+fieldset/SAI_HWCFGR:
+  description: ''
+  fields:
+    - name: FIFO_SIZE
+      bit_offset: 0
+      bit_size: 8
+      description: FIFO size for SAIA and SAIB
+    - name: SPDIF_PDM
+      bit_offset: 8
+      bit_size: 4
+      description: Support of SPDIF-OUT and PDM interfaces
+    - name: OPTION_REGOUT
+      bit_offset: 12
+      bit_size: 8
+      description: Support of SAI_IOR register
 fieldset/SAI_VERR:
   description: ''
   fields:

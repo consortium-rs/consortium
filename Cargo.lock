@@ -2039,6 +2039,9 @@ name = "glam"
 version = "0.33.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7f22fb22f065b308be0d8724e3706c7fa3fc2a6c7d6899df4cad7860e7a75436"
+dependencies = [
+ "libm",
+]
 
 [[package]]
 name = "glib"
@@ -2221,12 +2224,6 @@ checksum = "fdf242682df893b86f33a73828fb09ca4b2d3bb6cc95249707fc684d27484b91"
 dependencies = [
  "bitflags 2.13.1",
 ]
-
-[[package]]
-name = "grid"
-version = "1.0.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b40ca9252762c466af32d0b1002e91e4e1bc5398f77455e55474deb466355ff5"
 
 [[package]]
 name = "half"
@@ -3535,7 +3532,7 @@ dependencies = [
 [[package]]
 name = "pocket-mod"
 version = "0.1.0"
-source = "git+https://github.com/pocket-stack/pocketjs.git?rev=5bfaff7091e63a1cd93fe46fd5a4f8b61b46b335#5bfaff7091e63a1cd93fe46fd5a4f8b61b46b335"
+source = "git+https://github.com/pocket-stack/pocketjs.git?rev=b21bd28dd0a2fcb717757241d69b9901c4f7e1b5#b21bd28dd0a2fcb717757241d69b9901c4f7e1b5"
 dependencies = [
  "anyhow",
  "log",
@@ -3546,7 +3543,7 @@ dependencies = [
 [[package]]
 name = "pocket-ui-surface"
 version = "0.1.0"
-source = "git+https://github.com/pocket-stack/pocketjs.git?rev=5bfaff7091e63a1cd93fe46fd5a4f8b61b46b335#5bfaff7091e63a1cd93fe46fd5a4f8b61b46b335"
+source = "git+https://github.com/pocket-stack/pocketjs.git?rev=b21bd28dd0a2fcb717757241d69b9901c4f7e1b5#b21bd28dd0a2fcb717757241d69b9901c4f7e1b5"
 dependencies = [
  "anyhow",
  "log",
@@ -3557,20 +3554,23 @@ dependencies = [
 [[package]]
 name = "pocket-ui-wgpu"
 version = "0.1.0"
-source = "git+https://github.com/pocket-stack/pocketjs.git?rev=5bfaff7091e63a1cd93fe46fd5a4f8b61b46b335#5bfaff7091e63a1cd93fe46fd5a4f8b61b46b335"
+source = "git+https://github.com/pocket-stack/pocketjs.git?rev=b21bd28dd0a2fcb717757241d69b9901c4f7e1b5#b21bd28dd0a2fcb717757241d69b9901c4f7e1b5"
 dependencies = [
  "anyhow",
  "bytemuck",
+ "pocket-mod",
  "pocket-ui-surface",
  "pocket3d",
  "pocketjs-core",
+ "serde_json",
  "wgpu",
+ "winit",
 ]
 
 [[package]]
 name = "pocket3d"
 version = "0.1.0"
-source = "git+https://github.com/pocket-stack/pocketjs.git?rev=5bfaff7091e63a1cd93fe46fd5a4f8b61b46b335#5bfaff7091e63a1cd93fe46fd5a4f8b61b46b335"
+source = "git+https://github.com/pocket-stack/pocketjs.git?rev=b21bd28dd0a2fcb717757241d69b9901c4f7e1b5#b21bd28dd0a2fcb717757241d69b9901c4f7e1b5"
 dependencies = [
  "anyhow",
  "bytemuck",
@@ -3579,7 +3579,8 @@ dependencies = [
  "gltf",
  "log",
  "png",
- "pocket3d-bsp",
+ "pocket3d-anim",
+ "pocket3d-mesh",
  "pollster",
  "serde_json",
  "wgpu",
@@ -3587,19 +3588,26 @@ dependencies = [
 ]
 
 [[package]]
-name = "pocket3d-bsp"
+name = "pocket3d-anim"
 version = "0.1.0"
-source = "git+https://github.com/pocket-stack/pocketjs.git?rev=5bfaff7091e63a1cd93fe46fd5a4f8b61b46b335#5bfaff7091e63a1cd93fe46fd5a4f8b61b46b335"
+source = "git+https://github.com/pocket-stack/pocketjs.git?rev=b21bd28dd0a2fcb717757241d69b9901c4f7e1b5#b21bd28dd0a2fcb717757241d69b9901c4f7e1b5"
 dependencies = [
- "anyhow",
  "glam",
- "log",
+]
+
+[[package]]
+name = "pocket3d-mesh"
+version = "0.1.0"
+source = "git+https://github.com/pocket-stack/pocketjs.git?rev=b21bd28dd0a2fcb717757241d69b9901c4f7e1b5#b21bd28dd0a2fcb717757241d69b9901c4f7e1b5"
+dependencies = [
+ "glam",
+ "pocket3d-anim",
 ]
 
 [[package]]
 name = "pocketjs-core"
 version = "0.1.0"
-source = "git+https://github.com/pocket-stack/pocketjs.git?rev=5bfaff7091e63a1cd93fe46fd5a4f8b61b46b335#5bfaff7091e63a1cd93fe46fd5a4f8b61b46b335"
+source = "git+https://github.com/pocket-stack/pocketjs.git?rev=b21bd28dd0a2fcb717757241d69b9901c4f7e1b5#b21bd28dd0a2fcb717757241d69b9901c4f7e1b5"
 dependencies = [
  "taffy",
 ]
@@ -4455,7 +4463,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "dfde4e2f8595f222ceaae1fb16b4963952e9b33e358869dc4cd6316b0e0790cd"
 dependencies = [
  "arrayvec",
- "grid",
  "serde",
  "slotmap",
 ]

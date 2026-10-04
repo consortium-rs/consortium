@@ -8,129 +8,170 @@ block/DTS:
     - name: PVTLOCK_SR
       byte_offset: 20
       description: DTS PVT lock status register
+      fieldset: DTS_PVTLOCK_SR
     - name: PVTTMR_CR
       byte_offset: 32
       description: DTS PVT Timer control register
+      fieldset: DTS_PVTTMR_CR
     - name: PVTTMR_SR
       byte_offset: 36
       description: DTS PVT timer status register
+      fieldset: DTS_PVTTMR_SR
     - name: PVTTMR_ICR
       byte_offset: 40
       description: DTS PVT timer IRQ clear register
+      fieldset: DTS_PVTTMR_ICR
     - name: PVTTMRIRQTESTR
       byte_offset: 44
       description: DTS PVT timer IRQ test register
+      fieldset: DTS_PVTTMRIRQTESTR
     - name: PVT_IER
       byte_offset: 64
       description: DTS PVT IRQ enable register
+      fieldset: DTS_PVT_IER
     - name: PVTIRQTRMASKR
       byte_offset: 80
       description: DTS PVT IRQ timer mask register
+      fieldset: DTS_PVTIRQTRMASKR
     - name: TS_MR
       byte_offset: 84
       description: DTS PVT IRQ TS mask register
+      fieldset: DTS_TS_MR
     - name: PVTTR_SR
       byte_offset: 96
       description: DTS PVT IRQ timer status register
+      fieldset: DTS_PVTTR_SR
     - name: TS_ISR
       byte_offset: 100
       description: DTS PVT IRQ TS status register
+      fieldset: DTS_TS_ISR
     - name: PVTTMRRAW_ISR
       byte_offset: 112
       description: DTS PVT IRQ timer raw status register
+      fieldset: DTS_PVTTMRRAW_ISR
     - name: TSRAW_ISR
       byte_offset: 116
       description: DTS PVT IRQ TS raw status register
+      fieldset: DTS_TSRAW_ISR
     - name: TSCCLKSYNTHR
       byte_offset: 128
       description: DTS TSC clock synthesizer register
+      fieldset: DTS_TSCCLKSYNTHR
     - name: TSCSDIFDISABLER
       byte_offset: 132
       description: DTS TSC SDIF interface disable register
+      fieldset: DTS_TSCSDIFDISABLER
     - name: TSCSDIF_SR
       byte_offset: 136
       description: DTS TSC SDIF status register
+      fieldset: DTS_TSCSDIF_SR
     - name: TSCSDIF_CR
       byte_offset: 140
       description: DTS TSC SDIF register
+      fieldset: DTS_TSCSDIF_CR
     - name: TSCSDIFHALTR
       byte_offset: 144
       description: DTS TSC SDIF halt register
+      fieldset: DTS_TSCSDIFHALTR
     - name: TSCSDIF_CFGR
       byte_offset: 148
       description: DTS TSC SDIF control register
+      fieldset: DTS_TSCSDIF_CFGR
     - name: TSCSMPL_CR
       byte_offset: 160
       description: DTS TSC sample control register
+      fieldset: DTS_TSCSMPL_CR
     - name: TSCSDIFSMPLCLRR
       byte_offset: 168
       description: DTS TSC sample clear register
+      fieldset: DTS_TSCSDIFSMPLCLRR
     - name: TSCSMPLCNTR
       byte_offset: 172
       description: DTS TSC sample count register
+      fieldset: DTS_TSCSMPLCNTR
     - name: TS0_IER
       byte_offset: 192
       description: DTS TS0 IRQ enable register
+      fieldset: DTS_TS0_IER
     - name: TS0_ISR
       byte_offset: 196
       description: DTS TS0 IRQ status register
+      fieldset: DTS_TS0_ISR
     - name: TS0_ICR
       byte_offset: 200
       description: DTS TS0 IRQ clear register
+      fieldset: DTS_TS0_ICR
     - name: TS0IRQTESTR
       byte_offset: 204
       description: DTS TS0 IRQ test register
+      fieldset: DTS_TS0IRQTESTR
     - name: TS0SDIFRDATAR
       byte_offset: 208
       description: DTS TS0 SDIF RDATA register
+      fieldset: DTS_TS0SDIFRDATAR
     - name: TS0SDIFDONER
       byte_offset: 212
       description: DTS TS0 SDIF done register
+      fieldset: DTS_TS0SDIFDONER
     - name: TS0SDIFDATAR
       byte_offset: 216
       description: DTS TS0 SDIF data register
+      fieldset: DTS_TS0SDIFDATAR
     - name: TS0ALARMA_CFGR
       byte_offset: 224
       description: DTS TS0 alarm A configuration register
+      fieldset: DTS_TS0ALARMA_CFGR
     - name: TS0ALARMB_CFGR
       byte_offset: 228
       description: DTS TS0 alarm B configuration register
     - name: TS0HLSAMPLER
       byte_offset: 232
       description: DTS TS0 high/low sample register
+      fieldset: DTS_TS0HLSAMPLER
     - name: TS0HILORESETR
       byte_offset: 236
       description: DTS TS0 high/low reset register
+      fieldset: DTS_TS0HILORESETR
     - name: TS1_IER
       byte_offset: 256
       description: DTS TS1 IRQ enable register
+      fieldset: DTS_TS1_IER
     - name: TS1_ISR
       byte_offset: 260
       description: DTS TS1 IRQ status register
+      fieldset: DTS_TS1_ISR
     - name: TS1_ICR
       byte_offset: 264
       description: DTS TS1 IRQ clear register
+      fieldset: DTS_TS1_ICR
     - name: TS1IRQTESTR
       byte_offset: 268
       description: DTS TS1 IRQ test register
+      fieldset: DTS_TS1IRQTESTR
     - name: TS1SDIFRDATAR
       byte_offset: 272
       description: DTS TS1 SDIF RDATA register
+      fieldset: DTS_TS1SDIFRDATAR
     - name: TS1SDIFDONER
       byte_offset: 276
       description: DTS TS1 SDIF done register
+      fieldset: DTS_TS1SDIFDONER
     - name: TS1SDIFDATAR
       byte_offset: 280
       description: DTS TS1 SDIF data register
+      fieldset: DTS_TS1SDIFDATAR
     - name: TS1ALARMA_CFGR
       byte_offset: 288
       description: DTS TS1 alarm A configuration register
+      fieldset: DTS_TS1ALARMA_CFGR
     - name: TS1HLSAMPLER
       byte_offset: 296
       description: DTS TS1 high/low sample register
+      fieldset: DTS_TS1HLSAMPLER
     - name: TS1HILORESETR
       byte_offset: 300
       description: DTS TS1 high/low reset register
+      fieldset: DTS_TS1HILORESETR
 fieldset/DTS_PVTREG_LOCK:
   description: ''
   fields:
@@ -138,3 +179,495 @@ fieldset/DTS_PVTREG_LOCK:
       bit_offset: 0
       bit_size: 32
       description: PVT software lock register
+fieldset/DTS_PVTLOCK_SR:
+  description: ''
+  fields:
+    - name: SW_LOCK_STATUS
+      bit_offset: 0
+      bit_size: 1
+      description: Software lock input status
+    - name: HW_LOCK_STATUS
+      bit_offset: 1
+      bit_size: 1
+      description: Hardware lock input status
+fieldset/DTS_PVTTMR_CR:
+  description: ''
+  fields:
+    - name: TMR_DELAY
+      bit_offset: 0
+      bit_size: 16
+      description: Timer delay
+    - name: TMR_RUN
+      bit_offset: 16
+      bit_size: 1
+      description: Timer count enable bit
+fieldset/DTS_PVTTMR_SR:
+  description: ''
+  fields:
+    - name: TMR_BUSY
+      bit_offset: 0
+      bit_size: 1
+      description: Counter busy flag
+    - name: TMR_DONE
+      bit_offset: 1
+      bit_size: 1
+      description: Counter delay expiration flag
+fieldset/DTS_PVTTMR_ICR:
+  description: ''
+  fields:
+    - name: TMR_IRQ_CLR
+      bit_offset: 0
+      bit_size: 1
+      description: Timer IRQ clear bit
+fieldset/DTS_PVTTMRIRQTESTR:
+  description: ''
+  fields:
+    - name: TMR_IRQ_TEST
+      bit_offset: 0
+      bit_size: 1
+      description: Timer IRQ test bit
+fieldset/DTS_PVT_IER:
+  description: ''
+  fields:
+    - name: TMR_IRQ_ENABLE
+      bit_offset: 0
+      bit_size: 1
+      description: Timer IRQ source enable bit
+    - name: TS_IRQ_ENABLE
+      bit_offset: 1
+      bit_size: 1
+      description: TS IRQ source enable bit
+fieldset/DTS_PVTIRQTRMASKR:
+  description: ''
+  fields:
+    - name: TMR_IRQ_MASK
+      bit_offset: 0
+      bit_size: 1
+      description: Timer IRQ source mask bit
+fieldset/DTS_TS_MR:
+  description: ''
+  fields:
+    - name: TS0_IRQ_MASK
+      bit_offset: 0
+      bit_size: 1
+      description: TS0 IRQ source mask bit
+    - name: TS1_IRQ_MASK
+      bit_offset: 1
+      bit_size: 1
+      description: TS1 IRQ source mask bit
+fieldset/DTS_PVTTR_SR:
+  description: ''
+  fields:
+    - name: TMR_IRQ_STATUS
+      bit_offset: 0
+      bit_size: 1
+      description: Timer IRQ status bit after masking
+fieldset/DTS_TS_ISR:
+  description: ''
+  fields:
+    - name: TS0_IRQ_STATUS
+      bit_offset: 0
+      bit_size: 1
+      description: TS0 IRQ status bit after masking
+    - name: TS1_IRQ_STATUS
+      bit_offset: 1
+      bit_size: 1
+      description: TS1 IRQ status bit after masking
+fieldset/DTS_PVTTMRRAW_ISR:
+  description: ''
+  fields:
+    - name: TMR_IRQ_RAW_STATUS
+      bit_offset: 0
+      bit_size: 1
+      description: TMR IRQ status bit before masking
+fieldset/DTS_TSRAW_ISR:
+  description: ''
+  fields:
+    - name: TS0_IRQ_RAW_STATUS
+      bit_offset: 0
+      bit_size: 1
+      description: TS0 IRQ status bit before masking
+    - name: TS1_IRQ_RAW_STATUS
+      bit_offset: 1
+      bit_size: 1
+      description: TS1 IRQ status bit before masking
+fieldset/DTS_TSCCLKSYNTHR:
+  description: ''
+  fields:
+    - name: CLK_SYNTH_LO
+      bit_offset: 0
+      bit_size: 8
+      description: Synthesized clk_ts low period
+    - name: CLK_SYNTH_HI
+      bit_offset: 8
+      bit_size: 8
+      description: Synthesized clk_ts high period
+    - name: CLK_SYNTH_HOLD
+      bit_offset: 16
+      bit_size: 4
+      description: SDA master-to-SDA slave output hold delay/SDA slave-to-SDA master
+        input setup delay
+    - name: CLK_SYTH_EN
+      bit_offset: 24
+      bit_size: 1
+      description: Synthesized clk_ts enable bit
+fieldset/DTS_TSCSDIFDISABLER:
+  description: ''
+  fields:
+    - name: TS0_SDIF_DISABLE
+      bit_offset: 0
+      bit_size: 1
+      description: TS0 serial data interface (SDIF) disable bit
+    - name: TS1_SDIF_DISABLE
+      bit_offset: 1
+      bit_size: 1
+      description: TS1 serial data interface (SDIF) disable bit
+fieldset/DTS_TSCSDIF_SR:
+  description: ''
+  fields:
+    - name: SDIF_BUSY
+      bit_offset: 0
+      bit_size: 1
+      description: SDIF busy flag
+    - name: SDIF_LOCK
+      bit_offset: 1
+      bit_size: 1
+      description: SDIF locked flag
+fieldset/DTS_TSCSDIF_CR:
+  description: ''
+  fields:
+    - name: SDIF_WDATA
+      bit_offset: 0
+      bit_size: 24
+      description: Serial interface write data
+    - name: SDIF_ADDR
+      bit_offset: 24
+      bit_size: 3
+      description: Serial interface register address
+    - name: SDIF_WRN
+      bit_offset: 27
+      bit_size: 1
+      description: Serial interface write/no read control bit
+    - name: SDIF_PROG
+      bit_offset: 31
+      bit_size: 1
+      description: Serial interface program request
+fieldset/DTS_TSCSDIFHALTR:
+  description: ''
+  fields:
+    - name: SDIF_STOP
+      bit_offset: 0
+      bit_size: 1
+      description: Serial data interface (SDIF) stop
+fieldset/DTS_TSCSDIF_CFGR:
+  description: ''
+  fields:
+    - name: SDIF_INHIBIT
+      bit_offset: 0
+      bit_size: 2
+      description: Serial data interface (SDIF) programming inhibit
+fieldset/DTS_TSCSMPL_CR:
+  description: ''
+  fields:
+    - name: SMPL_CTR_DISABLE
+      bit_offset: 0
+      bit_size: 1
+      description: Sample counter disable bit
+    - name: SMPL_CTR_HOLD
+      bit_offset: 1
+      bit_size: 1
+      description: Sample counter hold bit
+    - name: SMPL_DISCARD
+      bit_offset: 2
+      bit_size: 1
+      description: Sample discard bit
+fieldset/DTS_TSCSDIFSMPLCLRR:
+  description: ''
+  fields:
+    - name: SMPL_CNTER_CLEAR
+      bit_offset: 0
+      bit_size: 1
+      description: Sample counter clear bit
+fieldset/DTS_TSCSMPLCNTR:
+  description: ''
+  fields:
+    - name: SMPL_COUNT
+      bit_offset: 0
+      bit_size: 16
+      description: Sample counter
+fieldset/DTS_TS0_IER:
+  description: ''
+  fields:
+    - name: IRQ_EN_FAULT
+      bit_offset: 0
+      bit_size: 1
+      description: Fault IRQ enable bit
+    - name: IRQ_EN_DONE
+      bit_offset: 1
+      bit_size: 1
+      description: Sample done IRQ enable bit
+    - name: IRQ_EN_ALARMA
+      bit_offset: 3
+      bit_size: 1
+      description: Alarm A IRQ enable bit
+    - name: IRQ_EN_ALARMB
+      bit_offset: 4
+      bit_size: 1
+      description: Alarm B IRQ enable bit
+fieldset/DTS_TS0_ISR:
+  description: ''
+  fields:
+    - name: IRQ_STATUS_FAULT
+      bit_offset: 0
+      bit_size: 1
+      description: Fault IRQ status bit
+    - name: IRQ_STATUS_DONE
+      bit_offset: 1
+      bit_size: 1
+      description: Sample done IRQ status bit
+    - name: IRQ_STATUS_ALARMA
+      bit_offset: 3
+      bit_size: 1
+      description: Alarm A IRQ status bit
+    - name: IRQ_STATUS_ALARMB
+      bit_offset: 4
+      bit_size: 1
+      description: Alarm B IRQ status bit
+fieldset/DTS_TS0_ICR:
+  description: ''
+  fields:
+    - name: IRQ_CLEAR_FAULT
+      bit_offset: 0
+      bit_size: 1
+      description: Fault IRQ clear bit
+    - name: IRQ_CLEAR_DONE
+      bit_offset: 1
+      bit_size: 1
+      description: Sample done IRQ clear bit
+    - name: IRQ_CLEAR_ALARMA
+      bit_offset: 3
+      bit_size: 1
+      description: Alarm A IRQ clear bit
+    - name: IRQ_CLEAR_ALARMB
+      bit_offset: 4
+      bit_size: 1
+      description: Alarm B IRQ clear bit
+fieldset/DTS_TS0IRQTESTR:
+  description: ''
+  fields:
+    - name: IRQ_TEST_FAULT
+      bit_offset: 0
+      bit_size: 1
+      description: Fault IRQ test bit
+    - name: IRQ_TEST_DONE
+      bit_offset: 1
+      bit_size: 1
+      description: Sample done IRQ test bit
+    - name: IRQ_TEST_ALARMA
+      bit_offset: 3
+      bit_size: 1
+      description: Alarm A IRQ test bit
+    - name: IRQ_TEST_ALARMB
+      bit_offset: 4
+      bit_size: 1
+      description: Alarm B IRQ test bit
+fieldset/DTS_TS0SDIFRDATAR:
+  description: ''
+  fields:
+    - name: SDIF_RDATA
+      bit_offset: 0
+      bit_size: 24
+      description: SDIF read data
+fieldset/DTS_TS0SDIFDONER:
+  description: ''
+  fields:
+    - name: SDIF_SMPL_DONE
+      bit_offset: 0
+      bit_size: 1
+      description: Sample done flag
+fieldset/DTS_TS0SDIFDATAR:
+  description: ''
+  fields:
+    - name: SAMPLE_DATA
+      bit_offset: 0
+      bit_size: 16
+      description: Sample data
+    - name: SAMPLE_TYPE
+      bit_offset: 16
+      bit_size: 1
+      description: TS sample type
+    - name: SAMPLE_FAULT
+      bit_offset: 17
+      bit_size: 1
+      description: Sample fault
+fieldset/DTS_TS0ALARMA_CFGR:
+  description: ''
+  fields:
+    - name: HYSTA_THRESH
+      bit_offset: 0
+      bit_size: 16
+      description: Alarm A hysteresis threshold
+    - name: ALARMA_THRESH
+      bit_offset: 16
+      bit_size: 16
+      description: Alarm A threshold
+fieldset/DTS_TS0HLSAMPLER:
+  description: ''
+  fields:
+    - name: SMPL_LO
+      bit_offset: 0
+      bit_size: 16
+      description: Lowest valid data sample value received
+    - name: SMPL_HI
+      bit_offset: 16
+      bit_size: 16
+      description: Highest valid data sample value received
+fieldset/DTS_TS0HILORESETR:
+  description: ''
+  fields:
+    - name: SMPL_LO_SET
+      bit_offset: 0
+      bit_size: 1
+      description: Sample Low Set
+    - name: SMPL_HI_CLR
+      bit_offset: 1
+      bit_size: 1
+      description: Sample high clear 0
+fieldset/DTS_TS1_IER:
+  description: ''
+  fields:
+    - name: IRQ_EN_FAULT
+      bit_offset: 0
+      bit_size: 1
+      description: Fault IRQ enable bit
+    - name: IRQ_EN_DONE
+      bit_offset: 1
+      bit_size: 1
+      description: Sample done IRQ enable bit
+    - name: IRQ_EN_ALARMA
+      bit_offset: 3
+      bit_size: 1
+      description: Alarm A IRQ enable bit
+    - name: IRQ_EN_ALARMB
+      bit_offset: 4
+      bit_size: 1
+      description: Alarm B IRQ enable bit
+fieldset/DTS_TS1_ISR:
+  description: ''
+  fields:
+    - name: IRQ_STATUS_FAULT
+      bit_offset: 0
+      bit_size: 1
+      description: Fault IRQ status bit
+    - name: IRQ_STATUS_DONE
+      bit_offset: 1
+      bit_size: 1
+      description: Sample done IRQ status bit
+    - name: IRQ_STATUS_ALARMA
+      bit_offset: 3
+      bit_size: 1
+      description: Alarm A IRQ status bit
+    - name: IRQ_STATUS_ALARMB
+      bit_offset: 4
+      bit_size: 1
+      description: Alarm B IRQ status bit
+fieldset/DTS_TS1_ICR:
+  description: ''
+  fields:
+    - name: IRQ_CLEAR_FAULT
+      bit_offset: 0
+      bit_size: 1
+      description: Fault IRQ clear bit
+    - name: IRQ_CLEAR_DONE
+      bit_offset: 1
+      bit_size: 1
+      description: Sample done IRQ clear bit
+    - name: IRQ_CLEAR_ALARMA
+      bit_offset: 3
+      bit_size: 1
+      description: Alarm A IRQ clear bit
+    - name: IRQ_CLEAR_ALARMB
+      bit_offset: 4
+      bit_size: 1
+      description: Alarm B IRQ clear bit
+fieldset/DTS_TS1IRQTESTR:
+  description: ''
+  fields:
+    - name: IRQ_TEST_FAULT
+      bit_offset: 0
+      bit_size: 1
+      description: Fault IRQ test bit
+    - name: IRQ_TEST_DONE
+      bit_offset: 1
+      bit_size: 1
+      description: Sample done IRQ test bit
+    - name: IRQ_TEST_ALARMA
+      bit_offset: 3
+      bit_size: 1
+      description: Alarm A IRQ test bit
+    - name: IRQ_TEST_ALARMB
+      bit_offset: 4
+      bit_size: 1
+      description: Alarm B IRQ test bit
+fieldset/DTS_TS1SDIFRDATAR:
+  description: ''
+  fields:
+    - name: SDIF_RDATA
+      bit_offset: 0
+      bit_size: 24
+      description: SDIF read data
+fieldset/DTS_TS1SDIFDONER:
+  description: ''
+  fields:
+    - name: SDIF_SMPL_DONE
+      bit_offset: 0
+      bit_size: 1
+      description: Sample done flag
+fieldset/DTS_TS1SDIFDATAR:
+  description: ''
+  fields:
+    - name: SAMPLE_DATA
+      bit_offset: 0
+      bit_size: 16
+      description: Sample data
+    - name: SAMPLE_TYPE
+      bit_offset: 16
+      bit_size: 1
+      description: TS sample type
+    - name: SAMPLE_FAULT
+      bit_offset: 17
+      bit_size: 1
+      description: Sample fault
+fieldset/DTS_TS1ALARMA_CFGR:
+  description: ''
+  fields:
+    - name: HYSTA_THRESH
+      bit_offset: 0
+      bit_size: 16
+      description: Alarm A hysteresis threshold
+    - name: ALARMA_THRESH
+      bit_offset: 16
+      bit_size: 16
+      description: Alarm A threshold
+fieldset/DTS_TS1HLSAMPLER:
+  description: ''
+  fields:
+    - name: SMPL_LO
+      bit_offset: 0
+      bit_size: 16
+      description: Lowest valid data sample value received
+    - name: SMPL_HI
+      bit_offset: 16
+      bit_size: 16
+      description: Highest valid data sample value received
+fieldset/DTS_TS1HILORESETR:
+  description: ''
+  fields:
+    - name: SMPL_LO_SET
+      bit_offset: 0
+      bit_size: 1
+      description: Sample Low Set
+    - name: SMPL_HI_CLR
+      bit_offset: 1
+      bit_size: 1
+      description: Sample high clear 0

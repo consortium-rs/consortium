@@ -179,6 +179,10 @@ fieldset/USART_CR2:
       bit_offset: 0
       bit_size: 1
       description: Synchronous Slave mode enable
+    - name: DIS_NSS
+      bit_offset: 3
+      bit_size: 1
+      description: When the DIS_NSS bit is set, the NSS pin input is ignored
     - name: ADDM7
       bit_offset: 4
       bit_size: 1
