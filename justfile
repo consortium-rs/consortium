@@ -217,6 +217,13 @@ publish-dry-host:
 publish:
     uv run --project scripts --locked python scripts/publish.py
 
+# ── Toolchain ────────────────────────────────────────────────────────────────
+
+# Bump rust-toolchain.toml to the latest stable, triage regressions, and write an
+# AI style-review prompt (e.g. `just update-rust --dry-run`, `--to 1.100.0`)
+update-rust *args:
+    uv run --project scripts --locked python scripts/update_rust.py {{ args }}
+
 # ── A-core (aarch64 / Linux) ─────────────────────────────────────────────────
 
 check-ipc-a64:

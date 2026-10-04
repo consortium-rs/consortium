@@ -20,6 +20,7 @@ def load_script(name: str):
 
 publish = load_script("publish")
 release = load_script("release")
+update_rust = load_script("update_rust")
 
 
 class FakeRegistry:
@@ -275,6 +276,83 @@ class ReleaseTests(unittest.TestCase):
             test_workflow.write_text(without_repository)
             with self.assertRaisesRegex(RuntimeError, "repository context"):
                 release.validate_release_workflow(test_workflow)
+
+
+class UpdateRustTests(unittest.TestCase):
+    def test_rustup_check_reports_newest_stable(self):
+        output = (
+            "stable-aarch64-apple-darwin - update available: "
+            "1.98.1 (aaaaaaaaa 2026-09-03) -> 1.99.0 (b940084d7 2026-09-28)\n"
+            "nightly-aarch64-apple-darwin - up to date: 1.101.0-nightly\n"
+        )
+        self.assertEqual(
+            update_rust.parse_rustup_check(output), update_rust.Version(1, 99, 0)
+        )
+        self.assertIsNone(update_rust.parse_rustup_check("rustup - up to date"))
+
+    def test_rewrite_channel_preserves_the_rest_of_the_file(self):
+        text = '[toolchain]\nchannel = "1.98.1"\ntargets = [\n  "a",\n]\n'
+        rewritten = update_rust.rewrite_channel(text, update_rust.Version(1, 99, 0))
+        self.assertEqual(rewritten, text.replace("1.98.1", "1.99.0"))
+
+    def test_test_output_is_split_per_command(self):
+        commands = ["cargo test -p a", "cargo test -p b", "cargo test -p c"]
+        script = update_rust.test_script(commands, {"INSTA_UPDATE": "no"})
+        self.assertIn("env INSTA_UPDATE=no cargo test --no-fail-fast -p a", script)
+        output = "\n".join(
+            [
+                update_rust.CMD_MARK + "cargo test --no-fail-fast -p a",
+                "test ok_test ... ok",
+                "test tests/ui/fail/x.rs ... mismatch",
+                "test snap::case ... FAILED",
+                update_rust.STATUS_MARK + "101",
+                update_rust.CMD_MARK + "cargo test --no-fail-fast -p b",
+                update_rust.STATUS_MARK + "0",
+                update_rust.CMD_MARK + "cargo test --no-fail-fast -p c",
+                "error: could not compile `c`",
+                update_rust.STATUS_MARK + "101",
+            ]
+        )
+        run = update_rust.parse_test_output(output)
+        self.assertEqual(
+            run.failures,
+            {
+                "cargo test --no-fail-fast -p a :: tests/ui/fail/x.rs",
+                "cargo test --no-fail-fast -p a :: snap::case",
+                "cargo test --no-fail-fast -p c :: <build>",
+            },
+        )
+
+    def test_test_script_rejects_unquotable_commands(self):
+        with self.assertRaises(ValueError):
+            update_rust.test_script(["cargo test -p '$x'"], {})
+
+    def test_release_notes_cover_the_half_open_range(self):
+        releases = (
+            "Version 1.99.0 (2026-10-01)\n===\nnew\n\n"
+            "Version 1.98.1 (2026-09-03)\n===\npatch\n\n"
+            "Version 1.98.0 (2026-08-20)\n===\nold\n"
+        )
+        notes = update_rust.rust_release_notes(
+            releases, update_rust.Version(1, 98, 0), update_rust.Version(1, 99, 0)
+        )
+        self.assertIn("1.99.0", notes)
+        self.assertIn("1.98.1", notes)
+        self.assertNotIn("old", notes)
+
+        clippy = "## Rust 1.99\n\nlints99\n\n## Rust 1.98\n\nlints98\n"
+        self.assertEqual(
+            update_rust.clippy_release_notes(
+                clippy, update_rust.Version(1, 98, 1), update_rust.Version(1, 99, 0)
+            ),
+            "## Rust 1.99\n\nlints99",
+        )
+        self.assertEqual(
+            update_rust.clippy_release_notes(
+                clippy, update_rust.Version(1, 98, 0), update_rust.Version(1, 98, 1)
+            ),
+            "",
+        )
 
 
 if __name__ == "__main__":

@@ -19,5 +19,6 @@ note: required for `Config` to implement `TeeParam`
    |          -------- type parameter would need to implement `TeeParam`
 41 | struct Config {
    |        ^^^^^^
-   = help: consider manually implementing `TeeParam` to avoid undesired bounds
+   = help: consider manually implementing `TeeParam` to avoid undesired bounds caused by "imperfect derives"
+   = note: to learn more, visit <https://github.com/rust-lang/rust/issues/26925>
    = note: this error originates in the derive macro `TeeParam` (in Nightly builds, run with -Z macro-backtrace for more info)
