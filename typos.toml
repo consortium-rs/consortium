@@ -24,6 +24,10 @@ extend-exclude = [
   "target",
 ]
 
+[default.extend-identifiers]
+# Hardware serializer/deserializer lanes.
+SerDes = "SerDes"
+
 [default.extend-words]
 # `DAA`/`daa` is the I3C spec term "Dynamic Address Assignment"; `EXTEN` (ADC
 # CFGR external-trigger enable) and `TIMOUT` (LPTIM CFGR timeout enable) are
