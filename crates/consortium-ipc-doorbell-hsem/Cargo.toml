@@ -51,5 +51,11 @@ thiserror               = { default-features = false, version = "2.0" }
 tokio                   = { features = ["rt", "sync"], optional = true, version = "1" }
 critical-section        = { version = "1.2.0" }
 
+# ARMv6-M (the STM32MP25 CM0+) has no compare-and-swap, so route `atomic-waker`
+# through `portable-atomic` there. The fallback is the binary's choice:
+# `consortium-runtime-mcu` enables portable-atomic's `critical-section` feature.
+[target.'cfg(not(target_has_atomic = "ptr"))'.dependencies]
+atomic-waker = { features = ["portable-atomic"], version = "1.1.2" }
+
 [dev-dependencies]
 critical-section = { features = ["std"], version = "1.2.0" }

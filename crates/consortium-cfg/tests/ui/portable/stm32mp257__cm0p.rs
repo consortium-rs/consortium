@@ -28,7 +28,12 @@ mod shared {
     128usize,
 );
 #[cfg(target_arch = "arm")]
-fn __consortium_install_channels() {
+fn __consortium_install_channels(
+    __db_ipcc2: ::consortium_hal_stm32mp2::Peri<
+        'static,
+        ::consortium_hal_stm32mp2::peripherals::IPCC2,
+    >,
+) {
     ::consortium_ipc_transport_memory::install::<
         channels::LP,
     >({
@@ -39,14 +44,10 @@ fn __consortium_install_channels() {
                 16384usize,
             )
         };
-        // SAFETY: the base is the UIO-mapped doorbell register window,
-        // resolved from the validated Consortium hardware database.
-        let doorbell = unsafe {
-            ::consortium_ipc_doorbell_ipcc::IpccDoorbell::<
-                ::consortium_ipc::Secondary,
-                2usize,
-            >::new_mapped(1176829952usize)
-        };
+        let doorbell = ::consortium_ipc_doorbell_ipcc::IpccDoorbell::<
+            ::consortium_ipc::Secondary,
+            2usize,
+        >::new(__db_ipcc2);
         // SAFETY: doorbell channel is verified to be valid in the config.
         let chan_tx = unsafe { ::consortium_ipc::Chan::new_unchecked(1u8) };
         // SAFETY: doorbell channel is verified to be valid in the config.
@@ -61,15 +62,6 @@ fn __consortium_install_channels() {
             >::new(chan_tx, chan_rx, doorbell, region, (537673728usize) as *mut u8)
         }
     });
-}
-/// Interrupt vectors for this endpoint's generated bring-up.
-#[cfg(target_arch = "arm")]
-mod __consortium_vectors {
-    use ::consortium_hal_stm32mp2::interrupt;
-    #[::consortium_hal_stm32mp2::interrupt]
-    fn TIM2() {
-        ::consortium_hal_stm32mp2::timer_driver::on_timer_interrupt();
-    }
 }
 /// Runtime bring-up policy. Enabled manifest steps default on.
 #[cfg(target_arch = "arm")]
@@ -124,13 +116,8 @@ fn init(config: Config) -> (Peripherals, Channels) {
     ::consortium_runtime_mcu::log::trace!("before chip init");
     let __p = ::consortium_hal_stm32mp2::init();
     ::consortium_runtime_mcu::log::trace!("after chip init");
-    if config.time_driver {
-        ::consortium_hal_stm32mp2::timer_driver::bringup(__p.TIM2);
-        ::consortium_runtime_mcu::log::trace!(
-            "consortium controller init: time driver up"
-        );
-    }
-    __consortium_install_channels();
+    if config.time_driver {}
+    __consortium_install_channels(__p.IPCC2);
     let channels = Channels::take();
     let peripherals = Peripherals {};
     ::consortium_runtime_mcu::log::trace!("consortium controller init: resources ready");

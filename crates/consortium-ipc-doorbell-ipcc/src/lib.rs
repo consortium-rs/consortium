@@ -101,7 +101,7 @@
 //! | Feature      | Effect                                                          |
 //! | ------------ | --------------------------------------------------------------- |
 //! | `stm32mp25x` | Chip selection (default). IPCC1 plus the SmartRun IPCC2.          |
-//! | `stm32mp23x` | Chip selection. IPCC1 plus the SmartRun IPCC2.                    |
+//! | `stm32mp23x` | Chip selection. IPCC1 only (no CM0+, so no IPCC2).                 |
 //! | `stm32mp21x` | Chip selection. IPCC1 only.                                       |
 //! | `std`        | Tokio `Notify` wake path and the masking service; host-testable.   |
 //! | `defmt`      | Derive `defmt::Format` on [`IpccError`].                          |

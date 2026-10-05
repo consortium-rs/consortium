@@ -406,23 +406,12 @@ mod timer_bindings {
 
 #[cfg(feature = "time-driver-gp-tim")]
 mod timer_driver_bindings {
-    crate::timer_driver::impl_tim_driver!(TIM1, 0x4020_0000, Some(98));
-    crate::timer_driver::impl_tim_driver!(TIM10, 0x401c_0000, Some(205));
-    crate::timer_driver::impl_tim_driver!(TIM11, 0x401d_0000, Some(225));
-    crate::timer_driver::impl_tim_driver!(TIM12, 0x4006_0000, Some(196));
-    crate::timer_driver::impl_tim_driver!(TIM13, 0x4007_0000, Some(203));
-    crate::timer_driver::impl_tim_driver!(TIM14, 0x4008_0000, Some(204));
-    crate::timer_driver::impl_tim_driver!(TIM15, 0x4025_0000, Some(193));
-    crate::timer_driver::impl_tim_driver!(TIM16, 0x4026_0000, Some(194));
-    crate::timer_driver::impl_tim_driver!(TIM17, 0x4027_0000, Some(195));
-    crate::timer_driver::impl_tim_driver!(TIM2, 0x4000_0000, Some(105));
-    crate::timer_driver::impl_tim_driver!(TIM20, 0x4032_0000, Some(102));
-    crate::timer_driver::impl_tim_driver!(TIM3, 0x4001_0000, Some(106));
-    crate::timer_driver::impl_tim_driver!(TIM4, 0x4002_0000, Some(107));
-    crate::timer_driver::impl_tim_driver!(TIM5, 0x4003_0000, Some(124));
-    crate::timer_driver::impl_tim_driver!(TIM6, 0x4004_0000, Some(128));
-    crate::timer_driver::impl_tim_driver!(TIM7, 0x4005_0000, Some(129));
-    crate::timer_driver::impl_tim_driver!(TIM8, 0x4021_0000, Some(119));
+    crate::timer_driver::impl_tim_driver!(TIM12, 0x4006_0000, Bits16, Some(196));
+    crate::timer_driver::impl_tim_driver!(TIM15, 0x4025_0000, Bits16, Some(193));
+    crate::timer_driver::impl_tim_driver!(TIM2, 0x4000_0000, Bits32, Some(105));
+    crate::timer_driver::impl_tim_driver!(TIM3, 0x4001_0000, Bits16, Some(106));
+    crate::timer_driver::impl_tim_driver!(TIM4, 0x4002_0000, Bits16, Some(107));
+    crate::timer_driver::impl_tim_driver!(TIM5, 0x4003_0000, Bits32, Some(124));
 }
 
 #[cfg(feature = "uart")]

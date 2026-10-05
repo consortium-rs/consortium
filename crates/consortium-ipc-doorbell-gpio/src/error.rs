@@ -34,6 +34,18 @@ impl core::fmt::Display for GpioError {
 
 impl core::error::Error for GpioError {}
 
+// `ErrorKind` has a `defmt::Format` impl only behind embedded-hal's `defmt-03`
+// feature, which targets defmt 0.3; format the kind here instead.
+#[cfg(feature = "defmt")]
+impl defmt::Format for GpioError {
+    fn format(&self, f: defmt::Formatter<'_>) {
+        match self.0 {
+            ErrorKind::Other => defmt::write!(f, "GPIO doorbell pin error: other"),
+            _ => defmt::write!(f, "GPIO doorbell pin error: unknown kind"),
+        }
+    }
+}
+
 impl<E: HalError> From<E> for GpioError {
     fn from(err: E) -> Self {
         GpioError(err.kind())

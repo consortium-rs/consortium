@@ -92,6 +92,7 @@
 //! | Feature | Effect                                                                 |
 //! | ------- | ---------------------------------------------------------------------- |
 //! | `std`   | Default. Tokio `Notify` wake path plus `linux-embedded-hal` for pins.   |
+//! | `defmt` | Implement `defmt::Format` for [`GpioError`].                           |
 //!
 //! Build with `default-features = false` for the bare-metal software-pending path.
 

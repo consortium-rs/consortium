@@ -3,7 +3,7 @@
 //! For a hardware smoke test, route one PWM pin to a capture pin, stream a
 //! known compare pattern, and verify the captured edge intervals. Place the
 //! buffers and [`DmaNode`] in DMA-coherent SRAM and forward the HPDMA channel
-//! IRQ to [`crate::dma::DmaState::on_interrupt`].
+//! IRQ to [`crate::dma::on_interrupt`].
 
 use crate::dma::{
     DmaChannel, DmaNode, DmaRequest, DmaWord, Error as DmaError, ReadableRingBuffer, RingError,

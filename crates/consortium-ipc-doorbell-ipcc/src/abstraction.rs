@@ -23,7 +23,7 @@
 //! compile time.
 //!
 //! `N` selects the instance (`Ipcc<_, 1>` is IPCC1, `Ipcc<_, 2>` is the SmartRun
-//! IPCC2 on STM32MP23/25).
+//! IPCC2 on STM32MP25).
 //!
 //! [`Ipcc::new`] is the only constructor and is `unsafe`: it takes a base address and
 //! trusts it. That is deliberate — this layer is not where the firmware/Linux

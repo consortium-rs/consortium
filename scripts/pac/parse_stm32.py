@@ -485,23 +485,31 @@ class STM32HeaderParser:
         # Build symbol table for address resolution
         symbols: dict[str, int] = {}
 
+        # A TrustZone core (CM33) names every window twice and we take the
+        # non-secure alias: `NAME_BASE_NS` and `#define NAME_NS ((T *) NAME_BASE_NS)`.
+        # A core without TrustZone (the MP25 CM0+) has one window, spelled
+        # `NAME_BASE` and `#define NAME ((T *) NAME_BASE)`.
+        suffix = "_NS" if re.search(r"#define\s+\w+_BASE_NS\s", self.content) else ""
+
         # Known anchors
-        symbols["PERIPH_BASE_NS"] = 0x40000000
+        symbols[f"PERIPH_BASE{suffix}"] = 0x40000000
         symbols["MPU_AXI_BUS_MEMORY_BASE"] = 0x50000000
 
-        # Parse all _BASE_NS defines
-        for match in re.finditer(r"#define\s+(\w+)_BASE_NS\s+\((.*?)\)", self.content):
+        # Parse all base-address defines
+        for match in re.finditer(
+            rf"#define\s+(\w+)_BASE{suffix}\s+\((.*?)\)", self.content
+        ):
             name = match.group(1)
             expr = match.group(2)
             val = evaluate_expr(expr, symbols)
             if val is not None:
-                symbols[f"{name}_BASE_NS"] = val
+                symbols[f"{name}_BASE{suffix}"] = val
 
-        # Parse instance casts (NAME_NS -> (TYPE_TypeDef *) NAME_BASE_NS)
+        # Parse instance casts (NAME[_NS] -> (TYPE_TypeDef *) NAME_BASE[_NS])
         instances: dict[str, tuple[str, int]] = {}
 
         for match in re.finditer(
-            r"#define\s+(\w+)_NS\s+\(\((\w+TypeDef)\s*\*\)\s*(\w+_BASE_NS)\)",
+            rf"#define\s+(\w+){suffix}\s+\(\((\w+TypeDef)\s*\*\)\s*(\w+_BASE{suffix})\)",
             self.content,
         ):
             instance_name = match.group(1)

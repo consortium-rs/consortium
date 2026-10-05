@@ -15,6 +15,10 @@
 //! (`CFG2.SSM` + `CR1.SSI`) keeps the peripheral a master without driving a
 //! hardware `NSS`, so chip-select is the caller's to manage.
 //!
+//! Every blocking wait is bounded by the driver's [`Timeout`] (see
+//! [`Spi::set_timeout`]) and fails with [`Error::Timeout`] if the peripheral
+//! stops shifting — for example because its kernel clock was gated.
+//!
 //! DMA readiness: the byte primitives push through `TXDR` and drain `RXDR`, so
 //! a DMA-backed path can be layered on top by setting `CFG1.TXDMAEN` /
 //! `CFG1.RXDMAEN` and streaming through
@@ -30,6 +34,7 @@ use embassy_sync::waitqueue::AtomicWaker;
 use embedded_hal::spi::{ErrorKind, ErrorType, MODE_0, Mode, Phase, Polarity};
 use pac::peripherals::spi::SPI;
 
+use crate::hal::timeout::Timeout;
 use crate::pac;
 
 /// Fixed 8-bit frame size, expressed as `CFG1.DSIZE` (bits minus one).
@@ -48,6 +53,8 @@ pub enum Error {
     ModeFault,
     /// A TI-mode frame format error occurred.
     Frame,
+    /// A blocking wait ran out of its [`Timeout`] budget.
+    Timeout,
 }
 
 impl embedded_hal::spi::Error for Error {
@@ -56,6 +63,7 @@ impl embedded_hal::spi::Error for Error {
             Error::Overrun => ErrorKind::Overrun,
             Error::ModeFault => ErrorKind::ModeFault,
             Error::Frame => ErrorKind::FrameFormat,
+            Error::Timeout => ErrorKind::Other,
         }
     }
 }
@@ -193,6 +201,7 @@ pub fn on_interrupt<T: Instance>() {
 pub struct Spi {
     regs: SPI,
     state: &'static State,
+    timeout: Timeout,
 }
 
 impl Spi {
@@ -232,6 +241,25 @@ impl Spi {
         Self {
             regs: r,
             state: T::state(),
+            timeout: Timeout::DEFAULT,
+        }
+    }
+
+    /// Bound every blocking wait (one TX slot, one received frame) to
+    /// `timeout` polls. Defaults to [`Timeout::DEFAULT`].
+    pub fn set_timeout(&mut self, timeout: Timeout) {
+        self.timeout = timeout;
+    }
+
+    /// Spin until `ready` holds, surfacing a latched transfer error first.
+    fn wait_blocking(&self, ready: impl Fn(&SPI) -> bool) -> Result<(), Error> {
+        let mut deadline = self.timeout.start();
+        loop {
+            self.check_error()?;
+            if ready(&self.regs) {
+                return Ok(());
+            }
+            deadline.tick().map_err(|_| Error::Timeout)?;
         }
     }
 
@@ -288,21 +316,11 @@ impl Spi {
         let guard = AbortGuard::new(self.regs);
         for i in 0..len {
             let tx = write.get(i).copied().unwrap_or(0);
-            loop {
-                self.check_error()?;
-                if self.regs.SR().read().TXP() {
-                    break;
-                }
-            }
+            self.wait_blocking(|r| r.SR().read().TXP())?;
             // SAFETY: `txdr` is this instance's transmit data register; a byte
             // store pushes one 8-bit frame with `DSIZE == 8`.
             unsafe { self.txdr().write_volatile(tx) };
-            loop {
-                self.check_error()?;
-                if self.regs.SR().read().RXP() {
-                    break;
-                }
-            }
+            self.wait_blocking(|r| r.SR().read().RXP())?;
             // SAFETY: `rxdr` is this instance's receive data register; a byte
             // load pops one received 8-bit frame.
             let rx = unsafe { self.rxdr().read_volatile() };
@@ -541,20 +559,10 @@ impl Spi {
         self.start(words.len());
         let guard = AbortGuard::new(self.regs);
         for word in words.iter_mut() {
-            loop {
-                self.check_error()?;
-                if self.regs.SR().read().TXP() {
-                    break;
-                }
-            }
+            self.wait_blocking(|r| r.SR().read().TXP())?;
             // SAFETY: byte store to this instance's `TXDR` pushes one frame.
             unsafe { self.txdr().write_volatile(*word) };
-            loop {
-                self.check_error()?;
-                if self.regs.SR().read().RXP() {
-                    break;
-                }
-            }
+            self.wait_blocking(|r| r.SR().read().RXP())?;
             // SAFETY: byte load from this instance's `RXDR` pops one frame.
             *word = unsafe { self.rxdr().read_volatile() };
         }

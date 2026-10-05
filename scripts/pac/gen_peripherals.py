@@ -62,6 +62,10 @@ class Binding:
     #: as which STM32 timers have a 32-bit counter.
     variants: dict[str, str] = field(default_factory=dict)
     variant_default: str = ""
+    #: When non-empty, only peripherals with these names are bound. Used for
+    #: drivers that need hardware some instances of a block kind lack, such as
+    #: the time driver's two capture/compare channels.
+    only: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -105,6 +109,8 @@ IMX9_BINDINGS = (
     Binding("crate::watchdog::impl_watchdog", "watchdog", ("wdog",)),
 )
 
+STM32MP2_TIM_WIDTHS = {"TIM2": "Bits32", "TIM5": "Bits32"}
+
 STM32MP2_BINDINGS = (
     Binding("crate::adc::impl_adc", "adc", ("adc",)),
     Binding("crate::can::impl_can", "can", ("fdcan",), ("_IT0",)),
@@ -122,14 +128,22 @@ STM32MP2_BINDINGS = (
         "timer",
         ("tim",),
         ("", "_UP"),
-        variants={"TIM2": "Bits32", "TIM5": "Bits32"},
+        variants=STM32MP2_TIM_WIDTHS,
         variant_default="Bits16",
     ),
+    # The time driver needs two capture/compare channels (half-period and
+    # alarm) on the one vector it is bound to, so the basic timers (TIM6/7),
+    # the single-channel ones (TIM10/11/13/14/16/17), and the advanced timers
+    # (TIM1/8/20, whose capture/compare flags raise a separate `_CC` vector)
+    # cannot back it.
     Binding(
         "crate::timer_driver::impl_tim_driver",
         "time-driver-gp-tim",
         ("tim",),
         ("", "_UP"),
+        variants=STM32MP2_TIM_WIDTHS,
+        variant_default="Bits16",
+        only=("TIM2", "TIM3", "TIM4", "TIM5", "TIM12", "TIM15"),
     ),
     Binding("crate::uart::impl_uart", "uart", ("usart",)),
     Binding("crate::watchdog::impl_watchdog", "watchdog", ("iwdg",)),
@@ -145,6 +159,14 @@ TARGETS = (
     Target(
         "stm32mp25_cm33",
         "crates/consortium-hal-stm32mp2/src/peripherals/stm32mp25",
+        STM32MP2_BINDINGS,
+    ),
+    # MP23 is the MP25 die with fewer instances: it keeps the PAC's `stm32mp257`
+    # interrupt table (identical numbering) but gets its own singleton map, so a
+    # peripheral MP23 lacks (I2C3, FDCAN3, ...) is a compile error, not a bus fault.
+    Target(
+        "stm32mp23_cm33",
+        "crates/consortium-hal-stm32mp2/src/peripherals/stm32mp23",
         STM32MP2_BINDINGS,
     ),
     Target(
@@ -226,6 +248,8 @@ def render(chip: dict, target: Target) -> str:
             if kind not in binding.blocks:
                 continue
             name = peripheral["name"]
+            if binding.only and name not in binding.only:
+                continue
             base = hex_literal(peripheral["base_address"])
             irq = resolve_irq(name, irqs, binding.irq_suffixes)
 

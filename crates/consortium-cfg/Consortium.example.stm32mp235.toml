@@ -1,0 +1,64 @@
+# STM32MP23 is the STM32MP25 die with fewer instances (same memory map, RM0457).
+# It has no Cortex-M0+, so no IPCC2, no LPSRAM and no `cm0p` endpoint; the CM33
+# is the only coprocessor. Peripherals MP23 lacks (I2C3-6, SPI6/7, FDCAN3, TIM20,
+# UART8/9, I3C3, ...) are rejected by its chip map.
+[profile]
+chip        = "stm32mp235fak3"
+shared      = "./shared"
+deploy_root = "/opt/consortium"
+# Where endpoint crates put `target/`: "nested" (default, one per crate) or
+# "unified" (one Cargo workspace rooted beside this file, which must hold its
+# root Cargo.toml).
+# workspace = "nested"
+
+[endpoints]
+linux = "./app"
+optee = "./ta"
+cm33  = "./firmware"
+
+[dbg]
+# How the host (AP) consumes the rings: "auto" spawns a console that forwards
+# decoded defmt frames to `tracing`; "interface" hands back reader handles.
+mode = "auto"
+
+# defmt ring for the CM33, in SRAM2 (base 0x00060000 in the stm32mp23 chip
+# database), just below the sensor IPC region.
+[dbg.cm33]
+memory = { base = 0x00062000, length = 0x2000 }
+mtu    = 64
+
+# The sensor channel lives in SRAM2, visible to both the CA35 (via UIO) and the
+# CM33 (via the raw physical base).
+[[ipc.channel]]
+name          = "sensor"
+doorbell      = "ipcc1"
+pattern       = "memory"
+primary       = "linux"
+secondary     = "cm33"
+party.linux   = { chan = 0, type = "SensorData" }
+party.cm33    = { chan = 1, type = "MotionControl" }
+config.memory = { base = 0x00064000, length = 0x4000 }
+mtu           = 128
+
+[tee]
+uuid = "48551DD5-74B2-4D24-BF9D-A09F02F5C56F"
+
+[hmi]
+engine  = "cog"
+backend = "wayland"
+debug   = "http://127.0.0.1:5173/"
+source  = "website"
+build   = "website/dist"
+
+[peripheral.i2c1]
+owner   = "ap"
+secure  = false
+pin.sda = "PB0"
+pin.scl = "PB1"
+
+[peripheral.spi1]
+owner    = "cm33"
+secure   = false
+pin.miso = "PA6"
+pin.mosi = "PA7"
+pin.sck  = "PA5"

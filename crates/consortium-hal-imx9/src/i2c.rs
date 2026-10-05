@@ -20,6 +20,14 @@
 //! that fails, or an async one that is dropped mid-flight, flushes the FIFOs and
 //! releases the bus before returning, so the next transaction starts from idle.
 //!
+//! A `Read` of zero bytes is rejected with [`Error::ZeroLengthTransfer`] before
+//! anything goes on the bus: LPI2C has no way to address a target for reading
+//! without then clocking at least one byte out of it. Zero-length writes are
+//! fine and make a plain address probe.
+//!
+//! Every blocking wait is bounded by the driver's [`Timeout`] (see
+//! [`I2c::set_timeout`]) and fails with [`Error::Timeout`] if the bus stalls.
+//!
 //! DMA readiness: the byte primitives below are factored around the LPI2C FIFO
 //! so a DMA-backed transmit/receive can be layered on top using
 //! [`crate::dma::DmaChannel::write_peripheral`] /
@@ -35,6 +43,7 @@ use embassy_sync::waitqueue::AtomicWaker;
 use embedded_hal::i2c::{ErrorKind, ErrorType, NoAcknowledgeSource, Operation, SevenBitAddress};
 use pac::peripherals::lpi2c::{LPI2C, LPI2C_MTDR};
 
+use crate::hal::timeout::Timeout;
 use crate::pac;
 
 /// LPI2C `MTDR` command field values (master mode).
@@ -62,8 +71,11 @@ pub enum Error {
     ArbitrationLoss,
     /// A FIFO error (underrun/overrun) occurred.
     Fifo,
-    /// The pin-low timeout expired.
+    /// The pin-low timeout expired, or a blocking wait ran out of its
+    /// [`Timeout`] budget.
     Timeout,
+    /// A `Read` operation had an empty buffer.
+    ZeroLengthTransfer,
 }
 
 impl embedded_hal::i2c::Error for Error {
@@ -72,7 +84,7 @@ impl embedded_hal::i2c::Error for Error {
             Error::Nack => ErrorKind::NoAcknowledge(NoAcknowledgeSource::Unknown),
             Error::ArbitrationLoss => ErrorKind::ArbitrationLoss,
             Error::Fifo => ErrorKind::Overrun,
-            Error::Timeout => ErrorKind::Other,
+            Error::Timeout | Error::ZeroLengthTransfer => ErrorKind::Other,
         }
     }
 }
@@ -173,6 +185,9 @@ pub(crate) trait SealedInstance {
     fn regs() -> LPI2C;
     /// This instance's dedicated interrupt state.
     fn state() -> &'static State;
+    /// The CCM gate the constructor opens before the first register access
+    /// (see [`crate::clock`]); `None` where this core need not open one.
+    const LPCG: Option<u32>;
 }
 
 /// An LPI2C instance the [`I2c`] driver can drive.
@@ -190,6 +205,8 @@ pub trait Instance: SealedInstance + PeripheralType {
 macro_rules! impl_i2c {
     ($instance:ident, $base:expr, $irq:expr) => {
         impl crate::i2c::SealedInstance for crate::peripherals::$instance {
+            const LPCG: ::core::option::Option<u32> = crate::clock::lpcg(stringify!($instance));
+
             #[inline]
             fn regs() -> crate::pac::peripherals::lpi2c::LPI2C {
                 // SAFETY: `$base` is this instance's LPI2C base as extracted
@@ -224,6 +241,7 @@ pub fn on_interrupt<T: Instance>() {
 pub struct I2c {
     regs: LPI2C,
     state: &'static State,
+    timeout: Timeout,
 }
 
 impl I2c {
@@ -236,6 +254,9 @@ impl I2c {
         // Owning the singleton for the driver's lifetime is what makes exclusive
         // register access safe; it is consumed here and never reissued.
         let _ = peri;
+        // On i.MX 93 Linux closes the gate of every peripheral no kernel
+        // driver claims; the first register access would BusFault without this.
+        crate::clock::ungate(T::LPCG);
         let r = T::regs();
 
         // Software reset, then configure while disabled.
@@ -262,7 +283,14 @@ impl I2c {
         Self {
             regs: r,
             state: T::state(),
+            timeout: Timeout::DEFAULT,
         }
+    }
+
+    /// Bound every blocking wait (one FIFO slot, one byte, the STOP) to
+    /// `timeout` polls. Defaults to [`Timeout::DEFAULT`].
+    pub fn set_timeout(&mut self, timeout: Timeout) {
+        self.timeout = timeout;
     }
 
     /// Clear the sticky master status flags before a transfer.
@@ -308,22 +336,26 @@ impl I2c {
 
     /// Block until the TX FIFO can accept another command word.
     fn wait_tx_ready(&self) -> Result<(), Error> {
+        let mut deadline = self.timeout.start();
         loop {
             self.check_error()?;
             if self.regs.MSR().read().TDF() {
                 return Ok(());
             }
+            deadline.tick().map_err(|_| Error::Timeout)?;
         }
     }
 
     /// Block until a received byte is available, returning it.
     fn wait_rx(&self) -> Result<u8, Error> {
+        let mut deadline = self.timeout.start();
         loop {
             self.check_error()?;
             let rdr = self.regs.MRDR().read();
             if !rdr.RXEMPTY() {
                 return Ok(rdr.DATA());
             }
+            deadline.tick().map_err(|_| Error::Timeout)?;
         }
     }
 
@@ -345,12 +377,14 @@ impl I2c {
         self.wait_tx_ready()?;
         self.push(cmd::STOP, 0);
         // Wait for the STOP to complete on the bus.
+        let mut deadline = self.timeout.start();
         loop {
             self.check_error()?;
             if self.regs.MSR().read().SDF() {
                 self.regs.MSR().write(|w| w.set_SDF(true));
                 return Ok(());
             }
+            deadline.tick().map_err(|_| Error::Timeout)?;
         }
     }
 
@@ -366,6 +400,7 @@ impl I2c {
         if operations.is_empty() {
             return Ok(());
         }
+        check_operations(operations)?;
         let guard = RecoverGuard::new(self.regs);
         self.clear_status();
         let mut start = 0;
@@ -489,6 +524,7 @@ impl I2c {
         if operations.is_empty() {
             return Ok(());
         }
+        check_operations(operations)?;
         // Covers an error returned through `?` and a future dropped mid-transfer.
         let guard = RecoverGuard::new(self.regs);
         self.clear_status();
@@ -523,6 +559,22 @@ impl I2c {
         guard.defuse();
         Ok(())
     }
+}
+
+/// Reject a transaction LPI2C cannot express, before touching the bus.
+///
+/// A read segment needs at least one `RECEIVE` command: after a START with the
+/// read bit the target owns SDA until the master NACKs a byte, so a read
+/// address followed directly by STOP leaves the bus in an undefined state.
+/// `embassy-mcxa` rejects the same case.
+fn check_operations(operations: &[Operation<'_>]) -> Result<(), Error> {
+    if operations
+        .iter()
+        .any(|op| matches!(op, Operation::Read(buffer) if buffer.is_empty()))
+    {
+        return Err(Error::ZeroLengthTransfer);
+    }
+    Ok(())
 }
 
 /// Whether `op` reads from the target.
@@ -657,7 +709,7 @@ impl embedded_hal_async::i2c::I2c<SevenBitAddress> for I2c {
 mod tests {
     use embedded_hal::i2c::Operation;
 
-    use super::{clock_config, group_end};
+    use super::{Error, check_operations, clock_config, group_end};
 
     #[test]
     fn clock_config_standard_mode() {
@@ -693,5 +745,19 @@ mod tests {
         ];
         assert_eq!(group_end(&ops, 0), 2);
         assert_eq!(group_end(&ops, 2), 4);
+    }
+
+    #[test]
+    fn zero_length_read_is_rejected() {
+        let mut empty = [0u8; 0];
+        let mut one = [0u8; 1];
+        assert_eq!(
+            check_operations(&[Operation::Write(&[1]), Operation::Read(&mut empty)]),
+            Err(Error::ZeroLengthTransfer)
+        );
+        assert_eq!(
+            check_operations(&[Operation::Write(&[]), Operation::Read(&mut one)]),
+            Ok(())
+        );
     }
 }

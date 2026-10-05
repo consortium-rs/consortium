@@ -354,7 +354,8 @@ impl LoweredIr {
     ///   [`BellA::nvic_enable`](crate::components::bella::BellA::nvic_enable));
     /// - brings up the sealed Embassy time driver (its timer vector and
     ///   `defmt::timestamp!` are emitted alongside) unless `[profile]
-    ///   time_driver = false`; and
+    ///   time_driver = false` or this core's chip map lacks the driver's timer
+    ///   (the STM32MP25 CM0+ has no TIM2); and
     /// - installs each unsplit IPC transport behind its channel instance; and
     /// - returns the peripheral and channel singleton allowlists.
     ///
@@ -473,11 +474,13 @@ impl LoweredIr {
 
         // Sealed Embassy time driver: `bringup` statement (into `init`), the
         // timer vector, and the `defmt::timestamp!` source. Empty when
-        // `[profile] time_driver = false` or the chip family has no driver yet.
+        // `[profile] time_driver = false`, the chip family has no driver yet, or
+        // this core's chip map does not list the driver's timer.
         let time = crate::components::time::time_driver_codegen(
             &self.peripherals.hal_crate,
             self.time_driver,
             dbg_present,
+            self.core_peripherals.get(&core).map(Vec::as_slice),
         );
         let crate::components::time::TimeDriverCodegen {
             timestamp,

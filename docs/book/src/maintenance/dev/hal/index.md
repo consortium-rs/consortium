@@ -18,19 +18,25 @@ detail inside the chip HAL rather than in the shared traits.
 The drivers follow one construction and execution pattern, so moving between peripherals —
 and between the two chip families — stays predictable.
 
-- **Construction takes an MMIO base and `&'static` state.** A driver is bound to a
-  concrete peripheral instance by the base address you pass to its `new` constructor,
-  together with a `&'static` state value that owns the driver's interrupt bookkeeping
-  (an `embassy_sync::waitqueue::AtomicWaker` and any per-instance flags). Selecting an
-  instance is a matter of passing the right base and a distinct state.
+- **Construction consumes a peripheral singleton.** `<hal>::init()` hands out the chip's
+  singletons once as a `Peripherals` struct, and a driver's `new` constructor takes the
+  one it drives (`I2c::new(p.LPI2C1, …)`). The singleton type carries the instance's
+  register base, NVIC line, and — through the sealed `Instance::state()` — the
+  per-instance interrupt bookkeeping (an `embassy_sync::waitqueue::AtomicWaker` and any
+  flags), so no constructor takes an address or a `static` and none is `unsafe`. The one
+  exception is STM32MP2 CAN, whose shared message-RAM window has no singleton yet.
+  On i.MX 93 each constructor also opens the peripheral's CCM gate first (see
+  `clock::lpcg`), because Linux closes every gate no kernel driver claims.
 - **The blocking path needs no interrupts.** Every driver implements the relevant
   `embedded-hal` (or `embedded-can`) blocking trait, and those methods work purely by
-  polling hardware registers. This is the simplest way to bring a peripheral up.
+  polling hardware registers. This is the simplest way to bring a peripheral up. Each
+  poll loop is bounded by a `consortium_hal::timeout::Timeout` poll budget (set with the
+  driver's `set_timeout`), so a stuck bus surfaces as `Error::Timeout` instead of a hang.
 - **The async path is opt-in and IRQ-driven.** The same drivers implement the
   `embedded-hal-async` traits. Async methods park on the driver's waker and expect the
-  peripheral's interrupt to be routed into the driver's `on_interrupt` handler
-  (`CanState::on_interrupt`, `SpiState::on_interrupt`, and so on), which wakes the
-  pending future.
+  peripheral's interrupt to be forwarded to the module's `on_interrupt::<T>()`, keyed by
+  the same singleton type the driver consumed (`can::on_interrupt::<peripherals::CAN1>()`
+  and so on), which wakes the pending future.
 - **The application owns the vector table.** Per the workspace convention shared with the
   doorbell crates, no HAL crate installs `#[interrupt]` handlers. Firmware enables the
   peripheral's interrupt line and, from its own ISR, calls the driver's `on_interrupt`.
@@ -46,25 +52,26 @@ and blocking/async split.
 The CAN drivers present a classic (non-FD) 2.0A/2.0B controller through the
 `embedded-can` traits: blocking transfers via `embedded_can::nb::Can`, and async
 `Can::transmit` / `Can::receive` once the instance's interrupt reaches
-`CanState::on_interrupt`. Both drivers deliberately implement a minimal, fixed mailbox
+`can::on_interrupt::<T>()`. Both drivers deliberately implement a minimal, fixed mailbox
 layout as a first cut; FD frames, extra mailboxes, and hardware acceptance filtering are
 left as room to grow, and the receive filter accepts every identifier.
 
 `Can::split` hands out independent `CanTx` and `CanRx` halves for code that transmits and
 receives concurrently — `consortium-ipc-transport-fdcan` is the motivating caller. The
 halves drive disjoint registers and storage and park on separate wakers in the shared
-`CanState`; a single waker would let whichever half registered last clobber the other's
+per-instance state; a single waker would let whichever half registered last clobber the other's
 registration and strand it.
 
 The two families differ in how message storage is arranged, reflecting the underlying IP:
 
-- **i.MX 9x (FlexCAN).** `Can::new` takes the instance base and a `&'static CanState`.
+- **i.MX 9x (FlexCAN).** `Can::new` takes the `CANn` singleton, its clock, and a
+  `Config`.
   The driver uses a fixed two-mailbox layout: message buffer 0 transmits and message
   buffer 1 receives every frame. With only one receive mailbox, a frame arriving before
   the previous one is read is reported as `Error::Overrun` and lost, so a burst needs a
   task already parked in `receive`. FlexCAN's RX FIFO would remove the constraint.
-- **STM32MP2 (FDCAN / Bosch M_CAN).** `Can::new` additionally takes the shared CAN
-  message-RAM base, this instance's byte offset within it, and the `&'static CanState`.
+- **STM32MP2 (FDCAN / Bosch M_CAN).** The `unsafe` `Can::new` additionally takes the
+  shared CAN message-RAM base and this instance's byte offset within it.
   The SoC gives all FDCAN instances one shared `CAN_SRAM` window, so the caller
   partitions that window by handing each instance a distinct message-RAM offset, leaving
   at least `can::REGION_BYTES` between them. Within its slice, the driver lays out an
@@ -77,8 +84,8 @@ The two families differ in how message storage is arranged, reflecting the under
 
 The SPI drivers are byte-oriented, full-duplex masters exposed through the
 `embedded-hal` `SpiBus` trait (blocking) and its `embedded-hal-async` counterpart (async,
-once the instance's interrupt reaches `SpiState::on_interrupt`). `Spi::new` takes the
-instance base and a `&'static SpiState`. Frames are eight bits, and chip-select handling
+once the instance's interrupt reaches `spi::on_interrupt::<T>()`). `Spi::new` takes the
+instance's singleton, its kernel clock, and a `Config`. Frames are eight bits, and chip-select handling
 reflects each IP's model:
 
 - **i.MX 9x (LPSPI).** The driver drives one hardware chip-select (`PCS`) and holds it
@@ -101,7 +108,7 @@ Both chip HALs expose controller-mode I3C through their `i3c` feature. The commo
 shape supports I3C SDR and legacy-I2C private transfers, repeated-start transactions,
 broadcast CCCs, RSTDAA, and ENTDAA. Blocking operations poll the peripheral; async
 operations require the application to forward the selected I3C interrupt to
-`I3cState::on_interrupt`.
+`i3c::on_interrupt::<T>()`.
 
 The NXP implementation follows Embassy MCXA's controller engine, which uses the same NXP
 I3C IP as i.MX 9. The STM32MP2 implementation follows the STM32CubeMP2 LL/HAL controller

@@ -5,6 +5,9 @@
 //! blocking transfers poll, and async transfers wake through [`State`].
 //! Controller-mode I3C SDR, legacy I2C, broadcast CCC, repeated starts, and
 //! dynamic address assignment are supported.
+//!
+//! Every blocking wait is bounded by the driver's [`Timeout`] (see
+//! [`I3c::set_timeout`]) and fails with [`Error::Timeout`] if the bus stalls.
 
 use core::future::poll_fn;
 use core::task::Poll;
@@ -13,6 +16,7 @@ use embassy_hal_internal::{Peri, PeripheralType};
 use embassy_sync::waitqueue::AtomicWaker;
 use pac::peripherals::i3c::{I3C, I3C_CR, I3C_DEVRX, I3C_TDR};
 
+use crate::hal::timeout::Timeout;
 use crate::pac;
 
 const MTYPE_I3C_PRIVATE: u8 = 2;
@@ -85,6 +89,8 @@ pub enum Error {
     Terminated,
     /// Address or buffer arguments are invalid.
     InvalidArgument,
+    /// A blocking wait ran out of its [`Timeout`] budget.
+    Timeout,
 }
 
 /// Controller timing configuration.
@@ -236,6 +242,7 @@ pub fn on_interrupt<T: Instance>() {
 pub struct I3c {
     regs: I3C,
     state: &'static State,
+    timeout: Timeout,
 }
 
 impl I3c {
@@ -275,7 +282,29 @@ impl I3c {
         Ok(Self {
             regs,
             state: T::state(),
+            timeout: Timeout::DEFAULT,
         })
+    }
+
+    /// Bound every blocking wait (one FIFO slot, one byte, frame completion)
+    /// to `timeout` polls. Defaults to [`Timeout::DEFAULT`].
+    pub fn set_timeout(&mut self, timeout: Timeout) {
+        self.timeout = timeout;
+    }
+
+    /// Spin until `ready` yields a result, surfacing any error first.
+    fn wait_blocking<T>(
+        &self,
+        mut ready: impl FnMut(&I3C) -> Option<Result<T, Error>>,
+    ) -> Result<T, Error> {
+        let mut deadline = self.timeout.start();
+        loop {
+            self.check_error()?;
+            if let Some(result) = ready(&self.regs) {
+                return result;
+            }
+            deadline.tick().map_err(|_| Error::Timeout)?;
+        }
     }
 
     fn clear_events(&self) {
@@ -329,35 +358,23 @@ impl I3c {
     }
 
     fn wait_tx(&self) -> Result<(), Error> {
-        loop {
-            self.check_error()?;
-            if self.regs.EVR().read().TXFNFF() {
-                return Ok(());
-            }
-        }
+        self.wait_blocking(|r| r.EVR().read().TXFNFF().then_some(Ok(())))
     }
 
     fn wait_rx(&self) -> Result<u8, Error> {
-        loop {
-            self.check_error()?;
-            let e = self.regs.EVR().read();
+        self.wait_blocking(|r| {
+            let e = r.EVR().read();
             if e.RXFNEF() {
-                return Ok(self.regs.RDR().read().RDB0());
+                return Some(Ok(r.RDR().read().RDB0()));
             }
-            if e.RXTGTENDF() {
-                return Err(Error::Terminated);
-            }
-        }
+            e.RXTGTENDF().then_some(Err(Error::Terminated))
+        })
     }
 
     fn wait_complete(&self) -> Result<(), Error> {
-        loop {
-            self.check_error()?;
-            if self.regs.EVR().read().FCF() {
-                self.regs.CEVR().write(|w| w.set_CFCF(true));
-                return Ok(());
-            }
-        }
+        self.wait_blocking(|r| r.EVR().read().FCF().then_some(Ok(())))?;
+        self.regs.CEVR().write(|w| w.set_CFCF(true));
+        Ok(())
     }
 
     fn write_part(
@@ -512,16 +529,16 @@ impl I3c {
 
         let mut assigned = 0;
         for (slot, device) in devices.iter_mut().enumerate() {
-            loop {
-                self.check_error()?;
-                let events = self.regs.EVR().read();
+            let complete = self.wait_blocking(|r| {
+                let events = r.EVR().read();
                 if events.FCF() {
-                    self.regs.CEVR().write(|w| w.set_CFCF(true));
-                    return Ok(assigned);
+                    return Some(Ok(true));
                 }
-                if events.TXFNFF() {
-                    break;
-                }
+                events.TXFNFF().then_some(Ok(false))
+            })?;
+            if complete {
+                self.regs.CEVR().write(|w| w.set_CFCF(true));
+                return Ok(assigned);
             }
 
             let mut payload = [0u8; 8];

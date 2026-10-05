@@ -6,6 +6,37 @@ cp:
   - name: cm33
     count: 1
     variant: remote
+remoteproc:
+  cm33:
+    compatible: st,stm32mp2-m33
+    vector_section: .isr_vectors
+    vector_placement: separate
+    vector:
+      name: NS_VECTOR_TBL
+      read: true
+      write: true
+      execute: true
+      window:
+        origin: 0x80100000
+        length: 0x00001000
+        reserve: true
+    flash:
+      origin: 0x80101000
+      length: 0x007ff000
+      reserve: true
+    shmem:
+      name: SHMEM
+      read: true
+      write: true
+      execute: true
+      window:
+        origin: 0x812f8000
+        length: 0x00008000
+        reserve: true
+    ram:
+      origin: 0x80a00000
+      length: 0x00100000
+      reserve: true
 memory:
   trm_page: [229]
   aliases:
@@ -16,28 +47,13 @@ memory:
   regions:
     - name: SRAM1
       type: sram
-      base: 0x000400000
+      base: 0x00040000
       length: 0x00020000
       visible: [ap, cm33]
     - name: SRAM2
       type: sram
       base: 0x00060000
       length: 0x00020000
-      visible: [ap, cm33]
-    - name: LPSRAM1
-      type: sram
-      base: 0x000C0000
-      length: 0x00002000
-      visible: [ap, cm33]
-    - name: LPSRAM2
-      type: sram
-      base: 0x000C2000
-      length: 0x00002000
-      visible: [ap, cm33]
-    - name: LPSRAM3
-      type: sram
-      base: 0x000C4000
-      length: 0x00004000
       visible: [ap, cm33]
 peripheral:
   aliases:
@@ -105,37 +121,6 @@ peripheral:
           page_memory: 236
           page_irq: 1741
           memory: 0x00490000
-      party_page: 1342
-      channels: 32
-      channel_page: 1341
-    - name: IPCC2
-      page: 1341
-      type: ipcc
-      clock:
-        provider: scmi_clk
-        id: CK_SCMI_IPCC2
-      length: 0x00000400
-      parties:
-        - core: linux
-          irq: 175
-          page_memory: 241
-          page_irq: 1752
-          memory: 0x06250000
-        - core: optee
-          irq: 177
-          page_memory: 232
-          page_irq: 1752
-          memory: 0x06250000
-        - core: cm33
-          irq: 175
-          page_memory: 241
-          page_irq: 1471
-          memory: 0x06250000
-        - core: cm33-s
-          irq: 177
-          page_memory: 232
-          page_irq: 1741
-          memory: 0x06250000
       party_page: 1342
       channels: 32
       channel_page: 1341

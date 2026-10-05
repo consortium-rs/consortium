@@ -113,6 +113,9 @@ pub(crate) trait SealedInstance {
     fn regs() -> LPTMR;
     /// This instance's dedicated interrupt state.
     fn state() -> &'static State;
+    /// The CCM gate the constructor opens before the first register access
+    /// (see [`crate::clock`]); `None` where this core need not open one.
+    const LPCG: Option<u32>;
 }
 
 /// An LPTMR the [`Lptmr`] driver can drive.
@@ -133,6 +136,8 @@ pub trait Instance: SealedInstance + PeripheralType {
 macro_rules! impl_lptmr {
     ($instance:ident, $base:expr, $irq:expr) => {
         impl crate::lptmr::SealedInstance for crate::peripherals::$instance {
+            const LPCG: ::core::option::Option<u32> = crate::clock::lpcg(stringify!($instance));
+
             #[inline]
             fn regs() -> crate::pac::peripherals::lptmr::LPTMR {
                 // SAFETY: `$base` is this instance's LPTMR base as extracted
@@ -196,6 +201,9 @@ impl Lptmr {
         // Owning the singleton for the driver's lifetime is what makes exclusive
         // register access safe; it is consumed here and never reissued.
         let _ = peri;
+        // On i.MX 93 Linux closes the gate of every peripheral no kernel
+        // driver claims; the first register access would BusFault without this.
+        crate::clock::ungate(T::LPCG);
         let regs = T::regs();
         program(regs, config);
         Self {

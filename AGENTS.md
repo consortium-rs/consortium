@@ -443,7 +443,9 @@ timer-driver, and UART modules (all on by default alongside the default chip). T
 own the chip-selection features forwarded to the PAC:
 `mimx93`/`mimx95` (hal-imx9, default `mimx95`) and `stm32mp21x`/`stm32mp23x`/`stm32mp25x`
 (hal-stm32mp2, default `stm32mp25x`, where `stm32mp23x`/`stm32mp25x` both map to the PAC's
-`stm32mp257`). Keep these crates firmware-friendly: `no_std`, narrow unsafe blocks, and
+`stm32mp257`; MP23 is the same die and reference manual, RM0457, but mounts its own
+generated singleton map without the instances its datasheet rules out, such as I2C3–6,
+FDCAN3, LPDMA and IPCC2). Keep these crates firmware-friendly: `no_std`, narrow unsafe blocks, and
 chip-specific details inside the chip HAL rather than the shared HAL traits.
 
 ### Peripheral Singletons

@@ -58,16 +58,16 @@ macro_rules! impl_ipcc {
     };
 }
 
-// STM32MP21 has only IPCC1; STM32MP23/25 add the SmartRun IPCC2.
-#[cfg(any(feature = "stm32mp23x", feature = "stm32mp25x"))]
+// STM32MP25 adds the CM0+'s SmartRun IPCC2; STM32MP21/23 have only IPCC1.
+#[cfg(feature = "stm32mp25x")]
 mod bindings {
     impl_ipcc!(IPCC1, 1);
     impl_ipcc!(IPCC2, 2);
 }
 
 #[cfg(all(
-    feature = "stm32mp21x",
-    not(any(feature = "stm32mp23x", feature = "stm32mp25x"))
+    any(feature = "stm32mp21x", feature = "stm32mp23x"),
+    not(feature = "stm32mp25x")
 ))]
 mod bindings {
     impl_ipcc!(IPCC1, 1);
@@ -137,12 +137,17 @@ impl<S: Side, const N: usize> IpccDoorbell<S, N> {
                 "IpccDoorbell instance number does not match the peripheral singleton",
             );
         }
-        // Owning the singleton for the doorbell's lifetime is what makes the
-        // MMIO access exclusive; it is consumed here and never reissued.
+        // The singleton is proof of exclusivity, not state: `init()` issues it
+        // once and the `'static` bound means nothing ever hands it back, so
+        // dropping it here keeps the instance out of reach of safe code. It is
+        // deliberately not stored: `split()` clones the doorbell, and other
+        // doorbells may drive disjoint lines of the same block.
         let _ = peri;
         // SAFETY: `base::BASE[N - 1]` is instance `N`'s window from this
-        // crate's vetted address table, and the consumed singleton guarantees
-        // nothing else drives it.
+        // crate's vetted address table. The consumed singleton keeps every
+        // other driver off the window; another doorbell on it can only come
+        // from a `steal()` whose caller guarantees disjoint lines, and the
+        // shared enable-register writes run in a critical section.
         unsafe { Self::new_mapped(base::BASE[N - 1]) }
     }
 
