@@ -220,6 +220,9 @@ pub(crate) trait SealedInstance {
     fn regs() -> CAN;
     /// This instance's dedicated interrupt state.
     fn state() -> &'static State;
+    /// The CCM gate the constructor opens before the first register access
+    /// (see [`crate::clock`]); `None` where this core need not open one.
+    const LPCG: Option<u32>;
 }
 
 /// A FlexCAN instance the [`Can`] driver can drive.
@@ -237,6 +240,8 @@ pub trait Instance: SealedInstance + PeripheralType {
 macro_rules! impl_can {
     ($instance:ident, $base:expr, $irq:expr) => {
         impl crate::can::SealedInstance for crate::peripherals::$instance {
+            const LPCG: ::core::option::Option<u32> = crate::clock::lpcg(stringify!($instance));
+
             #[inline]
             fn regs() -> crate::pac::peripherals::can::CAN {
                 // SAFETY: `$base` is this instance's FlexCAN base as extracted
@@ -318,6 +323,9 @@ impl Can {
         // Owning the singleton for the driver's lifetime is what makes exclusive
         // register access safe; it is consumed here and never reissued.
         let _ = peri;
+        // On i.MX 93 Linux closes the gate of every peripheral no kernel
+        // driver claims; the first register access would BusFault without this.
+        crate::clock::ungate(T::LPCG);
         let r = T::regs();
         let this = Self {
             tx: CanTx {

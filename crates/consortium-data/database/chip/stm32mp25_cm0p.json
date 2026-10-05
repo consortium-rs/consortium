@@ -134,5 +134,121 @@
       "description": "CTI IRQ1"
     }
   ],
-  "peripherals": []
+  "peripherals": [
+    {
+      "name": "ADF1",
+      "base_address": "0x46220000",
+      "block": "mdf/MDF"
+    },
+    {
+      "name": "ADF1_Filter0",
+      "base_address": "0x46220080",
+      "block": "mdf_filter/MDF_Filter"
+    },
+    {
+      "name": "EXTI2",
+      "base_address": "0x46230000",
+      "block": "exti/EXTI"
+    },
+    {
+      "name": "EXTI2_C1",
+      "base_address": "0x46230080",
+      "block": "exti_core/EXTI_Core"
+    },
+    {
+      "name": "EXTI2_C2",
+      "base_address": "0x462300c0",
+      "block": "exti_core/EXTI_Core"
+    },
+    {
+      "name": "EXTI2_C3",
+      "base_address": "0x46230100",
+      "block": "exti_core/EXTI_Core"
+    },
+    {
+      "name": "GPIOZ",
+      "base_address": "0x46200000",
+      "block": "gpio/GPIO"
+    },
+    {
+      "name": "HSEM",
+      "base_address": "0x46240000",
+      "block": "hsem/HSEM"
+    },
+    {
+      "name": "I2C8",
+      "base_address": "0x46040000",
+      "block": "i2c/I2C"
+    },
+    {
+      "name": "I3C4",
+      "base_address": "0x46080000",
+      "block": "i3c/I3C"
+    },
+    {
+      "name": "IPCC2",
+      "base_address": "0x46250000",
+      "block": "ipcc/IPCC"
+    },
+    {
+      "name": "IWDG5",
+      "base_address": "0x46090000",
+      "block": "iwdg/IWDG"
+    },
+    {
+      "name": "LPDMA",
+      "base_address": "0x46210000",
+      "block": "dma/DMA"
+    },
+    {
+      "name": "LPTIM3",
+      "base_address": "0x46050000",
+      "block": "lptim/LPTIM"
+    },
+    {
+      "name": "LPTIM4",
+      "base_address": "0x46060000",
+      "block": "lptim/LPTIM"
+    },
+    {
+      "name": "LPTIM5",
+      "base_address": "0x46070000",
+      "block": "lptim/LPTIM"
+    },
+    {
+      "name": "LPUART1",
+      "base_address": "0x46030000",
+      "block": "usart/USART"
+    },
+    {
+      "name": "PWR",
+      "base_address": "0x44210000",
+      "block": "pwr/PWR"
+    },
+    {
+      "name": "RISC",
+      "base_address": "0x42080000",
+      "block": "risc/RISC"
+    },
+    {
+      "name": "RTC",
+      "base_address": "0x46000000",
+      "block": "rtc/RTC"
+    },
+    {
+      "name": "SPI8",
+      "base_address": "0x46020000",
+      "block": "spi/SPI"
+    },
+    {
+      "name": "TAMP",
+      "base_address": "0x46010000",
+      "block": "tamp/TAMP"
+    },
+    {
+      "name": "WWDG2",
+      "base_address": "0x460a0000",
+      "block": "wwdg/WWDG"
+    }
+  ]
 }

@@ -119,12 +119,17 @@ impl<S: Side, const N: usize> HsemDoorbell<S, N> {
                 "HsemDoorbell instance number does not match the peripheral singleton",
             );
         }
-        // Owning the singleton for the doorbell's lifetime is what makes the
-        // MMIO access exclusive; it is consumed here and never reissued.
+        // The singleton is proof of exclusivity, not state: `init()` issues it
+        // once and the `'static` bound means nothing ever hands it back, so
+        // dropping it here keeps the instance out of reach of safe code. It is
+        // deliberately not stored: `split()` clones the doorbell, and other
+        // doorbells may drive disjoint lines of the same block.
         let _ = peri;
         // SAFETY: `base::BASE[N - 1]` is the HSEM window from this crate's
-        // vetted address table, and the consumed singleton guarantees nothing
-        // else drives it.
+        // vetted address table. The consumed singleton keeps every other
+        // driver off the window; another doorbell on it can only come from a
+        // `steal()` whose caller guarantees disjoint semaphores, and the shared
+        // enable-register writes run in a critical section.
         unsafe { Self::new_mapped(base::BASE[N - 1]) }
     }
 

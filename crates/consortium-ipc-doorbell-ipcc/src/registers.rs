@@ -17,21 +17,23 @@
 //! STM32 IPCC hardware description.
 //!
 //! Offsets are relative to an IPCC instance base address. IPCC1 has the same
-//! base on STM32MP21/23/25; IPCC2 is the SmartRun block and exists only on
-//! STM32MP23/25.
+//! base on STM32MP21/23/25; IPCC2, the CM0+'s SmartRun mailbox, exists only on
+//! STM32MP25 (STM32MP23 has no CM0+).
 
 /// IPCC instance base addresses and register-window length.
 pub mod base {
     /// IPCC physical base address of each instance, index 0 = IPCC1.
     ///
-    /// STM32MP21 has only IPCC1; STM32MP23/25 add the SmartRun IPCC2.
-    #[cfg(any(feature = "stm32mp23x", feature = "stm32mp25x"))]
+    /// STM32MP25 adds the SmartRun IPCC2 to IPCC1.
+    #[cfg(feature = "stm32mp25x")]
     pub const BASE: [usize; 2] = [0x4049_0000, 0x4625_0000];
 
     /// IPCC physical base address of each instance, index 0 = IPCC1.
+    ///
+    /// STM32MP21 and STM32MP23 have only IPCC1.
     #[cfg(all(
-        feature = "stm32mp21x",
-        not(any(feature = "stm32mp23x", feature = "stm32mp25x"))
+        any(feature = "stm32mp21x", feature = "stm32mp23x"),
+        not(feature = "stm32mp25x")
     ))]
     pub const BASE: [usize; 1] = [0x4049_0000];
 

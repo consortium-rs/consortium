@@ -8,6 +8,10 @@
 //! let heartbeat = Gpio::new(p.GPIOA).pin(0).into_output(Level::Low);
 //! ```
 //!
+//! Each pin is handed out at most once: [`Pin`] is neither `Copy` nor `Clone`,
+//! and [`Gpio::pin`] panics (and [`Gpio::try_pin`] returns `None`) for a pin
+//! the port already gave away, so two owners can never drive the same line.
+//!
 //! Pins implement the standard [`embedded_hal::digital`] output/input traits.
 //! Pin operations are infallible on this hardware.
 //!
@@ -127,6 +131,8 @@ pub fn on_interrupt<T: Instance>(pending_mask: u32) {
 /// A GPIO port. Hand out [`Pin`]s with [`Gpio::pin`].
 pub struct Gpio {
     port: GPIO,
+    /// Bit `n` is set once pin `n` has been handed out.
+    taken: u32,
 }
 
 impl Gpio {
@@ -137,28 +143,52 @@ impl Gpio {
         // Owning the singleton for the driver's lifetime is what makes exclusive
         // register access safe; it is consumed here and never reissued.
         let _ = peri;
-        Self { port: T::regs() }
+        Self {
+            port: T::regs(),
+            taken: 0,
+        }
     }
 
     /// Take the [`Pin`] at index `pin` (`0..16`), unconfigured.
     ///
     /// # Panics
     ///
-    /// Panics if `pin >= 16`.
-    pub fn pin(&self, pin: u8) -> Pin {
-        assert!(pin < PIN_COUNT, "GPIO pin index out of range");
-        Pin {
+    /// Panics if `pin >= 16` or if this pin was already taken.
+    pub fn pin(&mut self, pin: u8) -> Pin {
+        self.try_pin(pin)
+            .expect("GPIO pin index out of range or already taken")
+    }
+
+    /// Take the [`Pin`] at index `pin`, or `None` if the index is out of range
+    /// or the pin was already taken.
+    pub fn try_pin(&mut self, pin: u8) -> Option<Pin> {
+        claim(&mut self.taken, pin).then_some(Pin {
             port: self.port,
             pin,
-        }
+        })
     }
 }
 
 /// A single GPIO pin.
-#[derive(Clone, Copy)]
+///
+/// Owning a `Pin` is the only way to drive its line, so it deliberately
+/// implements neither `Copy` nor `Clone`.
 pub struct Pin {
     port: GPIO,
     pin: u8,
+}
+
+/// Mark `pin` taken in `taken`, returning whether it was free and in range.
+fn claim(taken: &mut u32, pin: u8) -> bool {
+    if pin >= PIN_COUNT {
+        return false;
+    }
+    let mask = 1u32 << pin;
+    if *taken & mask != 0 {
+        return false;
+    }
+    *taken |= mask;
+    true
 }
 
 impl Pin {
@@ -269,5 +299,49 @@ impl embedded_hal::digital::InputPin for Pin {
 
     fn is_low(&mut self) -> Result<bool, Infallible> {
         Ok(!Pin::is_high(self))
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{Gpio, PIN_COUNT, claim};
+    use crate::pac::peripherals::gpio::GPIO;
+
+    /// `pin`/`try_pin` touch no registers, so a dangling base suffices.
+    fn port() -> GPIO {
+        // SAFETY: the tests below never dereference the block.
+        unsafe { GPIO::from_ptr(core::ptr::NonNull::<u32>::dangling().as_ptr().cast()) }
+    }
+
+    #[test]
+    fn claim_hands_each_pin_out_once() {
+        let mut taken = 0;
+        assert!(claim(&mut taken, 3));
+        assert!(!claim(&mut taken, 3));
+        assert!(claim(&mut taken, 0));
+        assert!(claim(&mut taken, PIN_COUNT - 1));
+        assert!(!claim(&mut taken, PIN_COUNT));
+    }
+
+    #[test]
+    fn port_refuses_a_second_handle_to_a_pin() {
+        let mut gpio = Gpio {
+            port: port(),
+            taken: 0,
+        };
+        assert!(gpio.try_pin(5).is_some());
+        assert!(gpio.try_pin(5).is_none());
+        assert!(gpio.try_pin(6).is_some());
+    }
+
+    #[test]
+    #[should_panic(expected = "already taken")]
+    fn pin_panics_on_reuse() {
+        let mut gpio = Gpio {
+            port: port(),
+            taken: 0,
+        };
+        let _a = gpio.pin(1);
+        let _b = gpio.pin(1);
     }
 }

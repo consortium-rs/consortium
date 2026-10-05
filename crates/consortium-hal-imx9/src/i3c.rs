@@ -3,8 +3,11 @@
 //! The controller engine follows Embassy MCXA's NXP I3C implementation. It
 //! supports controller-mode I3C SDR and legacy I2C private transfers, repeated
 //! starts, broadcast CCCs, and dynamic address assignment. Blocking calls need
-//! no interrupt. Async calls require the application to route the instance IRQ
-//! to `State::on_interrupt`.
+//! no interrupt. Async calls require the application to forward the instance
+//! IRQ to [`on_interrupt::<T>`](on_interrupt).
+//!
+//! Every blocking wait is bounded by the driver's [`Timeout`] (see
+//! [`I3c::set_timeout`]) and fails with [`Error::Timeout`] if the bus stalls.
 
 use core::future::poll_fn;
 use core::task::Poll;
@@ -13,6 +16,7 @@ use embassy_hal_internal::{Peri, PeripheralType};
 use embassy_sync::waitqueue::AtomicWaker;
 use pac::peripherals::i3c::{I3C, I3C_MWDATAB, I3C_MWDATABE};
 
+use crate::hal::timeout::Timeout;
 use crate::pac;
 
 const REQUEST_START: u8 = 1;
@@ -88,7 +92,8 @@ pub enum Error {
     Fifo,
     /// A malformed message or invalid controller request.
     Protocol,
-    /// The hardware timeout expired.
+    /// The hardware timeout expired, or a blocking wait ran out of its
+    /// [`Timeout`] budget.
     Timeout,
     /// Address or buffer arguments are invalid.
     InvalidArgument,
@@ -206,6 +211,9 @@ pub(crate) trait SealedInstance {
     fn regs() -> I3C;
     /// This instance's dedicated interrupt state.
     fn state() -> &'static State;
+    /// The CCM gate the constructor opens before the first register access
+    /// (see [`crate::clock`]); `None` where this core need not open one.
+    const LPCG: Option<u32>;
 }
 
 /// An I3C instance the [`I3c`] driver can drive.
@@ -223,6 +231,8 @@ pub trait Instance: SealedInstance + PeripheralType {
 macro_rules! impl_i3c {
     ($instance:ident, $base:expr, $irq:expr) => {
         impl crate::i3c::SealedInstance for crate::peripherals::$instance {
+            const LPCG: ::core::option::Option<u32> = crate::clock::lpcg(stringify!($instance));
+
             #[inline]
             fn regs() -> crate::pac::peripherals::i3c::I3C {
                 // SAFETY: `$base` is this instance's base as extracted from the
@@ -257,6 +267,7 @@ pub fn on_interrupt<T: Instance>() {
 pub struct I3c {
     regs: I3C,
     state: &'static State,
+    timeout: Timeout,
 }
 
 impl I3c {
@@ -269,6 +280,9 @@ impl I3c {
         // Owning the singleton for the driver's lifetime is what makes exclusive
         // register access safe; it is consumed here and never reissued.
         let _ = peri;
+        // On i.MX 93 Linux closes the gate of every peripheral no kernel
+        // driver claims; the first register access would BusFault without this.
+        crate::clock::ungate(T::LPCG);
         let regs = T::regs();
 
         regs.MCONFIG().write(|w| w.set_MSTENA(0));
@@ -291,7 +305,27 @@ impl I3c {
         Ok(Self {
             regs,
             state: T::state(),
+            timeout: Timeout::DEFAULT,
         })
+    }
+
+    /// Bound every blocking wait (one FIFO slot, one byte, a control request,
+    /// message completion) to `timeout` polls. Defaults to
+    /// [`Timeout::DEFAULT`].
+    pub fn set_timeout(&mut self, timeout: Timeout) {
+        self.timeout = timeout;
+    }
+
+    /// Spin until `ready` yields a value, surfacing any error first.
+    fn wait_blocking<T>(&self, mut ready: impl FnMut(&I3C) -> Option<T>) -> Result<T, Error> {
+        let mut deadline = self.timeout.start();
+        loop {
+            self.check_error()?;
+            if let Some(value) = ready(&self.regs) {
+                return Ok(value);
+            }
+            deadline.tick().map_err(|_| Error::Timeout)?;
+        }
     }
 
     fn clear_status(&self) {
@@ -347,41 +381,28 @@ impl I3c {
     }
 
     fn wait_control(&self) -> Result<(), Error> {
-        loop {
-            self.check_error()?;
-            if self.regs.MSTATUS().read().MCTRLDONE() {
-                self.regs.MSTATUS().write(|w| w.set_MCTRLDONE(true));
-                return Ok(());
-            }
-        }
+        self.wait_blocking(|r| r.MSTATUS().read().MCTRLDONE().then_some(()))?;
+        self.regs.MSTATUS().write(|w| w.set_MCTRLDONE(true));
+        Ok(())
     }
 
     fn wait_tx(&self) -> Result<(), Error> {
-        loop {
-            self.check_error()?;
-            if self.regs.MSTATUS().read().TXNOTFULL() {
-                return Ok(());
-            }
-        }
+        self.wait_blocking(|r| r.MSTATUS().read().TXNOTFULL().then_some(()))
     }
 
     fn wait_rx(&self) -> Result<u8, Error> {
-        loop {
-            self.check_error()?;
-            if self.regs.MSTATUS().read().RXPEND() {
-                return Ok(self.regs.MRDATAB().read().VALUE());
-            }
-        }
+        self.wait_blocking(|r| {
+            r.MSTATUS()
+                .read()
+                .RXPEND()
+                .then(|| r.MRDATAB().read().VALUE())
+        })
     }
 
     fn wait_complete(&self) -> Result<(), Error> {
-        loop {
-            self.check_error()?;
-            if self.regs.MSTATUS().read().COMPLETE() {
-                self.regs.MSTATUS().write(|w| w.set_COMPLETE(true));
-                return Ok(());
-            }
-        }
+        self.wait_blocking(|r| r.MSTATUS().read().COMPLETE().then_some(()))?;
+        self.regs.MSTATUS().write(|w| w.set_COMPLETE(true));
+        Ok(())
     }
 
     fn stop(&self, mode: BusMode) -> Result<(), Error> {
@@ -522,24 +543,23 @@ impl I3c {
 
         let mut assigned = 0;
         for device in devices {
-            loop {
-                self.check_error()?;
-                let status = self.regs.MSTATUS().read();
+            let complete = self.wait_blocking(|r| {
+                let status = r.MSTATUS().read();
                 if status.COMPLETE() {
-                    return Ok(assigned);
+                    return Some(true);
                 }
                 // MSTATUS.STATE = 0b101 while the controller is in DAA.
-                if status.MCTRLDONE() && status.STATE() == 5 {
-                    break;
-                }
+                (status.MCTRLDONE() && status.STATE() == 5).then_some(false)
+            })?;
+            if complete {
+                return Ok(assigned);
             }
 
             let mut payload = [0u8; 8];
             for byte in &mut payload {
-                while self.regs.MDATACTRL().read().RXEMPTY() {
-                    self.check_error()?;
-                }
-                *byte = self.regs.MRDATAB().read().VALUE();
+                *byte = self.wait_blocking(|r| {
+                    (!r.MDATACTRL().read().RXEMPTY()).then(|| r.MRDATAB().read().VALUE())
+                })?;
             }
             let address = first_address + assigned as u8;
             *device = DeviceInfo {

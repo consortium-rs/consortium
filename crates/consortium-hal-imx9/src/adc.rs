@@ -64,6 +64,9 @@ pub enum DmaTrigger {
 pub(crate) trait SealedInstance {
     /// This instance's register block, at its database-resolved base.
     fn regs() -> ADC;
+    /// The CCM gate the constructor opens before the first register access
+    /// (see [`crate::clock`]); `None` where this core need not open one.
+    const LPCG: Option<u32>;
 }
 
 /// An ADC instance the [`Adc`] driver can drive.
@@ -81,6 +84,8 @@ pub trait Instance: SealedInstance + PeripheralType {
 macro_rules! impl_adc {
     ($instance:ident, $base:expr, $irq:expr) => {
         impl crate::adc::SealedInstance for crate::peripherals::$instance {
+            const LPCG: ::core::option::Option<u32> = crate::clock::lpcg(stringify!($instance));
+
             #[inline]
             fn regs() -> crate::pac::peripherals::adc::ADC {
                 // SAFETY: `$base` is this instance's ADC base as extracted from
@@ -123,6 +128,9 @@ impl Adc {
         // Owning the singleton for the driver's lifetime is what makes exclusive
         // register access safe; it is consumed here and never reissued.
         let _ = peri;
+        // On i.MX 93 Linux closes the gate of every peripheral no kernel
+        // driver claims; the first register access would BusFault without this.
+        crate::clock::ungate(T::LPCG);
         let adc = T::regs();
         adc.MCR().modify(|w| {
             w.set_PWDN(false);

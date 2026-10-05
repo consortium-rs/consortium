@@ -67,6 +67,9 @@ pub enum Error {
 
 pub(crate) trait SealedInstance {
     fn regs() -> WDOG;
+    /// The CCM gate the constructor opens before the first register access
+    /// (see [`crate::clock`]); `None` where this core need not open one.
+    const LPCG: Option<u32>;
 }
 
 /// A chip's WDOG singleton, with its database-resolved register window.
@@ -76,6 +79,8 @@ pub trait Instance: SealedInstance + PeripheralType {}
 macro_rules! impl_watchdog {
     ($instance:ident, $base:expr, $irq:expr) => {
         impl crate::watchdog::SealedInstance for crate::peripherals::$instance {
+            const LPCG: ::core::option::Option<u32> = crate::clock::lpcg(stringify!($instance));
+
             fn regs() -> crate::pac::peripherals::wdog::WDOG {
                 // SAFETY: The generator supplies this WDOG's base; its singleton
                 // is consumed by the driver for exclusive ownership.
@@ -96,6 +101,9 @@ impl Watchdog {
     /// Claim a watchdog without changing its current configuration.
     pub fn new<T: Instance>(peri: Peri<'static, T>) -> Self {
         let _ = peri;
+        // On i.MX 93 Linux closes the gate of every peripheral no kernel
+        // driver claims; the first register access would BusFault without this.
+        crate::clock::ungate(T::LPCG);
         Self { regs: T::regs() }
     }
 

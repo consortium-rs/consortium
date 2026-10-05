@@ -35,25 +35,27 @@ const DIRECT_ON: u32 = 1 << 0;
 /// The CCM-relative offset of the LPCG gating peripheral singleton `name`, or
 /// `None` when this core need not (or cannot) open one.
 ///
-/// The i.MX 93 offsets are Linux's `clk-imx93.c` gate table. Both MU windows of
-/// one side share a gate (`mu1_b`/`mu2_b` are one LPCG under a share count), so
-/// MU1 and MU2 name the same offset. Unlisted peripherals return `None`: add an
-/// entry here when a driver starts consuming a new one on i.MX 93.
+/// The i.MX 93 offsets are Linux's `clk-imx93.c` gate table (`ccgr_array`),
+/// covering every singleton a HAL driver or doorbell consumes. Both MU windows
+/// of one side share a gate (`mu1_b`/`mu2_b` are one LPCG under a share count),
+/// so MU1 and MU2 name the same offset. eDMA channel singletons
+/// (`DMA3_CH<n>`, `DMA4_CH<n>`) resolve to their controller's gate: `DMA3` is
+/// Linux's `edma1` at `0x4400_0000`, `DMA4` its `edma2` at `0x4200_0000`.
+/// Unlisted peripherals return `None`: add an entry here when a driver starts
+/// consuming a new one on i.MX 93.
 pub const fn lpcg(name: &str) -> Option<u32> {
     #[cfg(all(feature = "mimx93", not(feature = "mimx95")))]
     {
-        const TABLE: &[(&str, u32)] = &[
-            ("LPIT1", 0x8a00),
-            ("LPIT2", 0x8a40),
-            ("MU1_MUA", 0x84c0),
-            ("MU2_MUA", 0x84c0),
-            ("MU1_MUB", 0x8500),
-            ("MU2_MUB", 0x8500),
-        ];
+        if starts_with(name, "DMA3_CH") {
+            return Some(0x8540);
+        }
+        if starts_with(name, "DMA4_CH") {
+            return Some(0x8580);
+        }
         let mut i = 0;
-        while i < TABLE.len() {
-            if str_eq(TABLE[i].0, name) {
-                return Some(TABLE[i].1);
+        while i < IMX93_LPCG.len() {
+            if str_eq(IMX93_LPCG[i].0, name) {
+                return Some(IMX93_LPCG[i].1);
             }
             i += 1;
         }
@@ -65,6 +67,63 @@ pub const fn lpcg(name: &str) -> Option<u32> {
         None
     }
 }
+
+/// i.MX 93 LPCG offsets by singleton name, from Linux's `clk-imx93.c`.
+#[cfg(all(feature = "mimx93", not(feature = "mimx95")))]
+const IMX93_LPCG: &[(&str, u32)] = &[
+    ("ADC1", 0x82c0),
+    ("WDOG1", 0x8300),
+    ("WDOG2", 0x8340),
+    ("WDOG3", 0x8380),
+    ("WDOG4", 0x83c0),
+    ("WDOG5", 0x8400),
+    ("MU1_MUA", 0x84c0),
+    ("MU2_MUA", 0x84c0),
+    ("MU1_MUB", 0x8500),
+    ("MU2_MUB", 0x8500),
+    ("GPIO1", 0x8880),
+    ("GPIO2", 0x88c0),
+    ("GPIO3", 0x8900),
+    ("GPIO4", 0x8940),
+    ("LPIT1", 0x8a00),
+    ("LPIT2", 0x8a40),
+    ("LPTMR1", 0x8a80),
+    ("LPTMR2", 0x8ac0),
+    ("TPM1", 0x8b00),
+    ("TPM2", 0x8b40),
+    ("TPM3", 0x8b80),
+    ("TPM4", 0x8bc0),
+    ("TPM5", 0x8c00),
+    ("TPM6", 0x8c40),
+    ("CAN1", 0x8c80),
+    ("CAN2", 0x8cc0),
+    ("LPUART1", 0x8d00),
+    ("LPUART2", 0x8d40),
+    ("LPUART3", 0x8d80),
+    ("LPUART4", 0x8dc0),
+    ("LPUART5", 0x8e00),
+    ("LPUART6", 0x8e40),
+    ("LPUART7", 0x8e80),
+    ("LPUART8", 0x8ec0),
+    ("LPI2C1", 0x8f00),
+    ("LPI2C2", 0x8f40),
+    ("LPI2C3", 0x8f80),
+    ("LPI2C4", 0x8fc0),
+    ("LPI2C5", 0x9000),
+    ("LPI2C6", 0x9040),
+    ("LPI2C7", 0x9080),
+    ("LPI2C8", 0x90c0),
+    ("LPSPI1", 0x9100),
+    ("LPSPI2", 0x9140),
+    ("LPSPI3", 0x9180),
+    ("LPSPI4", 0x91c0),
+    ("LPSPI5", 0x9200),
+    ("LPSPI6", 0x9240),
+    ("LPSPI7", 0x9280),
+    ("LPSPI8", 0x92c0),
+    ("I3C1", 0x9300),
+    ("I3C2", 0x9340),
+];
 
 /// Opens the LPCG at `offset` (from [`lpcg`]); `None` is a no-op.
 ///
@@ -107,6 +166,23 @@ pub fn ungate(offset: Option<u32>) {
     let _ = offset;
 }
 
+/// `const` prefix test (`str::starts_with` is not `const`).
+#[cfg(all(feature = "mimx93", not(feature = "mimx95")))]
+const fn starts_with(s: &str, prefix: &str) -> bool {
+    let (s, prefix) = (s.as_bytes(), prefix.as_bytes());
+    if s.len() < prefix.len() {
+        return false;
+    }
+    let mut i = 0;
+    while i < prefix.len() {
+        if s[i] != prefix[i] {
+            return false;
+        }
+        i += 1;
+    }
+    true
+}
+
 /// `const` byte-wise string equality (`str::eq` is not `const`).
 #[cfg(all(feature = "mimx93", not(feature = "mimx95")))]
 const fn str_eq(a: &str, b: &str) -> bool {
@@ -137,9 +213,46 @@ mod tests {
     }
 
     #[test]
+    fn driver_gates_match_the_vendor_table() {
+        assert_eq!(lpcg("LPUART1"), Some(0x8d00));
+        assert_eq!(lpcg("LPI2C8"), Some(0x90c0));
+        assert_eq!(lpcg("LPSPI3"), Some(0x9180));
+        assert_eq!(lpcg("CAN2"), Some(0x8cc0));
+        assert_eq!(lpcg("TPM6"), Some(0x8c40));
+        assert_eq!(lpcg("LPTMR2"), Some(0x8ac0));
+        assert_eq!(lpcg("GPIO2"), Some(0x88c0));
+        assert_eq!(lpcg("ADC1"), Some(0x82c0));
+        assert_eq!(lpcg("I3C2"), Some(0x9340));
+        assert_eq!(lpcg("WDOG5"), Some(0x8400));
+        assert_eq!(lpcg("DMA3_CH0"), Some(0x8540));
+        assert_eq!(lpcg("DMA4_CH63"), Some(0x8580));
+    }
+
+    /// Every singleton the generated i.MX 93 map binds to a HAL driver must
+    /// have a gate, or its constructor's first register access BusFaults.
+    #[test]
+    fn every_driver_bound_singleton_has_a_gate() {
+        let map = include_str!("peripherals/imx93.rs");
+        let mut checked = 0;
+        for line in map.lines() {
+            let Some((_, rest)) = line.trim().split_once("::impl_") else {
+                continue;
+            };
+            let Some((_, args)) = rest.split_once("!(") else {
+                continue;
+            };
+            let name = args.split(',').next().unwrap().trim();
+            assert!(lpcg(name).is_some(), "{name} has no LPCG entry");
+            checked += 1;
+        }
+        assert!(checked > 100, "parsed only {checked} bindings");
+    }
+
+    #[test]
     fn unlisted_peripherals_have_no_gate() {
         assert_eq!(lpcg("LPIT"), None);
         assert_eq!(lpcg("LPIT10"), None);
-        assert_eq!(lpcg("GPIO2"), None);
+        assert_eq!(lpcg("GPIO5"), None);
+        assert_eq!(lpcg("DMA3"), None);
     }
 }

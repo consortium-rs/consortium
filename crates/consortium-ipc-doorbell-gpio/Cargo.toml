@@ -30,13 +30,21 @@ rust-version.workspace = true
 
 [features]
 default = ["std"]
+defmt   = ["consortium-ipc/defmt", "dep:defmt"]
 std     = ["consortium-ipc/std", "dep:linux-embedded-hal", "dep:tokio"]
 
 [dependencies]
 atomic-waker   = "1.1.2"
 consortium-ipc = { default-features = false, path = "../consortium-ipc", version = "0.4.0" }
+defmt          = { optional = true, version = "1" }
 embedded-hal   = { workspace = true }
 tokio          = { features = ["sync"], optional = true, version = "1" }
+
+# ARMv6-M (the STM32MP25 CM0+) has no compare-and-swap, so route `atomic-waker`
+# through `portable-atomic` there. The fallback is the binary's choice:
+# `consortium-runtime-mcu` enables portable-atomic's `critical-section` feature.
+[target.'cfg(not(target_has_atomic = "ptr"))'.dependencies]
+atomic-waker = { features = ["portable-atomic"], version = "1.1.2" }
 
 [target.'cfg(target_os = "linux")'.dependencies]
 linux-embedded-hal = { optional = true, version = "0.4" }

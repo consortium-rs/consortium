@@ -240,15 +240,20 @@ impl<S: Side, const N: usize> MuDoorbell<S, N> {
                 "MuDoorbell instance number does not match the peripheral singleton",
             );
         }
-        // Owning the singleton for the doorbell's lifetime is what makes the
-        // MMIO access exclusive; it is consumed here and never reissued.
+        // The singleton is proof of exclusivity, not state: `init()` issues it
+        // once and the `'static` bound means nothing ever hands it back, so
+        // dropping it here keeps the instance out of reach of safe code. It is
+        // deliberately not stored: `split()` clones the doorbell, and other
+        // doorbells may drive disjoint lines of the same block.
         let _ = peri;
         // On i.MX 93 Linux has closed this window's gate unless a kernel driver
         // claims it; every later register access would BusFault without this.
         ::consortium_hal_imx9::clock::ungate(T::LPCG);
         // SAFETY: `window_base` is instance `N`'s side-`S` window from this
-        // crate's vetted address table, and the consumed singleton guarantees
-        // nothing else drives it.
+        // crate's vetted address table. The consumed singleton keeps every
+        // other driver off the window; another doorbell on it can only come
+        // from a `steal()` whose caller guarantees disjoint lines, and the
+        // shared enable-register writes run in a critical section.
         unsafe { Self::new_mapped(window_base::<S, N>()) }
     }
 

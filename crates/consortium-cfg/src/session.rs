@@ -1140,4 +1140,74 @@ mod tests {
             Err(CfgError::PeripheralNotOnCore { .. })
         ));
     }
+
+    const MP235_MANIFEST: &str = include_str!("../Consortium.example.stm32mp235.toml");
+
+    /// An STM32MP23 manifest with one CM33 channel and `extra` appended.
+    fn mp235_manifest(doorbell: &str, secondary: &str, base: u32, extra: &str) -> String {
+        format!(
+            r#"
+                [profile]
+                chip = "stm32mp235fak3"
+                shared = "./shared"
+                deploy_root = "/opt/consortium"
+
+                [[ipc.channel]]
+                name = "probe"
+                doorbell = "{doorbell}"
+                pattern = "memory"
+                primary = "linux"
+                secondary = "{secondary}"
+                party.linux = {{ chan = 0, type = "Ping" }}
+                party.{secondary} = {{ chan = 1, type = "Pong" }}
+                config.memory = {{ base = {base}, length = 0x4000 }}
+                mtu = 128
+
+                {extra}
+            "#
+        )
+    }
+
+    #[test]
+    fn loads_mp235_example_manifest() {
+        let session = Session::from_toml(MP235_MANIFEST).expect("MP235 example should load");
+        assert_eq!(session.database.name, "STM32MP23");
+        assert_eq!(session.config.ipc.channels.len(), 1);
+    }
+
+    /// IPCC2 is the MP25 CM0+'s mailbox; MP23 has no CM0+ and no IPCC2.
+    #[test]
+    fn mp235_rejects_ipcc2() {
+        let manifest = mp235_manifest("ipcc2", "cm33", 0x0006_4000, "");
+        assert!(matches!(
+            Session::from_toml(&manifest),
+            Err(CfgError::UnknownDoorbell { .. })
+        ));
+    }
+
+    #[test]
+    fn mp235_rejects_a_cm0p_endpoint() {
+        let manifest = mp235_manifest("ipcc1", "cm0p", 0x0006_4000, "");
+        assert!(Session::from_toml(&manifest).is_err());
+    }
+
+    /// I2C3 exists on MP25 but not MP23 (DS14634: 4x I2C, i.e. I2C1/2/7/8).
+    #[test]
+    fn mp235_rejects_an_mp25_only_peripheral() {
+        let i2c = |name: &str| format!("[peripheral.{name}]\nowner = \"cm33\"");
+        let absent = mp235_manifest("ipcc1", "cm33", 0x0006_4000, &i2c("i2c3"));
+        assert!(matches!(
+            Session::from_toml(&absent),
+            Err(CfgError::PeripheralNotOnCore { .. })
+        ));
+        let present = mp235_manifest("ipcc1", "cm33", 0x0006_4000, &i2c("i2c8"));
+        assert!(Session::from_toml(&present).is_ok());
+    }
+
+    /// The 32 KB MP23 lacks against MP25 is LPSRAM1-3 (776 KB vs 808 KB).
+    #[test]
+    fn mp235_rejects_an_lpsram_window() {
+        let manifest = mp235_manifest("ipcc1", "cm33", 0x000C_4000, "");
+        assert!(Session::from_toml(&manifest).is_err());
+    }
 }

@@ -57,9 +57,11 @@
 //!
 //! `stm32mp21x`, `stm32mp23x`, or `stm32mp25x` — **exactly one**.
 //!
-//! `stm32mp23x` and `stm32mp25x` share one interrupt and peripheral layout, so both
-//! mount the STM32MP25 singleton map and both forward to the PAC's `stm32mp257` chip.
-//! `stm32mp21x` has its own map. Enabling several is a duplicate-definition error.
+//! `stm32mp23x` and `stm32mp25x` share one die, memory map and interrupt numbering
+//! (RM0457), so both forward to the PAC's `stm32mp257` chip. Each has its own
+//! singleton map: MP23 lacks the instances its datasheet (DS14634) rules out, such
+//! as I2C3–6, FDCAN3, TIM20, LPDMA and IPCC2. `stm32mp21x` has its own map. Enabling
+//! several is a duplicate-definition error.
 //!
 //! Default is `stm32mp25x`. **A dependent selecting another chip must set
 //! `default-features = false`**, or `stm32mp25x` comes along too and the PAC's
@@ -110,9 +112,12 @@ pub use consortium_pac_stm32mp2 as pac;
 // Peripheral singletons and their driver bindings, generated from the chip
 // databases by `scripts/pac/gen_peripherals.py`. Chip features are mutually
 // exclusive; enabling several is a duplicate-definition error, matching the PAC.
-// `stm32mp23x` and `stm32mp25x` share the STM32MP257 map, as they do in the PAC.
-#[cfg(any(feature = "stm32mp23x", feature = "stm32mp25x"))]
+// `stm32mp23x` shares the PAC's STM32MP257 interrupt table but has its own map.
+#[cfg(feature = "stm32mp25x")]
 #[path = "peripherals/stm32mp25.rs"]
+mod chip;
+#[cfg(feature = "stm32mp23x")]
+#[path = "peripherals/stm32mp23.rs"]
 mod chip;
 #[cfg(feature = "stm32mp21x")]
 #[path = "peripherals/stm32mp21.rs"]

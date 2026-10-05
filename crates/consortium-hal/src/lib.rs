@@ -60,7 +60,8 @@
 //! generated `init()` unless `[profile] time_driver = false`.
 //!
 //! The [`nvic`] module adds interrupt masking for lines known only at runtime, which
-//! typed PAC `Interrupt` enums cannot express.
+//! typed PAC `Interrupt` enums cannot express. The [`timeout`] module bounds the
+//! drivers' blocking status polls so a stuck bus surfaces as an error.
 //!
 //! # `Peri` and `PeripheralType`
 //!
@@ -71,6 +72,7 @@
 //! `no_std`, no features.
 
 pub mod nvic;
+pub mod timeout;
 
 /// Ownership handle and marker trait for peripheral singletons, re-exported so
 /// chip HALs and their dependents can name them without depending on Embassy

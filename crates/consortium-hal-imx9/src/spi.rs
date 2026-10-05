@@ -13,6 +13,10 @@
 //! fails, or an async one dropped mid-flight, soft-resets the module so `PCS`
 //! is released and the FIFOs are empty before control returns.
 //!
+//! Every blocking wait is bounded by the driver's [`Timeout`] (see
+//! [`Spi::set_timeout`]) and fails with [`Error::Timeout`] if the module stops
+//! shifting — for example because its functional clock was gated.
+//!
 //! DMA readiness: the byte primitives push through `TDR` and drain `RDR`, so a
 //! DMA-backed path can be layered on top by enabling `DER.TDDE`/`DER.RDDE` and
 //! streaming through [`crate::dma::DmaChannel::write_peripheral`] /
@@ -27,6 +31,7 @@ use embassy_sync::waitqueue::AtomicWaker;
 use embedded_hal::spi::{ErrorKind, ErrorType, MODE_0, Mode, Phase, Polarity};
 use pac::peripherals::lpspi::{LPSPI, LPSPI_TDR};
 
+use crate::hal::timeout::Timeout;
 use crate::pac;
 
 /// Fixed 8-bit frame size, expressed as `FRAMESZ` (bits minus one).
@@ -40,13 +45,15 @@ pub enum Error {
     Overrun,
     /// The transmit FIFO underflowed during a frame.
     Underrun,
+    /// A blocking wait ran out of its [`Timeout`] budget.
+    Timeout,
 }
 
 impl embedded_hal::spi::Error for Error {
     fn kind(&self) -> ErrorKind {
         match self {
             Error::Overrun => ErrorKind::Overrun,
-            Error::Underrun => ErrorKind::Other,
+            Error::Underrun | Error::Timeout => ErrorKind::Other,
         }
     }
 }
@@ -134,6 +141,9 @@ pub(crate) trait SealedInstance {
     fn regs() -> LPSPI;
     /// This instance's dedicated interrupt state.
     fn state() -> &'static State;
+    /// The CCM gate the constructor opens before the first register access
+    /// (see [`crate::clock`]); `None` where this core need not open one.
+    const LPCG: Option<u32>;
 }
 
 /// An LPSPI instance the [`Spi`] driver can drive.
@@ -151,6 +161,8 @@ pub trait Instance: SealedInstance + PeripheralType {
 macro_rules! impl_spi {
     ($instance:ident, $base:expr, $irq:expr) => {
         impl crate::spi::SealedInstance for crate::peripherals::$instance {
+            const LPCG: ::core::option::Option<u32> = crate::clock::lpcg(stringify!($instance));
+
             #[inline]
             fn regs() -> crate::pac::peripherals::lpspi::LPSPI {
                 // SAFETY: `$base` is this instance's base as extracted from the
@@ -189,6 +201,7 @@ pub struct Spi {
     cpha: bool,
     lsb_first: bool,
     pcs: u8,
+    timeout: Timeout,
 }
 
 impl Spi {
@@ -201,6 +214,9 @@ impl Spi {
         // Owning the singleton for the driver's lifetime is what makes exclusive
         // register access safe; it is consumed here and never reissued.
         let _ = peri;
+        // On i.MX 93 Linux closes the gate of every peripheral no kernel
+        // driver claims; the first register access would BusFault without this.
+        crate::clock::ungate(T::LPCG);
         let r = T::regs();
 
         // Software-reset the logic and FIFOs, then release the reset.
@@ -237,7 +253,31 @@ impl Spi {
             cpha,
             lsb_first: config.lsb_first,
             pcs: config.pcs,
+            timeout: Timeout::DEFAULT,
         }
+    }
+
+    /// Bound every blocking wait (one FIFO slot, one received word, the end of
+    /// a flush) to `timeout` polls. Defaults to [`Timeout::DEFAULT`].
+    pub fn set_timeout(&mut self, timeout: Timeout) {
+        self.timeout = timeout;
+    }
+
+    /// Spin until `ready` holds, surfacing a latched FIFO error first.
+    fn wait_blocking(&self, ready: impl Fn(&LPSPI) -> bool) -> Result<(), Error> {
+        let mut deadline = self.timeout.start();
+        loop {
+            self.check_error()?;
+            if ready(&self.regs) {
+                return Ok(());
+            }
+            deadline.tick().map_err(|_| Error::Timeout)?;
+        }
+    }
+
+    /// Wait for the module to go idle (`SR.MBF` clear).
+    fn flush_blocking(&self) -> Result<(), Error> {
+        self.wait_blocking(|r| !r.SR().read().MBF())
     }
 
     /// TX FIFO depth (`PARAM.TXFIFO` encodes `2^n` words).
@@ -278,21 +318,12 @@ impl Spi {
     fn transfer_word(&mut self, tx: u8, cont: bool) -> Result<u8, Error> {
         // Wait for transmit-FIFO space.
         let depth = self.tx_fifo_len();
-        loop {
-            self.check_error()?;
-            if u32::from(self.regs.FSR().read().TXCOUNT()) < depth {
-                break;
-            }
-        }
+        self.wait_blocking(|r| u32::from(r.FSR().read().TXCOUNT()) < depth)?;
         self.set_frame(cont);
         self.regs.TDR().write_value(LPSPI_TDR(u32::from(tx)));
         // Wait for the received word.
-        loop {
-            self.check_error()?;
-            if self.regs.FSR().read().RXCOUNT() > 0 {
-                return Ok(self.regs.RDR().read().DATA() as u8);
-            }
-        }
+        self.wait_blocking(|r| r.FSR().read().RXCOUNT() > 0)?;
+        Ok(self.regs.RDR().read().DATA() as u8)
     }
 
     fn transfer_blocking(&mut self, read: &mut [u8], write: &[u8]) -> Result<(), Error> {
@@ -491,10 +522,7 @@ impl embedded_hal::spi::SpiBus<u8> for Spi {
     }
 
     fn flush(&mut self) -> Result<(), Error> {
-        while self.regs.SR().read().MBF() {
-            self.check_error()?;
-        }
-        Ok(())
+        self.flush_blocking()
     }
 }
 
@@ -523,10 +551,9 @@ impl embedded_hal_async::spi::SpiBus<u8> for Spi {
     }
 
     async fn flush(&mut self) -> Result<(), Error> {
-        while self.regs.SR().read().MBF() {
-            self.check_error()?;
-        }
-        Ok(())
+        // Every async transfer already awaited its last received word, so the
+        // shifter drains within a word time; no interrupt signals `MBF` clear.
+        self.flush_blocking()
     }
 }
 

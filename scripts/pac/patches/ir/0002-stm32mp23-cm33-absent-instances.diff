@@ -1,0 +1,165 @@
+STM32MP23 is the STM32MP25 die (DIE505) and shares its reference manual (RM0457), so
+stm32mp235fxx_cm33.h declares the MP25 superset. Drop what the MP23 datasheet (DS14634
+Rev 3) rules out, so `consortium-cfg` rejects these on an MP23 manifest and the HAL
+emits no singleton for them:
+- GPIOJ/GPIOK: "up to 144 I/O ports"; no MP23 package (TFBGA361, VFBGA361, VFBGA424)
+  bonds a PJ/PK pin (STM32CubeMX 6.18).
+- LPDMA and its channel/wake-up IRQs: "3 DMA controllers, 48 physical channels", i.e.
+  3 HPDMA x 16; CubeMX lists no LPDMA for MP23.
+- IWDG5 and WWDG2 (the MP25 CM0+ watchdogs): "5x watchdogs (4x independent and 1x
+  window)", i.e. IWDG1-4 and WWDG1.
+- IPCC2 (the MP25 CM0+ mailbox): MP23 has no Cortex-M0+; CubeMX lists only IPCC1.
+EXTI2 stays: the SmartRun domain (LPUART1, I2C8, SPI8, I3C4, LPTIM3-5) remains on MP23.
+--- a/crates/consortium-data/database/chip/stm32mp23_cm33.json
++++ b/crates/consortium-data/database/chip/stm32mp23_cm33.json
+@@ -37,11 +37,6 @@
+       "name": "IWDG4_RST",
+       "value": 6,
+       "description": "Independent Watchdog 4 Reset through EXTI"
+-    },
+-    {
+-      "name": "IWDG5_RST",
+-      "value": 7,
+-      "description": "Independent Watchdog 5 Reset through EXTI"
+     },
+     {
+       "name": "WWDG1",
+@@ -49,11 +44,6 @@
+       "description": "Window Watchdog 1 Early Wakeup interrupt"
+     },
+     {
+-      "name": "WWDG2_RST",
+-      "value": 11,
+-      "description": "Independent Watchdog 2 Reset through EXTI"
+-    },
+-    {
+       "name": "TAMP",
+       "value": 12,
+       "description": "Tamper interrupt (include LSECSS interrupts)"
+@@ -397,26 +387,6 @@
+       "name": "HPDMA3_Channel15",
+       "value": 80,
+       "description": "HPDMA3 Channel15 interrupt"
+-    },
+-    {
+-      "name": "LPDMA_Channel0",
+-      "value": 81,
+-      "description": "LPDMA Channel0 interrupt"
+-    },
+-    {
+-      "name": "LPDMA_Channel1",
+-      "value": 82,
+-      "description": "LPDMA Channel1 interrupt"
+-    },
+-    {
+-      "name": "LPDMA_Channel2",
+-      "value": 83,
+-      "description": "LPDMA Channel2 interrupt"
+-    },
+-    {
+-      "name": "LPDMA_Channel3",
+-      "value": 84,
+-      "description": "LPDMA Channel3 interrupt"
+     },
+     {
+       "name": "ICACHE",
+@@ -797,28 +767,8 @@
+       "name": "IPCC1_TX_S",
+       "value": 174,
+       "description": "Mailbox 1 TX Free secure interrupt"
+-    },
+-    {
+-      "name": "IPCC2_RX",
+-      "value": 175,
+-      "description": "Mailbox 2 RX Occupied interrupt"
+     },
+     {
+-      "name": "IPCC2_TX",
+-      "value": 176,
+-      "description": "Mailbox 2 TX Free interrupt"
+-    },
+-    {
+-      "name": "IPCC2_RX_S",
+-      "value": 177,
+-      "description": "Mailbox 2 RX Occupied secure interrupt"
+-    },
+-    {
+-      "name": "IPCC2_TX_S",
+-      "value": 178,
+-      "description": "Mailbox 2 TX Free secure interrupt"
+-    },
+-    {
+       "name": "SAES",
+       "value": 179,
+       "description": "secure AES interrupt"
+@@ -1114,11 +1064,6 @@
+       "description": "HPDMA3 channel 0 to 15 wake up"
+     },
+     {
+-      "name": "LPDMA_WKUP",
+-      "value": 256,
+-      "description": "LPDMA channel 0 to 3 wake up"
+-    },
+-    {
+       "name": "UCPD1_VBUS",
+       "value": 257,
+       "description": "USB TypeC VBUS valid interrupt"
+@@ -1458,16 +1403,6 @@
+     {
+       "name": "GPIOI",
+       "base_address": "0x442c0000",
+-      "block": "gpio/GPIO"
+-    },
+-    {
+-      "name": "GPIOJ",
+-      "base_address": "0x442d0000",
+-      "block": "gpio/GPIO"
+-    },
+-    {
+-      "name": "GPIOK",
+-      "base_address": "0x442e0000",
+       "block": "gpio/GPIO"
+     },
+     {
+@@ -1798,11 +1733,6 @@
+     {
+       "name": "IPCC1",
+       "base_address": "0x40490000",
+-      "block": "ipcc/IPCC"
+-    },
+-    {
+-      "name": "IPCC2",
+-      "base_address": "0x46250000",
+       "block": "ipcc/IPCC"
+     },
+     {
+@@ -1823,17 +1753,7 @@
+     {
+       "name": "IWDG4",
+       "base_address": "0x44040000",
+-      "block": "iwdg/IWDG"
+-    },
+-    {
+-      "name": "IWDG5",
+-      "base_address": "0x46090000",
+       "block": "iwdg/IWDG"
+-    },
+-    {
+-      "name": "LPDMA",
+-      "base_address": "0x46210000",
+-      "block": "dma/DMA"
+     },
+     {
+       "name": "LPTIM1",
+@@ -2394,11 +2314,6 @@
+       "name": "WWDG1",
+       "base_address": "0x44050000",
+       "block": "wwdg/WWDG"
+-    },
+-    {
+-      "name": "WWDG2",
+-      "base_address": "0x460a0000",
+-      "block": "wwdg/WWDG"
+     }
+   ]
+ }

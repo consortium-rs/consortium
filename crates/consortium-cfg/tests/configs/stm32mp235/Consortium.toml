@@ -1,0 +1,47 @@
+[profile]
+chip        = "stm32mp235fak3"
+shared      = "./shared"
+deploy_root = "/opt/consortium"
+
+[endpoints]
+linux = "./app"
+optee = "./ta"
+cm33  = "./firmware"
+
+[dbg.cm33]
+memory = { base = 0x00062000, length = 0x2000 }
+mtu    = 64
+
+[[ipc.channel]]
+name          = "sensor"
+doorbell      = "ipcc1"
+pattern       = "memory"
+primary       = "linux"
+secondary     = "cm33"
+party.linux   = { chan = 0, type = "SensorData" }
+party.cm33    = { chan = 1, type = "MotionControl" }
+config.memory = { base = 0x00064000, length = 0x4000 }
+mtu           = 128
+
+[tee]
+uuid = "48551DD5-74B2-4D24-BF9D-A09F02F5C56F"
+
+[hmi]
+engine  = "cog"
+backend = "wayland"
+debug   = "http://127.0.0.1:5173/"
+source  = "website"
+build   = "website/dist"
+
+[peripheral.i2c1]
+owner   = "ap"
+secure  = false
+pin.sda = "PB0"
+pin.scl = "PB1"
+
+[peripheral.spi1]
+owner    = "cm33"
+secure   = false
+pin.miso = "PA6"
+pin.mosi = "PA7"
+pin.sck  = "PA5"

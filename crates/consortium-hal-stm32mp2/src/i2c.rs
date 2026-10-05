@@ -12,6 +12,10 @@
 //! resets the controller before returning, so the next transaction starts from
 //! idle.
 //!
+//! Every blocking wait, including the DMA paths, is bounded by the driver's
+//! [`Timeout`] (see [`I2c::set_timeout`]) and fails with [`Error::Timeout`] if
+//! the bus stalls.
+//!
 //! DMA readiness: the byte primitives below drive `TXDR`/`RXDR` one byte at a
 //! time. A DMA-backed path can be layered on top by setting `CR1.TXDMAEN` /
 //! `CR1.RXDMAEN` and streaming through
@@ -27,6 +31,7 @@ use embassy_sync::waitqueue::AtomicWaker;
 use embedded_hal::i2c::{ErrorKind, ErrorType, NoAcknowledgeSource, Operation, SevenBitAddress};
 use pac::peripherals::i2c::{I2C, I2C_TXDR};
 
+use crate::hal::timeout::Timeout;
 use crate::pac;
 
 /// `CR2.RD_WRN` (bit 10) selects a read transfer; the PAC does not name it.
@@ -45,6 +50,11 @@ pub enum Error {
     ArbitrationLoss,
     /// A bus error (misplaced START/STOP) was detected.
     Bus,
+    /// A blocking wait ran out of its [`Timeout`] budget.
+    Timeout,
+    /// The DMA channel reported a transfer error.
+    #[cfg(feature = "dma")]
+    Dma(crate::dma::Error),
 }
 
 impl embedded_hal::i2c::Error for Error {
@@ -53,6 +63,9 @@ impl embedded_hal::i2c::Error for Error {
             Error::Nack => ErrorKind::NoAcknowledge(NoAcknowledgeSource::Unknown),
             Error::ArbitrationLoss => ErrorKind::ArbitrationLoss,
             Error::Bus => ErrorKind::Bus,
+            Error::Timeout => ErrorKind::Other,
+            #[cfg(feature = "dma")]
+            Error::Dma(_) => ErrorKind::Other,
         }
     }
 }
@@ -199,6 +212,7 @@ pub fn on_interrupt<T: Instance>() {
 pub struct I2c {
     regs: I2C,
     state: &'static State,
+    timeout: Timeout,
 }
 
 impl I2c {
@@ -228,7 +242,14 @@ impl I2c {
         Self {
             regs: r,
             state: T::state(),
+            timeout: Timeout::DEFAULT,
         }
+    }
+
+    /// Bound every blocking wait (one byte, the free bus, the STOP, a DMA
+    /// transfer) to `timeout` polls. Defaults to [`Timeout::DEFAULT`].
+    pub fn set_timeout(&mut self, timeout: Timeout) {
+        self.timeout = timeout;
     }
 
     /// Translate the current error flags into an [`Error`].
@@ -269,11 +290,13 @@ impl I2c {
 
     /// Spin until `ready` holds, surfacing any error flag first.
     fn wait_blocking(&self, ready: impl Fn(&I2C) -> bool) -> Result<(), Error> {
+        let mut deadline = self.timeout.start();
         loop {
             self.check_error()?;
             if ready(&self.regs) {
                 return Ok(());
             }
+            deadline.tick().map_err(|_| Error::Timeout)?;
         }
     }
 
@@ -608,7 +631,10 @@ fn recover(r: I2C) {
     }
     r.CR1().modify(|w| w.set_PE(false));
     // PE takes a few APB cycles to read back as cleared.
-    while r.CR1().read().PE() {}
+    let mut spins = RECOVERY_SPINS;
+    while spins > 0 && r.CR1().read().PE() {
+        spins -= 1;
+    }
     r.ICR().write(|w| {
         w.set_STOPCF(true);
         w.set_NACKCF(true);
@@ -653,10 +679,22 @@ impl Drop for RecoverGuard {
 /// request lines (`CR1.TXDMAEN` / `CR1.RXDMAEN`) are enabled here, and the
 /// bytes are streamed through the channel against `TXDR`/`RXDR`. The transfers
 /// are blocking today; an async variant can be layered on the same primitives.
+///
+/// A NACKed target never raises another DMA request, so the channel would never
+/// complete; the wait therefore polls the I2C error flags alongside the
+/// channel status and gives up on either an error or the [`Timeout`].
 #[cfg(feature = "dma")]
 impl I2c {
-    fn map_dma(res: Result<(), crate::dma::Error>) -> Result<(), Error> {
-        res.map_err(|_| Error::Bus)
+    /// Wait for `transfer` to complete, failing early on an I2C error flag.
+    fn wait_dma(&self, transfer: &crate::dma::Transfer<'_>) -> Result<(), Error> {
+        let mut deadline = self.timeout.start();
+        loop {
+            self.check_error()?;
+            if let Some(result) = transfer.status() {
+                return result.map_err(Error::Dma);
+            }
+            deadline.tick().map_err(|_| Error::Timeout)?;
+        }
     }
 
     /// Write `bytes` to `address` using DMA, then generate a STOP (blocking).
@@ -683,8 +721,10 @@ impl I2c {
         let txdr = self.regs.TXDR().as_ptr() as *mut u8;
         // SAFETY: `txdr` is this instance's transmit data register and
         // `tx_request` names the matching hardware request line.
-        let result =
-            Self::map_dma(unsafe { dma.write_peripheral(bytes, txdr, tx_request) }.wait_blocking());
+        let transfer = unsafe { dma.write_peripheral(bytes, txdr, tx_request) };
+        let result = self.wait_dma(&transfer);
+        // Dropping the transfer halts the channel, also on the error path.
+        drop(transfer);
         self.regs.CR1().modify(|w| w.set_TXDMAEN(false));
         result?;
         self.finish_blocking()?;
@@ -717,8 +757,10 @@ impl I2c {
         let rxdr = self.regs.RXDR().as_ptr() as *const u8;
         // SAFETY: `rxdr` is this instance's receive data register and
         // `rx_request` names the matching hardware request line.
-        let result =
-            Self::map_dma(unsafe { dma.read_peripheral(rxdr, buffer, rx_request) }.wait_blocking());
+        let transfer = unsafe { dma.read_peripheral(rxdr, buffer, rx_request) };
+        let result = self.wait_dma(&transfer);
+        // Dropping the transfer halts the channel, also on the error path.
+        drop(transfer);
         self.regs.CR1().modify(|w| w.set_RXDMAEN(false));
         result?;
         self.finish_blocking()?;

@@ -3,7 +3,8 @@
 //! The driver supports byte, halfword, and word one-shot transfers plus
 //! circular linked-list transfers. Applications own RCC/RIF setup, interrupt
 //! vectors, and DMA-coherent buffer placement. Forward the selected channel
-//! interrupt to [`DmaState::on_interrupt`].
+//! interrupt to [`on_interrupt::<T>`](on_interrupt), keyed by the channel's
+//! singleton.
 
 use core::future::{Future, poll_fn};
 use core::marker::PhantomData;
@@ -15,6 +16,7 @@ use embassy_hal_internal::{Peri, PeripheralType};
 use embassy_sync::waitqueue::AtomicWaker;
 use pac::peripherals::dma_channel::DMA_Channel;
 
+use crate::hal::timeout::Timeout;
 use crate::pac;
 
 const CCR_EN: u32 = 1 << 0;
@@ -587,7 +589,11 @@ impl DmaChannel {
         let ccr = self.ch.CCR().read();
         if ccr & CCR_EN != 0 && self.ch.CSR().read() & CSR_IDLEF == 0 {
             self.ch.CCR().write_value(ccr | CCR_SUSP);
-            while self.ch.CSR().read() & (CSR_SUSPF | CSR_TCF | CSR_IDLEF) == 0 {}
+            // Bounded: a channel whose bus master never acknowledges the
+            // suspend is reset below regardless, which is all a halt can do.
+            let _ = Timeout::DEFAULT.spin(|| {
+                (self.ch.CSR().read() & (CSR_SUSPF | CSR_TCF | CSR_IDLEF) != 0).then_some(())
+            });
             self.ch.CCR().write_value(ccr | CCR_SUSP | CCR_RESET);
         }
         self.ch.CFCR().write_value(FCR_CLEAR_ALL);
@@ -618,7 +624,11 @@ impl<'a> Transfer<'a> {
         }
     }
 
-    fn status(&self) -> Option<Result<(), Error>> {
+    /// Completion status without blocking: `None` while the transfer is still
+    /// in flight. Lets a peripheral driver wait on the channel and its own
+    /// error flags together, since a peripheral that stops requesting (a
+    /// NACKed I2C target) would otherwise leave the channel waiting forever.
+    pub fn status(&self) -> Option<Result<(), Error>> {
         let sr = self.ch.CSR().read();
         if sr & CSR_ERROR_MASK != 0 {
             return Some(Err(Error { raw_sr: sr }));

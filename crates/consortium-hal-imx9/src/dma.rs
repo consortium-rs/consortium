@@ -22,6 +22,8 @@ use core::task::{Context, Poll};
 use embassy_hal_internal::{Peri, PeripheralType};
 use embassy_sync::waitqueue::AtomicWaker;
 
+use crate::hal::timeout::Timeout;
+
 const CH_CSR_ERQ: u32 = 1 << 0;
 const CH_CSR_DONE: u32 = 1 << 30;
 const CH_CSR_ACTIVE: u32 = 1 << 31;
@@ -223,6 +225,9 @@ pub(crate) trait SealedInstance {
     fn management() -> *mut ();
     /// This channel's dedicated interrupt state.
     fn state() -> &'static DmaState;
+    /// The CCM gate the constructor opens before the first register access
+    /// (see [`crate::clock`]); `None` where this core need not open one.
+    const LPCG: Option<u32>;
 }
 
 /// One eDMA channel the [`DmaChannel`] driver can claim.
@@ -245,6 +250,8 @@ pub trait Instance: SealedInstance + PeripheralType {
 macro_rules! impl_dma_channel {
     ($instance:ident, $management:expr, $controller:ident, $channel:expr, $irq:expr) => {
         impl crate::dma::SealedInstance for crate::peripherals::$instance {
+            const LPCG: ::core::option::Option<u32> = crate::clock::lpcg(stringify!($instance));
+
             #[inline]
             fn management() -> *mut () {
                 $management as *mut ()
@@ -297,6 +304,13 @@ unsafe impl Send for RawChannel {}
 unsafe impl Sync for RawChannel {}
 
 impl RawChannel {
+    /// Wait for the channel to finish its current minor loop after `ERQ` was
+    /// cleared. Bounded: a channel stuck active (its bus master stalled) is
+    /// torn down by the caller anyway, which is all a halt can do.
+    fn wait_inactive(self) {
+        let _ = Timeout::DEFAULT.spin(|| (self.read32(0x00) & CH_CSR_ACTIVE == 0).then_some(()));
+    }
+
     fn read32(self, offset: usize) -> u32 {
         // SAFETY: constructors validate the controller layout and the caller
         // guarantees that its register block remains mapped.
@@ -435,6 +449,9 @@ impl DmaChannel {
         // Owning the singleton for the driver's lifetime is what makes exclusive
         // channel access safe; it is consumed here and never reissued.
         let _ = peri;
+        // On i.MX 93 Linux closes the gate of every peripheral no kernel
+        // driver claims; the first register access would BusFault without this.
+        crate::clock::ungate(T::LPCG);
         Self::claim(T::CONTROLLER, T::management(), T::CHANNEL, T::state())
     }
 
@@ -791,7 +808,7 @@ impl DmaChannel {
 
     fn halt(&self) {
         self.ch.write32(0x00, 0);
-        while self.ch.read32(0x00) & CH_CSR_ACTIVE != 0 {}
+        self.ch.wait_inactive();
         self.ch.write32(0x00, CH_CSR_DONE);
         self.ch.write32(0x08, CH_INT_INT);
         self.ch.write32(0x04, CH_ES_ERR);
@@ -800,7 +817,7 @@ impl DmaChannel {
 
     fn pause(&self) {
         self.ch.write32(0x00, 0);
-        while self.ch.read32(0x00) & CH_CSR_ACTIVE != 0 {}
+        self.ch.wait_inactive();
     }
 
     fn resume(&self) {
@@ -834,7 +851,10 @@ impl<'a> Transfer<'a> {
         }
     }
 
-    fn status(&self) -> Option<Result<(), Error>> {
+    /// Completion status without blocking: `None` while the transfer is still
+    /// in flight. Lets a peripheral driver wait on the channel and its own
+    /// error flags together.
+    pub fn status(&self) -> Option<Result<(), Error>> {
         let es = self.ch.read32(0x04);
         if es & CH_ES_ERR != 0 {
             return Some(Err(Error { raw_es: es }));
@@ -867,7 +887,7 @@ impl Future for Transfer<'_> {
 impl Drop for Transfer<'_> {
     fn drop(&mut self) {
         self.ch.write32(0x00, 0);
-        while self.ch.read32(0x00) & CH_CSR_ACTIVE != 0 {}
+        self.ch.wait_inactive();
         self.ch.write32(0x00, CH_CSR_DONE);
         self.ch.write32(0x08, CH_INT_INT);
         self.ch.write32(0x04, CH_ES_ERR);

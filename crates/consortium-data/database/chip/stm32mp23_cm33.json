@@ -39,19 +39,9 @@
       "description": "Independent Watchdog 4 Reset through EXTI"
     },
     {
-      "name": "IWDG5_RST",
-      "value": 7,
-      "description": "Independent Watchdog 5 Reset through EXTI"
-    },
-    {
       "name": "WWDG1",
       "value": 8,
       "description": "Window Watchdog 1 Early Wakeup interrupt"
-    },
-    {
-      "name": "WWDG2_RST",
-      "value": 11,
-      "description": "Independent Watchdog 2 Reset through EXTI"
     },
     {
       "name": "TAMP",
@@ -397,26 +387,6 @@
       "name": "HPDMA3_Channel15",
       "value": 80,
       "description": "HPDMA3 Channel15 interrupt"
-    },
-    {
-      "name": "LPDMA_Channel0",
-      "value": 81,
-      "description": "LPDMA Channel0 interrupt"
-    },
-    {
-      "name": "LPDMA_Channel1",
-      "value": 82,
-      "description": "LPDMA Channel1 interrupt"
-    },
-    {
-      "name": "LPDMA_Channel2",
-      "value": 83,
-      "description": "LPDMA Channel2 interrupt"
-    },
-    {
-      "name": "LPDMA_Channel3",
-      "value": 84,
-      "description": "LPDMA Channel3 interrupt"
     },
     {
       "name": "ICACHE",
@@ -799,26 +769,6 @@
       "description": "Mailbox 1 TX Free secure interrupt"
     },
     {
-      "name": "IPCC2_RX",
-      "value": 175,
-      "description": "Mailbox 2 RX Occupied interrupt"
-    },
-    {
-      "name": "IPCC2_TX",
-      "value": 176,
-      "description": "Mailbox 2 TX Free interrupt"
-    },
-    {
-      "name": "IPCC2_RX_S",
-      "value": 177,
-      "description": "Mailbox 2 RX Occupied secure interrupt"
-    },
-    {
-      "name": "IPCC2_TX_S",
-      "value": 178,
-      "description": "Mailbox 2 TX Free secure interrupt"
-    },
-    {
       "name": "SAES",
       "value": 179,
       "description": "secure AES interrupt"
@@ -1112,11 +1062,6 @@
       "name": "HPDMA3_WKUP",
       "value": 255,
       "description": "HPDMA3 channel 0 to 15 wake up"
-    },
-    {
-      "name": "LPDMA_WKUP",
-      "value": 256,
-      "description": "LPDMA channel 0 to 3 wake up"
     },
     {
       "name": "UCPD1_VBUS",
@@ -1461,16 +1406,6 @@
       "block": "gpio/GPIO"
     },
     {
-      "name": "GPIOJ",
-      "base_address": "0x442d0000",
-      "block": "gpio/GPIO"
-    },
-    {
-      "name": "GPIOK",
-      "base_address": "0x442e0000",
-      "block": "gpio/GPIO"
-    },
-    {
       "name": "GPIOZ",
       "base_address": "0x46200000",
       "block": "gpio/GPIO"
@@ -1801,11 +1736,6 @@
       "block": "ipcc/IPCC"
     },
     {
-      "name": "IPCC2",
-      "base_address": "0x46250000",
-      "block": "ipcc/IPCC"
-    },
-    {
       "name": "IWDG1",
       "base_address": "0x44010000",
       "block": "iwdg/IWDG"
@@ -1824,16 +1754,6 @@
       "name": "IWDG4",
       "base_address": "0x44040000",
       "block": "iwdg/IWDG"
-    },
-    {
-      "name": "IWDG5",
-      "base_address": "0x46090000",
-      "block": "iwdg/IWDG"
-    },
-    {
-      "name": "LPDMA",
-      "base_address": "0x46210000",
-      "block": "dma/DMA"
     },
     {
       "name": "LPTIM1",
@@ -2393,11 +2313,6 @@
     {
       "name": "WWDG1",
       "base_address": "0x44050000",
-      "block": "wwdg/WWDG"
-    },
-    {
-      "name": "WWDG2",
-      "base_address": "0x460a0000",
       "block": "wwdg/WWDG"
     }
   ]

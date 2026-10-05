@@ -26,6 +26,13 @@
 //! The timer selection is the reference-board default baked into each chip
 //! HAL's `bringup` (STM32MP2 TIM2, i.MX9 LPIT1). Integrators that own their own
 //! time base disable this with `[profile] time_driver = false`.
+//!
+//! A core whose chip map does not list that timer gets no time driver, the same
+//! as a family with no sealed driver; a core with no bundled chip map keeps the
+//! family default. The STM32MP25 CM0+ is the case in point:
+//! it reaches only the SmartRun domain (LPTIM3–5, no TIM2). `[profile]
+//! time_driver` is manifest-wide, so rejecting such a core would force the
+//! driver off on every other core too.
 
 use proc_macro2::TokenStream;
 use quote::quote;
@@ -51,6 +58,14 @@ impl Family {
             Some(Family::Imx9)
         } else {
             None
+        }
+    }
+
+    /// The peripheral instance the HAL's `bringup` drives.
+    fn timer(self) -> &'static str {
+        match self {
+            Family::Stm32mp2 => "TIM2",
+            Family::Imx9 => "LPIT1",
         }
     }
 }
@@ -90,21 +105,30 @@ impl TimeDriverCodegen {
 /// * `enabled` — the `[profile] time_driver` flag.
 /// * `dbg_present` — whether this core has a `[dbg.<core>]` logger (so `defmt`
 ///   is linked and a `timestamp!` source is required).
-pub fn time_driver_codegen(hal_crate: &str, enabled: bool, dbg_present: bool) -> TimeDriverCodegen {
+/// * `available` — the peripheral instances this core's chip map lists, or
+///   `None` for a core with no bundled map. A listed map without the family's
+///   timer suppresses all emission.
+pub fn time_driver_codegen(
+    hal_crate: &str,
+    enabled: bool,
+    dbg_present: bool,
+    available: Option<&[String]>,
+) -> TimeDriverCodegen {
     if !enabled {
         return TimeDriverCodegen::empty();
     }
     let Some(family) = Family::from_hal_crate(hal_crate) else {
         return TimeDriverCodegen::empty();
     };
+    let timer = family.timer();
+    if available.is_some_and(|names| !names.iter().any(|name| name == timer)) {
+        return TimeDriverCodegen::empty();
+    }
     let hal: syn::Path = parse_str(hal_crate).expect("hal_crate must be a valid path");
 
     // `bringup` consumes the timer's peripheral singleton, so the reservation
     // is enforced by the type system: nothing else can build a driver over it.
-    let timer = match family {
-        Family::Stm32mp2 => quote! { TIM2 },
-        Family::Imx9 => quote! { LPIT1 },
-    };
+    let timer = quote::format_ident!("{timer}");
     let bringup = quote! {
         #hal::timer_driver::bringup(__p.#timer);
         ::consortium_runtime_mcu::log::trace!("consortium controller init: time driver up");
@@ -141,5 +165,49 @@ pub fn time_driver_codegen(hal_crate: &str, enabled: bool, dbg_present: bool) ->
         timestamp,
         isr,
         bringup,
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn names(list: &[&str]) -> Vec<String> {
+        list.iter().map(|name| (*name).to_owned()).collect()
+    }
+
+    #[test]
+    fn emits_when_the_core_reaches_the_timer() {
+        let time = time_driver_codegen(
+            "::consortium_hal_stm32mp2",
+            true,
+            true,
+            Some(&names(&["IPCC1", "TIM2"])),
+        );
+        assert!(time.bringup.to_string().contains("bringup (__p . TIM2)"));
+        assert!(time.isr.to_string().contains("fn TIM2 ()"));
+        assert!(!time.timestamp.is_empty());
+    }
+
+    #[test]
+    fn skips_a_core_without_the_timer() {
+        // The STM32MP25 CM0+ reaches only the SmartRun domain.
+        let time = time_driver_codegen(
+            "::consortium_hal_stm32mp2",
+            true,
+            true,
+            Some(&names(&["IPCC2", "LPTIM3", "LPTIM4", "LPTIM5"])),
+        );
+        assert!(time.bringup.is_empty());
+        assert!(time.isr.is_empty());
+        assert!(time.timestamp.is_empty());
+    }
+
+    #[test]
+    fn keeps_the_default_for_a_core_with_no_chip_map() {
+        // e.g. the i.MX95 CM33, which has no bundled map.
+        let time = time_driver_codegen("::consortium_hal_imx9", true, false, None);
+        assert!(time.bringup.to_string().contains("bringup (__p . LPIT1)"));
+        assert!(time.timestamp.is_empty());
     }
 }

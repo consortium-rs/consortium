@@ -1,11 +1,14 @@
 //! Classic CAN driver backed by an STM32MP2 FDCAN (Bosch M_CAN) instance.
 //!
-//! Select an instance by passing its MMIO base to [`Can::new`], along with the
-//! shared CAN message-RAM base, this instance's byte offset within it, and a
-//! `&'static` [`State`]. Blocking transfers ([`embedded_can::nb::Can`]) work
-//! without interrupts. Async [`Can::transmit`]/[`Can::receive`] require the
-//! caller to route one of the instance's interrupt lines to
-//! `State::on_interrupt` (the driver enables interrupt line 0, `FDCANx_IT0`).
+//! Select an instance by handing its peripheral singleton to [`Can::new`],
+//! along with the shared CAN message-RAM base and this instance's byte offset
+//! within it. The singleton carries the register base and the per-instance
+//! interrupt [`State`]; the message-RAM window has no singleton yet, which is
+//! why the constructor is still `unsafe`. Blocking transfers
+//! ([`embedded_can::nb::Can`]) work without interrupts. Async
+//! [`Can::transmit`]/[`Can::receive`] require the application to forward one of
+//! the instance's interrupt lines to [`on_interrupt::<T>`](on_interrupt) (the
+//! driver enables interrupt line 0, `FDCANx_IT0`).
 //!
 //! [`Can::split`] hands out independent [`CanTx`] and [`CanRx`] halves for code
 //! that transmits and receives concurrently, such as a full-duplex IPC
@@ -320,14 +323,14 @@ impl Can {
     ///
     /// # Safety
     ///
-    /// `base` must point to a valid FDCAN register block, clocked and pinned out
-    /// by the caller, that is exclusively owned by this driver for the lifetime
-    /// of the program. `msg_ram_base` must be the CPU address of the shared CAN
-    /// message RAM, and `[msg_ram_offset, msg_ram_offset + `[`REGION_BYTES`]`)`
-    /// must be a region within it reserved for this instance and no other.
-    /// `clock_hz` is the CAN kernel clock. `state` must be dedicated to this
-    /// instance; for async use, route the instance's interrupt to
-    /// `State::on_interrupt`.
+    /// `msg_ram_base` must be the CPU address of the shared CAN message RAM,
+    /// and `[msg_ram_offset, msg_ram_offset + `[`REGION_BYTES`]`)` must be a
+    /// region within it reserved for this instance and no other. The register
+    /// block and interrupt state come from the consumed singleton; the platform
+    /// must leave the instance clocked and pinned out.
+    ///
+    /// `clock_hz` is the CAN kernel clock. For async use, forward the
+    /// instance's interrupt to [`on_interrupt::<T>`](on_interrupt).
     pub unsafe fn new<T: Instance>(
         peri: Peri<'static, T>,
         msg_ram_base: *mut (),
