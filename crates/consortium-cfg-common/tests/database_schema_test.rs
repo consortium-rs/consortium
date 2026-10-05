@@ -38,7 +38,15 @@ fn loads_stm32mp23_database_yaml() {
     .expect("stm32mp23 database should match Rust schema");
 
     assert_eq!(database.name, "STM32MP23");
-    assert_eq!(database.peripheral.doorbells.len(), 3);
+    assert_eq!(
+        database
+            .peripheral
+            .doorbells
+            .iter()
+            .map(|doorbell| doorbell.name.as_str())
+            .collect::<Vec<_>>(),
+        ["HSEM", "IPCC1"]
+    );
     assert_eq!(database.memory.trm_page, vec![229]);
     assert_eq!(
         database.peripheral.doorbells[0].parties[0].memory,
