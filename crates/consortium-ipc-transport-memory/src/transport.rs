@@ -24,6 +24,10 @@ impl RegionSharedMemoryTransportable for UncachedRegion {}
 /// What a transport, or either half of one, holds of the shared window: the
 /// doorbell, the region, and the region's base pointer.
 ///
+/// Keeping the window mapped is the region's job, not the transport's: a Linux
+/// region type such as `consortium_runtime_app::uio::UioRegion` owns the UIO
+/// devices it and the doorbell are mapped from, and clones of it keep them alive.
+///
 /// A `Link` is only ever built by [`SharedMemoryTransport::new`], whose caller
 /// vouches that `region` maps this channel's window, valid for reads and writes
 /// for its whole length while any `Link` over it lives. Every function below
@@ -35,8 +39,6 @@ struct Link<D, R> {
     /// Offset 0x00 of the region (the descriptor header), cached from
     /// [`Region::as_ptr`].
     base: *mut u8,
-    #[cfg(feature = "std")]
-    keep_alive: alloc::vec::Vec<alloc::sync::Arc<dyn Send + Sync>>,
 }
 
 // SAFETY: `base` points into the inter-processor window `region` maps; no
@@ -52,8 +54,6 @@ impl<D: Clone, R: Clone> Clone for Link<D, R> {
             doorbell: self.doorbell.clone(),
             region: self.region.clone(),
             base: self.base,
-            #[cfg(feature = "std")]
-            keep_alive: self.keep_alive.clone(),
         }
     }
 }
@@ -558,8 +558,6 @@ impl<S: Side, D: Doorbell, R: RegionSharedMemoryTransportable> SharedMemoryTrans
                 doorbell,
                 region,
                 base,
-                #[cfg(feature = "std")]
-                keep_alive: alloc::vec::Vec::new(),
             },
             tx: TxState {
                 ch: ch_tx,
@@ -621,16 +619,6 @@ impl<S: Side, D: Doorbell, R: RegionSharedMemoryTransportable> SharedMemoryTrans
     /// This side's transmit and receive channel ids, in `(tx, rx)` order.
     pub fn channels(&self) -> (Chan, Chan) {
         (self.tx.ch, self.rx.ch)
-    }
-
-    /// Retain an owner of memory or device resources used by this transport.
-    ///
-    /// Generated Linux bring-up uses this to keep each UIO mapping alive even
-    /// after the aggregate platform resource bundle is partially moved or
-    /// dropped. Both [`split`](Self::split) halves keep every owner.
-    #[cfg(feature = "std")]
-    pub fn keep_alive(&mut self, owner: alloc::sync::Arc<dyn Send + Sync>) {
-        self.link.keep_alive.push(owner);
     }
 
     /// Record this side's per-direction slot capacities as the transport MTU.

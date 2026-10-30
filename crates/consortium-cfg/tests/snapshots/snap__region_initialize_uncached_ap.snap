@@ -3,10 +3,5 @@ source: crates/consortium-cfg/tests/snap.rs
 expression: expr(tokens)
 ---
 fn _generated() {
-    let _ = unsafe {
-        ::consortium_shared_memory::regions::UncachedRegion::new(
-            (uio[0usize].mmap_zeroed(1usize)?) as *mut u8,
-            32768usize,
-        )
-    };
+    let _ = ::consortium_runtime_app::uio::UioRegion::zeroed(&uio[0usize], 1usize)?;
 }
