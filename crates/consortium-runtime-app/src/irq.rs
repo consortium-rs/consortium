@@ -30,10 +30,9 @@
 //!    kernel masks it and bumps a 4-byte counter, which makes the fd readable.
 //! 2. **Drain** the 4-byte count so the fd is no longer readable. The value (an
 //!    interrupt sequence number) is discarded; only the edge matters.
-//! 3. **Fan out** to every registered doorbell `Service`. A masking doorbell
-//!    (IPCC, MU) masks its asserted lines here and then wakes its
-//!    [`tokio::sync::Notify`] waiters; a plain doorbell just calls
-//!    `notify_waiters()`.
+//! 3. **Fan out** to every registered doorbell `Service`. A Type-A bell (IPCC,
+//!    MU, HSEM) masks its asserted lines here and then wakes each one's waiter; an
+//!    edge-driven doorbell (GPIO) only wakes.
 //! 4. **Re-arm** the interrupt with a 4-byte write.
 //!
 //! The ordering is the whole point. Masking in step 3 happens *before* the
@@ -44,10 +43,9 @@
 //! armed the line at open and a redundant enable can unbalance a UIO driver's
 //! enable/disable accounting (leaving the interrupt wedged off).
 //!
-//! Wakeups ride entirely on tokio's `tokio::sync::Notify`: each
-//! `Service` ultimately calls `notify_waiters()` on the doorbell's shared
-//! `Notify`, which is the same object the doorbell's `wait()` future subscribes
-//! to. The loop itself holds no per-channel state — it does not know which line
+//! Wakeups go through the doorbell's own waker table — the same `AtomicWaker`s
+//! its firmware vector would wake — so the AP and the controller run one wait
+//! protocol. The loop itself holds no per-channel state — it does not know which line
 //! fired, so it services every doorbell and lets each re-check (and acknowledge)
 //! its own hardware. A spurious wake is therefore always safe.
 //!
@@ -76,16 +74,14 @@ use tokio::io::unix::AsyncFd;
 /// A doorbell's IRQ service callback: run once per M→A interrupt to wake the
 /// doorbell's pending `wait()` futures. A masking doorbell (IPCC, MU) masks its
 /// asserted lines here *before* waking so a level-sensitive line does not
-/// immediately re-fire the UIO IRQ; a plain doorbell just calls
-/// `notify_waiters()` on its shared [`Notify`](tokio::sync::Notify).
+/// immediately re-fire the UIO IRQ; an edge-driven doorbell (GPIO) only wakes.
 pub(crate) type Service = Arc<dyn Fn() + Send + Sync>;
 
 /// Shared registry of doorbell IRQ services the loop fans out to.
 ///
 /// [`irq_loop`] invokes every registered [`Service`] on each M→A interrupt, so
 /// all pending `wait()` futures re-check their hardware status. Doorbells are
-/// added through [`UioDevice::bind_service`](crate::uio::UioDevice::bind_service)
-/// / [`UioDevice::bind_notifier`](crate::uio::UioDevice::bind_notifier).
+/// added through [`UioDevice::bind_service`](crate::uio::UioDevice::bind_service).
 pub(crate) type Services = Arc<Mutex<Vec<Service>>>;
 
 /// Background IRQ listener body.
@@ -140,7 +136,7 @@ pub(crate) async fn irq_loop(async_fd: AsyncFd<File>, services: Services) {
 
         // 3. Fan the interrupt out to every registered doorbell. Each masking
         //    doorbell masks its asserted lines here, *before* the re-arm below,
-        //    then wakes its `Notify` waiters.
+        //    then wakes its waiters.
         run_services(&services);
 
         // 4. Re-arm the interrupt now that any level-sensitive lines are masked,
@@ -393,9 +389,8 @@ mod tests {
     }
 
     /// `run_services` runs every doorbell service registered before the
-    /// interrupt. Each service here is the `bind_notifier` wrapper's
-    /// `notify_waiters()` closure, mirroring `RecvFut` arming its waker (via
-    /// `Notified::enable`) before the M→A IRQ arrives.
+    /// interrupt. Each service here wakes a test `Notify` that was enabled
+    /// before the M→A IRQ arrives, standing in for a doorbell's waker.
     #[test]
     fn run_services_wakes_all_registered_doorbells() {
         runtime().block_on(async {

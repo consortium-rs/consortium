@@ -26,9 +26,9 @@
 //! is `no-map` reserved memory that survives a warm reboot, so stale descriptor and
 //! slot bytes from a previous run must not read as valid.
 //!
-//! Doorbells are bound before any receive: [`bind_notifier`](UioDevice::bind_notifier)
-//! for a plain doorbell, [`bind_service`](UioDevice::bind_service) for a masking one
-//! that must mask its asserted lines before the wake.
+//! Doorbells are bound before any receive with [`bind_service`](UioDevice::bind_service):
+//! a Type-A bell binds its `service_interrupt`, which masks its asserted lines
+//! before the wake, and a GPIO doorbell binds its signal's `wake`.
 //!
 //! Generated bring-up code drives all of this; the addresses and UIO ids come from
 //! `consortium-cfg`.
@@ -39,7 +39,7 @@ use std::{
     sync::{Arc, Mutex},
 };
 
-use tokio::{io::unix::AsyncFd, sync::Notify};
+use tokio::io::unix::AsyncFd;
 use uio::UioError;
 
 use consortium_ipc_transport_memory::DescriptorError;
@@ -86,9 +86,8 @@ impl From<UioError> for UioDeviceError {
 
 struct Inner {
     /// Doorbell IRQ services run on every M→A IRQ. Each masks its asserted
-    /// lines (if applicable) and wakes the doorbell's pending `RecvFut`s /
-    /// `SendFut`s. Populated through [`UioDevice::bind_service`] /
-    /// [`UioDevice::bind_notifier`].
+    /// lines (if applicable) and wakes the doorbell's pending waits. Populated
+    /// through [`UioDevice::bind_service`].
     services: Services,
 }
 
@@ -97,8 +96,7 @@ struct Inner {
 /// Opened with [`open`](Self::open), which maps the device's windows and
 /// optionally starts the IRQ listener task. Callers then map individual windows
 /// with [`mmap`](Self::mmap) or [`mmap_zeroed`](Self::mmap_zeroed) and bind
-/// doorbells with [`bind_notifier`](Self::bind_notifier) or
-/// [`bind_service`](Self::bind_service).
+/// doorbells with [`bind_service`](Self::bind_service).
 pub struct UioDevice {
     inner: Arc<Inner>,
     /// The opened device, which every window is mapped from.
@@ -327,18 +325,6 @@ impl UioDevice {
             .lock()
             .expect("service list poisoned")
             .push(service);
-    }
-
-    /// Register a doorbell's [`Notify`] so the IRQ task wakes its `wait()`
-    /// futures on every M→A interrupt.
-    ///
-    /// Convenience wrapper over [`bind_service`](Self::bind_service) for
-    /// doorbells with no line masking (the wakeup just calls `notify_waiters()`).
-    /// Masking doorbells should bind their own service instead so a
-    /// level-sensitive line is masked before the wake.
-    pub fn bind_notifier(&self, notifier: Arc<Notify>) {
-        consortium_log::trace!("UioDevice::bind_notifier: registering notifier");
-        self.bind_service(Arc::new(move || notifier.notify_waiters()));
     }
 }
 
