@@ -249,7 +249,7 @@ fn distinct_lines_keep_distinct_wakers() {
         window.add(offsets::RSR as usize / 4).write_volatile(1 << 1);
     }
     // The ISR core, without the real `PHYS_BASE` that `service_interrupt` uses.
-    super::super::service(db.hw(), |id| Mu::<Primary, N>::waker(id).wake());
+    super::super::service(db.hw());
 
     assert_eq!(first_wakes.load(Ordering::SeqCst), 1);
     assert_eq!(second_wakes.load(Ordering::SeqCst), 1);
