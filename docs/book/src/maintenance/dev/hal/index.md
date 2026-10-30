@@ -8,9 +8,10 @@ shared `consortium-hal` trait crate.
 
 Each chip HAL exposes a module per peripheral class, and each module is behind a Cargo
 feature so a firmware image only compiles the drivers it uses. The current set is `adc`,
-`can`, `dma`, `gpio`, `i2c`, `i3c`, `spi`, `timer`, `uart`, and `timer_driver`; all are
-enabled by default alongside the crate's default chip selection. STM32MP2 also exposes
-`lptim`. The crates are `no_std`, keep their unsafe blocks narrow, and hold chip-specific
+`can`, `dma`, `gpio`, `i2c`, `i3c`, `pwm`, `spi`, `timer`, `uart`, and `watchdog`; all
+are enabled by default alongside the crate's default chip selection. STM32MP2 also
+exposes `lptim`, and each chip HAL carries the `timer_driver` Embassy time driver used by
+generated firmware bring-up. The crates are `no_std`, keep their unsafe blocks narrow, and hold chip-specific
 detail inside the chip HAL rather than in the shared traits.
 
 ## A common shape

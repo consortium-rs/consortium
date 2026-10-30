@@ -106,18 +106,24 @@ Both spellings run descriptor negotiation before `SharedMemoryTransport::split()
 construct the typed Tx and Rx channels. A missing peer therefore blocks only the channel
 being connected. Timeout policy belongs to the caller.
 
-## Interrupt handlers remain application-owned
+## Interrupt vectors
 
-Hardware crates do not install interrupt vectors. Firmware enables the chip HAL's `rt`
-feature, defines the relevant handler, and forwards it to the exported wake path:
+Hardware crates never install interrupt vectors themselves. Instead, generated firmware
+code emits a private `__consortium_vectors` module holding every vector the manifest
+implies, each forwarding to the owning crate's service entry point:
 
-- HSEM: `hsem::notify()`;
-- IPCC RX: `ipcc::notify_rx_occupied_interrupt()`;
-- MU: `mu::notify::<N>()`; and
-- buffered UART: the HAL's per-instance interrupt hook.
+- HSEM: `consortium_ipc_doorbell_hsem::notify()`;
+- IPCC RX: `consortium_ipc_transport_memory::bell::service_interrupt::<bell::ipcc::Ipcc<S, N>>()`;
+- MU: `consortium_ipc_doorbell_mu::notify_gi_interrupt::<S, N>()`; and
+- the time driver: the chip HAL's `timer_driver::on_timer_interrupt()` (TIM2 on
+  STM32MP2, LPIT1 on i.MX9).
 
-Generated code installs only the selected time-driver vector. The melt-pot firmware
-`main.rs` files are the current worked examples.
+Firmware enables the chip HAL's `rt` feature so the `#[interrupt]` macro and PAC vector
+table are available to that generated code, and writes no doorbell vectors in `main.rs`.
+Peripherals the application drives directly — a buffered UART, I2C, FDCAN — still need a
+handler written by the application that forwards to the HAL's per-instance interrupt
+hook, such as `i2c::on_interrupt::<peripherals::LPI2C1>()`. A core the chip PAC's interrupt table does not describe
+(STM32MP2's CM0+) keeps writing its doorbell vectors by hand.
 
 ## Receiving and codecs
 

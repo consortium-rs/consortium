@@ -342,7 +342,8 @@ The same `Channel<D, T, Tr, C>` API compiles for all rows. Only the concrete typ
 | `std`    | Adds `Send` bound on futures via `MaybeSend: Send` |
 | `alloc`  | Enables allocator support in serde/postcard        |
 
-`consortium-mem` inherits `no_std`. `consortium-uio` requires `std` + Tokio and is Linux-only.
+`consortium-shared-memory` and `consortium-ipc-transport-memory` inherit `no_std`. UIO
+mapping lives in `consortium-runtime-app`, which requires `std` + Tokio and is Linux-only.
 
 ---
 

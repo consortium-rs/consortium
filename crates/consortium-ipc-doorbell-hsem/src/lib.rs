@@ -18,7 +18,7 @@
 //! Stale HSEM (Hardware Semaphore) doorbell driver for Consortium IPC.
 //!
 //! This crate is retained for experiments and existing STM32MP23/25 users, but
-//! new STM32MP2 integrations should prefer `consortium-ipc-doorbell-ipcc`.
+//! new STM32MP2 integrations should prefer IPCC (`consortium_ipc_transport_memory::bell::ipcc`).
 //! IPCC is present across STM32MP21/23/25 and has the better supported ST
 //! integration path. HSEM is absent on STM32MP21, and field testing has shown
 //! surprising access failures where the peripheral clock and RIF assignment
@@ -97,7 +97,7 @@
 //! [`side`]: consortium_ipc::Side
 #![deprecated(
     since = "0.1.0",
-    note = "HSEM is absent on STM32MP21 and has been observed to fail on STM32MP23/25; prefer `consortium-ipc-doorbell-ipcc`"
+    note = "HSEM is absent on STM32MP21 and has been observed to fail on STM32MP23/25; prefer IPCC (`consortium_ipc_transport_memory::bell::ipcc`)"
 )]
 
 pub mod abstraction;

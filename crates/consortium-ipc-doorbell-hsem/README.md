@@ -3,8 +3,8 @@
 STM32 HSEM (hardware semaphore) doorbell for
 [`consortium-ipc`](../consortium-ipc).
 
-> **Prefer [`consortium-ipc-doorbell-ipcc`](../consortium-ipc-doorbell-ipcc) for new
-> STM32MP2 work.** This crate is retained for experiments and existing
+> **Prefer IPCC ([`consortium-ipc-transport-memory`](../consortium-ipc-transport-memory)'s
+> `bell::ipcc`) for new STM32MP2 work.** This crate is retained for experiments and existing
 > STM32MP23/25 users. IPCC is present across STM32MP21/23/25 and has the better
 > supported ST integration path; HSEM is absent on STM32MP21, and field testing has
 > shown surprising access failures where the peripheral clock and RIF assignment
@@ -59,15 +59,16 @@ The doorbell is `Clone`, and clones share one wake source — which is what lets
 `SharedMemoryTransport::split` give a copy to each half and still have an interrupt
 reach whichever half is waiting.
 
-## Interrupts are the application's
+## Interrupts
 
-**This crate installs no `#[interrupt]` handlers.** The application owns the vector
-table and forwards the non-secure `HSEM` vector. Enable the _HAL's_ `rt` feature
-(`consortium-hal-stm32mp2/rt`) so the `#[interrupt]` macro and PAC vector table are
-available to that code.
+**This crate installs no `#[interrupt]` handlers.** The non-secure `HSEM` vector is
+forwarded into `notify()`. `consortium-cfg` generates these vectors into the endpoint's `consortium.gen.rs`
+(`__consortium_vectors`) from the manifest, so firmware `main.rs` normally writes none.
+Enable the _HAL's_ `rt` feature (`consortium-hal-stm32mp2/rt`) so the `#[interrupt]`
+macro and PAC vector table are available to that code.
 
 ```rust,ignore
-// Firmware
+// Firmware (generated)
 #[interrupt]
 fn HSEM() {
     consortium_ipc_doorbell_hsem::notify();

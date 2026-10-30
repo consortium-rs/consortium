@@ -318,7 +318,7 @@ STM32MP2 silicon cut does change DMA request numbers (reading list, item 2).
 `dma`, `dma_channel`, `fdcan`, `gpio`, `hsem`, `i2c`, `i3c`, `iwdg`, `lptim`, `rcc`, `spi`,
 `timer`, `usart`). Missing, in rough priority for a coprocessor:
 
-- [ ] EXTI, PWR, SYSCFG, IPCC (currently hand-rolled in `consortium-ipc-doorbell-ipcc`)
+- [ ] EXTI, PWR, SYSCFG, IPCC (IPCC currently hand-rolled in `consortium-ipc-transport-memory::bell::ipcc`)
 - [ ] RTC, TAMP, WWDG
 - [ ] RIF: RIFSC, RISAF, RISAB, IAC (see P6.2)
 - [ ] CRC, RNG, HASH, PKA

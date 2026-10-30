@@ -47,7 +47,7 @@
 //! # When to reach for this
 //!
 //! GPIO is the fallback, not the default. Prefer a real IPC peripheral —
-//! `consortium-ipc-doorbell-ipcc` on STM32MP2, `consortium-ipc-doorbell-mu` on
+//! IPCC (`consortium_ipc_transport_memory::bell::ipcc`) on STM32MP2, `consortium-ipc-doorbell-mu` on
 //! i.MX 9 — whenever the two cores share one. GPIO earns its place when they do
 //! not: two separate chips on one board, a core whose IPC peripheral is assigned
 //! to another security domain, or a bring-up spike where a spare pin is faster to

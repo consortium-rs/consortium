@@ -264,7 +264,7 @@ impl UioDevice {
     /// M→A interrupt.
     ///
     /// A masking doorbell binds its own IRQ entry point here — e.g.
-    /// `IpccDoorbell::notify_rx_occupied_interrupt` or
+    /// `BellA::service_interrupt` (IPCC) or
     /// [`MuDoorbell::notify_gi_interrupt`] — which masks the asserted lines
     /// before waking, so a level-sensitive line does not immediately re-fire the
     /// UIO IRQ. The doorbell is `Clone`, so bind a clone before moving the
@@ -277,7 +277,6 @@ impl UioDevice {
     /// let transport = SharedMemoryTransport::<Primary, _, _>::new(mu, desc, slot_pair);
     /// ```
     ///
-    /// [`IpccDoorbell::notify_rx_occupied_interrupt`]: https://docs.rs/consortium-ipc-doorbell-ipcc
     /// [`MuDoorbell::notify_gi_interrupt`]: https://docs.rs/consortium-ipc-doorbell-mu
     pub fn bind_service(&self, service: Service) {
         consortium_log::trace!("UioDevice::bind_service: registering IRQ service");

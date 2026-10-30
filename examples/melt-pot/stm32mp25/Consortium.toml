@@ -54,7 +54,7 @@ mode = "auto"
 memory = { base = 0x00062000, length = 0x2000 }
 mtu    = 64
 
-# One shared descriptor + slots for the sensor channel, signalled over HSEM.
+# One shared descriptor + slots for the sensor channel, signalled over IPCC1.
 # The region lives in SRAM2 (base 0x00060000 in the stm32mp25 chip database);
 # the CM33 reaches it through the raw physical base and the CA35 maps the same
 # memory through its UIO device.

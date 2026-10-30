@@ -60,6 +60,9 @@ name = "atomic-waker"
 version = "1.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1505bd5d3d116872e7271a6d4e16d81d0c8570876c8de68093a09ac269d8aac0"
+dependencies = [
+ "portable-atomic",
+]
 
 [[package]]
 name = "autocfg"
@@ -205,7 +208,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-codec"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "consortium-log",
  "postcard",
@@ -214,7 +217,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-dbg"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "bitflags 2.13.1",
  "consortium-log",
@@ -228,7 +231,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-hal"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "cortex-m",
  "critical-section",
@@ -237,7 +240,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-hal-imx9"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "consortium-hal",
  "consortium-pac-imx9",
@@ -247,7 +250,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-hal-stm32mp2"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "consortium-hal",
  "consortium-log",
@@ -258,7 +261,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-ipc"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "consortium-codec",
  "consortium-ipc-macros",
@@ -267,21 +270,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-ipc-doorbell-hsem"
-version = "0.3.0"
-dependencies = [
- "atomic-waker",
- "bitfield 0.19.5",
- "consortium-hal-stm32mp2",
- "consortium-ipc",
- "consortium-log",
- "critical-section",
- "thiserror",
- "tokio",
-]
-
-[[package]]
-name = "consortium-ipc-doorbell-ipcc"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "atomic-waker",
  "bitfield 0.19.5",
@@ -295,7 +284,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-ipc-doorbell-mu"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "atomic-waker",
  "bitfield 0.19.5",
@@ -308,14 +297,14 @@ dependencies = [
 
 [[package]]
 name = "consortium-ipc-macros"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "consortium-ipc-macros-impl",
 ]
 
 [[package]]
 name = "consortium-ipc-macros-impl"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "consortium-macros-helpers",
  "proc-macro2",
@@ -325,12 +314,14 @@ dependencies = [
 
 [[package]]
 name = "consortium-ipc-transport-memory"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
+ "atomic-waker",
+ "bitfield 0.19.5",
  "consortium-codec",
+ "consortium-hal-stm32mp2",
  "consortium-ipc",
  "consortium-ipc-doorbell-hsem",
- "consortium-ipc-doorbell-ipcc",
  "consortium-ipc-doorbell-mu",
  "consortium-log",
  "consortium-shared-memory",
@@ -346,7 +337,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-log"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "consortium-log-macros",
  "tracing",
@@ -354,7 +345,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-log-macros"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -363,28 +354,28 @@ dependencies = [
 
 [[package]]
 name = "consortium-macros-helpers"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "syn 3.0.3",
 ]
 
 [[package]]
 name = "consortium-pac-imx9"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "cortex-m",
 ]
 
 [[package]]
 name = "consortium-pac-stm32mp2"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "cortex-m",
 ]
 
 [[package]]
 name = "consortium-runtime-app"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "consortium-dbg",
  "consortium-ipc",
@@ -401,14 +392,14 @@ dependencies = [
 
 [[package]]
 name = "consortium-runtime-macros"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "consortium-runtime-macros-impl",
 ]
 
 [[package]]
 name = "consortium-runtime-macros-impl"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "consortium-macros-helpers",
  "proc-macro2",
@@ -418,7 +409,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-shared-memory"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "cortex-m",
  "thiserror",
@@ -768,7 +759,7 @@ dependencies = [
 
 [[package]]
 name = "melt-pot-shared"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "consortium-ipc",
  "serde",
@@ -776,12 +767,11 @@ dependencies = [
 
 [[package]]
 name = "melt-pot-stm32mp25-app"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "consortium-codec",
  "consortium-ipc",
  "consortium-ipc-doorbell-hsem",
- "consortium-ipc-doorbell-ipcc",
  "consortium-ipc-transport-memory",
  "consortium-log",
  "consortium-runtime-app",
@@ -984,6 +974,12 @@ name = "pin-project-lite"
 version = "0.2.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a89322df9ebe1c1578d689c92318e070967d1042b512afbe49518723f4e6d5cd"
+
+[[package]]
+name = "portable-atomic"
+version = "1.15.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "05c8b63e8d9609db387f0324918f81d68fe27748f084ef092fb35954d0539a85"
 
 [[package]]
 name = "postcard"

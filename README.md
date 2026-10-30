@@ -46,7 +46,7 @@ and then generated**:
 ## Components
 
 - **Core** — `consortium-runtime-app` (Linux, UIO/remoteproc), `consortium-runtime-mcu`
-  (`no_std`), the entry-point macros and `Context` aggregate, `consortium-codec`
+  (`no_std`), the entry-point macros and generated `init()`, `consortium-codec`
   (postcard/prost/rkyv), the `consortium-log` facade, `consortium-dbg`
   defmt-over-shared-memory, and the `csti` CLI plus `consortium-builder` pipeline that
   compiles, generates, and stages a whole system from `Consortium.toml`.
@@ -60,13 +60,15 @@ and then generated**:
   shared by the client-application and trusted-application sides.
 - **HMI** — `consortium-hmi`, a backend-neutral command bridge between the UI and the
   application, adapted to Cog/WPE WebKit by `consortium-hmi-webkit` (over the `cogcore`
-  bindings) or to the native PocketJS runtime by `consortium-hmi-pocket`.
+  bindings) or to the native PocketJS runtime by `consortium-hmi-pocket`, with
+  `consortium-hmi-input` as the shared `no_std` input-event model.
 - **PAC** — `consortium-pac-imx9` and `consortium-pac-stm32mp2`, generated `no_std`
   peripheral access crates produced from vendor material by the `just pac-*` recipes and
   validated in CI.
 - **HAL** — `consortium-hal` traits plus the `consortium-hal-imx9` and
   `consortium-hal-stm32mp2` chip HALs: peripheral singletons handed out once by `init()`,
-  and CAN, DMA, GPIO, I2C, SPI, timer, and interrupt-buffered UART drivers that take
+  and ADC, CAN, DMA, GPIO, I2C, I3C, PWM, SPI, timer, watchdog, and interrupt-buffered
+  UART drivers that take
   ownership of a peripheral rather than an MMIO address.
 - **Cfg** — `consortium-cfg-common` and `consortium-cfg` own the `Consortium.toml`
   schema, the chip/memory databases in `consortium-data`, validation, lowering, and the
@@ -94,7 +96,7 @@ just test ipc host
 Running `just` with no arguments lists the recipes. The end-to-end flow is
 `csti build --linux <KERNEL_TREE>`, which runs the `Consortium.toml` pipeline and
 assembles a `dist/` staging tree; see
-`examples/melt-pot/` for worked i.MX95 and STM32MP25 systems, and
+`examples/melt-pot/` for worked i.MX93, i.MX95, and STM32MP25 systems, and
 [the book](https://book.csti.dev) for the manifest reference.
 
 On macOS, route Rust builds and tests through the Linux container recipes (for example
