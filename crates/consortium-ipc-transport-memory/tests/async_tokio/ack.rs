@@ -278,6 +278,10 @@ fn send_acked_reports_rather_than_stalling_behind_a_plain_send() {
     // retries.  Parking here would be a hang.
     let bus = LinedDoorbell::bus(4);
     let (p_bus, s_bus) = (bus.clone(), bus.clone());
+    // The peer runs on its own thread, so without this it can drain the plain message
+    // before the primary probes, and the probe then rightly succeeds.  Hold the peer back
+    // until the probe has seen the in-flight slot.
+    let (probed_tx, probed_rx) = tokio::sync::oneshot::channel::<()>();
 
     two_cores(
         move |base| {
@@ -297,6 +301,7 @@ fn send_acked_reports_rather_than_stalling_behind_a_plain_send() {
                     .await
                     .expect_err("must not park behind an unacknowledged message");
                 assert!(matches!(error, Error::NoChannel));
+                probed_tx.send(()).expect("secondary still running");
 
                 // Retrying is the caller's job, and it succeeds once the slot frees.
                 loop {
@@ -317,6 +322,8 @@ fn send_acked_reports_rather_than_stalling_behind_a_plain_send() {
                     .await
                     .expect("secondary connect");
 
+                // If the primary panicked before probing, its failure is the one to report.
+                let _ = probed_rx.await;
                 let mut buf = [0u8; MTU];
                 let n = transport.recv(&mut buf).await.expect("plain message");
                 assert_eq!(&buf[..n], b"unconfirmed");

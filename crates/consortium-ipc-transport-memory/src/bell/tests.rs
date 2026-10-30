@@ -23,7 +23,7 @@ use core::{
 };
 use std::sync::{
     Arc, Mutex,
-    atomic::{AtomicU32, AtomicUsize, Ordering},
+    atomic::{AtomicBool, AtomicU32, AtomicUsize, Ordering},
 };
 use std::task::{RawWaker, RawWakerVTable, Waker};
 
@@ -38,6 +38,12 @@ struct Regs {
     enabled: AtomicU32,
     busy: AtomicU32,
     log: Mutex<Vec<(&'static str, u32)>>,
+    /// Stretch every register read-modify-write so concurrent ones would overlap.
+    slow_rmw: AtomicBool,
+    /// Set while a read-modify-write is in flight.
+    in_rmw: AtomicBool,
+    /// Read-modify-writes that started while another was still in flight.
+    overlaps: AtomicUsize,
 }
 
 impl Regs {
@@ -55,6 +61,19 @@ impl Regs {
 
     fn signal(&self, line: u8) {
         self.status.fetch_or(1 << line, Ordering::SeqCst);
+    }
+
+    /// Model a register read-modify-write, counting any that run concurrently.
+    fn rmw(&self, f: impl FnOnce()) {
+        if !self.slow_rmw.load(Ordering::SeqCst) {
+            return f();
+        }
+        if self.in_rmw.swap(true, Ordering::SeqCst) {
+            self.overlaps.fetch_add(1, Ordering::SeqCst);
+        }
+        std::thread::sleep(std::time::Duration::from_micros(50));
+        f();
+        self.in_rmw.store(false, Ordering::SeqCst);
     }
 }
 
@@ -90,7 +109,7 @@ unsafe impl BellHw for FakeBell {
         if self.0.busy.load(Ordering::SeqCst) & (1 << line) != 0 {
             return Err(BellError::Busy);
         }
-        self.0.record("ring", 1 << line);
+        self.0.rmw(|| self.0.record("ring", 1 << line));
         Ok(())
     }
 
@@ -104,13 +123,17 @@ unsafe impl BellHw for FakeBell {
     }
 
     unsafe fn arm(&self, line: u8) {
-        self.0.record("arm", 1 << line);
-        self.0.enabled.fetch_or(1 << line, Ordering::SeqCst);
+        self.0.rmw(|| {
+            self.0.record("arm", 1 << line);
+            self.0.enabled.fetch_or(1 << line, Ordering::SeqCst);
+        });
     }
 
     unsafe fn disarm(&self, line: u8) {
-        self.0.record("disarm", 1 << line);
-        self.0.enabled.fetch_and(!(1 << line), Ordering::SeqCst);
+        self.0.rmw(|| {
+            self.0.record("disarm", 1 << line);
+            self.0.enabled.fetch_and(!(1 << line), Ordering::SeqCst);
+        });
     }
 
     fn asserted(&self) -> LineSet {
@@ -118,8 +141,10 @@ unsafe impl BellHw for FakeBell {
     }
 
     unsafe fn disarm_all(&self, lines: LineSet) {
-        self.0.record("disarm_all", lines);
-        self.0.enabled.fetch_and(!lines, Ordering::SeqCst);
+        self.0.rmw(|| {
+            self.0.record("disarm_all", lines);
+            self.0.enabled.fetch_and(!lines, Ordering::SeqCst);
+        });
     }
 }
 
@@ -382,4 +407,38 @@ fn chan_validate_uses_the_block_bounds() {
     assert_eq!(Chan::new::<Db>(0), Err(BellError::ChanReserved));
     assert_eq!(Chan::new::<Db>(1).map(|c| c.id()), Ok(1));
     assert_eq!(Chan::new::<Db>(LINES), Err(BellError::ChanOutOfRange));
+}
+
+/// The UIO IRQ task services the bell on one thread while waiters arm and disarm,
+/// and the halves ring, on others. Every one of those is a register
+/// read-modify-write, so none may run concurrently with another.
+#[test]
+fn register_writes_from_waiters_rings_and_service_never_overlap() {
+    let (bell, regs) = bell();
+    regs.slow_rmw.store(true, Ordering::SeqCst);
+
+    std::thread::scope(|scope| {
+        scope.spawn(|| {
+            for _ in 0..100 {
+                let mut cx = noop_cx();
+                // Arm on the first poll, disarm on drop.
+                let mut wait = std::pin::pin!(bell.wait(ch(1)));
+                assert!(wait.as_mut().poll(&mut cx).is_pending());
+            }
+        });
+        scope.spawn(|| {
+            for _ in 0..100 {
+                regs.signal(2);
+                bell.service_interrupt();
+                regs.status.fetch_and(!(1 << 2), Ordering::SeqCst);
+            }
+        });
+        scope.spawn(|| {
+            for _ in 0..100 {
+                bell.ring(ch(3)).unwrap();
+            }
+        });
+    });
+
+    assert_eq!(regs.overlaps.load(Ordering::SeqCst), 0);
 }
