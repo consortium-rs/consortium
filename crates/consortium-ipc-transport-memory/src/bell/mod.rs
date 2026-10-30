@@ -37,9 +37,10 @@
 //!    block's **per-line** table ([`BellHw::waker`]). One `AtomicWaker` per instance
 //!    would let a second waiter on another line overwrite the first registration.
 //! 2. `compiler_fence(SeqCst)`, then arm the line once, gated on `armed`.
-//! 3. Every enable-register read-modify-write — arm, completion, `Drop`, ISR service
-//!    — runs inside `with_interrupts_masked`, because task context and the vector
-//!    both write it.
+//! 3. Every register read-modify-write — arm, completion, `Drop`, ISR service, and
+//!    `ring` — runs inside `serialized`, because task context and the vector both
+//!    write it: a critical section on `no_std`, a process-wide lock on `std`, where
+//!    the UIO IRQ task can run on another thread.
 //! 4. On `std`, re-subscribe to the instance's shared `Notify` on **every** poll,
 //!    *before* the status read: a foreign line's wake consumes this future's
 //!    `Notified`, and a consumed `Notified` never fires again.
@@ -142,6 +143,9 @@ pub unsafe trait BellHw: Clone + Sync + 'static {
 
     /// Signal the peer on `line`, reporting [`BellError::Busy`] where the block can
     /// tell that the previous signal is unconsumed.
+    ///
+    /// [`BellA`] serializes calls against every other register read-modify-write,
+    /// so an implementation may read-modify-write a shared register here.
     fn ring(&self, line: Self::Line) -> Result<(), BellError>;
 
     /// Whether the peer has signalled `line`, from the raw (unmasked) status.
@@ -220,15 +224,25 @@ impl<H: BellHw> ChanValidate for BellA<H> {
 
 #[cfg(not(feature = "std"))]
 #[inline]
-fn with_interrupts_masked<R>(f: impl FnOnce() -> R) -> R {
+fn serialized<R>(f: impl FnOnce() -> R) -> R {
     critical_section::with(|_| f())
 }
 
-// On `std` the "ISR" is the UIO IRQ thread, and the enable registers belong to the
-// userspace mapping: there is no vector to race, so nothing to mask.
+// On `std` the "ISR" is the UIO IRQ task, which Tokio may run on another worker
+// thread than the waiter, so masking nothing would let the two read-modify-writes
+// interleave and lose one (a line left masked parks its receiver forever). One
+// process-wide lock covers every instance: a register window can be mapped more
+// than once (one `BellA` per channel on a shared block), so a per-instance lock
+// would not serialize them, and the critical sections are a handful of MMIO
+// accesses.
 #[cfg(feature = "std")]
 #[inline]
-fn with_interrupts_masked<R>(f: impl FnOnce() -> R) -> R {
+fn serialized<R>(f: impl FnOnce() -> R) -> R {
+    static RMW: std::sync::Mutex<()> = std::sync::Mutex::new(());
+    // A panic inside `f` leaves no invariant behind the lock to poison.
+    let _guard = RMW
+        .lock()
+        .unwrap_or_else(std::sync::PoisonError::into_inner);
     f()
 }
 
@@ -309,7 +323,9 @@ impl<H: BellHw> Doorbell for BellA<H> {
         // Order the caller's slot writes before the register write the peer
         // observes.
         fence(Ordering::Release);
-        self.hw.ring(line)
+        // Some blocks ring with a read-modify-write (MU sets a `GCR` bit), and the
+        // two transport halves can ring the same window from different tasks.
+        serialized(|| self.hw.ring(line))
     }
 
     fn wait(&self, ch: Chan) -> impl Future<Output = Result<Chan, Self::Error>> + MaybeSend {
@@ -405,7 +421,7 @@ impl<H: BellHw> Drop for LineWait<'_, H> {
         };
         // Disarm only. Acknowledging here would drop a notification the caller has
         // not consumed.
-        with_interrupts_masked(|| {
+        serialized(|| {
             // SAFETY: `line` was validated and this future owns the armed wait.
             unsafe { self.bell.hw.disarm(line) };
         });
@@ -430,7 +446,7 @@ impl<H: BellHw> Future for LineWait<'_, H> {
 
         if !this.armed {
             trace!("wait({:?}) -> arm", this.ch);
-            with_interrupts_masked(|| {
+            serialized(|| {
                 // SAFETY: `line` was validated; armed once from this task, and the
                 // read-modify-write is serialized against the ISR.
                 unsafe { this.bell.hw.arm(line) };
@@ -450,7 +466,7 @@ impl<H: BellHw> Future for LineWait<'_, H> {
 
             // SAFETY: `line` was validated and its status is set.
             unsafe { this.bell.hw.ack(line) };
-            with_interrupts_masked(|| {
+            serialized(|| {
                 // SAFETY: `line` was validated; re-mask after completion.
                 unsafe { this.bell.hw.disarm(line) };
             });
@@ -473,7 +489,7 @@ impl<H: BellHw> Future for LineWait<'_, H> {
 /// so a line that is already masked is still serviced.
 fn service<H: BellHw>(hw: &H, mut wake: impl FnMut(u8)) {
     let asserted = hw.asserted();
-    with_interrupts_masked(|| {
+    serialized(|| {
         // SAFETY: the set came straight from `asserted`.
         unsafe { hw.disarm_all(asserted) };
     });

@@ -331,7 +331,8 @@ unsafe impl<S: Side, const N: usize> BellHw for Mu<S, N> {
             MuLine::Gi(gi) => {
                 let mut reg = GeneralInterruptRegister::from_bits(self.read(offsets::GCR));
                 reg.set_gi(reg.gi() | (1 << gi));
-                // SAFETY: `gi < 4`; `ring` is the sole writer of `GCR`.
+                // SAFETY: `gi < 4`; `ring` is the sole writer of `GCR`, and `BellA`
+                // serializes rings, so this read-modify-write cannot drop a bit.
                 unsafe { self.write(offsets::GCR, reg.bits()) };
             }
             MuLine::Rf(rf) => {
