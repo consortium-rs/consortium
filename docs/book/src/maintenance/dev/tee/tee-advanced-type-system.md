@@ -145,6 +145,10 @@ pub trait TeeParam {
 
 `MAX_SIZE` solves the inout buffer sizing problem: since the TA may return a value larger than what the CA sent, the CA must pre-allocate a buffer sized for the response. Defining it on the type means the size contract lives next to the type definition.
 
+That pre-sizing has a consequence: an in/out buffer arrives at the TA zero-padded to `MAX_SIZE`, and a Memref's single size field cannot say how much of it the CA's encoding filled. Decoding the padding happens to work for postcard, which ignores trailing bytes, but not for codecs that reject them (protobuf treats a zero byte as an invalid tag). A `&mut T` slot therefore carries a 4-byte little-endian length ahead of the payload in both directions, and its buffer is `consortium_tee::inout::capacity(MAX_SIZE)` bytes. Input and output Memrefs need no frame: the CA sends exactly the encoded bytes in, and the TA's `set_output` reports exactly the bytes written out.
+
+On the TA, `MAX_SIZE` is also enforced on the way in: a serialized input whose Memref is larger than `MAX_SIZE` (or a `&mut T` frame larger than `capacity(MAX_SIZE)`, or one declaring a longer payload) is `BadParameters`, checked before the TA copies the buffer out of shared memory.
+
 If `#[derive(TeeParam)]` is used without a manual `impl`, the macro uses a conservative default of `1024` bytes.
 
 ---

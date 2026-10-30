@@ -20,10 +20,8 @@
 extern crate optee_utee;
 
 use melt_pot_imx93_ta::invoke_command;
-use optee_utee::deprecated::Parameters;
-use optee_utee::{
-    Result, ta_close_session, ta_create, ta_destroy, ta_invoke_command, ta_open_session,
-};
+use optee_utee::Result;
+use optee_utee::prelude::*;
 
 #[ta_create]
 fn create() -> Result<()> {
@@ -31,7 +29,7 @@ fn create() -> Result<()> {
 }
 
 #[ta_open_session]
-fn open_session(_params: &mut Parameters) -> Result<()> {
+fn open_session(_params: &mut ParametersNone) -> Result<()> {
     Ok(())
 }
 
@@ -42,7 +40,7 @@ fn close_session() {}
 fn destroy() {}
 
 #[ta_invoke_command]
-fn invoker(command_id: u32, params: &mut Parameters) -> Result<()> {
+fn invoker(command_id: u32, params: &mut ParametersAny<'_>) -> Result<()> {
     invoke_command(command_id, params)
 }
 

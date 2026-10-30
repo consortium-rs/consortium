@@ -49,9 +49,15 @@ genuinely disagree on the width, so one `usize` field shifts every field after i
 Classifies each parameter into a slot and a direction, then emits two functions plus
 the original body unchanged:
 
-- `<name>_dispatched` — TA side, `#[cfg(feature = "ta")]`. Unpacks
-  `::optee_utee::deprecated::Parameters` through `TeeParam`, calls the function, flushes `out` and
-  `inout` values back into their slots.
+- `<name>_dispatched` — TA side, `#[cfg(feature = "ta")]`. Takes
+  `::optee_utee::ParametersAny` (the `optee_utee` 0.10 typed parameter API), checks
+  every slot's runtime type with the typed accessors — unused slots must be `None` —
+  before calling the function, unpacks through `TeeParam`, then writes `out` and
+  `inout` values back. Memrefs are copied, never borrowed from shared memory; writes
+  go through `set_output`/`write_at`, so the size the CA reads back is exact and an
+  oversized value is `ShortBuffer` rather than a panic. Serialized inputs larger than
+  `MAX_SIZE` are rejected before they are copied. A serialized `&mut T` slot carries a
+  4-byte length header (`consortium_tee::inout`). The expansion contains no `unsafe`.
 - `call_<name>` — CA side, `#[cfg(feature = "ca")]`. Packs arguments, invokes the
   command, reads output slots back.
 
