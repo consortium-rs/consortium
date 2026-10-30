@@ -166,7 +166,10 @@ impl UioDevice {
                 .read(true)
                 .write(true)
                 .open(format!("/dev/uio{uio_id}"))?;
-            let async_fd = AsyncFd::new(irq_file)?;
+            // SAFETY: `irq_file` owns its descriptor and moves into the `AsyncFd`,
+            // so the fd stays open and names the same UIO device for the
+            // `AsyncFd`'s whole lifetime.
+            let async_fd = unsafe { AsyncFd::register(irq_file) }.map_err(std::io::Error::from)?;
 
             consortium_log::trace!("UioDevice::open: starting irq_loop");
 

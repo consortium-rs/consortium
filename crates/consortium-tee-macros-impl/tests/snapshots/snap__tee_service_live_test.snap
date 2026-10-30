@@ -31,7 +31,7 @@ impl From<Command> for u32 {
 #[cfg(feature = "ta")]
 pub fn invoke_command(
     cmd: u32,
-    params: &mut ::optee_utee::Parameters,
+    params: &mut ::optee_utee::deprecated::Parameters,
 ) -> ::optee_utee::Result<()> {
     match Command::from(cmd) {
         Command::HelloWorld => hello_world_dispatched(params),

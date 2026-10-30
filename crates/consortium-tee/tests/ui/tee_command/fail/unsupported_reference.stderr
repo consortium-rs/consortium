@@ -1,13 +1,13 @@
 error: Unsupported TEE parameter type
-  --> tests/ui/tee_command/fail/unsupported_reference.rs:27:1
+  --> tests/ui/tee_command/fail/unsupported_reference.rs:29:1
    |
-27 | #[tee_command]
+29 | #[tee_command]
    | ^^^^^^^^^^^^^^
    |
    = note: this error originates in the attribute macro `tee_command` (in Nightly builds, run with -Z macro-backtrace for more info)
 
 error[E0425]: cannot find value `_value` in this scope
-  --> tests/ui/tee_command/fail/unsupported_reference.rs:28:16
+  --> tests/ui/tee_command/fail/unsupported_reference.rs:30:16
    |
-28 | fn unsupported(_value: &u32) -> optee_utee::Result<()> {
+30 | fn unsupported(_value: &u32) -> optee_utee::Result<()> {
    |                ^^^^^^ not found in this scope

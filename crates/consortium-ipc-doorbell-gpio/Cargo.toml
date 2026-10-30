@@ -47,4 +47,4 @@ tokio          = { features = ["sync"], optional = true, version = "1" }
 atomic-waker = { features = ["portable-atomic"], version = "1.1.2" }
 
 [target.'cfg(target_os = "linux")'.dependencies]
-linux-embedded-hal = { optional = true, version = "0.4" }
+linux-embedded-hal = { optional = true, version = "0.5" }

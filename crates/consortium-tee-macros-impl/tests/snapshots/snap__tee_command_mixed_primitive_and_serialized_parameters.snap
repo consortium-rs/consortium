@@ -14,7 +14,7 @@ fn configure(slot: u32, config: DeviceConfig) -> u32 {
 }
 #[cfg(feature = "ta")]
 fn configure_dispatched(
-    params: &mut ::optee_utee::Parameters,
+    params: &mut ::optee_utee::deprecated::Parameters,
 ) -> ::optee_utee::Result<()> {
     let mut __p_0 = unsafe { params.0.as_value()? };
     let slot = <u32 as ::consortium_tee::TeeParam<

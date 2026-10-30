@@ -14,7 +14,7 @@ fn read_counter() -> u64 {
 }
 #[cfg(feature = "ta")]
 fn read_counter_dispatched(
-    params: &mut ::optee_utee::Parameters,
+    params: &mut ::optee_utee::deprecated::Parameters,
 ) -> ::optee_utee::Result<()> {
     let __ret_val = read_counter();
     let mut __p_out = unsafe { params.0.as_value()? };

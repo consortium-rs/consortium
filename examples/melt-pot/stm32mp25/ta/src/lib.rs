@@ -34,7 +34,7 @@ const TEMP_LIMIT_HI: i32 = 85_000;
 ///
 /// `#[tee_command]` generates two companions:
 ///
-/// - `check_temperature_dispatched` (TA side) — unpacks `optee_utee::Parameters`,
+/// - `check_temperature_dispatched` (TA side) — unpacks `optee_utee::deprecated::Parameters`,
 ///   calls this function, and writes the `bool` result back into the output slot.
 ///
 /// - `call_check_temperature` (CA side, `#[cfg(feature = "ca")]`) — packs
