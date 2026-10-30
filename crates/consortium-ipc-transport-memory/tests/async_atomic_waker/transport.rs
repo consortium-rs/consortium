@@ -155,7 +155,7 @@ fn recv_future_wakes_from_atomic_waker_doorbell() {
     let ch1 = unsafe { Chan::new_unchecked(0) };
     let ch2 = unsafe { Chan::new_unchecked(2) };
     let mut transport =
-        unsafe { SharedMemoryTransport::<Side, _, _>::new(ch1, ch2, app_doorbell, region, base) };
+        unsafe { SharedMemoryTransport::<Side, _, _>::new(ch1, ch2, app_doorbell, region) };
     let mut rx = [0; MTU];
 
     // The recv future borrows `rx` until it is dropped; scope it so the
@@ -262,7 +262,7 @@ fn send_acked_future_wakes_from_atomic_waker_doorbell() {
 
     let mut transport = unsafe {
         SharedMemoryTransport::<Side, _, _>::new_acked(
-            ch_tx, ch_rx, ch_ack_tx, ch_ack_rx, doorbell, region, base,
+            ch_tx, ch_rx, ch_ack_tx, ch_ack_rx, doorbell, region,
         )
     };
 

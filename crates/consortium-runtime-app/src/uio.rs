@@ -92,11 +92,6 @@ struct Inner {
     services: Services,
 }
 
-// SAFETY: region_base points into a DMA-coherent mmap that outlives `Inner`.
-// Concurrent access is synchronised by the slot protocol and irq_notify.
-unsafe impl Send for Inner {}
-unsafe impl Sync for Inner {}
-
 /// Entry point for the consortium UIO device (`/dev/uioN`).
 ///
 /// Opened with [`open`](Self::open), which maps the device's windows and
@@ -106,34 +101,63 @@ unsafe impl Sync for Inner {}
 /// [`bind_service`](Self::bind_service).
 pub struct UioDevice {
     inner: Arc<Inner>,
-    /// Owns the mmap'd resources; also used to map the
-    /// doorbell register block.
-    ///
-    /// [`map_peripheral`]: Self::map_peripheral
+    /// The opened device, which every window is mapped from.
     uio: uio::UioDevice,
+    /// Windows mapped so far, as `(index, virtual base, length)`.
+    ///
+    /// `uio::UioDevice::map_mapping` creates a fresh mapping on every call and
+    /// never unmaps it, so each index is mapped once here and every later lookup
+    /// returns the same address; all of them are unmapped on drop.
+    mappings: Mutex<Vec<Mapping>>,
     /// Background IRQ listener. Aborted on drop so the task does not outlive
     /// the device (and the mmap it wakes waiters against).
     irq_task: Option<tokio::task::JoinHandle<()>>,
 }
+
+/// One mapped window: `(index, virtual base, length)`.
+type Mapping = (usize, usize, usize);
 
 impl Drop for UioDevice {
     fn drop(&mut self) {
         if let Some(irq_task) = &self.irq_task {
             irq_task.abort();
         }
+        // `abort` only takes effect at the task's next yield, so a service may be
+        // running on another worker right now — and a doorbell service touches a
+        // window this device is about to unmap. `run_services` holds the registry
+        // lock while it runs, so clearing the registry under that lock waits for an
+        // in-flight run and leaves nothing for a later one.
+        self.inner
+            .services
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner)
+            .clear();
+
+        let mappings = self
+            .mappings
+            .get_mut()
+            .unwrap_or_else(std::sync::PoisonError::into_inner);
+        for &(index, base, len) in mappings.iter() {
+            // SAFETY: `base`/`len` are a live mapping this device created in
+            // `mapping` and nothing else unmaps. Every address handed out for it
+            // was documented as valid only while this device lives, and the IRQ
+            // services that could still reach it were detached above.
+            if unsafe { libc::munmap(base as *mut libc::c_void, len) } != 0 {
+                consortium_log::error!(
+                    "UioDevice::drop: munmap of window {} failed: {}",
+                    index,
+                    std::io::Error::last_os_error()
+                );
+            }
+        }
     }
 }
 
 impl UioDevice {
-    /// Open the configured UIO device, mmap `map0`, parse the descriptor, and
-    /// optionally start the IRQ listener task.
+    /// Open `/dev/uio{uio_id}` and, if `enable_irq`, start its IRQ listener task.
     ///
-    /// The device index comes from the `CONSORTIUM_IPC_UIO`
-    /// value injected from the `[ipc]` section of `Consortium.toml` — so it is
-    /// not passed by the caller. Building this crate with `ipc-shm` but without
-    /// that UIO value is a compile error (see the guard in `lib.rs`), so by the
-    /// time `open` runs the index is always real. The mapped address comes from
-    /// mmap, not from `CONSORTIUM_IPC_BASE`.
+    /// No window is mapped yet: [`mmap`](Self::mmap) and
+    /// [`mmap_zeroed`](Self::mmap_zeroed) map each one on first use.
     ///
     /// Set `enable_irq` only for UIO devices backed by an interrupt source.
     /// Memory-only UIO devices may not support the UIO IRQ read/write protocol.
@@ -144,12 +168,6 @@ impl UioDevice {
             enable_irq
         );
         let uio = uio::UioDevice::blocking_new(uio_id)?;
-
-        consortium_log::trace!(
-            "UioDevice::open: mmap'd descriptor at {:p}, size = {:#x}",
-            uio.map_mapping(0)?,
-            uio.map_size(0)?
-        );
 
         let services: Services = Arc::new(Mutex::new(Vec::new()));
 
@@ -187,6 +205,7 @@ impl UioDevice {
         Ok(Self {
             inner: Arc::new(Inner { services }),
             uio,
+            mappings: Mutex::new(Vec::new()),
             irq_task,
         })
     }
@@ -217,7 +236,31 @@ impl UioDevice {
     ///
     /// [`open`]: Self::open
     pub fn mmap(&self, index: usize) -> Result<usize, UioDeviceError> {
-        Ok(self.uio.map_mapping(index)? as usize)
+        Ok(self.mapping(index)?.0)
+    }
+
+    /// The `(virtual base, length)` of window `index`, mapping it on first use.
+    ///
+    /// Every call for one index returns the same mapping, so the region and any
+    /// other user of a window agree on its address.
+    fn mapping(&self, index: usize) -> Result<(usize, usize), UioDeviceError> {
+        let mut mappings = self
+            .mappings
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner);
+        if let Some(&(_, base, len)) = mappings.iter().find(|(i, _, _)| *i == index) {
+            return Ok((base, len));
+        }
+        let len = self.uio.map_size(index)?;
+        let base = self.uio.map_mapping(index)? as usize;
+        consortium_log::trace!(
+            "UioDevice::mapping: window {} at {:#x}, size = {:#x}",
+            index,
+            base,
+            len
+        );
+        mappings.push((index, base, len));
+        Ok((base, len))
     }
 
     /// Map a RAM-backed UIO window by index, zero its entire length, and return
@@ -235,8 +278,7 @@ impl UioDevice {
     ///
     /// [`mmap`]: Self::mmap
     pub fn mmap_zeroed(&self, index: usize) -> Result<usize, UioDeviceError> {
-        let base = self.uio.map_mapping(index)? as usize;
-        let len = self.uio.map_size(index)?;
+        let (base, len) = self.mapping(index)?;
         // The kernel maps UIO memory noncached (ARM Device-nGnRnE). A bulk
         // `memset`/`write_bytes` is *not* usable here: glibc's AArch64 `memset`
         // uses `DC ZVA` and unaligned SIMD stores, both illegal on Device memory,
@@ -276,7 +318,7 @@ impl UioDevice {
     /// let mu = unsafe { MuDoorbell::<Primary, 7>::new_mapped(dev.mmap(1)?) };
     /// let db = mu.clone();
     /// dev.bind_service(::std::sync::Arc::new(move || db.service_interrupt()));
-    /// let transport = SharedMemoryTransport::<Primary, _, _>::new(mu, desc, slot_pair);
+    /// let transport = unsafe { SharedMemoryTransport::<Primary, _, _>::new(tx, rx, mu, region) };
     /// ```
     pub fn bind_service(&self, service: Service) {
         consortium_log::trace!("UioDevice::bind_service: registering IRQ service");

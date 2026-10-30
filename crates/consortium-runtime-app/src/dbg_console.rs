@@ -30,6 +30,7 @@
 //! interval rather than waiting on an interrupt.
 #![cfg(all(feature = "dbg", feature = "ipc-shm"))]
 
+use std::ops::Deref;
 use std::sync::Arc;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::thread::JoinHandle;
@@ -85,8 +86,11 @@ pub enum DbgConsoleError {
 /// Each ring is polled on its own OS thread rather than a Tokio task because the
 /// stream decoder ([`DefmtSession`]) is not `Send` and must persist across polls
 /// to reassemble frames split over packets. Dropping signals every thread to
-/// stop and joins it, so a `DbgConsole` must be dropped *before* the
-/// [`UioDevice`]s whose mappings the threads read.
+/// stop and joins it.
+///
+/// Each thread owns the [`UioDevice`] its ring is mapped from, because a device
+/// unmaps its windows when its last owner drops. The console may therefore be
+/// moved out of `Peripherals` and outlive the rest of it.
 pub struct DbgConsole {
     stop: Arc<AtomicBool>,
     threads: Vec<JoinHandle<()>>,
@@ -110,18 +114,28 @@ pub fn spawn(
     devices: &[Arc<UioDevice>],
     specs: &[DbgRingSpec],
 ) -> Result<DbgConsole, DbgConsoleError> {
-    let stop = Arc::new(AtomicBool::new(false));
-    let mut threads = Vec::with_capacity(specs.len());
+    // Built before the first thread, so if a later ring fails to map, dropping it
+    // on the `?` stops and joins the threads already running instead of detaching
+    // them.
+    let mut console = DbgConsole {
+        stop: Arc::new(AtomicBool::new(false)),
+        threads: Vec::with_capacity(specs.len()),
+    };
     for spec in specs {
+        let device = Arc::clone(&devices[spec.uio_id]);
         // The AP only reads the ring; the writing coprocessor initializes the
         // CDBG descriptor (and clears the carveout) on its own boot, so map
         // read-only-style here without zeroing to avoid clobbering that state.
-        let base = devices[spec.uio_id].mmap(spec.mmap_id)?;
+        let base = device.mmap(spec.mmap_id)?;
         let spec = *spec;
-        let stop = Arc::clone(&stop);
-        threads.push(std::thread::spawn(move || run_ring(base, spec, &stop)));
+        let stop = Arc::clone(&console.stop);
+        console.threads.push(std::thread::spawn(move || {
+            // Keep the mapping alive for as long as this thread reads it.
+            let _mapping = device;
+            run_ring(base, spec, &stop)
+        }));
     }
-    Ok(DbgConsole { stop, threads })
+    Ok(console)
 }
 
 /// Drain `base` until `stop` is set, decoding against the ring's embedded ELF and
@@ -183,12 +197,15 @@ fn emit(label: &str, frame: &Frame<'_>) {
 /// An integrator-driven handle to one debug ring (interface mode).
 ///
 /// Holds the mapped base, the parsed defmt table, and the ring length; call
-/// [`reader`](Self::reader) to obtain a [`HostRing`] once the writer has
+/// [`reader`](Self::reader) to obtain a [`DbgReader`] once the writer has
 /// initialized the descriptor, and decode frames with a [`DefmtSession`] built
-/// from [`context`](Self::context).
+/// from [`context`](Self::context). The handle owns the [`UioDevice`] its ring
+/// is mapped from, so it stays valid however the rest of `Peripherals` is
+/// moved or dropped.
 pub struct DbgRingHandle {
     base: usize,
     len: usize,
+    owner: Arc<UioDevice>,
     /// Coprocessor label (e.g. `cm33`).
     pub label: &'static str,
     context: DefmtContext,
@@ -204,10 +221,46 @@ impl DbgRingHandle {
     ///
     /// Returns `Err` (typically a magic mismatch) until the coprocessor has
     /// written a valid descriptor; callers should retry.
-    pub fn reader(&self) -> Result<HostRing, HostError> {
-        // SAFETY: `base`/`len` describe the UIO-mapped CDBG ring; the caller is
-        // the sole reader of `read_ptr` for the returned handle's lifetime.
-        unsafe { HostRing::from_raw_parts(self.base as *mut u8, self.len) }
+    pub fn reader(&self) -> Result<DbgReader, HostError> {
+        // SAFETY: `base`/`len` describe the UIO-mapped CDBG ring, which the
+        // returned reader keeps mapped by owning its device; the caller is the
+        // sole reader of `read_ptr` for the returned handle's lifetime.
+        let ring = unsafe { HostRing::from_raw_parts(self.base as *mut u8, self.len) }?;
+        Ok(DbgReader {
+            ring,
+            _owner: Arc::clone(&self.owner),
+        })
+    }
+}
+
+/// A [`HostRing`] that keeps the UIO device it reads mapped.
+///
+/// It dereferences to the ring for its read-only methods and forwards the
+/// mutable ones. There is deliberately no `DerefMut`: a `&mut HostRing` would let
+/// safe code `std::mem::swap` two readers' rings without their owners, leaving a
+/// ring whose mapping is dropped with the other reader.
+pub struct DbgReader {
+    ring: HostRing,
+    _owner: Arc<UioDevice>,
+}
+
+impl Deref for DbgReader {
+    type Target = HostRing;
+
+    fn deref(&self) -> &HostRing {
+        &self.ring
+    }
+}
+
+impl DbgReader {
+    /// [`HostRing::read_packet`] on the owned ring.
+    pub fn read_packet(&mut self) -> Result<Option<Vec<u8>>, HostError> {
+        self.ring.read_packet()
+    }
+
+    /// [`HostRing::drain_packets`] on the owned ring.
+    pub fn drain_packets(&mut self) -> Result<Vec<Vec<u8>>, HostError> {
+        self.ring.drain_packets()
     }
 }
 
@@ -222,11 +275,13 @@ pub fn open(
     for spec in specs {
         // The AP only reads the ring; the writing coprocessor initializes it. See
         // `spawn`.
-        let base = devices[spec.uio_id].mmap(spec.mmap_id)?;
+        let owner = Arc::clone(&devices[spec.uio_id]);
+        let base = owner.mmap(spec.mmap_id)?;
         let context = DefmtContext::from_elf_bytes(spec.elf_bytes)?;
         handles.push(DbgRingHandle {
             base,
             len: spec.len,
+            owner,
             label: spec.label,
             context,
         });

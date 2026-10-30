@@ -127,9 +127,7 @@ where
                 let ch_rx = unsafe { Chan::new_unchecked(1) };
                 let region = unsafe { UncachedRegion::new(base, REGION_LEN) };
                 let transport = unsafe {
-                    SharedMemoryTransport::<Primary, _, _>::new(
-                        ch_tx, ch_rx, a_doorbell, region, base,
-                    )
+                    SharedMemoryTransport::<Primary, _, _>::new(ch_tx, ch_rx, a_doorbell, region)
                 };
                 let (tx_half, rx_half) = transport.split();
                 let mut tx = Channel::<Tx, Message, _, C>::new(ch_tx, tx_half, scratch::<MTU>());
@@ -161,9 +159,7 @@ where
                 let ch_tx = unsafe { Chan::new_unchecked(1) };
                 let region = unsafe { UncachedRegion::new(base, REGION_LEN) };
                 let transport = unsafe {
-                    SharedMemoryTransport::<Secondary, _, _>::new(
-                        ch_tx, ch_rx, m_doorbell, region, base,
-                    )
+                    SharedMemoryTransport::<Secondary, _, _>::new(ch_tx, ch_rx, m_doorbell, region)
                 };
                 let (tx_half, rx_half) = transport.split();
                 let mut tx = Channel::<Tx, Message, _, C>::new(ch_tx, tx_half, scratch::<MTU>());

@@ -57,7 +57,6 @@ fn endpoint_connects_before_split_and_round_trips_typed_messages() {
             Chan::new_unchecked(1),
             primary_doorbell,
             UncachedRegion::new(base_addr as *mut u8, REGION_LEN),
-            base_addr as *mut u8,
         )
     };
     let secondary = unsafe {
@@ -66,7 +65,6 @@ fn endpoint_connects_before_split_and_round_trips_typed_messages() {
             Chan::new_unchecked(0),
             secondary_doorbell,
             UncachedRegion::new(base_addr as *mut u8, REGION_LEN),
-            base_addr as *mut u8,
         )
     };
 

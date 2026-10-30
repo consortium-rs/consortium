@@ -536,10 +536,19 @@ impl<S: Side, D: Doorbell, R: RegionSharedMemoryTransportable> SharedMemoryTrans
     /// (`PrimaryToSecondary` / `SecondaryToPrimary`); the side `S` selects which
     /// core's view interprets them as TX vs RX.
     ///
+    /// The descriptor lives at offset 0 of `region`, so the region's own pointer is
+    /// the transport's base: there is no second address to keep in step with it.
+    ///
     /// # Safety
     ///
-    /// Same invariants as [`new`](SharedMemoryTransport::new).
-    pub unsafe fn new(ch_tx: Chan, ch_rx: Chan, doorbell: D, region: R, base: *mut u8) -> Self {
+    /// `region` must describe this channel's shared window: valid for reads and
+    /// writes for its whole length for as long as the transport (or either half)
+    /// lives, and touched by nothing but this transport and its peer through the
+    /// descriptor/slot protocol.
+    pub unsafe fn new(ch_tx: Chan, ch_rx: Chan, doorbell: D, region: R) -> Self {
+        // SAFETY: the caller vouches for the region; the pointer is only used through
+        // the descriptor/slot accessors, within its length.
+        let base = unsafe { region.as_ptr() };
         Self {
             ch_tx,
             ch_rx,
@@ -581,10 +590,9 @@ impl<S: Side, D: Doorbell, R: RegionSharedMemoryTransportable> SharedMemoryTrans
         ch_ack_rx: Chan,
         doorbell: D,
         region: R,
-        base: *mut u8,
     ) -> Self {
         // SAFETY: forwarded to the caller.
-        let mut this = unsafe { Self::new(ch_tx, ch_rx, doorbell, region, base) };
+        let mut this = unsafe { Self::new(ch_tx, ch_rx, doorbell, region) };
         this.ch_ack_tx = Some(ch_ack_tx);
         this.ch_ack_rx = Some(ch_ack_rx);
         this

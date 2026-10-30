@@ -78,12 +78,11 @@ static mut REGION: CachedRegion = /* ... */;
 #[main]
 async fn main() {
     // 1. Create transport (owning doorbell, managing slots)
-    let mut transport = SharedMemoryTransport::new(
-        chan,
-        doorbell,
-        region,
-        unsafe { SHARED_REGION_BASE },
-    );
+    // SAFETY: `region` is this channel's shared window; its offset 0 holds the
+    // descriptor, so the region's own pointer is the transport base.
+    let mut transport = unsafe {
+        SharedMemoryTransport::<Secondary, _, _>::new(chan_tx, chan_rx, doorbell, region)
+    };
 
     // 2. Create typed channel for a specific message
     let mut tx: Channel<Tx, SensorData, _, PostcardCodec> =

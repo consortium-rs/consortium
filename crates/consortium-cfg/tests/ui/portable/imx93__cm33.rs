@@ -64,14 +64,15 @@ fn __consortium_install_channels(
         let chan_tx = unsafe { ::consortium_ipc::Chan::new_unchecked(1u8) };
         // SAFETY: doorbell channel is verified to be valid in the config.
         let chan_rx = unsafe { ::consortium_ipc::Chan::new_unchecked(0u8) };
-        // SAFETY: the base is offset 0x00 of the validated shared-memory
-        // region, and the channels/doorbell/region are this side's.
+        // SAFETY: the region is this channel's validated shared-memory
+        // window, whose offset 0x00 holds the descriptor, and the
+        // channels/doorbell are this side's.
         unsafe {
             ::consortium_ipc_transport_memory::SharedMemoryTransport::<
                 ::consortium_ipc::Secondary,
                 _,
                 _,
-            >::new(chan_tx, chan_rx, doorbell, region, (541589504usize) as *mut u8)
+            >::new(chan_tx, chan_rx, doorbell, region)
         }
     });
     ::consortium_ipc_transport_memory::install::<
@@ -92,14 +93,15 @@ fn __consortium_install_channels(
         let chan_tx = unsafe { ::consortium_ipc::Chan::new_unchecked(5u8) };
         // SAFETY: doorbell channel is verified to be valid in the config.
         let chan_rx = unsafe { ::consortium_ipc::Chan::new_unchecked(4u8) };
-        // SAFETY: the base is offset 0x00 of the validated shared-memory
-        // region, and the channels/doorbell/region are this side's.
+        // SAFETY: the region is this channel's validated shared-memory
+        // window, whose offset 0x00 holds the descriptor, and the
+        // channels/doorbell are this side's.
         unsafe {
             ::consortium_ipc_transport_memory::SharedMemoryTransport::<
                 ::consortium_ipc::Secondary,
                 _,
                 _,
-            >::new(chan_tx, chan_rx, doorbell, region, (541622272usize) as *mut u8)
+            >::new(chan_tx, chan_rx, doorbell, region)
         }
     });
 }
