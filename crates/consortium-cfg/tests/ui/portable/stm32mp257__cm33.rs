@@ -25,7 +25,7 @@ mod shared {
     ::consortium_ipc_transport_memory::bell::ipcc::IpccDoorbell <
     ::consortium_ipc::Secondary, 1usize >,
     ::consortium_shared_memory::regions::UncachedRegion, crate ::shared::MotionControl,
-    crate ::shared::SensorData, ::consortium_codec::PostcardCodec, 1u8, 0u8, 128usize,
+    crate ::shared::SensorData, ::consortium_codec::PostcardCodec, 128usize,
 );
 #[cfg(target_arch = "arm")]
 fn __consortium_install_channels(

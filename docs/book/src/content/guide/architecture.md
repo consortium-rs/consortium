@@ -49,7 +49,6 @@ Typed IPC is built from small independent pieces:
 ```text
 Doorbell                      signal the peer; carries no payload
 SendTransport / RecvTransport move bytes in one direction
-Transport                     full-duplex marker
 Connect                       one-time peer readiness rendezvous
 CodecFor<T>                   convert one message type to and from bytes
 Channel<Tx/Rx, ...>           typed, directed endpoint

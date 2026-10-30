@@ -22,7 +22,6 @@
 /// Implementations:
 ///   UncachedRegion - non-cacheable mapping, cache ops are noops
 ///   CachedRegion   - cacheable mapping, architecture-specific cache ops
-///   SerialRegion   - no backing memory, frame buffer only
 pub trait Region {
     /// Raw pointer to the start of the region.
     ///

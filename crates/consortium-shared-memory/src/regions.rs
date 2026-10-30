@@ -20,7 +20,6 @@
 //! |--------------------|----------------------|-----------------------|---------------|
 //! | [`UncachedRegion`] | non-cacheable memory | noops                 | `true`        |
 //! | [`CachedRegion`]   | cacheable memory     | architecture-specific | `false`       |
-//! | [`SerialRegion`]   | no backing memory    | noops                 | `true`        |
 
 use crate::region::Region;
 
@@ -240,64 +239,6 @@ impl Region for CachedRegion {
     }
 }
 
-// ---------------------------------------------------------------------------
-// SerialRegion
-// ---------------------------------------------------------------------------
-
-/// A virtual region for serial-line transports (UART, SWD trace, …).
-///
-/// Serial channels have no shared backing memory; the transport reads and
-/// writes the peripheral registers directly.  `SerialRegion` satisfies the
-/// [`Region`] contract by:
-///
-/// * returning a null pointer from [`as_ptr`] - callers **must not**
-///   dereference it;
-/// * reporting `max_frame` as [`len`], which the `Transport` implementation
-///   uses to size its internal frame buffer;
-/// * treating all cache operations as noops and [`is_coherent`] as `true`,
-///   because there are no cache lines to manage.
-///
-/// [`as_ptr`]: Region::as_ptr
-/// [`len`]: Region::len
-/// [`is_coherent`]: Region::is_coherent
-pub struct SerialRegion {
-    max_frame: usize,
-}
-
-impl SerialRegion {
-    /// Create a `SerialRegion` whose reported length is `max_frame` bytes.
-    pub fn new(max_frame: usize) -> Self {
-        Self { max_frame }
-    }
-}
-
-impl Region for SerialRegion {
-    /// Returns a null pointer.
-    ///
-    /// # Safety
-    /// The returned pointer **must not** be dereferenced.  It is provided
-    /// only so that generic code that queries region metadata via the trait
-    /// can call this method without branching on the concrete type.
-    unsafe fn as_ptr(&self) -> *mut u8 {
-        core::ptr::null_mut()
-    }
-
-    /// Maximum frame payload size in bytes.
-    fn len(&self) -> usize {
-        self.max_frame
-    }
-
-    /// Noop - no backing memory.
-    fn flush(&self) {}
-
-    /// Noop - no backing memory.
-    fn invalidate(&self) {}
-
-    fn is_coherent(&self) -> bool {
-        true
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -400,42 +341,5 @@ mod tests {
         r.invalidate();
         assert_eq!(&buf.0[..64], &[0x5a; 64]);
         assert_eq!(&buf.0[128..], &[0x5a; 64]);
-    }
-
-    // -----------------------------------------------------------------------
-    // SerialRegion
-    // -----------------------------------------------------------------------
-
-    #[test]
-    fn serial_len_equals_max_frame() {
-        let r = SerialRegion::new(256);
-        assert_eq!(r.len(), 256);
-        assert!(!r.is_empty());
-    }
-
-    #[test]
-    fn serial_zero_max_frame_is_empty() {
-        let r = SerialRegion::new(0);
-        assert!(r.is_empty());
-    }
-
-    #[test]
-    fn serial_is_coherent() {
-        let r = SerialRegion::new(64);
-        assert!(r.is_coherent());
-    }
-
-    #[test]
-    fn serial_ptr_is_null() {
-        let r = SerialRegion::new(64);
-        // SAFETY: the test only checks the documented null sentinel.
-        assert!(unsafe { r.as_ptr() }.is_null());
-    }
-
-    #[test]
-    fn serial_flush_and_invalidate_do_not_panic() {
-        let r = SerialRegion::new(64);
-        r.flush();
-        r.invalidate();
     }
 }

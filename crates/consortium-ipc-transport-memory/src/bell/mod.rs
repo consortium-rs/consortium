@@ -316,17 +316,6 @@ impl<H: BellHw> Doorbell for BellA<H> {
         trace!("BellA::wait(ch = {:?})", ch);
         LineWait::new(self, ch)
     }
-
-    fn pending(&self, ch: Chan) -> bool {
-        let Ok(line) = line_of::<H>(ch) else {
-            return false;
-        };
-        let pending = self.hw.raw_pending(line);
-        if pending {
-            fence(Ordering::Acquire);
-        }
-        pending
-    }
 }
 
 /// Future returned by [`BellA::wait`]; see the [module docs](self) for its protocol.

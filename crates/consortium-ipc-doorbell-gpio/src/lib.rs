@@ -207,10 +207,6 @@ impl<P: OutputPin + MaybeSend> Doorbell for GpioDoorbell<P> {
             ch,
         }
     }
-
-    fn pending(&self, _ch: Chan) -> bool {
-        self.signal.pending.load(Ordering::Acquire)
-    }
 }
 
 /// Future returned by [`GpioDoorbell::wait`].
@@ -297,12 +293,12 @@ mod tests {
         let signal = leak();
         let db = GpioDoorbell::new(Pin(Vec::new()), signal);
         signal.wake();
-        assert!(db.pending(ch()));
+        assert!(signal.pending.load(Ordering::Acquire));
 
         let mut cx = Context::from_waker(Waker::noop());
         let mut wait = std::pin::pin!(db.wait(ch()));
         assert_eq!(wait.as_mut().poll(&mut cx), Poll::Ready(Ok(ch())));
-        assert!(!db.pending(ch()));
+        assert!(!signal.pending.load(Ordering::Acquire));
     }
 
     #[test]

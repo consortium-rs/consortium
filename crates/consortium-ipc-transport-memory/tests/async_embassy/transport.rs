@@ -126,13 +126,6 @@ impl Doorbell for EmbassyDoorbell {
             ch,
         }
     }
-
-    fn pending(&self, _ch: Chan) -> bool {
-        self.rx
-            .lock()
-            .expect("doorbell state lock is not poisoned")
-            .pending
-    }
 }
 
 #[embassy_executor::task]

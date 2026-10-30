@@ -60,10 +60,6 @@ impl Doorbell for HostDoorbell {
             ch,
         }
     }
-
-    fn pending(&self, _ch: Chan) -> bool {
-        false
-    }
 }
 
 /// A doorbell that models real *hardware* fan-out for lost-wakeup testing.
@@ -143,10 +139,6 @@ impl Doorbell for RacyDoorbell {
             ch,
         }
     }
-
-    fn pending(&self, _ch: Chan) -> bool {
-        false
-    }
 }
 
 /// A doorbell whose lines are independent, and which counts what it rings.
@@ -222,9 +214,5 @@ impl Doorbell for LinedDoorbell {
             notified: self.lines[ch.id() as usize].notify.notified(),
             ch,
         }
-    }
-
-    fn pending(&self, _ch: Chan) -> bool {
-        false
     }
 }

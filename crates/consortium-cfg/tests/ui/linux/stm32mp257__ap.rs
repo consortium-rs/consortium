@@ -25,14 +25,14 @@ mod shared {
     ::consortium_ipc_transport_memory::bell::ipcc::IpccDoorbell <
     ::consortium_ipc::Primary, 1usize >, ::consortium_runtime_app::uio::UioRegion, crate
     ::shared::SensorData, crate ::shared::MotionControl,
-    ::consortium_codec::PostcardCodec, 0u8, 1u8, 128usize,
+    ::consortium_codec::PostcardCodec, 128usize,
 );
 ::consortium_ipc_transport_memory::impl_channel!(
     LP, ::consortium_ipc::Primary,
     ::consortium_ipc_transport_memory::bell::ipcc::IpccDoorbell <
     ::consortium_ipc::Primary, 2usize >, ::consortium_runtime_app::uio::UioRegion, crate
     ::shared::PowerStatus, crate ::shared::PowerMode, ::consortium_codec::RkyvCodec <
-    128usize >, 0u8, 1u8, 128usize,
+    128usize >, 128usize,
 );
 fn __consortium_install_channels(
     uio: &[::std::sync::Arc<::consortium_runtime_app::uio::UioDevice>],

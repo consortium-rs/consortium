@@ -7,15 +7,14 @@ expression: items(tokens)
     PING, ::consortium_ipc::Primary,
     ::consortium_ipc_transport_memory::bell::ipcc::IpccDoorbell <
     ::consortium_ipc::Primary, 1usize >, ::consortium_runtime_app::uio::UioRegion,
-    ::shared::Ping, ::shared::Pong, ::consortium_codec::PostcardCodec, 0u8, 1u8,
-    256usize,
+    ::shared::Ping, ::shared::Pong, ::consortium_codec::PostcardCodec, 256usize,
 );
 ::consortium_ipc_transport_memory::impl_channel!(
     PONG, ::consortium_ipc::Primary,
     ::consortium_ipc_transport_memory::bell::ipcc::IpccDoorbell <
     ::consortium_ipc::Primary, 2usize >, ::consortium_runtime_app::uio::UioRegion,
     ::shared::Telemetry, ::shared::Command, ::consortium_codec::RkyvCodec < 512usize >,
-    2u8, 3u8, 512usize,
+    512usize,
 );
 fn __consortium_install_channels(
     uio: &[::std::sync::Arc<::consortium_runtime_app::uio::UioDevice>],

@@ -128,7 +128,6 @@ The current IPC trait stack is:
 Doorbell       - hardware/software signal for waking a remote processor
 SendTransport  - byte send half; writes bytes and rings the doorbell
 RecvTransport  - byte receive half; waits for the doorbell and reads bytes
-Transport      - full-duplex transport: SendTransport + RecvTransport
 Connect        - readiness rendezvous with the remote end, run before traffic
 CodecFor<T>    - serialization family for a message type
 Channel<Tx/Rx> - typed directed endpoint over one transport half
@@ -244,10 +243,9 @@ instance; i.MX9 still has one receive mailbox, so a burst can overrun it.
 
 Shared memory is split across two crates:
 
-- `consortium-shared-memory` defines the `Region` trait and concrete `UncachedRegion`,
-  `CachedRegion`, and `SerialRegion` types. `UncachedRegion` represents a
-  non-cacheable mapping; `CachedRegion` performs AArch64 or Cortex-M7 data-cache
-  maintenance; `SerialRegion` is a virtual no-backing region.
+- `consortium-shared-memory` defines the `Region` trait and concrete `UncachedRegion`
+  and `CachedRegion` types. `UncachedRegion` represents a non-cacheable mapping;
+  `CachedRegion` performs AArch64 or Cortex-M7 data-cache maintenance.
 - `consortium-ipc-transport-memory` defines the `CIPC` descriptor layout, channel table,
   slot header protocol, descriptor init/complete helpers, and
   `SharedMemoryTransport<S, D, R>`.

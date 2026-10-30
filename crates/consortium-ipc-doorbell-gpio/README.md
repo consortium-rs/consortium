@@ -21,7 +21,7 @@ GPIO earns its place when they do not:
 
 ## What a doorbell is
 
-`consortium-ipc`'s `Doorbell` trait is pure signaling — `ring`, `wait`, `pending`,
+`consortium-ipc`'s `Doorbell` trait is pure signaling — `ring` and `wait`,
 no payload. Shared memory carries the data; the doorbell only says "look at it".
 Its one hard obligation is ordering: writes performed before `ring` must
 happen-before the peer's `wait` completion. This crate discharges that with a

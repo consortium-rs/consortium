@@ -240,8 +240,7 @@ impl<R, W> UartTransport<R, W> {
 #[cfg(not(feature = "std"))]
 mod impl_embedded {
     use consortium_ipc::{
-        Connect, MaybeSend, RecvTransport, SendTransport, Transport,
-        TransportError as TransportErrorTrait,
+        Connect, MaybeSend, RecvTransport, SendTransport, TransportError as TransportErrorTrait,
     };
     use embedded_io_async::{ErrorType, Read, Write};
 
@@ -329,8 +328,6 @@ mod impl_embedded {
         }
     }
 
-    impl<R: Read, W: Write + ErrorType<Error = R::Error>> Transport for UartTransport<R, W> {}
-
     /// UART has nothing to rendezvous over: the link is a pair of wires, byte
     /// arrival is itself the notification, and neither end publishes state the
     /// other must validate. `connect` is therefore an immediate no-op, provided
@@ -351,8 +348,7 @@ mod impl_embedded {
 #[cfg(feature = "std")]
 mod impl_tokio {
     use consortium_ipc::{
-        Connect, MaybeSend, RecvTransport, SendTransport, Transport,
-        TransportError as TransportErrorTrait,
+        Connect, MaybeSend, RecvTransport, SendTransport, TransportError as TransportErrorTrait,
     };
     use tokio::io::{AsyncRead, AsyncReadExt, AsyncWrite, AsyncWriteExt};
 
@@ -445,8 +441,6 @@ mod impl_tokio {
             self.rx.max_recv_size()
         }
     }
-
-    impl<R: AsyncRead + Unpin + Send, W: AsyncWrite + Unpin + Send> Transport for UartTransport<R, W> {}
 
     /// UART has nothing to rendezvous over: the link is a pair of wires, byte
     /// arrival is itself the notification, and neither end publishes state the

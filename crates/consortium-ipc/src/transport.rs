@@ -14,7 +14,7 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-//! The `Transport` trait family and related types.
+//! The transport trait family and related types.
 use crate::future::MaybeSend;
 
 /// Provides the `Error` associated type shared by [`SendTransport`] and [`RecvTransport`].
@@ -50,11 +50,3 @@ pub trait RecvTransport: TransportError {
     /// Maximum bytes transferable in a single recv.
     fn max_recv_size(&self) -> usize;
 }
-
-/// Combined transport — covers both send and receive directions.
-///
-/// Implement this for full-duplex types; use [`SendTransport`] / [`RecvTransport`]
-/// directly when only one direction is needed (e.g. after a [`split`]).
-///
-/// [`split`]: crate::channel::Channel
-pub trait Transport: SendTransport + RecvTransport {}

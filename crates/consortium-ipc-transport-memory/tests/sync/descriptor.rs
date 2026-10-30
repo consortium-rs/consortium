@@ -51,10 +51,6 @@ impl Doorbell for ImmediateDoorbell {
     fn wait(&self, ch: Chan) -> impl Future<Output = Result<Chan, Self::Error>> + MaybeSend {
         ImmediateWaitFut { ch }
     }
-
-    fn pending(&self, _ch: Chan) -> bool {
-        true
-    }
 }
 
 fn init_descriptor(base: *mut u8, num_channels: u8, transfer_size: usize) {
