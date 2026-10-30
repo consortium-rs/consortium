@@ -326,17 +326,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "consortium-hal-stm32mp2"
-version = "0.4.0"
-dependencies = [
- "consortium-hal",
- "consortium-log",
- "consortium-pac-stm32mp2",
- "critical-section",
- "embassy-hal-internal",
-]
-
-[[package]]
 name = "consortium-hmi"
 version = "0.4.0"
 dependencies = [
@@ -365,20 +354,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "consortium-ipc-doorbell-hsem"
-version = "0.4.0"
-dependencies = [
- "atomic-waker",
- "bitfield 0.19.5",
- "consortium-hal-stm32mp2",
- "consortium-ipc",
- "consortium-log",
- "critical-section",
- "thiserror",
- "tokio",
-]
-
-[[package]]
 name = "consortium-ipc-macros"
 version = "0.4.0"
 dependencies = [
@@ -404,7 +379,6 @@ dependencies = [
  "consortium-codec",
  "consortium-hal-imx9",
  "consortium-ipc",
- "consortium-ipc-doorbell-hsem",
  "consortium-log",
  "consortium-shared-memory",
  "crc32fast",
@@ -443,13 +417,6 @@ dependencies = [
 
 [[package]]
 name = "consortium-pac-imx9"
-version = "0.4.0"
-dependencies = [
- "cortex-m",
-]
-
-[[package]]
-name = "consortium-pac-stm32mp2"
 version = "0.4.0"
 dependencies = [
  "cortex-m",

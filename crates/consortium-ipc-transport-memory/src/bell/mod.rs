@@ -62,19 +62,22 @@
 //! vector from the manifest. On Linux, bind [`BellA::service_interrupt`] to the UIO
 //! IRQ fan-out with `bind_service`.
 
+#[cfg(any(feature = "stm32mp23x", feature = "stm32mp25x"))]
+pub mod hsem;
 #[cfg(any(feature = "stm32mp21x", feature = "stm32mp23x", feature = "stm32mp25x"))]
 pub mod ipcc;
-#[cfg(feature = "mimx9x")]
+#[cfg(any(feature = "mimx93", feature = "mimx95"))]
 pub mod mu;
 
 use core::{
     future::Future,
+    ops::Range,
     pin::Pin,
     sync::atomic::{Ordering, compiler_fence, fence},
     task::{Context, Poll},
 };
 
-use consortium_ipc::{Chan, Doorbell, MaybeSend};
+use consortium_ipc::{Chan, ChanValidate, Doorbell, MaybeSend};
 use consortium_log::{debug, trace};
 
 /// Error reported by a Type-A doorbell.
@@ -92,7 +95,7 @@ pub enum BellError {
     Busy,
 }
 
-/// A set of lines, one bit per [`BellHw::slot`].
+/// A set of lines, bit `n` for channel `n`.
 pub type LineSet = u32;
 
 /// One Type-A doorbell instance's register model.
@@ -108,14 +111,23 @@ pub type LineSet = u32;
 /// - [`raw_pending`](Self::raw_pending) reads the raw status, which survives masking.
 /// - [`arm`](Self::arm), [`disarm`](Self::disarm), [`ack`](Self::ack), and
 ///   [`disarm_all`](Self::disarm_all) touch only the lines they are given.
-/// - [`slot`](Self::slot) is below [`LineSet::BITS`] and unique per line, and
-///   [`asserted`](Self::asserted) reports lines by that same slot.
+/// - [`CHANNELS`](Self::CHANNELS) is at most [`LineSet::BITS`], and
+///   [`asserted`](Self::asserted) and [`disarm_all`](Self::disarm_all) use bit `n`
+///   for channel `n`.
 pub unsafe trait BellHw: Clone + Sync + 'static {
-    /// A validated line: a channel number, or a (kind, index) pair on MU.
+    /// A line, resolved from an in-range channel id: the id itself, or a (kind,
+    /// index) pair on MU.
     type Line: Copy;
 
     /// Physical base of this instance's register window.
     const PHYS_BASE: usize;
+
+    /// Number of channels; ids `0..CHANNELS` are lines, the rest are rejected.
+    const CHANNELS: u8;
+
+    /// Channel ids reserved from user channels. Enforced by [`BellA`]'s
+    /// [`ChanValidate`], not by `ring`/`wait`.
+    const RESERVED: Range<u8>;
 
     /// A handle over the register window at `base`.
     ///
@@ -125,11 +137,8 @@ pub unsafe trait BellHw: Clone + Sync + 'static {
     /// its `mmap`'d virtual base on Linux.
     unsafe fn at(base: usize) -> Self;
 
-    /// Resolve a channel to a line, rejecting ids the block does not have.
-    fn line_of(ch: Chan) -> Result<Self::Line, BellError>;
-
-    /// The line's bit in a [`LineSet`] and its index in the waker table.
-    fn slot(line: Self::Line) -> u8;
+    /// Resolve channel `id` (`< CHANNELS`) to its line.
+    fn line(id: u8) -> Self::Line;
 
     /// Signal the peer on `line`, reporting [`BellError::Busy`] where the block can
     /// tell that the previous signal is unconsumed.
@@ -142,14 +151,14 @@ pub unsafe trait BellHw: Clone + Sync + 'static {
     ///
     /// # Safety
     ///
-    /// `line` came from [`line_of`](Self::line_of) and its status is set.
+    /// `line` came from [`line`](Self::line) and its status is set.
     unsafe fn ack(&self, line: Self::Line);
 
     /// Enable and unmask `line`'s interrupt. Must not acknowledge.
     ///
     /// # Safety
     ///
-    /// `line` came from [`line_of`](Self::line_of), and the caller serializes this
+    /// `line` came from [`line`](Self::line), and the caller serializes this
     /// read-modify-write against the ISR.
     unsafe fn arm(&self, line: Self::Line);
 
@@ -171,9 +180,42 @@ pub unsafe trait BellHw: Clone + Sync + 'static {
     /// read-modify-write against task context.
     unsafe fn disarm_all(&self, lines: LineSet);
 
-    /// The waker registered for `slot` on this instance.
+    /// The waker registered for channel `id` on this instance.
     #[cfg(not(feature = "std"))]
-    fn waker(slot: u8) -> &'static atomic_waker::AtomicWaker;
+    fn waker(id: u8) -> &'static atomic_waker::AtomicWaker;
+}
+
+/// Resolve `ch` to `H`'s line: the one bounds check every operation shares.
+#[inline]
+fn line_of<H: BellHw>(ch: Chan) -> Result<H::Line, BellError> {
+    const {
+        assert!(
+            H::CHANNELS as u32 <= LineSet::BITS,
+            "a Type-A bell has more channels than a LineSet can hold"
+        );
+    }
+    if ch.id() < H::CHANNELS {
+        Ok(H::line(ch.id()))
+    } else {
+        Err(BellError::ChanOutOfRange)
+    }
+}
+
+/// Validates user channel ids for this bell: in range and not reserved.
+impl<H: BellHw> ChanValidate for BellA<H> {
+    type Error = BellError;
+
+    fn validate(id: u8) -> Result<Chan, BellError> {
+        if H::RESERVED.contains(&id) {
+            Err(BellError::ChanReserved)
+        } else if id >= H::CHANNELS {
+            Err(BellError::ChanOutOfRange)
+        } else {
+            // SAFETY: `id` is below `CHANNELS` and outside the reserved range, so it
+            // names a user line of this bell.
+            Ok(unsafe { Chan::new_unchecked(id) })
+        }
+    }
 }
 
 #[cfg(not(feature = "std"))]
@@ -254,7 +296,7 @@ impl<H: BellHw> BellA<H> {
     pub fn service_interrupt(&self) {
         // `notify_waiters` is not per-line, so every asserted line wakes the same
         // `Notify`; after the first, there are no registered waiters left to wake.
-        service(&self.hw, |_slot| self.notify.notify_waiters());
+        service(&self.hw, |_id| self.notify.notify_waiters());
     }
 }
 
@@ -263,7 +305,7 @@ impl<H: BellHw> Doorbell for BellA<H> {
 
     fn ring(&self, ch: Chan) -> Result<(), BellError> {
         trace!("BellA::ring(ch = {:?})", ch);
-        let line = H::line_of(ch)?;
+        let line = line_of::<H>(ch)?;
         // Order the caller's slot writes before the register write the peer
         // observes.
         fence(Ordering::Release);
@@ -276,7 +318,7 @@ impl<H: BellHw> Doorbell for BellA<H> {
     }
 
     fn pending(&self, ch: Chan) -> bool {
-        let Ok(line) = H::line_of(ch) else {
+        let Ok(line) = line_of::<H>(ch) else {
             return false;
         };
         let pending = self.hw.raw_pending(line);
@@ -358,7 +400,7 @@ impl<H: BellHw> Drop for LineWait<'_, H> {
         if !self.armed {
             return;
         }
-        let Ok(line) = H::line_of(self.ch) else {
+        let Ok(line) = line_of::<H>(self.ch) else {
             return;
         };
         // Disarm only. Acknowledging here would drop a notification the caller has
@@ -376,13 +418,13 @@ impl<H: BellHw> Future for LineWait<'_, H> {
     fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
         // SAFETY: no pinned field is moved; `notified` is only set in place.
         let this = unsafe { self.get_unchecked_mut() };
-        let line = match H::line_of(this.ch) {
+        let line = match line_of::<H>(this.ch) {
             Ok(line) => line,
             Err(err) => return Poll::Ready(Err(err)),
         };
 
         #[cfg(not(feature = "std"))]
-        H::waker(H::slot(line)).register(cx.waker());
+        H::waker(this.ch.id()).register(cx.waker());
 
         compiler_fence(Ordering::SeqCst);
 
@@ -422,7 +464,7 @@ impl<H: BellHw> Future for LineWait<'_, H> {
     }
 }
 
-/// Read the asserted lines, mask them all *before* waking, then call `wake(slot)` for
+/// Read the asserted lines, mask them all *before* waking, then call `wake(id)` for
 /// each one.
 ///
 /// Masking first keeps a level-sensitive line from re-asserting immediately — on
@@ -435,9 +477,9 @@ fn service<H: BellHw>(hw: &H, mut wake: impl FnMut(u8)) {
         // SAFETY: the set came straight from `asserted`.
         unsafe { hw.disarm_all(asserted) };
     });
-    for slot in 0..LineSet::BITS as u8 {
-        if asserted & (1 << slot) != 0 {
-            wake(slot);
+    for id in 0..H::CHANNELS {
+        if asserted & (1 << id) != 0 {
+            wake(id);
         }
     }
 }
@@ -457,7 +499,7 @@ pub fn service_interrupt<H: BellHw>() {
     // the line it raised is the point — and every enable-register write underneath
     // runs in a critical section, so it cannot tear against task context.
     let hw = unsafe { H::at(H::PHYS_BASE) };
-    service(&hw, |slot| H::waker(slot).wake());
+    service(&hw, |id| H::waker(id).wake());
 }
 
 #[cfg(all(test, feature = "std"))]

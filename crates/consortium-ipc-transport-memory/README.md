@@ -11,14 +11,14 @@ anybody.
 
 The pieces it does **not** own:
 
-| Concern                                     | Crate                       |
-| ------------------------------------------- | --------------------------- |
-| Trait stack, typed channels                 | `consortium-ipc`            |
-| `Region`, cache semantics, header magic     | `consortium-shared-memory`  |
-| Hardware wakeups (HSEM, GPIO)               | `consortium-ipc-doorbell-*` |
-| Window addresses, validation, bring-up code | `consortium-cfg`            |
+| Concern                                     | Crate                          |
+| ------------------------------------------- | ------------------------------ |
+| Trait stack, typed channels                 | `consortium-ipc`               |
+| `Region`, cache semantics, header magic     | `consortium-shared-memory`     |
+| GPIO wakeups                                | `consortium-ipc-doorbell-gpio` |
+| Window addresses, validation, bring-up code | `consortium-cfg`               |
 
-IPCC and MU are the exception: as Type-A doorbells they live here, under `bell`.
+The Type-A doorbells — IPCC, MU, and HSEM — live here, under `bell`.
 
 ## Type-A doorbells (`bell`)
 
@@ -32,10 +32,13 @@ service       ISR core: read asserted lines, mask them, then wake
 H: BellHw     per block: ring, raw status, ack, arm/disarm, waker table
 ```
 
-A block implements only the `unsafe trait BellHw` register model; fences, critical
+A block implements only the `unsafe trait BellHw` register model — its channel count
+and reserved ids, the id-to-line mapping, and the register operations. Bounds
+checks, channel validation (`Chan::new::<IpccDoorbell<S, N>>(id)`), fences, critical
 sections, waker registration, and the `std` `Notify` re-subscription belong to the
-generic. The blocks are `bell::ipcc` (`IpccDoorbell<S, N> = BellA<Ipcc<S, N>>`) and
-`bell::mu` (`MuDoorbell<S, N> = BellA<Mu<S, N>>`, GI and RF lines). Firmware vectors
+generic. The blocks are `bell::ipcc` (`IpccDoorbell<S, N> = BellA<Ipcc<S, N>>`),
+`bell::mu` (`MuDoorbell<S, N> = BellA<Mu<S, N>>`, GI and RF lines), and the frozen
+`bell::hsem` (`HsemDoorbell<S, 1> = BellA<Hsem<S, 1>>`, prefer IPCC). Firmware vectors
 forward to `bell::service_interrupt::<H>()` with the block's register model,
 which `consortium-cfg` generates; on Linux, bind `BellA::service_interrupt` with
 `UioDevice::bind_service`.
@@ -173,19 +176,16 @@ transceivers at `context.ipc_shm.<name>`.
 
 Defaults to `std`. Firmware builds want `default-features = false`.
 
-| Feature                      | Effect                                             |
-| ---------------------------- | -------------------------------------------------- |
-| `std`                        | `alloc`, Tokio support, UIO errors, `tracing` logs |
-| `alloc`                      | link `alloc` through `consortium-ipc`              |
-| `defmt`                      | route protocol tracing to `defmt`; derive `Format` |
-| `doorbell-hsem`              | re-export the HSEM crate under `doorbell`          |
-| `stm32mp21x` / `23x` / `25x` | select the STM32MP2 chip; enables `bell::ipcc`     |
-| `mimx93` / `mimx95`          | select the i.MX 9 chip; enables `bell::mu`         |
+| Feature                      | Effect                                                                       |
+| ---------------------------- | ---------------------------------------------------------------------------- |
+| `std`                        | `alloc`, Tokio support, UIO errors, `tracing` logs                           |
+| `alloc`                      | link `alloc` through `consortium-ipc`                                        |
+| `defmt`                      | route protocol tracing to `defmt`; derive `Format`                           |
+| `stm32mp21x` / `23x` / `25x` | select the STM32MP2 chip; enables `bell::ipcc` (and `bell::hsem` on 23x/25x) |
+| `mimx93` / `mimx95`          | select the i.MX 9 chip; enables `bell::mu`                                   |
 
-Chip features exist so `doorbell::SharedMemoryTransportDoorbell` can report a
-doorbell peripheral's window address, which generated Linux bring-up needs in order
-to map it. The transport itself is generic over any `Doorbell` and needs none of
-them.
+The transport itself is generic over any `Doorbell` and needs none of them; the chip
+features only bring in the Type-A bells and their chip HAL.
 
 ## Testing
 

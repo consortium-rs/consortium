@@ -9,5 +9,6 @@ crate's README; these chapters record the reasoning and proposals behind them.
 - [IPC Design](ipc-design.md) — the original vision for the doorbell → transport →
   codec → channel layering. Crate names and trait signatures have since changed; the
   layering has not.
-- [HSEM/MU Comparison](hsem-mu.md) — register-model comparison of the HSEM, IPCC, and
-  MU doorbells.
+
+The register model of each doorbell — IPCC, MU, and HSEM — is documented on its
+`consortium-ipc-transport-memory::bell` module, next to the shared wait protocol.

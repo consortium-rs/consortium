@@ -70,8 +70,8 @@
 //! Neither this crate nor the doorbell or HAL crates install `#[interrupt]` handlers.
 //! `consortium-cfg` generates the doorbell and time-driver vectors into
 //! `consortium.gen.rs`, each forwarding to its exported wake path —
-//! `hsem::notify()`, `bell::service_interrupt::<ipcc::Ipcc<S, N>>()`,
-//! `bell::service_interrupt::<mu::Mu<S, N>>()`. Vectors for peripherals the application drives
+//! `bell::service_interrupt::<H>()` for each Type-A bell (`ipcc::Ipcc<S, N>`,
+//! `mu::Mu<S, N>`, `hsem::Hsem<S, 1>`). Vectors for peripherals the application drives
 //! itself, such as `uart::on_buffered_interrupt::<P>()`, stay hand-written. Enable the
 //! chip *HAL's* `rt` feature so the `#[interrupt]` macro and PAC vector table are
 //! available.

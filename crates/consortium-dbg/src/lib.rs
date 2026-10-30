@@ -78,7 +78,6 @@
 //! | `panic-handler` | Installs `#[panic_handler]`; implies `logger`.                    |
 //! | `arch-cortex-m` | Interrupt-disable and halt for Cortex-M. Required by `panic-handler`. |
 //! | `arch-riscv`    | Interrupt-disable and halt for RISC-V. Required by `panic-handler`.   |
-//! | `doorbell-hsem`                  | Optional doorbell integration.                   |
 //!
 //! `panic-handler` needs **exactly one** arch feature, and the two arch features
 //! are mutually exclusive; both conditions are `compile_error!`s below rather than
