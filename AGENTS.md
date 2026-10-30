@@ -316,7 +316,7 @@ There are two kinds:
   on Linux.
 
 **A Type-A bell is one protocol over a per-block register model.** A block implements
-only `unsafe trait BellHw`: `CHANNELS`, `RESERVED`, `PHYS_BASE`, `line(id)`, `ring`,
+only `unsafe trait BellHw`: `CHANNELS`, `PHYS_BASE`, `line(id)`, `ring`,
 `raw_pending`, `ack`, `arm`/`disarm`, `asserted`/`disarm_all`, and a per-line `waker`
 table, where status bit `n` is channel `n`. Everything else is written once in
 `bell/mod.rs`: `BellA<H>` implements `Doorbell` and `ChanValidate` (one bounds check),

@@ -64,7 +64,7 @@
 
 pub mod registers;
 
-use core::{marker::PhantomData, ops::Range};
+use core::marker::PhantomData;
 
 use consortium_hal_imx9::{Peri, PeripheralType};
 use consortium_ipc::Side;
@@ -103,9 +103,6 @@ pub const MU_RF_CHAN_COUNT: u8 = 4;
 
 /// Total doorbell channels per instance: the GI lines followed by the RF lines.
 pub const MU_CHAN_COUNT: u8 = MU_GI_CHAN_COUNT + MU_RF_CHAN_COUNT;
-
-/// Channel ids reserved from user channels. Every MU line is available.
-pub const MU_CHAN_RESERVED: Range<u8> = 0..0;
 
 /// Token written to `TRn` to raise the peer's receive-full flag.
 const RF_TOKEN: u32 = 0x1;
@@ -314,8 +311,6 @@ unsafe impl<S: Side, const N: usize> BellHw for Mu<S, N> {
     }
 
     const CHANNELS: u8 = MU_CHAN_COUNT;
-
-    const RESERVED: Range<u8> = MU_CHAN_RESERVED;
 
     #[inline]
     fn line(id: u8) -> MuLine {
