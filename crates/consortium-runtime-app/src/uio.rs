@@ -42,7 +42,8 @@ use std::{
 use tokio::io::unix::AsyncFd;
 use uio::UioError;
 
-use consortium_ipc_transport_memory::DescriptorError;
+use consortium_ipc_transport_memory::{DescriptorError, RegionSharedMemoryTransportable};
+use consortium_shared_memory::{Region, UncachedRegion};
 
 use crate::irq::{Service, Services, irq_loop};
 
@@ -327,6 +328,79 @@ impl UioDevice {
             .push(service);
     }
 }
+
+// ── UioRegion ─────────────────────────────────────────────────────────────────
+
+/// A shared-memory window mapped through UIO that keeps its mappings alive.
+///
+/// [`UioDevice`] unmaps its windows when the last `Arc` to it drops, so whatever
+/// dereferences a window must own the device. A shared-memory transport touches two:
+/// the carveout this region wraps, and the doorbell's register window. This region
+/// holds an owner for each ([`keep`](Self::keep) adds the doorbell's), and the
+/// transport clones it into both halves on `split`, so the link keeps everything it
+/// uses mapped with no lifetime bookkeeping of its own.
+///
+/// UIO maps reserved memory noncached, so this is an [`UncachedRegion`] underneath:
+/// cache maintenance is a no-op, exactly as on the generated code's previous region.
+#[derive(Clone)]
+pub struct UioRegion {
+    inner: UncachedRegion,
+    owners: Vec<Arc<UioDevice>>,
+}
+
+impl UioRegion {
+    /// Map window `index` of `device`, zero it, and own the device.
+    ///
+    /// Zeroing is the AP's first touch of a carveout that survives a warm reboot;
+    /// see [`UioDevice::mmap_zeroed`]. Only call it on a RAM window — the same rule
+    /// as `mmap_zeroed`, which this calls.
+    pub fn zeroed(device: &Arc<UioDevice>, index: usize) -> Result<Self, UioDeviceError> {
+        let base = device.mmap_zeroed(index)?;
+        let len = device.mapping(index)?.1;
+        Ok(Self {
+            // SAFETY: `base`/`len` are this device's live mapping of window `index`,
+            // and `owners` keeps the device — and with it the mapping — alive for as
+            // long as this region or any clone of it.
+            inner: unsafe { UncachedRegion::new(base as *mut u8, len) },
+            owners: vec![Arc::clone(device)],
+        })
+    }
+
+    /// Also keep `owner` mapped for as long as this region (or a clone) lives.
+    ///
+    /// Generated bring-up passes the doorbell's device here, since the doorbell's
+    /// register window is mapped from it and the transport holding this region
+    /// rings and waits through that window.
+    pub fn keep(mut self, owner: Arc<UioDevice>) -> Self {
+        self.owners.push(owner);
+        self
+    }
+}
+
+impl Region for UioRegion {
+    unsafe fn as_ptr(&self) -> *mut u8 {
+        // SAFETY: forwarded; the mapping is alive while `self.owners` is.
+        unsafe { self.inner.as_ptr() }
+    }
+
+    fn len(&self) -> usize {
+        self.inner.len()
+    }
+
+    fn flush(&self) {
+        self.inner.flush();
+    }
+
+    fn invalidate(&self) {
+        self.inner.invalidate();
+    }
+
+    fn is_coherent(&self) -> bool {
+        self.inner.is_coherent()
+    }
+}
+
+impl RegionSharedMemoryTransportable for UioRegion {}
 
 // ── Lookup ────────────────────────────────────────────────────────────────────
 

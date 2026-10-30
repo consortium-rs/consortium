@@ -656,8 +656,11 @@ instance's `EndpointState`, then returns the singleton bundle. Connect is per en
 `Transceiver::connect(c.SENSOR).await?` is the concise spelling, while
 `Endpoint::new(c.SENSOR).connect().await?` supports deferred or spawned bring-up. Both
 guarantee `Connect::connect` precedes `SharedMemoryTransport::split()`. A peer that never
-appears therefore stalls only the endpoint being connected. The AP transport halves
-retain `Arc<UioDevice>` owners for every mapping they use.
+appears therefore stalls only the endpoint being connected. On the AP the region is a
+`consortium_runtime_app::uio::UioRegion`, which holds an `Arc<UioDevice>` for its own window
+and (via `.keep`) the doorbell's. `UioDevice` unmaps its windows on drop, and both transport
+halves clone the region, so the link keeps everything it touches mapped; the transport itself
+carries no lifetime bookkeeping.
 
 Controller init still resets a configured CDBG ring, configures MPU/NVIC, enables CM7
 data cache for cached windows, and brings up the Embassy time driver (STM32MP2 TIM2 /
