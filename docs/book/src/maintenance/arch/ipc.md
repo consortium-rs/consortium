@@ -62,7 +62,7 @@ Hardware Signaling
 ├─ HSEM (STM32MP23/25)
 ├─ IPCC (STM32MP21/23/25)
 ├─ MU (i.MX)
-└─ GPIO/Notify (testing)
+└─ GPIO (fallback)
 ```
 
 ## Developer Experience

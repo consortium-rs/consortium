@@ -75,7 +75,7 @@ documented no-op, because byte arrival is its own notification.
 
 Local bring-up is _not_ `Connect`. Peripherals keep constructor + config +
 typestate, with their ordering emitted into `consortium-cfg`'s generated `init()`;
-doorbells keep `bind_notifier` / `bind_service`.
+doorbells keep `bind_service`.
 
 ## Usage
 

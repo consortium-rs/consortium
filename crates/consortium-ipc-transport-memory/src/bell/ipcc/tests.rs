@@ -117,7 +117,6 @@ fn wait_arms_then_acknowledges_and_masks() {
     assert!(!masked(&regs, offsets::C1MR, 2));
 
     regs[offsets::C2TOC1SR / 4] = occupied(2);
-    db.notifier().notify_waiters();
 
     assert_eq!(wait.as_mut().poll(&mut cx), Poll::Ready(Ok(ch(2))));
     assert_eq!(regs[offsets::C1SCR / 4], clear_flag(2));

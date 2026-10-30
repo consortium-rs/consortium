@@ -44,6 +44,9 @@ struct Regs {
     in_rmw: AtomicBool,
     /// Read-modify-writes that started while another was still in flight.
     overlaps: AtomicUsize,
+    /// This block's waker table. Per register model rather than static, so tests
+    /// running in parallel cannot overwrite each other's registrations.
+    wakers: [atomic_waker::AtomicWaker; LINES as usize],
 }
 
 impl Regs {
@@ -138,6 +141,10 @@ unsafe impl BellHw for FakeBell {
 
     fn asserted(&self) -> LineSet {
         self.0.status.load(Ordering::SeqCst)
+    }
+
+    fn waker(&self, id: u8) -> &atomic_waker::AtomicWaker {
+        &self.0.wakers[id as usize]
     }
 
     unsafe fn disarm_all(&self, lines: LineSet) {
@@ -331,13 +338,10 @@ fn service_masks_every_asserted_line_before_waking() {
     assert_eq!(wait.as_mut().poll(&mut cx), Poll::Ready(Ok(ch(2))));
 }
 
-/// The `Notify` is shared by every line, so a wake caused by a *different* line
-/// completes this future's `Notified` while its own line is idle. A completed
-/// `Notified` never fires again, so the future has to re-subscribe on its next poll —
-/// otherwise its own signal never wakes it and, since the remote cannot signal again
-/// while the line stays raised, the transport deadlocks.
+/// Wakes are per line: servicing another line must not wake this waiter, and its own
+/// line must still wake it afterwards.
 #[test]
-fn a_foreign_wake_does_not_strand_the_waiter() {
+fn a_foreign_line_neither_wakes_nor_strands_the_waiter() {
     let (bell, regs) = bell();
     let (waker, wakes) = counting_waker();
     let mut cx = Context::from_waker(&waker);
@@ -347,16 +351,12 @@ fn a_foreign_wake_does_not_strand_the_waiter() {
 
     regs.signal(5);
     bell.service_interrupt();
-    assert_eq!(wakes.load(Ordering::SeqCst), 1);
+    assert_eq!(wakes.load(Ordering::SeqCst), 0);
     assert_eq!(wait.as_mut().poll(&mut cx), Poll::Pending);
 
     regs.signal(2);
     bell.service_interrupt();
-    assert_eq!(
-        wakes.load(Ordering::SeqCst),
-        2,
-        "waiter was not re-subscribed after a foreign line consumed its notification"
-    );
+    assert_eq!(wakes.load(Ordering::SeqCst), 1);
     assert_eq!(wait.as_mut().poll(&mut cx), Poll::Ready(Ok(ch(2))));
 }
 
@@ -375,7 +375,8 @@ fn two_lines_of_one_instance_complete_independently() {
 
     regs.signal(6);
     bell.service_interrupt();
-    assert_eq!(wakes.load(Ordering::SeqCst), 2);
+    // Only line 6's waiter is woken.
+    assert_eq!(wakes.load(Ordering::SeqCst), 1);
     assert_eq!(a.as_mut().poll(&mut cx), Poll::Pending);
     assert_eq!(b.as_mut().poll(&mut cx), Poll::Ready(Ok(ch(6))));
 
@@ -386,7 +387,7 @@ fn two_lines_of_one_instance_complete_independently() {
 }
 
 #[test]
-fn clones_share_one_wake_source() {
+fn clones_share_one_waker_table() {
     let (bell, regs) = bell();
     let other = bell.clone();
     let (waker, wakes) = counting_waker();
