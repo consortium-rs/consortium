@@ -14,7 +14,7 @@ fn unsupported(input: (u32, u64)) -> (u32, u64) {
 }
 #[cfg(feature = "ta")]
 fn unsupported_dispatched(
-    params: &mut ::optee_utee::Parameters,
+    params: &mut ::optee_utee::deprecated::Parameters,
 ) -> ::optee_utee::Result<()> {
     compile_error!("Unsupported TEE parameter type");
     let __ret_val = unsupported(input);

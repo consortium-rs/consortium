@@ -50,7 +50,7 @@ Classifies each parameter into a slot and a direction, then emits two functions 
 the original body unchanged:
 
 - `<name>_dispatched` — TA side, `#[cfg(feature = "ta")]`. Unpacks
-  `::optee_utee::Parameters` through `TeeParam`, calls the function, flushes `out` and
+  `::optee_utee::deprecated::Parameters` through `TeeParam`, calls the function, flushes `out` and
   `inout` values back into their slots.
 - `call_<name>` — CA side, `#[cfg(feature = "ca")]`. Packs arguments, invokes the
   command, reads output slots back.

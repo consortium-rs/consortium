@@ -296,7 +296,11 @@ mod tests {
     fn irq_loop_wakes_bound_service_on_simulated_interrupt() {
         runtime_io().block_on(async {
             let (dev, kernel) = socketpair();
-            let async_fd = AsyncFd::new(dev).expect("register dev fd with reactor");
+            // SAFETY: `dev` owns its socket and moves into the `AsyncFd`, so the fd
+            // stays open and unchanged for the `AsyncFd`'s lifetime.
+            let async_fd = unsafe { AsyncFd::register(dev) }
+                .map_err(std::io::Error::from)
+                .expect("register dev fd with reactor");
 
             let services: Services = Arc::new(Mutex::new(Vec::new()));
             let woke = Arc::new(Notify::new());
@@ -337,7 +341,11 @@ mod tests {
     fn irq_loop_services_doorbells_before_rearming() {
         runtime_io().block_on(async {
             let (dev, kernel) = socketpair();
-            let async_fd = AsyncFd::new(dev).expect("register dev fd with reactor");
+            // SAFETY: `dev` owns its socket and moves into the `AsyncFd`, so the fd
+            // stays open and unchanged for the `AsyncFd`'s lifetime.
+            let async_fd = unsafe { AsyncFd::register(dev) }
+                .map_err(std::io::Error::from)
+                .expect("register dev fd with reactor");
 
             // The service reads the `kernel` fd (via a clone that shares the same
             // non-blocking description) to check whether the re-arm write already

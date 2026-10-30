@@ -331,14 +331,20 @@ check its register mapping. Read both before changing any block.
 
 - `bell::ipcc` — STM32 IPCC (`stm32mp21x`/`23x`/`25x`); `IpccDoorbell<S, N>`. `ring`
   reports `BellError::Busy` while the previous signal is unconsumed. The recommended
-  STM32MP2 doorbell, and the one validated on hardware.
+  STM32MP2 doorbell, and the first validated on hardware.
 - `bell::mu` — NXP i.MX MU (`mimx93`/`mimx95`, mutually exclusive); `MuDoorbell<S, N>`.
   Channels `0..4` are GI lines and `4..8` RF lines (`MuLine`); neither reports `Busy` — a
   pending GI is idempotent and an RF ring whose `TRn` is still full is skipped.
-  `MuDoorbell::new` also opens the window's i.MX 93 LPCG clock gate.
+  `MuDoorbell::new` also opens the window's i.MX 93 LPCG clock gate. Validated on i.MX 93
+  hardware (September 2026, before the `bell` port).
 - `bell::hsem` — STM32 HSEM (`stm32mp23x`/`25x`); `HsemDoorbell<S, 1>`. Frozen: prefer
   IPCC. `ring` is a 1-step read-lock then unlock, and reports `Busy` when another core
-  holds the semaphore. `S` is the interrupt bank (`Tertiary` is C3).
+  holds the semaphore. `S` is the interrupt bank (`Tertiary` is C3). Not validated on
+  hardware.
+
+The `bell` ports kept each block's register sequences but changed how they are driven
+(one generic wait/ISR, and `disarm_all` masks with one read-modify-write per register),
+so earlier bring-ups need a re-run on the current code before they count for it.
 
 The chip features pull in `consortium-hal-stm32mp2`/`consortium-hal-imx9` with
 `default-features = false` and forward the chip, so the PAC's register/interrupt

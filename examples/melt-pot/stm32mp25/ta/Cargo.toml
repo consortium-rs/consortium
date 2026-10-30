@@ -44,10 +44,10 @@ required-features = ["ta"]
 
 [target.'cfg(target_os = "linux")'.dependencies]
 consortium-tee = { default-features = false, path = "../../../../crates/consortium-tee", version = "0.4.0" }
-optee-teec     = { optional = true, version = "0.9.0" }
-optee-utee     = { default-features = false, optional = true, version = "0.9.0" }
-optee-utee-sys = { default-features = false, optional = true, version = "0.9.0" }
+optee-teec     = { optional = true, version = "0.10.0" }
+optee-utee     = { default-features = false, optional = true, version = "0.10.0" }
+optee-utee-sys = { default-features = false, optional = true, version = "0.10.0" }
 
 [target.'cfg(target_os = "linux")'.build-dependencies]
 consortium-cfg-common = { path = "../../../../crates/consortium-cfg-common", version = "0.4.0" }
-optee-utee-build      = "0.9.0"
+optee-utee-build      = "0.10.0"

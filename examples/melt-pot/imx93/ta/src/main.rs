@@ -20,8 +20,9 @@
 extern crate optee_utee;
 
 use melt_pot_imx93_ta::invoke_command;
+use optee_utee::deprecated::Parameters;
 use optee_utee::{
-    Parameters, Result, ta_close_session, ta_create, ta_destroy, ta_invoke_command, ta_open_session,
+    Result, ta_close_session, ta_create, ta_destroy, ta_invoke_command, ta_open_session,
 };
 
 #[ta_create]

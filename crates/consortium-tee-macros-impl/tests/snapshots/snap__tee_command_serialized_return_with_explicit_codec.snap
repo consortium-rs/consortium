@@ -20,7 +20,7 @@ fn read_config(slot: u32) -> DeviceConfig {
 }
 #[cfg(feature = "ta")]
 fn read_config_dispatched(
-    params: &mut ::optee_utee::Parameters,
+    params: &mut ::optee_utee::deprecated::Parameters,
 ) -> ::optee_utee::Result<()> {
     let mut __p_0 = unsafe { params.0.as_value()? };
     let slot = <u32 as ::consortium_tee::TeeParam<

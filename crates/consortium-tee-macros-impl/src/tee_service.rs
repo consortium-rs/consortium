@@ -150,7 +150,7 @@ pub fn tee_service(input: TokenStream2) -> TokenStream2 {
             pub fn invoke_command(
                 ctx: &mut #ctx_ident,
                 cmd: u32,
-                params: &mut ::optee_utee::Parameters,
+                params: &mut ::optee_utee::deprecated::Parameters,
             ) -> ::optee_utee::Result<()> {
                 match Command::from(cmd) {
                     #(Command::#variant_idents => #dispatch_fns(ctx, params),)*
@@ -163,7 +163,7 @@ pub fn tee_service(input: TokenStream2) -> TokenStream2 {
             #[cfg(feature = "ta")]
             pub fn invoke_command(
                 cmd: u32,
-                params: &mut ::optee_utee::Parameters,
+                params: &mut ::optee_utee::deprecated::Parameters,
             ) -> ::optee_utee::Result<()> {
                 match Command::from(cmd) {
                     #(Command::#variant_idents => #dispatch_fns(params),)*

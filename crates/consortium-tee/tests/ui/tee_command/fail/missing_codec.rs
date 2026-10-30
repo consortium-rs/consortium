@@ -17,7 +17,9 @@ pub enum ErrorKind {
     BadParameters,
 }
 
-pub struct Parameters(pub Param, pub Param, pub Param, pub Param);
+pub mod deprecated {
+    pub struct Parameters(pub super::Param, pub super::Param, pub super::Param, pub super::Param);
+}
 
 pub struct Param;
 

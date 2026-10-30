@@ -25,6 +25,6 @@ repository.workspace   = true
 rust-version.workspace = true
 
 [target.'cfg(target_os = "linux")'.build-dependencies]
-bindgen    = "0.72"
+bindgen    = "0.73"
 cc         = "1.1"
 pkg-config = "0.3.33"
