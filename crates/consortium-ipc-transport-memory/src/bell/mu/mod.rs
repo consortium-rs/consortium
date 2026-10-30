@@ -410,16 +410,14 @@ unsafe impl<S: Side, const N: usize> BellHw for Mu<S, N> {
         }
     }
 
-    #[cfg(not(feature = "std"))]
     #[inline]
-    fn waker(id: u8) -> &'static atomic_waker::AtomicWaker {
+    fn waker(&self, id: u8) -> &atomic_waker::AtomicWaker {
         &MU_WAKERS[Self::INDEX][id as usize]
     }
 }
 
-/// Wakers separated by MU instance and line on the bare-metal path. Both windows of
+/// Wakers separated by MU instance and line. Both windows of
 /// an instance share a row: a core drives one window of it.
-#[cfg(not(feature = "std"))]
 static MU_WAKERS: [[atomic_waker::AtomicWaker; MU_CHAN_COUNT as usize]; MU_INSTANCE_COUNT] =
     [const { [const { atomic_waker::AtomicWaker::new() }; MU_CHAN_COUNT as usize] };
         MU_INSTANCE_COUNT];

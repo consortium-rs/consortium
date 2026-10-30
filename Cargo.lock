@@ -878,7 +878,6 @@ dependencies = [
  "defmt",
  "embedded-hal 1.0.0",
  "linux-embedded-hal",
- "tokio",
 ]
 
 [[package]]

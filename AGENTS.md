@@ -156,7 +156,7 @@ and waits for the ack, the secondary validates and acks), so generated bring-up 
 emits one call with no side branch; the UART transport implements it as a documented
 no-op. Local bring-up is _not_ `Connect`: peripherals keep constructor + config +
 typestate, and their ordering stays in `consortium-cfg`'s generated `init()`; doorbells
-keep `bind_notifier`/`bind_service`.
+keep `bind_service`.
 
 `Transceiver<TyTx, TyRx, TrTx, TrRx, C>` is public and wraps paired `Channel<Tx, ...>`
 and `Channel<Rx, ...>` values. If a transport needs separate ownership for Tx/Rx, use
@@ -312,9 +312,10 @@ There are two kinds:
 
 - **Type-A bells** — IPCC, MU, and (frozen) HSEM — live in
   `consortium-ipc-transport-memory::bell`, behind the transport's chip features.
-- **`consortium-ipc-doorbell-gpio`** is a single-channel GPIO doorbell. The `no_std`
-  path uses a software pending flag and IRQ-side `wake`; the `std` path exposes a Tokio
-  `Notify` that external interrupt code must trigger, bound with `bind_notifier`.
+- **`consortium-ipc-doorbell-gpio`** is a single-channel GPIO doorbell. Both paths wait
+  on a `GpioSignal` (a pending flag plus one `AtomicWaker`) that the application wakes
+  from whatever observes the edge: its IRQ handler on firmware, a `bind_service` closure
+  on Linux.
 
 **A Type-A bell is one protocol over a per-block register model.** A block implements
 only `unsafe trait BellHw`: `CHANNELS`, `RESERVED`, `PHYS_BASE`, `line(id)`, `ring`,
@@ -323,8 +324,10 @@ table, where status bit `n` is channel `n`. Everything else is written once in
 `bell/mod.rs`: `BellA<H>` implements `Doorbell` and `ChanValidate` (one bounds check),
 `LineWait<H>` is the one wait future, and `service_interrupt::<H>()` (no_std) /
 `BellA::service_interrupt()` (std) is the one ISR core, which masks every asserted line
-**before** waking. Fences, critical sections, waker registration, and the `std` `Notify`
-re-subscription belong to the generic — a `BellHw` impl never does them. The protocol,
+**before** waking. Fences, critical sections, and waker registration belong to the
+generic — a `BellHw` impl never does them. `std` and `no_std` share one wake mechanism:
+each block's per-line `AtomicWaker` table (`BellHw::waker`), woken by the firmware vector
+or by the UIO IRQ task alike; there is no Tokio `Notify` in the bells. The protocol,
 and why each step of its poll order is load-bearing, is documented on `bell/mod.rs` and
 tested once against an in-memory `FakeBell` in `bell/tests.rs`; a block's own tests only
 check its register mapping. Read both before changing any block.
@@ -605,11 +608,10 @@ optional debug (`dbg`), and optional TEE (`tee`). `UioDevice::open(uio_id, enabl
 opens the device, maps regions (`mmap` for register/doorbell windows, `mmap_zeroed` for
 zero-initialized data windows), and runs `irq::irq_loop`: wait for the fd to become
 readable, drain the 4-byte interrupt count, re-arm the interrupt with a 4-byte write, then
-fan the wakeup out to every registered doorbell service. Bind a doorbell with
-`bind_notifier(Arc<Notify>)` (a non-masking doorbell such as GPIO, wakeup is just
-`notify_waiters()`) or `bind_service(Arc<dyn Fn()>)` (every Type-A bell registers a service
-that masks its asserted lines _before_ waking, so a level-sensitive line does not
-immediately re-fire the UIO IRQ when the loop re-arms).
+fan the wakeup out to every registered doorbell service. Bind every doorbell with
+`bind_service(Arc<dyn Fn()>)`: a Type-A bell registers a service that masks its asserted
+lines _before_ waking, so a level-sensitive line does not immediately re-fire the UIO IRQ
+when the loop re-arms; a GPIO doorbell's service only wakes its `GpioSignal`.
 
 `consortium-runtime-mcu` is `no_std`, re-exports debug and shared-memory IPC pieces
 behind features, and provides small helpers such as `static_buf!` for scratch buffers.

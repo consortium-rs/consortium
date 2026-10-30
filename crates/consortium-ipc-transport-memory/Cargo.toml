@@ -45,7 +45,7 @@ defmt = [
 # and PAC the `bell::mu` register model binds to. Mutually exclusive.
 mimx93 = ["consortium-hal-imx9/mimx93", "dep:consortium-hal-imx9"]
 mimx95 = ["consortium-hal-imx9/mimx95", "dep:consortium-hal-imx9"]
-std    = ["alloc", "consortium-log/tracing", "dep:tokio", "dep:uio"]
+std    = ["alloc", "consortium-log/tracing", "dep:uio"]
 # STM32MP2 chip selection: forwarded to the chip HAL, whose IPCC/HSEM singletons and
 # PAC the `bell::ipcc` and `bell::hsem` register models bind to (HSEM is absent on MP21).
 stm32mp21x = ["consortium-hal-stm32mp2/stm32mp21x", "dep:consortium-hal-stm32mp2"]
@@ -68,7 +68,6 @@ embassy-hal-internal     = "0.5.0"
 num_enum                 = { default-features = false, version = "0.7.3" }
 pin-project              = { version = "1.1.11" }
 thiserror                = { default-features = false, version = "2.0" }
-tokio                    = { features = ["net", "rt", "sync"], optional = true, version = "1" }
 uio                      = { optional = true, version = "0.6.0" }
 
 [dev-dependencies]

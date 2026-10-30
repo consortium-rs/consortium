@@ -47,7 +47,7 @@
 //!   readiness is worth encoding in the type.
 //! - **Doorbells.** They have local setup (unmasking an interrupt, binding to
 //!   the Linux UIO fan-out) but no handshake, which is why that stays plain
-//!   inherent API (`bind_notifier` / `bind_service`).
+//!   inherent API (`bind_service`).
 //!
 //! Waiting on *someone else* is `Connect`; configuring *your own* silicon is a
 //! constructor.
@@ -111,7 +111,7 @@ use crate::transport::TransportError;
 ///   config struct, with typestate where readiness is worth encoding in the type.
 /// - **Doorbells.** They have local setup (unmasking an interrupt, binding to the
 ///   Linux UIO fan-out) but no handshake, which is why that stays plain inherent API
-///   (`bind_notifier` / `bind_service`).
+///   (`bind_service`).
 ///
 /// Waiting on *someone else* is `Connect`; configuring *your own* silicon is a
 /// constructor.

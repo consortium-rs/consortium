@@ -271,16 +271,14 @@ unsafe impl<S: Side, const N: usize> BellHw for Hsem<S, N> {
         unsafe { self.set_ier(lines, false) };
     }
 
-    #[cfg(not(feature = "std"))]
     #[inline]
-    fn waker(id: u8) -> &'static atomic_waker::AtomicWaker {
+    fn waker(&self, id: u8) -> &atomic_waker::AtomicWaker {
         &HSEM_WAKERS[id as usize]
     }
 }
 
-/// Wakers separated by semaphore on the bare-metal path. A core drives one bank of
+/// Wakers separated by semaphore. A core drives one bank of
 /// the single instance, so one row suffices.
-#[cfg(not(feature = "std"))]
 static HSEM_WAKERS: [atomic_waker::AtomicWaker; HSEM_CHAN_COUNT as usize] =
     [const { atomic_waker::AtomicWaker::new() }; HSEM_CHAN_COUNT as usize];
 

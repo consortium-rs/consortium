@@ -341,15 +341,13 @@ unsafe impl<S: Side, const N: usize> BellHw for Ipcc<S, N> {
         unsafe { self.set_masked(lines, true) };
     }
 
-    #[cfg(not(feature = "std"))]
     #[inline]
-    fn waker(id: u8) -> &'static atomic_waker::AtomicWaker {
+    fn waker(&self, id: u8) -> &atomic_waker::AtomicWaker {
         &IPCC_WAKERS[Self::INDEX][id as usize]
     }
 }
 
-/// Wakers separated by IPCC instance and channel on the bare-metal path.
-#[cfg(not(feature = "std"))]
+/// Wakers separated by IPCC instance and channel.
 static IPCC_WAKERS: [[atomic_waker::AtomicWaker; IPCC_CHAN_COUNT as usize]; base::BASE.len()] =
     [const { [const { atomic_waker::AtomicWaker::new() }; IPCC_CHAN_COUNT as usize] };
         base::BASE.len()];

@@ -33,25 +33,26 @@
 //!
 //! [`LineWait`] polls in this order, and the order is load-bearing:
 //!
-//! 1. Register the `no_std` waker on **every** poll, before anything else, from the
+//! 1. Register the task's waker on **every** poll, before anything else, in the
 //!    block's **per-line** table ([`BellHw::waker`]). One `AtomicWaker` per instance
 //!    would let a second waiter on another line overwrite the first registration.
+//!    `std` and `no_std` share this table: the UIO IRQ task wakes it exactly as a
+//!    firmware vector does, so there is one wake mechanism, not two.
 //! 2. `compiler_fence(SeqCst)`, then arm the line once, gated on `armed`.
 //! 3. Every register read-modify-write — arm, completion, `Drop`, ISR service, and
 //!    `ring` — runs inside `serialized`, because task context and the vector both
 //!    write it: a critical section on `no_std`, a process-wide lock on `std`, where
 //!    the UIO IRQ task can run on another thread.
-//! 4. On `std`, re-subscribe to the instance's shared `Notify` on **every** poll,
-//!    *before* the status read: a foreign line's wake consumes this future's
-//!    `Notified`, and a consumed `Notified` never fires again.
-//! 5. `compiler_fence(SeqCst)`, then decide readiness from the **raw** status
-//!    ([`BellHw::raw_pending`]) — never the masked view, never the `Notify`.
-//! 6. Arming never acknowledges. A status bit set before the wait began is an
+//! 4. `compiler_fence(SeqCst)`, then decide readiness from the **raw** status
+//!    ([`BellHw::raw_pending`]) — never the masked view, never the wake itself.
+//!    Registering in step 1 *before* this read is what makes a ring that lands in
+//!    between wake the task rather than vanish.
+//! 5. Arming never acknowledges. A status bit set before the wait began is an
 //!    unconsumed notification, and the remote cannot signal again while it waits.
-//! 7. On readiness: `fence(Acquire)`, acknowledge, then disarm.
+//! 6. On readiness: `fence(Acquire)`, acknowledge, then disarm.
 //!
 //! A cancelled wait disarms its line in `Drop` and does **not** acknowledge, for the
-//! reason in step 6. Nothing else would clear the level-sensitive status, so leaving
+//! reason in step 5. Nothing else would clear the level-sensitive status, so leaving
 //! the line armed would make the UIO loop re-fire forever.
 //!
 //! # Interrupt service
@@ -184,9 +185,13 @@ pub unsafe trait BellHw: Clone + Sync + 'static {
     /// read-modify-write against task context.
     unsafe fn disarm_all(&self, lines: LineSet);
 
-    /// The waker registered for channel `id` on this instance.
-    #[cfg(not(feature = "std"))]
-    fn waker(id: u8) -> &'static atomic_waker::AtomicWaker;
+    /// The waker slot for channel `id` (`< CHANNELS`) on this instance.
+    ///
+    /// Every handle over one register window must return the same slot — a static
+    /// table indexed by instance is the natural shape — because the handle that
+    /// services the interrupt (a fresh [`at`](Self::at) on firmware, a clone on
+    /// Linux) is not the one the waiter registered through.
+    fn waker(&self, id: u8) -> &atomic_waker::AtomicWaker;
 }
 
 /// Resolve `ch` to `H`'s line: the one bounds check every operation shares.
@@ -248,22 +253,12 @@ fn serialized<R>(f: impl FnOnce() -> R) -> R {
 
 /// A Type-A doorbell over register model `H`.
 ///
-/// Clones share one wake source, so `SharedMemoryTransport::split` can hand a copy to
-/// each half and an IRQ-side wake reaches whichever half is waiting.
+/// Every handle over one window shares its waker table ([`BellHw::waker`]), so
+/// `SharedMemoryTransport::split` can hand a clone to each half and an IRQ-side wake
+/// reaches whichever half is waiting.
+#[derive(Clone)]
 pub struct BellA<H: BellHw> {
     hw: H,
-    #[cfg(feature = "std")]
-    notify: std::sync::Arc<tokio::sync::Notify>,
-}
-
-impl<H: BellHw> Clone for BellA<H> {
-    fn clone(&self) -> Self {
-        Self {
-            hw: self.hw.clone(),
-            #[cfg(feature = "std")]
-            notify: self.notify.clone(),
-        }
-    }
 }
 
 impl<H: BellHw> BellA<H> {
@@ -282,8 +277,6 @@ impl<H: BellHw> BellA<H> {
         Self {
             // SAFETY: forwarded obligation.
             hw: unsafe { H::at(base) },
-            #[cfg(feature = "std")]
-            notify: std::sync::Arc::new(tokio::sync::Notify::new()),
         }
     }
 
@@ -292,25 +285,16 @@ impl<H: BellHw> BellA<H> {
         &self.hw
     }
 
-    /// Returns the shared `Notify` that wakes waiting futures.
+    /// Service this instance's interrupt through this handle: mask every asserted
+    /// line, then wake that line's waiter.
     ///
-    /// Prefer binding [`service_interrupt`](Self::service_interrupt): it masks the
-    /// asserted lines before waking, which a bare `notify_waiters` does not.
-    #[cfg(feature = "std")]
-    pub fn notifier(&self) -> std::sync::Arc<tokio::sync::Notify> {
-        std::sync::Arc::clone(&self.notify)
-    }
-
-    /// Service this instance's interrupt on the `std`/UIO side: mask every asserted
-    /// line, then wake every waiter so each re-checks its own line.
-    ///
-    /// Bind it with `UioDevice::bind_service` so a level-sensitive line does not
-    /// immediately re-fire the UIO IRQ when the loop re-arms it.
-    #[cfg(feature = "std")]
+    /// This is the Linux entry point. Bind it with `UioDevice::bind_service` so a
+    /// level-sensitive line does not immediately re-fire the UIO IRQ when the loop
+    /// re-arms it. Firmware, which has no handle in its vector, uses the free
+    /// `bell::service_interrupt::<H>()` instead; both run the same
+    /// `service` core.
     pub fn service_interrupt(&self) {
-        // `notify_waiters` is not per-line, so every asserted line wakes the same
-        // `Notify`; after the first, there are no registered waiters left to wake.
-        service(&self.hw, |_id| self.notify.notify_waiters());
+        service(&self.hw);
     }
 }
 
@@ -350,8 +334,6 @@ pub struct LineWait<'a, H: BellHw> {
     bell: &'a BellA<H>,
     ch: Chan,
     armed: bool,
-    #[cfg(feature = "std")]
-    notified: Option<tokio::sync::futures::Notified<'static>>,
 }
 
 impl<'a, H: BellHw> LineWait<'a, H> {
@@ -360,54 +342,7 @@ impl<'a, H: BellHw> LineWait<'a, H> {
             bell,
             ch,
             armed: false,
-            #[cfg(feature = "std")]
-            notified: None,
         }
-    }
-
-    /// Register with the bell's `Notify`, replacing a subscription that has already
-    /// completed.
-    ///
-    /// Two properties of `Notify::notify_waiters` make this necessary:
-    ///
-    /// - It stores no permit and wakes only futures that have *already* registered,
-    ///   so the caller subscribes **before** reading the status: a ring landing
-    ///   between the read and the registration would otherwise be lost, and the
-    ///   remote cannot ring again while the line stays signalled.
-    /// - It fans out to every waiter on the shared `Notify`. A wake caused by another
-    ///   line completes this future's `Notified` while its own line is idle, and a
-    ///   completed `Notified` never fires again — so it must be replaced.
-    #[cfg(feature = "std")]
-    fn subscribe(&mut self, cx: &mut Context<'_>) {
-        if let Some(notified) = self.notified.as_mut() {
-            // SAFETY: the `Notified` lives inside this pinned future and is only
-            // ever replaced after being dropped, never moved while registered.
-            if unsafe { Pin::new_unchecked(notified) }
-                .poll(cx)
-                .is_pending()
-            {
-                return;
-            }
-            trace!("wait({:?}) -> Notify consumed, re-subscribing", self.ch);
-            self.notified = None;
-        }
-
-        let notified = self.bell.notify.notified();
-        // SAFETY: `bell` is borrowed for `'a`; its Arc-backed `Notify` outlives this
-        // future, so erasing the borrow is sound.
-        let notified = unsafe {
-            core::mem::transmute::<
-                tokio::sync::futures::Notified<'_>,
-                tokio::sync::futures::Notified<'static>,
-            >(notified)
-        };
-        let notified = self.notified.insert(notified);
-
-        // A fresh `Notified` registers on its first poll and returns `Pending`
-        // (`notify_waiters` leaves no permit), so one poll suffices.
-        // SAFETY: the `Notified` lives inside this pinned future and is not moved
-        // while it stays registered.
-        let _ = unsafe { Pin::new_unchecked(notified) }.poll(cx);
     }
 }
 
@@ -432,15 +367,14 @@ impl<H: BellHw> Future for LineWait<'_, H> {
     type Output = Result<Chan, BellError>;
 
     fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
-        // SAFETY: no pinned field is moved; `notified` is only set in place.
-        let this = unsafe { self.get_unchecked_mut() };
+        // Every field is `Unpin`, so the future never needs pinning in place.
+        let this = self.get_mut();
         let line = match line_of::<H>(this.ch) {
             Ok(line) => line,
             Err(err) => return Poll::Ready(Err(err)),
         };
 
-        #[cfg(not(feature = "std"))]
-        H::waker(this.ch.id()).register(cx.waker());
+        this.bell.hw.waker(this.ch.id()).register(cx.waker());
 
         compiler_fence(Ordering::SeqCst);
 
@@ -453,9 +387,6 @@ impl<H: BellHw> Future for LineWait<'_, H> {
             });
             this.armed = true;
         }
-
-        #[cfg(feature = "std")]
-        this.subscribe(cx);
 
         compiler_fence(Ordering::SeqCst);
 
@@ -480,14 +411,14 @@ impl<H: BellHw> Future for LineWait<'_, H> {
     }
 }
 
-/// Read the asserted lines, mask them all *before* waking, then call `wake(id)` for
-/// each one.
+/// Read the asserted lines, mask them all *before* waking, then wake each one's
+/// waiter.
 ///
 /// Masking first keeps a level-sensitive line from re-asserting immediately — on
 /// `no_std` re-entering the ISR, on `std` re-firing the UIO IRQ. The woken wait then
 /// acknowledges its line, and the next wait unmasks it again. The status is read raw,
 /// so a line that is already masked is still serviced.
-fn service<H: BellHw>(hw: &H, mut wake: impl FnMut(u8)) {
+fn service<H: BellHw>(hw: &H) {
     let asserted = hw.asserted();
     serialized(|| {
         // SAFETY: the set came straight from `asserted`.
@@ -495,7 +426,7 @@ fn service<H: BellHw>(hw: &H, mut wake: impl FnMut(u8)) {
     });
     for id in 0..H::CHANNELS {
         if asserted & (1 << id) != 0 {
-            wake(id);
+            hw.waker(id).wake();
         }
     }
 }
@@ -515,7 +446,7 @@ pub fn service_interrupt<H: BellHw>() {
     // the line it raised is the point — and every enable-register write underneath
     // runs in a critical section, so it cannot tear against task context.
     let hw = unsafe { H::at(H::PHYS_BASE) };
-    service(&hw, |id| H::waker(id).wake());
+    service(&hw);
 }
 
 #[cfg(all(test, feature = "std"))]

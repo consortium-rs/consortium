@@ -27,30 +27,31 @@ Its one hard obligation is ordering: writes performed before `ring` must
 happen-before the peer's `wait` completion. This crate discharges that with a
 release fence before the pulse and an acquire on the pending flag.
 
-## The two paths
-
-| Build             | Pin guard | Wake source                                                                       | Bind with         |
-| ----------------- | --------- | --------------------------------------------------------------------------------- | ----------------- |
-| `no_std` (M-core) | `RefCell` | `static PENDING` + `AtomicWaker`, set by `GpioDoorbell::wake()` from the GPIO IRQ | — (call `wake()`) |
-| `std` (Linux)     | `Mutex`   | `tokio::sync::Notify`, driven by external interrupt code                          | `bind_notifier`   |
+## Signaling and waiting
 
 `ring()` pulses the pin high then low to raise a rising-edge interrupt on the far
-side. `wait()` resolves when the pending flag or `Notify` fires.
+side. Receiving is a `GpioSignal` — a pending flag and one `AtomicWaker` — that
+`wait()` completes on. `std` and `no_std` run the same code; only the pin guard
+differs (`Mutex` on `std`, `RefCell` otherwise).
 
 ```rust,ignore
+static SIGNAL: GpioSignal = GpioSignal::new();
+let doorbell = GpioDoorbell::new(pin, &SIGNAL);
+
 // Bare metal: the application's GPIO IRQ handler drives the wake.
 #[interrupt]
 fn EXTI0() {
-    GpioDoorbell::<MyPin>::wake();
+    SIGNAL.wake();
 }
 
-// Linux: hand the Notify to whatever watches the line.
-uio.bind_notifier(doorbell.notifier());
+// Linux: whatever watches the line drives it, e.g. a UIO IRQ service.
+uio.bind_service(Arc::new(|| SIGNAL.wake()));
 ```
 
-GPIO wakeups are edge-driven, so there is nothing to mask before waking — use
-`bind_notifier`, not the `bind_service` path IPCC and MU need for their
-level-sensitive lines.
+The pending flag keeps a wake that lands before the waiter first polls, so a
+handshake that rings before its peer is listening still completes. GPIO wakeups are
+edge-driven, so unlike the Type-A bells' services there is nothing to mask before
+waking.
 
 ## Considerations and limitations
 
@@ -65,10 +66,9 @@ Read these before choosing GPIO; several are load-bearing.
 - **Single channel per instance.** Unlike HSEM (16) or MU (8), the `ch` argument to
   `ring()` and `wait()` is _ignored_ — every signal uses the same pin. Multi-channel
   designs instantiate several `GpioDoorbell<P>` with different pins.
-- **The pending flag is global on `no_std`.** `wake()` sets one `static PENDING` and
-  one `AtomicWaker`, so two GPIO doorbells in one firmware image share a wake and each
-  waiter must tolerate a spurious wake from the other. This is a real constraint on
-  multi-pin designs.
+- **One waiter per signal.** A `GpioSignal` holds a single waker, like every Type-A
+  bell line. Give each doorbell its own `static` signal; doorbells sharing one share
+  their wakes.
 - **No pin ownership beyond `embedded-hal`.** The doorbell is generic over any
   `OutputPin`, so pinmux, drive strength, pull configuration, and — on the receiving
   side — edge-triggered interrupt setup are all the integrator's. This crate only
