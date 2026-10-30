@@ -1,0 +1,21 @@
+[profile]
+chip        = "stm32mp257fak3"
+devkit      = "stm32mp257f-dk"
+shared      = "../shared"
+deploy_root = "/opt/consortium"
+
+[endpoints]
+linux = "./app"
+optee = "./ta"
+cm33  = "./mcu"
+
+[[ipc.channel]]
+name          = "sensor"
+doorbell      = "ipcc1"
+pattern       = "memory"
+primary       = "linux"
+secondary     = "cm33"
+party.linux   = { chan = 0, type = "Command" }
+party.cm33    = { chan = 1, type = "SensorReading" }
+config.memory = { base = 0x00064000, length = 0x4000 }
+mtu           = 128

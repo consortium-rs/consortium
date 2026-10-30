@@ -10,7 +10,7 @@ export default defineConfig({
     sortImports: true,
     sortTailwindcss: true,
     sortPackageJson: true,
-    ignorePatterns: ['submodules/**', 'docs/landing/**', '**/*.toml', '*.toml'],
+    ignorePatterns: ['submodules/**', '**/*.toml', '*.toml'],
   },
   lint: {
     ignorePatterns: ['submodules/**'],
