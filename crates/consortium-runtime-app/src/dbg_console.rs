@@ -30,7 +30,7 @@
 //! interval rather than waiting on an interrupt.
 #![cfg(all(feature = "dbg", feature = "ipc-shm"))]
 
-use std::ops::{Deref, DerefMut};
+use std::ops::Deref;
 use std::sync::Arc;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::thread::JoinHandle;
@@ -235,7 +235,10 @@ impl DbgRingHandle {
 
 /// A [`HostRing`] that keeps the UIO device it reads mapped.
 ///
-/// Dereferences to the ring, so use it exactly like one.
+/// It dereferences to the ring for its read-only methods and forwards the
+/// mutable ones. There is deliberately no `DerefMut`: a `&mut HostRing` would let
+/// safe code `std::mem::swap` two readers' rings without their owners, leaving a
+/// ring whose mapping is dropped with the other reader.
 pub struct DbgReader {
     ring: HostRing,
     _owner: Arc<UioDevice>,
@@ -249,9 +252,15 @@ impl Deref for DbgReader {
     }
 }
 
-impl DerefMut for DbgReader {
-    fn deref_mut(&mut self) -> &mut HostRing {
-        &mut self.ring
+impl DbgReader {
+    /// [`HostRing::read_packet`] on the owned ring.
+    pub fn read_packet(&mut self) -> Result<Option<Vec<u8>>, HostError> {
+        self.ring.read_packet()
+    }
+
+    /// [`HostRing::drain_packets`] on the owned ring.
+    pub fn drain_packets(&mut self) -> Result<Vec<Vec<u8>>, HostError> {
+        self.ring.drain_packets()
     }
 }
 
