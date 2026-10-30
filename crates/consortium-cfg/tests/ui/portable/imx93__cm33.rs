@@ -25,15 +25,14 @@ mod shared {
     ::consortium_ipc_transport_memory::bell::mu::MuDoorbell <
     ::consortium_ipc::Secondary, 1usize >,
     ::consortium_shared_memory::regions::UncachedRegion, crate ::shared::MotionControl,
-    crate ::shared::SensorData, ::consortium_codec::PostcardCodec, 1u8, 0u8, 128usize,
+    crate ::shared::SensorData, ::consortium_codec::PostcardCodec, 128usize,
 );
 ::consortium_ipc_transport_memory::impl_channel!(
     LP, ::consortium_ipc::Secondary,
     ::consortium_ipc_transport_memory::bell::mu::MuDoorbell <
     ::consortium_ipc::Secondary, 2usize >,
     ::consortium_shared_memory::regions::UncachedRegion, crate ::shared::PowerControl,
-    crate ::shared::LowPowerData, ::consortium_codec::RkyvCodec < 128usize >, 5u8, 4u8,
-    128usize,
+    crate ::shared::LowPowerData, ::consortium_codec::RkyvCodec < 128usize >, 128usize,
 );
 #[cfg(target_arch = "arm")]
 fn __consortium_install_channels(

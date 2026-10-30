@@ -2,7 +2,7 @@ use core::{future::Future, marker::PhantomData, task::Poll};
 
 use consortium_ipc::{
     AckSendTransport, Chan, Connect, Doorbell, MaybeSend, Primary, RecvTransport, Secondary,
-    SendTransport, Side, Transport, TransportError,
+    SendTransport, Side, TransportError,
 };
 use consortium_shared_memory::{CachedRegion, Region, UncachedRegion};
 
@@ -801,11 +801,6 @@ impl<S: Side, D: Doorbell + Send, R: RegionSharedMemoryTransportable + Send> Rec
     fn max_recv_size(&self) -> usize {
         self.rx.mtu as usize
     }
-}
-
-impl<S: Side, D: Doorbell + Send, R: RegionSharedMemoryTransportable + Send> Transport
-    for SharedMemoryTransport<S, D, R>
-{
 }
 
 impl<S: Side, D: Doorbell + Send, R: RegionSharedMemoryTransportable + Send> AckSendTransport

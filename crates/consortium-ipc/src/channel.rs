@@ -14,7 +14,7 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-//! Typed, directed communication channels over a [`Transport`].
+//! Typed, directed communication channels over one transport half.
 //!
 //! `Channel` is the main API for application code. It provides typed `send()` and `recv()` methods that encode and decode messages via a [`Codec`] and hand bytes to the underlying transport.
 use consortium_codec::{Codec, CodecFor};
@@ -388,8 +388,6 @@ mod tests {
             64
         }
     }
-
-    impl crate::transport::Transport for MockTransport {}
 
     fn scratch<const N: usize>() -> &'static mut [u8] {
         Box::leak(Box::new([0; N])).as_mut_slice()

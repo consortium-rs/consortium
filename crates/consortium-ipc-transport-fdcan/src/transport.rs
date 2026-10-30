@@ -30,8 +30,7 @@
 use core::future::Future;
 
 use consortium_ipc::{
-    Chan, Connect, MaybeSend, RecvTransport, SendTransport, Transport,
-    TransportError as TransportErrorTrait,
+    Chan, Connect, MaybeSend, RecvTransport, SendTransport, TransportError as TransportErrorTrait,
 };
 use embedded_can::Id;
 
@@ -335,8 +334,6 @@ impl<T: CanTx, R: CanRx<Error = T::Error>> RecvTransport for FdcanTransport<T, R
         self.rx.max_recv_size()
     }
 }
-
-impl<T: CanTx, R: CanRx<Error = T::Error>> Transport for FdcanTransport<T, R> {}
 
 impl<T: CanTx, R: CanRx<Error = T::Error>> Connect for FdcanTransport<T, R> {
     type Params = ();

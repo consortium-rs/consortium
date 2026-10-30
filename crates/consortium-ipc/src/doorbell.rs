@@ -30,9 +30,9 @@ use crate::{chan::Chan, future::MaybeSend};
 ///
 /// `ring` is the publication edge for data written before signaling the peer.
 /// Implementations must ensure those writes happen-before the corresponding
-/// `wait` completion or `pending` observation on the receiving side. For
-/// software pending bits this means a release operation in `ring` (or in the
-/// interrupt producer) paired with an acquire operation in `wait`/`pending`, or
+/// `wait` completion on the receiving side. For software pending bits this
+/// means a release operation in `ring` (or in the interrupt producer) paired
+/// with an acquire operation in `wait`, or
 /// stronger ordering. For hardware-backed doorbells, the interrupt or MMIO
 /// signal must not be observed by the peer before the shared-memory writes that
 /// the signal publishes are visible.
@@ -58,7 +58,4 @@ pub trait Doorbell {
     /// naturally, whereas a hand-written `poll` needs the future stored in the
     /// same pinned struct that owns (or outlives) the doorbell.
     fn wait(&self, ch: Chan) -> impl Future<Output = Result<Chan, Self::Error>> + MaybeSend;
-
-    /// Non-blocking check - has a signal arrived?
-    fn pending(&self, ch: Chan) -> bool;
 }

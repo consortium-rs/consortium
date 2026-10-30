@@ -25,8 +25,7 @@ mod shared {
     ::consortium_ipc_transport_memory::bell::mu::MuDoorbell <
     ::consortium_ipc::Secondary, 7usize >,
     ::consortium_shared_memory::regions::CachedRegion, crate ::shared::MotionControl,
-    crate ::shared::SensorData, ::consortium_codec::RkyvCodec < 128usize >, 7u8, 6u8,
-    128usize,
+    crate ::shared::SensorData, ::consortium_codec::RkyvCodec < 128usize >, 128usize,
 );
 #[cfg(target_arch = "arm")]
 fn __consortium_install_channels(

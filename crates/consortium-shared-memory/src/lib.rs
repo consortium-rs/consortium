@@ -46,17 +46,13 @@
 //! | ----------------- | -------------- | ----------------------------- | ------------- |
 //! | [`UncachedRegion`]| non-cacheable  | no-ops                        | `true`        |
 //! | [`CachedRegion`]  | cacheable      | AArch64 / ARMv7-M maintenance | `false`      |
-//! | [`SerialRegion`]  | none           | no-ops                        | `true`        |
 //!
 //! Transports are generic over the region, so `is_coherent` and the no-op cache
 //! methods are resolved at monomorphization: an uncached link compiles to code
 //! with no cache maintenance in it at all, rather than branching at runtime.
 //!
 //! `CachedRegion` performs maintenance on AArch64 and cache-bearing ARMv7-M
-//! cores, and compiles to no-ops on cacheless and host targets. [`SerialRegion`] has no
-//! backing memory at all — it reports a maximum frame size through [`Region::len`]
-//! so a serial transport can size its frame buffer, and returns a null pointer
-//! that callers must never dereference.
+//! cores, and compiles to no-ops on cacheless and host targets.
 //!
 //! # Safety model
 //!
@@ -92,5 +88,5 @@ pub mod regions;
 
 pub use {
     region::Region,
-    regions::{CachedRegion, SerialRegion, UncachedRegion},
+    regions::{CachedRegion, UncachedRegion},
 };

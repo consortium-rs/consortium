@@ -58,7 +58,7 @@ A bidirectional typed endpoint formed by pairing one Tx channel with one Rx chan
 
 **Transport**  
 The byte-moving layer beneath a channel. `SendTransport` and `RecvTransport` model its
-directional halves; `Transport` marks a full-duplex implementation.
+directional halves; a full-duplex link implements both.
 
 **Type-A / Type-B IPC**  
 Informal project categories. Type-A uses a separate doorbell, as shared-memory IPC does.

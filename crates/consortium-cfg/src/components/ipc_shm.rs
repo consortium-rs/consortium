@@ -116,14 +116,12 @@ pub fn initialize_instances(
             };
             let tx_ty = Ident::new(&tx.type_name, Span::call_site());
             let rx_ty = Ident::new(&rx.type_name, Span::call_site());
-            let chan_tx = tx.doorbell_chan;
-            let chan_rx = rx.doorbell_chan;
             let mtu = Literal::usize_suffixed(t.mtu as usize);
             // `ack:` is emitted only for a channel the manifest opted in; the plain arm of
             // `impl_channel!` defaults the capability off, so an unchanged manifest keeps
             // producing byte-identical code.
             let ack = match (tx.ack_chan, rx.ack_chan) {
-                (Some(ack_tx), Some(ack_rx)) => quote::quote! { ack: (#ack_tx, #ack_rx), },
+                (Some(_), Some(_)) => quote::quote! { ack, },
                 _ => quote::quote! {},
             };
             quote::quote! {
@@ -135,8 +133,6 @@ pub fn initialize_instances(
                     #ty_crate::#tx_ty,
                     #ty_crate::#rx_ty,
                     #codec_ty,
-                    #chan_tx,
-                    #chan_rx,
                     #mtu,
                     #ack
                 );

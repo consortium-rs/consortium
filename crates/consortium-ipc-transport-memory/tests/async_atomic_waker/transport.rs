@@ -110,10 +110,6 @@ impl Doorbell for AtomicDoorbell {
     fn wait(&self, ch: Chan) -> impl Future<Output = Result<Chan, Self::Error>> + MaybeSend {
         AtomicWaitFut { state: self.rx, ch }
     }
-
-    fn pending(&self, _ch: Chan) -> bool {
-        self.rx.pending.load(Ordering::Acquire)
-    }
 }
 
 fn channel(offset: usize, direction: ChannelDirection) -> ChannelLayout {
@@ -226,10 +222,6 @@ impl Doorbell for AtomicLinedDoorbell {
             state: &LINES[ch.id() as usize],
             ch,
         }
-    }
-
-    fn pending(&self, ch: Chan) -> bool {
-        LINES[ch.id() as usize].pending.load(Ordering::Acquire)
     }
 }
 
