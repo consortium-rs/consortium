@@ -1,26 +1,8 @@
 extern crate self as optee_utee;
 
+include!("../../../support/optee_utee_mock.rs");
+
 use consortium_tee::tee_command;
-
-pub type Result<T> = core::result::Result<T, Error>;
-
-pub struct Error;
-
-impl Error {
-    pub fn new(_kind: ErrorKind) -> Self {
-        Self
-    }
-}
-
-pub enum ErrorKind {
-    BadParameters,
-}
-
-pub mod deprecated {
-    pub struct Parameters(pub super::Param, pub super::Param, pub super::Param, pub super::Param);
-}
-
-pub struct Param;
 
 enum Command {
     Unsupported,

@@ -132,6 +132,8 @@
 
 extern crate alloc;
 
+#[doc(hidden)]
+pub mod inout;
 pub mod param;
 pub use param::{NoCodec, TeeParam, TeeParamError, TeeParamRepr, TeeParamReprRef, TeeParamSlot};
 

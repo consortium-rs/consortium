@@ -34,7 +34,7 @@ impl From<Command> for u32 {
 pub fn invoke_command(
     ctx: &mut ServiceContext,
     cmd: u32,
-    params: &mut ::optee_utee::deprecated::Parameters,
+    params: &mut ::optee_utee::ParametersAny<'_>,
 ) -> ::optee_utee::Result<()> {
     match Command::from(cmd) {
         Command::Ping => ping_dispatched(ctx, params),

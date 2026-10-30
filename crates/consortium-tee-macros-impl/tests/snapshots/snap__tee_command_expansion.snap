@@ -25,25 +25,30 @@ fn echo(
 #[cfg(feature = "ta")]
 fn echo_dispatched(
     ctx: &mut ServiceContext,
-    params: &mut ::optee_utee::deprecated::Parameters,
+    params: &mut ::optee_utee::ParametersAny<'_>,
 ) -> ::optee_utee::Result<()> {
-    let mut __p_0 = unsafe { params.0.as_memref()? };
-    let input: &[u8] = __p_0.buffer();
-    let mut __p_1 = unsafe { params.1.as_value()? };
-    let mut __val_1: u64 = (__p_1.b() as u64) << 32 | __p_1.a() as u64;
-    let counter: &mut u64 = &mut __val_1;
+    let (__p_0, __p_1, __p_2, __p_3) = params;
+    let __buf_0 = ::optee_utee::ParameterMemrefRead::read_to_vec(
+        __p_0.as_memref_input()?,
+    );
+    let input: &[u8] = &__buf_0;
+    let __h_1 = __p_1.as_value_inout()?;
+    let mut __val_1: u64 = (::optee_utee::ParameterValueRead::get_b(&*__h_1) as u64)
+        << 32 | ::optee_utee::ParameterValueRead::get_a(&*__h_1) as u64;
+    let counter = &mut __val_1;
+    let __out = __p_2.as_memref_output()?;
+    __p_3.as_none()?;
     let __ret_val = echo(ctx, input, counter);
-    __p_1.set_a(*counter as u32);
-    __p_1.set_b((*counter >> 32) as u32);
-    let mut __p_out = unsafe { params.2.as_memref()? };
-    let __repr_out = <::consortium_tee::TeeResult<
+    ::optee_utee::ParameterValueWrite::set_a(&mut *__h_1, __val_1 as u32);
+    ::optee_utee::ParameterValueWrite::set_b(&mut *__h_1, (__val_1 >> 32) as u32);
+    let ::consortium_tee::TeeParamSlot::Serialized(__out_bytes) = <::consortium_tee::TeeResult<
         Vec<u8>,
     > as ::consortium_tee::TeeParam<TestCodec>>::into_tee_param(&__ret_val)
-        .map_err(|_| ::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters))?;
-    let ::consortium_tee::TeeParamSlot::Serialized(ref __out_bytes) = __repr_out else {
-        unreachable!()
+        .map_err(|_| ::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters))?
+    else {
+        return Err(::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters));
     };
-    __p_out.buffer()[..__out_bytes.len()].copy_from_slice(__out_bytes.as_slice());
+    ::optee_utee::ParameterMemrefWrite::set_output(&mut *__out, &__out_bytes)?;
     Ok(())
 }
 #[cfg(feature = "ca")]
@@ -71,19 +76,18 @@ pub fn call_echo(
         ::optee_teec::ParamNone,
     );
     session.invoke_command(Command::Echo as u32, &mut _operation)?;
-    *counter = (_operation.parameters().1.b() as u64) << 32
-        | _operation.parameters().1.a() as u64;
-    Ok({
-        let __updated_size = _operation.parameters().2.updated_size();
-        <::consortium_tee::TeeResult<
-            Vec<u8>,
-        > as ::consortium_tee::TeeParam<
-            TestCodec,
-        >>::from_tee_param(
-                ::consortium_tee::TeeParamSlot::Serialized(
-                    &__out_buf_2[..__updated_size],
-                ),
-            )
-            .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?
-    })
+    let __after = _operation.parameters();
+    *counter = (__after.1.b() as u64) << 32 | __after.1.a() as u64;
+    let __out_size = __after.2.updated_size();
+    let __ret_val = <::consortium_tee::TeeResult<
+        Vec<u8>,
+    > as ::consortium_tee::TeeParam<
+        TestCodec,
+    >>::from_tee_param(
+            ::consortium_tee::TeeParamSlot::Serialized(
+                &__out_buf_2[..__out_size.min(__out_buf_2.len())],
+            ),
+        )
+        .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?;
+    Ok(__ret_val)
 }

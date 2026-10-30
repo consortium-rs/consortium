@@ -35,7 +35,7 @@ impl From<Command> for u32 {
 #[cfg(feature = "ta")]
 pub fn invoke_command(
     cmd: u32,
-    params: &mut ::optee_utee::deprecated::Parameters,
+    params: &mut ::optee_utee::ParametersAny<'_>,
 ) -> ::optee_utee::Result<()> {
     match Command::from(cmd) {
         Command::Ping => ping_dispatched(params),

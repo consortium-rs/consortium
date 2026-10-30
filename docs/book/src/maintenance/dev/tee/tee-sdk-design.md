@@ -124,7 +124,7 @@ fn main() -> consortium_tee::TeeResult<()> {
 **`tee_service!`** generates centrally:
 
 - `pub enum Command { FunctionA = 0, FunctionB = 1, Unknown = N }` — `#[repr(u64)]`, `#[default]` on Unknown
-- `pub(crate) fn invoke_command(ctx: &mut ContextStruct, cmd: u32, params: &mut optee_utee::Parameters) -> Result<()>` — TA dispatch entry point; dispatches via `Command::from(cmd)` to match the `#[ta_invoke_command]` hook signature
+- `pub fn invoke_command(ctx: &mut ContextStruct, cmd: u32, params: &mut optee_utee::ParametersAny<'_>) -> Result<()>` — TA dispatch entry point, called from the TA's `#[ta_invoke_command]` hook; dispatches via `Command::from(cmd)`. It takes `ParametersAny` (the `optee_utee` 0.10 typed API) rather than a fixed tuple because each command has its own slot layout.
 
 ---
 
@@ -143,13 +143,18 @@ An attribute macro applied to individual functions in `lib.rs`. It generates two
 fn function_a(ctx: &mut TaContext, count: u32, data: &[u8]) -> Result<()> { ... }
 
 // Generated (1): TA-side dispatch wrapper — always present, crate-private
-fn function_a_dispatched(ctx: &mut TaContext, params: &mut optee_utee::Parameters) -> Result<()> {
-    // SAFETY: slot 0 is ValueInput — type match guaranteed by #[tee_command]
-    let count: u32 = unsafe { params.0.as_value()?.a() };
-    // SAFETY: slot 1 is MemrefInput — type match guaranteed by #[tee_command]
-    let mut __p_1 = unsafe { params.1.as_memref()? };
-    let data: &[u8] = __p_1.buffer();
-    function_a(ctx, count, data)
+// Every slot is type-checked (unused ones must be `None`) before the call; a mismatch
+// is `BadParameters`. Memrefs are copied out of shared memory, never borrowed.
+fn function_a_dispatched(ctx: &mut TaContext, params: &mut optee_utee::ParametersAny<'_>) -> Result<()> {
+    let (__p_0, __p_1, __p_2, __p_3) = params;
+    let __h_0 = __p_0.as_value_input()?;
+    let count = <u32 as TeeParam<NoCodec>>::from_tee_param(Primitive { a: __h_0.get_a(), b: __h_0.get_b() })?;
+    let __buf_1 = __p_1.as_memref_input()?.read_to_vec();
+    let data: &[u8] = &__buf_1;
+    __p_2.as_none()?;
+    __p_3.as_none()?;
+    function_a(ctx, count, data)?;
+    Ok(())
 }
 
 // Generated (2): CA-side calling stub — only with `ca` feature
@@ -170,11 +175,15 @@ When the function has a non-`()` return type, an extra output slot is allocated 
 fn function_b(ctx: &mut TaContext) -> Result<u32> { Ok(42) }
 
 // TA-side: flushes return value into ValueOutput slot
-fn function_b_dispatched(ctx: &mut TaContext, params: &mut optee_utee::Parameters) -> Result<()> {
+fn function_b_dispatched(ctx: &mut TaContext, params: &mut optee_utee::ParametersAny<'_>) -> Result<()> {
+    let (__p_0, __p_1, __p_2, __p_3) = params;
+    let __out = __p_0.as_value_output()?; // taken before the call
+    __p_1.as_none()?;
+    __p_2.as_none()?;
+    __p_3.as_none()?;
     let __ret_val = function_b(ctx)?;
-    // SAFETY: slot 0 is ValueOutput — type match guaranteed by #[tee_command]
-    let mut __p_out = unsafe { params.0.as_value()? };
-    __p_out.set_a(__ret_val);
+    __out.set_a(__ret_val);
+    __out.set_b(0);
     Ok(())
 }
 
@@ -211,11 +220,11 @@ pub enum Command {
     Unknown = 2,
 }
 
-#[invoke_command]
-pub(crate) fn invoke_command(
+#[cfg(feature = "ta")]
+pub fn invoke_command(
     ctx: &mut TaContext,
     cmd: u32,
-    params: &mut optee_utee::Parameters,
+    params: &mut optee_utee::ParametersAny<'_>,
 ) -> Result<()> {
     match Command::from(cmd) {
         Command::FunctionA => function_a_dispatched(ctx, params),
@@ -235,23 +244,30 @@ Slot assignment is sequential by argument order, skipping the context. Both the 
 
 ### Input parameters
 
-| Rust type   | GP TEE slot    | TA unpacks via                                                   | CA packs via                               |
-| ----------- | -------------- | ---------------------------------------------------------------- | ------------------------------------------ |
-| `bool`      | `VALUE_INPUT`  | `unsafe { params.N.as_value()?.a() } != 0`                       | `ParamValue::new(x as u32, 0, ValueInput)` |
-| `u32`       | `VALUE_INPUT`  | `unsafe { params.N.as_value()?.a() }`                            | `ParamValue::new(x, 0, ValueInput)`        |
-| `&[u8]`     | `MEMREF_INPUT` | `let mut p = unsafe { params.N.as_memref()? }; p.buffer()`       | `ParamTmpRef::new_input(x)`                |
-| `&mut [u8]` | `MEMREF_INOUT` | `let mut p = unsafe { params.N.as_memref()? }; p.buffer()` (mut) | `ParamTmpRef::new_inout(x)`                |
+| Rust type   | GP TEE slot    | TA unpacks via                                                                     | CA packs via                                  |
+| ----------- | -------------- | ---------------------------------------------------------------------------------- | --------------------------------------------- |
+| `bool`      | `VALUE_INPUT`  | `pN.as_value_input()?.get_a() != 0`                                                | `ParamValue::new(x as u32, 0, ValueInput)`    |
+| `u32`       | `VALUE_INPUT`  | `pN.as_value_input()?.get_a()`                                                     | `ParamValue::new(x, 0, ValueInput)`           |
+| `&mut u32`  | `VALUE_INOUT`  | `pN.as_value_inout()?`: `get_a()`, then `set_a()` after the call                   | `ParamValue::new(*x, 0, ValueInout)`          |
+| `&[u8]`     | `MEMREF_INPUT` | `pN.as_memref_input()?.read_to_vec()`                                              | `ParamTmpRef::new_input(x)`                   |
+| `&mut [u8]` | `MEMREF_INOUT` | `pN.as_memref_inout()?`: `read_to_vec()`, then `write_at(0, ..)`                   | `ParamTmpRef::new_inout(x)`                   |
+| `T`         | `MEMREF_INPUT` | `pN.as_memref_input()?`: reject `buffer_len() > MAX_SIZE`, `read_to_vec()`, decode | `ParamTmpRef::new_input(&encoded)`            |
+| `&mut T`    | `MEMREF_INOUT` | as `T`, framed by a 4-byte length (`consortium_tee::inout`); `set_output` back     | `new_inout` over a `capacity(MAX_SIZE)` frame |
 
 ### Return value (output slot)
 
 The output slot is always allocated as the last slot. A non-`()` return type triggers this; `()` / bare `-> Result<()>` does not.
 
-| Rust return type | GP TEE slot     | TA flushes via                                                                      | CA reads back via                                                   |
-| ---------------- | --------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| `u32`            | `VALUE_OUTPUT`  | `let mut p = unsafe { params.N.as_value()? }; p.set_a(v)`                           | `_operation.param_N().as_value().a()`                               |
-| `u64`            | `VALUE_OUTPUT`  | `p.set_a((v >> 32) as u32); p.set_b(v as u32)`                                      | `(a as u64) << 32 \| (b as u64)`                                    |
-| `bool`           | `VALUE_OUTPUT`  | `let mut p = unsafe { params.N.as_value()? }; p.set_a(v as u32)`                    | `_operation.param_N().as_value().a() != 0`                          |
-| `Vec<u8>`        | `MEMREF_OUTPUT` | `let mut p = unsafe { params.N.as_memref()? }; p.buffer()[..].copy_from_slice(...)` | `ParamTmpRef::new_output(&mut buf)`; read `buffer()[..size()]` back |
+The TA takes the output accessor before the call, so a wrong output slot type is rejected without running the handler.
+
+| Rust return type | GP TEE slot     | TA flushes via                                | CA reads back via                                                   |
+| ---------------- | --------------- | --------------------------------------------- | ------------------------------------------------------------------- |
+| `u32`            | `VALUE_OUTPUT`  | `pN.as_value_output()?`: `set_a(v); set_b(0)` | `_operation.parameters().N.a()`                                     |
+| `u64`            | `VALUE_OUTPUT`  | `set_a(v as u32); set_b((v >> 32) as u32)`    | `(b as u64) << 32 \| (a as u64)`                                    |
+| `bool`           | `VALUE_OUTPUT`  | `set_a(v as u32); set_b(0)`                   | `a != 0`                                                            |
+| `Vec<u8>` / `T`  | `MEMREF_OUTPUT` | `pN.as_memref_output()?.set_output(bytes)?`   | `ParamTmpRef::new_output(&mut buf)`; decode `buf[..updated_size()]` |
+
+`set_output` reports the exact length written, which the CA decodes; an encoding larger than the CA's `MAX_SIZE` buffer fails with `ShortBuffer` instead of overrunning it.
 
 ---
 

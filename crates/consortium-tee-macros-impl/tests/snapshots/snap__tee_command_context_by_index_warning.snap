@@ -22,26 +22,30 @@ const _: () = {
 #[cfg(feature = "ta")]
 fn ping_dispatched(
     context: &mut ServiceContext,
-    params: &mut ::optee_utee::deprecated::Parameters,
+    params: &mut ::optee_utee::ParametersAny<'_>,
 ) -> ::optee_utee::Result<()> {
-    let mut __p_0 = unsafe { params.0.as_value()? };
+    let (__p_0, __p_1, __p_2, __p_3) = params;
+    let __h_0 = __p_0.as_value_input()?;
     let value = <u32 as ::consortium_tee::TeeParam<
         ::consortium_tee::NoCodec,
     >>::from_tee_param(::consortium_tee::TeeParamSlot::Primitive {
-            a: __p_0.a(),
-            b: __p_0.b(),
+            a: ::optee_utee::ParameterValueRead::get_a(__h_0),
+            b: ::optee_utee::ParameterValueRead::get_b(__h_0),
         })
         .map_err(|_| ::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters))?;
+    let __out = __p_1.as_value_output()?;
+    __p_2.as_none()?;
+    __p_3.as_none()?;
     let __ret_val = ping(context, value);
-    let mut __p_out = unsafe { params.1.as_value()? };
-    let __repr_out = <u32 as ::consortium_tee::TeeParam<
+    let ::consortium_tee::TeeParamSlot::Primitive { a: __out_a, b: __out_b } = <u32 as ::consortium_tee::TeeParam<
         ::consortium_tee::NoCodec,
     >>::into_tee_param(&__ret_val)
-        .map_err(|_| ::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters))?;
-    let ::consortium_tee::TeeParamSlot::Primitive { a: __pa_out, b: __pb_out } = __repr_out
-    else { unreachable!() };
-    __p_out.set_a(__pa_out);
-    __p_out.set_b(__pb_out);
+        .map_err(|_| ::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters))?
+    else {
+        return Err(::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters));
+    };
+    ::optee_utee::ParameterValueWrite::set_a(&mut *__out, __out_a);
+    ::optee_utee::ParameterValueWrite::set_b(&mut *__out, __out_b);
     Ok(())
 }
 #[cfg(feature = "ca")]
@@ -49,12 +53,12 @@ pub fn call_ping(
     session: &mut ::optee_teec::Session,
     value: u32,
 ) -> ::consortium_tee::TeeResult<u32> {
-    let __repr_0 = <u32 as ::consortium_tee::TeeParam<
+    let ::consortium_tee::TeeParamSlot::Primitive { a: __pa_0, b: __pb_0 } = <u32 as ::consortium_tee::TeeParam<
         ::consortium_tee::NoCodec,
     >>::into_tee_param(&value)
-        .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?;
-    let ::consortium_tee::TeeParamSlot::Primitive { a: __pa_0, b: __pb_0 } = __repr_0
-    else { unreachable!() };
+        .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)? else {
+        return Err(::consortium_tee::TeeError::ParamMismatch);
+    };
     let _p0 = ::optee_teec::ParamValue::new(
         __pa_0,
         __pb_0,
@@ -69,14 +73,15 @@ pub fn call_ping(
         ::optee_teec::ParamNone,
     );
     session.invoke_command(Command::Ping as u32, &mut _operation)?;
-    Ok({
-        let __v = _operation.parameters().1;
-        <u32 as ::consortium_tee::TeeParam<
-            ::consortium_tee::NoCodec,
-        >>::from_tee_param(::consortium_tee::TeeParamSlot::Primitive {
-                a: __v.a(),
-                b: __v.b(),
-            })
-            .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?
-    })
+    let __after = _operation.parameters();
+    let __out_a = __after.1.a();
+    let __out_b = __after.1.b();
+    let __ret_val = <u32 as ::consortium_tee::TeeParam<
+        ::consortium_tee::NoCodec,
+    >>::from_tee_param(::consortium_tee::TeeParamSlot::Primitive {
+            a: __out_a,
+            b: __out_b,
+        })
+        .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?;
+    Ok(__ret_val)
 }

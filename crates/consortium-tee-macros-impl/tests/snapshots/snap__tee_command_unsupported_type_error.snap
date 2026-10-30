@@ -14,11 +14,15 @@ fn unsupported(input: (u32, u64)) -> (u32, u64) {
 }
 #[cfg(feature = "ta")]
 fn unsupported_dispatched(
-    params: &mut ::optee_utee::deprecated::Parameters,
+    params: &mut ::optee_utee::ParametersAny<'_>,
 ) -> ::optee_utee::Result<()> {
+    let (__p_0, __p_1, __p_2, __p_3) = params;
     compile_error!("Unsupported TEE parameter type");
-    let __ret_val = unsupported(input);
     compile_error!("Unsupported TEE return type");
+    __p_1.as_none()?;
+    __p_2.as_none()?;
+    __p_3.as_none()?;
+    let __ret_val = unsupported(input);
     Ok(())
 }
 #[cfg(feature = "ca")]
@@ -37,5 +41,6 @@ pub fn call_unsupported(
         ::optee_teec::ParamNone,
     );
     session.invoke_command(Command::Unsupported as u32, &mut _operation)?;
-    Ok(compile_error!("Unsupported TEE return type"))
+    let __ret_val = compile_error!("Unsupported TEE return type");
+    Ok(__ret_val)
 }
