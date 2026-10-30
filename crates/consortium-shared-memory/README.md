@@ -33,7 +33,6 @@ or lost data.
 | ---------------- | ------------- | ----------------------------- | ------------- |
 | `UncachedRegion` | non-cacheable | no-ops                        | `true`        |
 | `CachedRegion`   | cacheable     | AArch64 / ARMv7-M maintenance | `false`       |
-| `SerialRegion`   | none          | no-ops                        | `true`        |
 
 Transports are generic over the region, so `is_coherent` and the no-op cache
 methods resolve at monomorphization: an uncached link compiles to code with no
@@ -52,9 +51,6 @@ ivac` is EL1-only and would trap from an AP userspace mapping.
   builds are also no-ops.
 - **The 64-byte line size is a constant,** correct for the Cortex-A35/A55 parts in
   the supported families, not queried from `CTR_EL0`.
-- **`SerialRegion` has no backing memory.** It reports a maximum frame size
-  through `Region::len` so a serial transport can size its frame buffer, and
-  returns a **null pointer** from `as_ptr` that callers must never dereference.
 - **Cache maintenance is whole-region.** There is no partial flush; a transport
   that wants finer granularity has to construct narrower regions.
 

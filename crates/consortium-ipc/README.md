@@ -31,10 +31,9 @@ signals at the bottom, typed messages at the top.
 
 | Item                     | Responsibility                                                                |
 | ------------------------ | ----------------------------------------------------------------------------- |
-| [`Doorbell`]             | Data-free wake signal to a remote core; `ring` / `wait` / `pending`.          |
+| [`Doorbell`]             | Data-free wake signal to a remote core; `ring` / `wait`.                      |
 | [`SendTransport`]        | Byte send half. Writes bytes, rings the doorbell, reports `max_send_size`.    |
 | [`RecvTransport`]        | Byte receive half. Awaits the doorbell, reads bytes, reports `max_recv_size`. |
-| [`Transport`]            | Marker for full-duplex links: `SendTransport + RecvTransport`.                |
 | [`Connect`]              | One-shot readiness rendezvous with the peer, run before any traffic.          |
 | `CodecFor<T>`            | Serialization family for a message type (from `consortium-codec`).            |
 | [`Channel<D, T, Tr, C>`] | Typed, single-direction endpoint over one transport half.                     |
@@ -133,7 +132,6 @@ the ABI contract explicitly.
 2. Implement `SendTransport` and/or `RecvTransport`. Both return
    `impl Future<..> + MaybeSend` (RPITIT), so a plain `async fn` works — including
    one that awaits an unnameable future such as `embedded_io_async::Write::write`.
-   Implement `Transport` as a marker if the link is full-duplex.
 3. Implement `Connect` if a peer must agree before traffic flows; use
    `Params = ()` when there is nothing to negotiate.
 4. Report honest `max_send_size` / `max_recv_size` — callers size their scratch
@@ -143,7 +141,7 @@ the ABI contract explicitly.
 
 Doorbell implementors additionally owe the ordering contract on
 [`Doorbell::ring`]: writes performed before `ring` must happen-before the peer's
-`wait` completion or `pending` observation. For software pending bits that is a
+`wait` completion. For software pending bits that is a
 release/acquire pair; for hardware doorbells the signal must not be observable
 before the shared-memory writes it publishes.
 
@@ -189,7 +187,6 @@ just test ipc host                               # full host IPC bundle
 [`Side`]: https://docs.rs/consortium-ipc/latest/consortium_ipc/trait.Side.html
 [`Tertiary`]: https://docs.rs/consortium-ipc/latest/consortium_ipc/struct.Tertiary.html
 [`Transceiver`]: https://docs.rs/consortium-ipc/latest/consortium_ipc/struct.Transceiver.html
-[`Transport`]: https://docs.rs/consortium-ipc/latest/consortium_ipc/trait.Transport.html
 [`Tx`]: https://docs.rs/consortium-ipc/latest/consortium_ipc/struct.Tx.html
 
 ## License

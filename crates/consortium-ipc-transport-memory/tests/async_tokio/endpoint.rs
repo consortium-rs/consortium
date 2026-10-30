@@ -27,8 +27,6 @@ impl_channel!(
     Ping,
     Pong,
     PostcardCodec,
-    0,
-    1,
     MTU,
 );
 
@@ -40,8 +38,6 @@ impl_channel!(
     Pong,
     Ping,
     PostcardCodec,
-    1,
-    0,
     MTU,
 );
 

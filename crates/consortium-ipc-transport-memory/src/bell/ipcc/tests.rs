@@ -95,13 +95,13 @@ fn ring_reports_busy_while_outgoing_channel_is_occupied() {
 }
 
 #[test]
-fn pending_reads_incoming_status() {
+fn raw_pending_reads_incoming_status() {
     let mut regs = [0u32; 8];
     regs[offsets::C2TOC1SR / 4] = occupied(3);
     let db = doorbell(&mut regs);
 
-    assert!(db.pending(ch(3)));
-    assert!(!db.pending(ch(4)));
+    assert!(db.hw.raw_pending(3));
+    assert!(!db.hw.raw_pending(4));
 }
 
 #[test]
@@ -172,7 +172,6 @@ fn out_of_range_channels_are_rejected() {
     let db = doorbell(&mut regs);
 
     assert_eq!(db.ring(ch(16)), Err(BellError::ChanOutOfRange));
-    assert!(!db.pending(ch(16)));
 }
 
 #[test]

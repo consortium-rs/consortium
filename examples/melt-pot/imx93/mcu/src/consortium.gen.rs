@@ -5,7 +5,7 @@
     ::consortium_ipc::Secondary, 1usize >,
     ::consortium_shared_memory::regions::UncachedRegion,
     ::melt_pot_shared::SensorReading, ::melt_pot_shared::Command,
-    ::consortium_codec::PostcardCodec, 7u8, 6u8, 128usize,
+    ::consortium_codec::PostcardCodec, 128usize,
 );
 #[cfg(target_arch = "arm")]
 fn __consortium_install_channels(

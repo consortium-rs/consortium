@@ -27,12 +27,11 @@
 //!
 //! # Architecture
 //!
-//! Six traits compose into two user-facing types:
+//! Five traits compose into two user-facing types:
 //!
 //! ```text
 //!   Doorbell                       wake the remote processor (no data)
 //!   SendTransport / RecvTransport  byte halves; ring or await the doorbell
-//!   Transport                      marker for full-duplex links
 //!   Connect                        one-shot readiness rendezvous with the peer
 //!   CodecFor<T>                    serialization family for a message type
 //!   Channel<D, T, Tr, C>           typed endpoint over one transport half
@@ -40,7 +39,7 @@
 //! ```
 //!
 //! - [`Doorbell`] is pure signaling. Its ordering contract — writes before `ring`
-//!   happen-before the peer's `wait`/`pending` — is what makes shared-memory
+//!   happen-before the peer's `wait` — is what makes shared-memory
 //!   payloads safe to read on the far side.
 //! - [`SendTransport`] and [`RecvTransport`] move bytes and report their MTU. Both
 //!   return `impl Future<..> + MaybeSend`, so implementations may be plain
@@ -82,7 +81,7 @@
 //! # Implementing a transport
 //!
 //! Implement [`TransportError`] to name the error type, then [`SendTransport`]
-//! and/or [`RecvTransport`], plus [`Transport`] as a marker for full-duplex links.
+//! and/or [`RecvTransport`].
 //! Implement [`Connect`] when a peer must agree before traffic flows, using
 //! `Params = ()` if nothing is negotiated. Report honest `max_send_size` /
 //! `max_recv_size`: callers size their scratch buffers from them. If the link owns
@@ -124,7 +123,7 @@ pub use {
     future::MaybeSend,
     side::{Primary, Secondary, Side, Tertiary},
     transceiver::Transceiver,
-    transport::{RecvTransport, SendTransport, Transport, TransportError},
+    transport::{RecvTransport, SendTransport, TransportError},
     wire::IpcSafe,
 };
 

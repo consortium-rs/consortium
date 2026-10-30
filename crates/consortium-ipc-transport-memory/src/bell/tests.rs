@@ -205,7 +205,7 @@ fn counting_waker() -> (Waker, Arc<AtomicUsize>) {
 }
 
 #[test]
-fn ring_and_pending_delegate_to_the_block() {
+fn ring_delegates_to_the_block() {
     let (bell, regs) = bell();
 
     bell.ring(ch(3)).unwrap();
@@ -213,10 +213,6 @@ fn ring_and_pending_delegate_to_the_block() {
 
     regs.busy.store(1 << 3, Ordering::SeqCst);
     assert_eq!(bell.ring(ch(3)), Err(BellError::Busy));
-
-    assert!(!bell.pending(ch(2)));
-    regs.signal(2);
-    assert!(bell.pending(ch(2)));
 }
 
 #[test]
@@ -224,7 +220,6 @@ fn invalid_channel_is_reported_everywhere() {
     let (bell, regs) = bell();
 
     assert_eq!(bell.ring(ch(LINES)), Err(BellError::ChanOutOfRange));
-    assert!(!bell.pending(ch(LINES)));
     let mut cx = noop_cx();
     assert_eq!(
         std::pin::pin!(bell.wait(ch(LINES))).poll(&mut cx),
@@ -297,7 +292,7 @@ fn cancelling_a_wait_disarms_without_acknowledging() {
     assert_eq!(regs.ops(), [("arm", 1 << 2), ("disarm", 1 << 2)]);
     assert!(!regs.enabled(2));
     assert!(
-        bell.pending(ch(2)),
+        bell.hw.raw_pending(2),
         "the signal must outlive the cancelled wait"
     );
 }

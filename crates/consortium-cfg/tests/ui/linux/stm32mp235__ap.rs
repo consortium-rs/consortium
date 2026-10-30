@@ -17,7 +17,7 @@ mod shared {
     ::consortium_ipc_transport_memory::bell::ipcc::IpccDoorbell <
     ::consortium_ipc::Primary, 1usize >, ::consortium_runtime_app::uio::UioRegion, crate
     ::shared::SensorData, crate ::shared::MotionControl,
-    ::consortium_codec::PostcardCodec, 0u8, 1u8, 128usize,
+    ::consortium_codec::PostcardCodec, 128usize,
 );
 fn __consortium_install_channels(
     uio: &[::std::sync::Arc<::consortium_runtime_app::uio::UioDevice>],

@@ -25,8 +25,7 @@ mod shared {
     ::consortium_ipc_transport_memory::bell::mu::MuDoorbell <
     ::consortium_ipc::Secondary, 1usize >,
     ::consortium_shared_memory::regions::UncachedRegion, crate ::shared::PowerControl,
-    crate ::shared::LowPowerData, ::consortium_codec::PostcardCodec, 5u8, 4u8, 128usize,
-    ack : (1u8, 0u8),
+    crate ::shared::LowPowerData, ::consortium_codec::PostcardCodec, 128usize, ack,
 );
 #[cfg(target_arch = "arm")]
 fn __consortium_install_channels() {
