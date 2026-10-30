@@ -16,9 +16,8 @@
 
 //! Coprocessor firmware compilation, plus the remoteproc section rename.
 //!
-//! Builds a bare-metal ELF with `cargo`, injects the `CONSORTIUM_IPC_*` and
-//! `CONSORTIUM_DBG_*` environment variables the firmware reads with `option_env!`, and
-//! verifies the result is really an ELF before handing it on.
+//! Builds a bare-metal ELF with `cargo`, injecting the `CSTI_*` build-host directories,
+//! and verifies the result is really an ELF before handing it on.
 //!
 //! Linux remoteproc loaders use a chip-specific vector section name while
 //! `cortex-m-rt` emits `.vector_table`. The deployable artifact is therefore a
@@ -31,10 +30,8 @@ use thiserror::Error;
 use tokio::process::Command;
 
 use super::Compiler;
-use crate::compile::env::{CstiWorkspace, DbgConfig, SharedMemConfig};
-use crate::compile::utils::{
-    elf_path, inject_csti, inject_dbg, inject_shared_mem, resolve_cargo, run_command, verify_elf,
-};
+use crate::compile::env::CstiWorkspace;
+use crate::compile::utils::{elf_path, inject_csti, resolve_cargo, run_command, verify_elf};
 use crate::progress::BuildReporter;
 
 /// Error type for firmware compilation.
@@ -233,10 +230,6 @@ pub struct FirmwareConfiguration {
     /// Pass `--offline` to cargo: resolve and build from the local registry cache
     /// only. Populate that cache first with `csti fetch`.
     pub offline: bool,
-    /// IPC shared-memory layout, injected as `CONSORTIUM_IPC_*` env vars.
-    pub ipc: Option<SharedMemConfig>,
-    /// Debug ring layout, injected as `CONSORTIUM_DBG_*` env vars.
-    pub dbg: Option<DbgConfig>,
     /// Resolved remoteproc linker/ELF/DTS contract. The pipeline always sets
     /// this; `None` retains the legacy `.isr_vectors` behavior for direct users.
     pub remoteproc: Option<RemoteprocMemoryLayout>,
@@ -307,8 +300,6 @@ impl FirmwareCompiler {
             .arg(&config.target)
             .current_dir(&config.path);
 
-        inject_shared_mem(&mut cmd, "IPC", config.ipc.as_ref());
-        inject_dbg(&mut cmd, config.dbg.as_ref());
         inject_csti(&mut cmd, config.workspace.as_ref());
 
         if config.release {
@@ -362,8 +353,6 @@ pub struct FirmwareBuilder {
     pub target: String,
     pub path: PathBuf,
     pub release: bool,
-    pub ipc: Option<SharedMemConfig>,
-    pub dbg: Option<DbgConfig>,
 }
 
 impl FirmwareBuilder {
@@ -375,8 +364,6 @@ impl FirmwareBuilder {
             path: self.path.clone(),
             release: self.release,
             offline: false,
-            ipc: self.ipc,
-            dbg: self.dbg,
             remoteproc: None,
             workspace: None,
         })
@@ -392,8 +379,6 @@ impl FirmwareBuilder {
             path: self.path.clone(),
             release: self.release,
             offline: false,
-            ipc: self.ipc,
-            dbg: self.dbg,
             remoteproc: None,
             workspace: None,
         })

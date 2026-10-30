@@ -200,42 +200,40 @@ impl ConsortiumLogger {
         }
     }
 
-    /// Resets the configured debug ring to a fresh, empty state.
+    /// Reset the debug ring at `base` to a fresh, empty state and start logging
+    /// into it.
     ///
-    /// Firmware should call this once during startup, before the first
-    /// `defmt::*` call, so a warm reset that retained SRAM contents does not
-    /// resume into a stale ring (stale cursors or latched flags). It is a no-op
-    /// when the `[dbg]` layout was not configured at build time
-    /// (`config::BASE == 0`), matching the no-op behavior of the `Logger` methods.
-    pub fn init() {
-        if config::BASE == 0 {
-            return;
-        }
-        // SAFETY: `config::BASE_PTR`/`config::SIZE` describe the debug shared-memory
-        // region declared in `[dbg]` and injected by the builder.
-        unsafe {
-            Self::force_init_shared_memory(config::BASE_PTR, config::SIZE);
-        }
+    /// Generated `init()` calls this once, first thing, with the `[dbg.<core>]`
+    /// ring from `Consortium.toml`, so a warm reset that retained SRAM contents
+    /// does not resume into a stale ring (stale cursors or latched flags). Until it
+    /// runs, the `Logger` methods and the panic handler are no-ops.
+    ///
+    /// # Safety
+    ///
+    /// `base` must address a debug shared-memory region of `len` bytes that only
+    /// this logger writes (and the host reads, per the descriptor discipline), valid
+    /// for the rest of the program. Call it once, before the first `defmt` frame.
+    pub unsafe fn init(base: *mut u8, len: u16) {
+        // SAFETY: forwarded to the caller.
+        unsafe { Self::force_init_shared_memory(base, len) };
+        config::set(base, len);
     }
 }
 
-// SAFETY: the implementation only accesses the debug shared-memory region described by the
-// compile-time `[dbg]` layout (`config::BASE_PTR`/`config::SIZE`, injected by consortium-builder)
-// and delegates all descriptor mutation to the shared-memory helpers above. When the region was
-// not configured (`config::BASE` is `0`) every method is a no-op, so a plain `cargo build` links
-// cleanly without touching address `0`.
+// SAFETY: the implementation only accesses the debug shared-memory region `init` recorded (whose
+// caller vouched for it) and delegates all descriptor mutation to the shared-memory helpers above.
+// Before `init` every method is a no-op, so nothing touches address `0`.
 unsafe impl Logger for ConsortiumLogger {
     fn acquire() {
-        if config::BASE == 0 {
+        let Some((base, size)) = config::region() else {
             return;
-        }
-        // SAFETY: `config::BASE_PTR`/`config::SIZE` describe the debug shared-memory
-        // region declared in `[dbg]` and injected by the builder. The staging statics
-        // are only touched between `acquire()` and `release()`, a single execution
-        // context per the `Logger` contract.
+        };
+        // SAFETY: `base`/`size` describe the debug shared-memory region `init`
+        // recorded. The staging statics are only touched between `acquire()` and
+        // `release()`, a single execution context per the `Logger` contract.
         #[allow(clippy::multiple_unsafe_ops_per_block)]
         unsafe {
-            Self::acquire_shared_memory(config::BASE_PTR, config::SIZE);
+            Self::acquire_shared_memory(base, size);
             FRAME_LEN = 0;
             FRAME_OVERFLOW = false;
             // Begin the rzcobs frame; encoded bytes accumulate in `FRAME` via `stage`.
@@ -244,20 +242,20 @@ unsafe impl Logger for ConsortiumLogger {
     }
 
     unsafe fn flush() {
-        if config::BASE == 0 {
+        let Some((base, _)) = config::region() else {
             return;
-        }
-        // SAFETY: `config::BASE_PTR` describes the debug shared-memory region.
+        };
+        // SAFETY: `base` is the debug shared-memory region `init` recorded.
         unsafe {
-            Self::flush_shared_memory(config::BASE_PTR);
+            Self::flush_shared_memory(base);
         }
     }
 
     unsafe fn release() {
-        if config::BASE == 0 {
+        let Some((base, _)) = config::region() else {
             return;
-        }
-        // SAFETY: `config::BASE_PTR` describes the debug shared-memory region; the
+        };
+        // SAFETY: `base` is the debug shared-memory region `init` recorded; the
         // staging statics are exclusively owned by the current execution context
         // between `acquire()` and `release()`.
         #[allow(clippy::multiple_unsafe_ops_per_block)]
@@ -268,20 +266,20 @@ unsafe impl Logger for ConsortiumLogger {
             if FRAME_OVERFLOW {
                 // The encoded frame exceeded the packet payload limit. Drop it and
                 // latch `Overflow` rather than emit a truncated, undecodable frame.
-                let descriptor = &mut *(config::BASE_PTR as *mut Descriptor);
+                let descriptor = &mut *(base as *mut Descriptor);
                 descriptor.flags.insert(Flags::Overflow);
-                wv_u16(config::BASE_PTR, FLAGS_OFFSET, descriptor.flags.bits());
+                wv_u16(base, FLAGS_OFFSET, descriptor.flags.bits());
             } else {
                 let frame =
                     core::slice::from_raw_parts(addr_of_mut!(FRAME) as *const u8, FRAME_LEN);
-                Self::write_shared_memory(config::BASE_PTR, frame);
+                Self::write_shared_memory(base, frame);
             }
-            Self::release_shared_memory(config::BASE_PTR);
+            Self::release_shared_memory(base);
         }
     }
 
     unsafe fn write(bytes: &[u8]) {
-        if config::BASE == 0 {
+        if config::region().is_none() {
             return;
         }
         // SAFETY: the staging statics are exclusively owned by the current execution

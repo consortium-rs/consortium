@@ -67,17 +67,13 @@
 //!
 //! # Compile-time configuration
 //!
-//! Much of what generated code needs is passed as `CONSORTIUM_*` environment variables
-//! read with `option_env!`/`env!`, not as generated source. The carriers in
-//! `compile::env` describe what gets injected: [`SharedMemConfig`], [`DbgConfig`],
-//! [`HmiConfig`].
-//!
-//! Numeric values are emitted as **decimal strings**, so a firmware-side consumer that
-//! needs const parsing can use `const-str` without depending on the std-oriented schema
-//! crates. Note that there is deliberately no `CONSORTIUM_IPC_BASE`: controller firmware
-//! gets its region base baked into generated init code, and the Linux application reaches
-//! the same memory through its UIO device, so neither side needs the physical address
-//! from the environment.
+//! Memory layout lives in generated source, not the environment: controller firmware gets
+//! its IPC region base and its `[dbg]` ring baked into generated `init()`, and the Linux
+//! application reaches the same memory through its UIO devices. What still travels as
+//! environment variables is what generated code cannot know: the on-target HMI asset
+//! paths ([`HmiConfig`], read with `option_env!`), the TEE UUID, and the `CSTI_*`
+//! build-host directories ([`CstiWorkspace`]). Numeric values are emitted as decimal
+//! strings.
 //!
 //! # Firmware post-processing
 //!
@@ -123,7 +119,7 @@ pub use pipeline::check::{CheckConfig, CheckPlan, run as run_check};
 pub use pipeline::fetch::{FetchConfig, FetchPlan, run as run_fetch};
 
 // Compile-time environment-injection carriers
-pub use compile::env::{CortexMcuCore, CstiWorkspace, DbgConfig, HmiConfig, SharedMemConfig};
+pub use compile::env::{CortexMcuCore, CstiWorkspace, HmiConfig};
 
 // Backward-compatible builders (String-error API)
 pub use compile::application::ApplicationBuilder;

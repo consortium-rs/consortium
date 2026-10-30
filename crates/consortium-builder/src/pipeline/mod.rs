@@ -53,14 +53,13 @@ use std::collections::HashMap;
 use std::path::{Path, PathBuf};
 
 use consortium_cfg::Session;
-use consortium_cfg::bridge::LoweredIr;
 use consortium_cfg_common::config::{HmiEngine, VisibleCore, Workspace, XcoreName};
 use consortium_cfg_common::database::Coprocessor;
 use thiserror::Error;
 
 use crate::compile::application::{ApplicationCompileError, ApplicationCompiler};
 use crate::compile::deploy::systemd::{self, SystemdRestartPolicy, SystemdUnitConfig};
-use crate::compile::env::{CstiWorkspace, SharedMemConfig};
+use crate::compile::env::CstiWorkspace;
 use crate::compile::firmware::{FirmwareCompileError, FirmwareCompiler};
 use crate::compile::optee::{OpteeCompileError, OpteeCompiler, OpteeConfiguration};
 use crate::compile::web::{HmiCompileError, HmiCompiler, HmiConfiguration};
@@ -843,29 +842,6 @@ pub(crate) fn core_rust_triple(core: VisibleCore) -> String {
         // list); the application stage resolves its Linux triple separately.
         VisibleCore::Ap => "aarch64-unknown-linux-gnu".to_string(),
     }
-}
-
-/// The shared-memory layout for `core`'s first IPC channel, if it has one.
-///
-/// No physical base is carried: the IPC transport resolves its region from the
-/// generated code (controllers embed the base; the AP maps through UIO), so the
-/// only AP-relevant coordinate is the UIO device index.
-pub(crate) fn ipc_config_for(ir: &LoweredIr, core: VisibleCore) -> Option<SharedMemConfig> {
-    let transceiver = ir
-        .shuhan
-        .transceivers()
-        .iter()
-        .find(|t| t.channel_primary.0 == core || t.channel_secondary.0 == core)?;
-    // The AP carries its UIO device index; controllers don't map through UIO.
-    let uio = match core {
-        VisibleCore::Ap => transceiver.region.address.ap.uio_id as u32,
-        _ => 0,
-    };
-    Some(SharedMemConfig {
-        length: u64::from(transceiver.region.length),
-        uio,
-        mtu: transceiver.mtu,
-    })
 }
 
 /// Resolves the shared message-type crate's Rust path.

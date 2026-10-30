@@ -29,7 +29,7 @@ use std::path::{Path, PathBuf};
 use consortium_cfg::Session;
 use consortium_cfg_common::config::{AcoreName, Party, VisibleCore};
 
-use super::{CargoOptions, PipelineError, elf_map, ipc_config_for};
+use super::{CargoOptions, PipelineError, elf_map};
 use crate::compile::application::ApplicationConfiguration;
 use crate::compile::env::{CstiWorkspace, HmiConfig};
 
@@ -78,8 +78,6 @@ pub fn plan_application_build(
         _ => None,
     };
 
-    let ipc = ipc_config_for(&session.lower()?, VisibleCore::Ap);
-
     // A relative `[profile] sysroot` is anchored at the manifest directory; an
     // absolute one is used verbatim.
     let sysroot = session
@@ -108,11 +106,6 @@ pub fn plan_application_build(
             release: cargo.release,
             offline: cargo.offline,
             hmi,
-            ipc,
-            // The AP is the debug *host*: it reads rings through the generated UIO
-            // code and the embedded ELF, not via `CONSORTIUM_DBG_*` (those
-            // configure a ring *writer*), so no debug layout is injected here.
-            dbg: None,
             sysroot,
             workspace: Some(workspace.clone()),
         },
@@ -200,8 +193,8 @@ mod tests {
             plan.generated
                 .contains("include_bytes!(\"/build/cm33.elf\")")
         );
-        // The AP is the host, so no debug writer layout is injected.
-        assert!(plan.config.dbg.is_none());
+        // The AP is the debug host: it reads rings, it never initializes a logger.
+        assert!(!plan.generated.contains("ConsortiumLogger"));
 
         // The stm32 example does not declare a sysroot, so none is planned.
         assert!(plan.config.sysroot.is_none());
