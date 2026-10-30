@@ -136,11 +136,9 @@ fn disarm_all_clears_only_the_given_semaphores() {
 }
 
 #[test]
-fn chan_validate_rejects_reserved_and_out_of_range() {
+fn chan_validate_rejects_out_of_range() {
     type Db = HsemDoorbell<Primary, 1>;
-    assert_eq!(Chan::new::<Db>(0), Err(BellError::ChanReserved));
-    assert_eq!(Chan::new::<Db>(1), Err(BellError::ChanReserved));
-    assert_eq!(Chan::new::<Db>(2).map(|c| c.id()), Ok(2));
+    assert_eq!(Chan::new::<Db>(0).map(|c| c.id()), Ok(0));
     assert_eq!(
         Chan::new::<Db>(HSEM_CHAN_COUNT),
         Err(BellError::ChanOutOfRange)

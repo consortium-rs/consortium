@@ -93,8 +93,6 @@ unsafe impl BellHw for FakeBell {
 
     const CHANNELS: u8 = LINES;
 
-    const RESERVED: Range<u8> = 0..1;
-
     unsafe fn at(base: usize) -> Self {
         // SAFETY: tests pass a pointer leaked from `Arc::into_raw` (see `bell`).
         let regs = unsafe { Arc::from_raw(base as *const Regs) };
@@ -400,7 +398,7 @@ fn clones_share_one_waker_table() {
 #[test]
 fn chan_validate_uses_the_block_bounds() {
     type Db = BellA<FakeBell>;
-    assert_eq!(Chan::new::<Db>(0), Err(BellError::ChanReserved));
+    assert_eq!(Chan::new::<Db>(0).map(|c| c.id()), Ok(0));
     assert_eq!(Chan::new::<Db>(1).map(|c| c.id()), Ok(1));
     assert_eq!(Chan::new::<Db>(LINES), Err(BellError::ChanOutOfRange));
 }
