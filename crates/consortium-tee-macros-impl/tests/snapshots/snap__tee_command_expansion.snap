@@ -25,7 +25,7 @@ fn echo(
 #[cfg(feature = "ta")]
 fn echo_dispatched(
     ctx: &mut ServiceContext,
-    params: &mut ::optee_utee::Parameters,
+    params: &mut ::optee_utee::deprecated::Parameters,
 ) -> ::optee_utee::Result<()> {
     let mut __p_0 = unsafe { params.0.as_memref()? };
     let input: &[u8] = __p_0.buffer();

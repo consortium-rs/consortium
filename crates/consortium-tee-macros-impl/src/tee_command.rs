@@ -78,7 +78,7 @@ impl syn::parse::Parse for TeeArgs {
 
 /// Generates two companion functions for a TA command handler.
 ///
-/// **`function_name_dispatched`** (TA side, default, `#[cfg(feature = "ta")]`): unpacks `::optee_utee::Parameters` via the
+/// **`function_name_dispatched`** (TA side, default, `#[cfg(feature = "ta")]`): unpacks `::optee_utee::deprecated::Parameters` via the
 /// `TeeParam` trait, calls the original function, and flushes any output or inout values
 /// back into their slots.
 ///
@@ -244,7 +244,7 @@ pub fn tee_command(attr: TokenStream2, item: TokenStream2) -> TokenStream2 {
         let ctx_ty = &ctx.ty;
         quote! {
             #[cfg(feature = "ta")]
-            fn #dispatched_name(#ctx_pat: #ctx_ty, #param_binding: &mut ::optee_utee::Parameters) -> ::optee_utee::Result<()> {
+            fn #dispatched_name(#ctx_pat: #ctx_ty, #param_binding: &mut ::optee_utee::deprecated::Parameters) -> ::optee_utee::Result<()> {
                 #(#unpack_stmts)*
                 #call_and_flush
             }
@@ -252,7 +252,7 @@ pub fn tee_command(attr: TokenStream2, item: TokenStream2) -> TokenStream2 {
     } else {
         quote! {
             #[cfg(feature = "ta")]
-            fn #dispatched_name(#param_binding: &mut ::optee_utee::Parameters) -> ::optee_utee::Result<()> {
+            fn #dispatched_name(#param_binding: &mut ::optee_utee::deprecated::Parameters) -> ::optee_utee::Result<()> {
                 #(#unpack_stmts)*
                 #call_and_flush
             }

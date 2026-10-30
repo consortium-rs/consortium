@@ -14,7 +14,7 @@ fn adjust_config(config: &mut DeviceConfig) {
 }
 #[cfg(feature = "ta")]
 fn adjust_config_dispatched(
-    params: &mut ::optee_utee::Parameters,
+    params: &mut ::optee_utee::deprecated::Parameters,
 ) -> ::optee_utee::Result<()> {
     let mut __p_0 = unsafe { params.0.as_memref()? };
     let mut __val_0: DeviceConfig = <DeviceConfig as ::consortium_tee::TeeParam<

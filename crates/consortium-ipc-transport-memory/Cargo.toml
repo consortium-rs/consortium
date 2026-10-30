@@ -54,7 +54,7 @@ stm32mp25x = ["consortium-hal-stm32mp2/stm32mp25x", "dep:consortium-hal-stm32mp2
 
 [dependencies]
 atomic-waker             = "1.1.2"
-bitfield                 = "0.19.5"
+bitfield                 = "0.20"
 consortium-codec         = { default-features = false, path = "../consortium-codec", version = "0.4.0" }
 consortium-ipc           = { default-features = false, path = "../consortium-ipc", version = "0.4.0" }
 consortium-hal-stm32mp2  = { default-features = false, optional = true, path = "../consortium-hal-stm32mp2", version = "0.4.0" }

@@ -14,7 +14,7 @@ fn hello_world(a: u32) -> u32 {
 }
 #[cfg(feature = "ta")]
 fn hello_world_dispatched(
-    params: &mut ::optee_utee::Parameters,
+    params: &mut ::optee_utee::deprecated::Parameters,
 ) -> ::optee_utee::Result<()> {
     let mut __p_0 = unsafe { params.0.as_value()? };
     let a = <u32 as ::consortium_tee::TeeParam<
