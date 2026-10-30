@@ -37,7 +37,7 @@
 //!
 //! | Module          | Role                                                            |
 //! | --------------- | --------------------------------------------------------------- |
-//! | [`config`]      | Compile-time region base/length from `CONSORTIUM_DBG_*`.          |
+//! | `config`        | The ring base/length `ConsortiumLogger::init` records.          |
 //! | [`descriptor`]  | The `CDBG` descriptor and single-writer/single-reader ring rules.  |
 //! | [`packet`]      | Per-frame envelope inside the ring.                              |
 //! | `logger`        | Firmware `#[global_logger]`; encodes and appends.                 |
@@ -54,17 +54,11 @@
 //!
 //! # Configuration
 //!
-//! Layout comes from the builder, not from the firmware source. `csti build`
-//! lowers `[dbg.<core>]` in `Consortium.toml` into `CONSORTIUM_DBG_BASE` and
-//! `CONSORTIUM_DBG_LENGTH`, which [`config`] reads with `option_env!` and parses
-//! in a `const` context.
-//!
-//! Under a plain `cargo build` those variables are absent, so
-//! [`config::CONFIGURED`] is `false` and the logger is a **no-op** rather than a
-//! build failure — which is what lets firmware crates be checked without the
-//! pipeline. The trade-off is that an image built without the pipeline logs nothing,
-//! silently; firmware that must not ship that way should `assert!` on
-//! [`config::CONFIGURED`] in a `const` item. See [`config`] for the snippet.
+//! Layout comes from the manifest, not from the firmware source. `csti build`
+//! lowers `[dbg.<core>]` in `Consortium.toml` into the generated `init()`, which
+//! calls `ConsortiumLogger::init(base, len)` first thing. Until that call, the
+//! logger and the panic handler are **no-ops**, so a firmware crate built without
+//! generated code still links and runs; it just logs nothing.
 //!
 //! # Features
 //!
@@ -94,7 +88,8 @@
 //! Host-side tests cover descriptor initialization, ring read/write behaviour,
 //! decoding fixtures, and the overflow/error flags — no target hardware needed.
 
-pub mod config;
+#[cfg(feature = "logger")]
+mod config;
 pub mod descriptor;
 #[cfg(feature = "host")]
 pub mod host;

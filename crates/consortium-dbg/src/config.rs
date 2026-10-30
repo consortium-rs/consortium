@@ -14,50 +14,40 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-//! Compile-time debug (CDBG) shared-memory layout.
+//! The debug (CDBG) ring this core logs into.
 //!
-//! The debug ring uses the **same** shared-memory format as the IPC region; the
-//! builder injects the `[dbg]` section of `Consortium.toml` as `CONSORTIUM_DBG_*`
-//! environment variables, which this module reads with `option_env!` and parses
-//! in a `const` context. The builder emits numeric values as decimal strings;
-//! this replaces the previous `extern "C"` linker symbols
-//! (`CONSORTIUM_DBG_SRAM_BASE`/`CONSORTIUM_DBG_SRAM_SIZE`) and the matching
-//! `#[no_mangle]` statics the firmware had to define.
+//! The ring uses the **same** shared-memory format as the IPC region. Its base and
+//! length used to be compile-time constants parsed from `CONSORTIUM_DBG_*`
+//! environment variables; now generated `init()` passes them to
+//! `ConsortiumLogger::init`, which records them here once, so generated code is
+//! the single place the layout is written down.
 //!
-//! When the variables are absent (a plain `cargo build`), [`CONFIGURED`] is
-//! `false`, [`BASE`] is `0`, and the `logger::ConsortiumLogger` becomes
-//! a no-op. That is what lets firmware crates be `cargo check`ed without running
-//! the build pipeline.
+//! Until `init` runs, [`region`] is `None` and the logger and panic handler are
+//! no-ops, which is also what a firmware crate built without generated code gets.
 //!
-//! The trade-off is that a real firmware image built without the pipeline logs
-//! nothing, silently. Firmware that must not ship that way should assert
-//! [`CONFIGURED`] at compile time:
-//!
-//! ```rust,ignore
-//! const _: () = assert!(
-//!     consortium_dbg::config::CONFIGURED,
-//!     "debug logging requires `csti build` to inject CONSORTIUM_DBG_*",
-//! );
-//! ```
+//! Plain atomic loads and stores only: ARMv6-M (the STM32MP25 CM0+) has no atomic
+//! read-modify-write, and none is needed for a value written once before logging
+//! starts.
 
-const fn env_or_zero(value: Option<&str>) -> &str {
-    match value {
-        Some(s) => s,
-        None => "0",
-    }
+use core::sync::atomic::{AtomicU16, AtomicUsize, Ordering};
+
+/// Ring base address, or `0` while unset.
+static BASE: AtomicUsize = AtomicUsize::new(0);
+/// Ring length in bytes; only meaningful once [`BASE`] is set.
+static SIZE: AtomicU16 = AtomicU16::new(0);
+
+/// Record the ring. Called once, by `ConsortiumLogger::init`, after the ring has
+/// been reset and before the first `defmt` frame.
+pub(crate) fn set(base: *mut u8, size: u16) {
+    SIZE.store(size, Ordering::Relaxed);
+    // Publishes `SIZE` to every reader that observes the non-zero base.
+    BASE.store(base as usize, Ordering::Release);
 }
 
-/// `true` when the builder injected the `[dbg]` shared-memory layout.
-pub const CONFIGURED: bool = option_env!("CONSORTIUM_DBG_BASE").is_some();
-
-/// Physical base address of the debug region, as seen by the MCU (raw memory).
-pub const BASE: u64 = const_str::parse!(env_or_zero(option_env!("CONSORTIUM_DBG_BASE")), u64);
-
-/// Length of the debug region in bytes.
-pub const LENGTH: u64 = const_str::parse!(env_or_zero(option_env!("CONSORTIUM_DBG_LENGTH")), u64);
-
-/// Debug region base as a raw mutable pointer for the MCU side.
-pub const BASE_PTR: *mut u8 = BASE as *mut u8;
-
-/// Debug region length truncated to the descriptor's `u16` size field.
-pub const SIZE: u16 = LENGTH as u16;
+/// The ring's `(base, size)`, or `None` before `ConsortiumLogger::init`.
+pub(crate) fn region() -> Option<(*mut u8, u16)> {
+    match BASE.load(Ordering::Acquire) {
+        0 => None,
+        base => Some((base as *mut u8, SIZE.load(Ordering::Relaxed))),
+    }
+}

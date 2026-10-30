@@ -56,20 +56,15 @@ and the pipeline needs no per-kind special casing.
 
 ## Compile-time configuration
 
-Much of what generated code needs arrives as `CONSORTIUM_*` environment variables read
-with `option_env!`/`env!`, not as generated source. `compile::env` describes what gets
-injected: `SharedMemConfig`, `DbgConfig`, `HmiConfig`.
+Memory layout lives in generated source, not the environment. Controller firmware gets
+its IPC region base and its `[dbg]` ring baked into generated `init()`, and the Linux
+application reaches the same memory through its UIO devices, so there are no
+`CONSORTIUM_IPC_*` or `CONSORTIUM_DBG_*` variables.
 
-Two details worth knowing:
-
-- **Numeric values are emitted as decimal strings**, so a firmware-side consumer that
-  needs const parsing can use `const-str` without depending on the std-oriented schema
-  crates.
-- **There is deliberately no `CONSORTIUM_IPC_BASE`.** Controller firmware gets its
-  region base baked into generated init code, and the Linux application reaches the same
-  memory through its UIO device — so neither side needs the physical address from the
-  environment. Channel-local metadata (`CONSORTIUM_IPC_LENGTH`, `CONSORTIUM_IPC_UIO`,
-  `CONSORTIUM_IPC_MTU`) is injected; the base is not.
+What still arrives as environment variables is what generated code cannot know, read
+with `option_env!`/`env!`: the on-target HMI asset paths (`compile::env::HmiConfig`), the
+TEE UUID, and the `CSTI_*` build-host directories (`CstiWorkspace`). Numeric values are
+emitted as decimal strings.
 
 ## Things that are easy to get wrong
 

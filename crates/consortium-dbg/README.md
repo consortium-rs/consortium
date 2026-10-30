@@ -35,7 +35,7 @@ the host side needs a decoder and the matching binary.
 
 | Module       | Role                                                                  |
 | ------------ | --------------------------------------------------------------------- |
-| `config`     | Compile-time region base/length from `CONSORTIUM_DBG_*`.              |
+| `config`     | The ring base/length `ConsortiumLogger::init` records (private).      |
 | `descriptor` | The `CDBG` descriptor and the single-writer/single-reader ring rules. |
 | `packet`     | Per-frame envelope inside the ring.                                   |
 | `logger`     | Firmware `#[global_logger]`; encodes and appends.                     |
@@ -94,17 +94,14 @@ Consequences worth knowing:
 
 ## Configuration
 
-Layout comes from the builder, not from firmware source. `csti build` lowers
-`[dbg.<core>]` in `Consortium.toml` into `CONSORTIUM_DBG_BASE` and
-`CONSORTIUM_DBG_LENGTH`, which `config` reads with `option_env!` and parses in a
-`const` context. (This replaced an older scheme of `extern "C"` linker symbols and
-matching `#[no_mangle]` statics the firmware had to define itself.)
+Layout comes from the manifest, not from firmware source. `csti build` lowers
+`[dbg.<core>]` in `Consortium.toml` into the generated `init()`, which calls
+`ConsortiumLogger::init(base, len)` first thing. Generated code is therefore the
+single place the layout is written down; there are no `CONSORTIUM_DBG_*` build
+variables.
 
-Under a plain `cargo build` those variables are absent, so `config::CONFIGURED` is
-`false` and the logger becomes a **no-op** rather than a build failure — which is
-what lets firmware crates be `cargo check`ed without running the pipeline. Firmware
-that genuinely needs logging should assert with `config::assert_configured` rather
-than discover the silence at runtime.
+Until that call the logger and the panic handler are **no-ops**, so a firmware crate
+built without generated code still links and runs; it just logs nothing.
 
 There is no `[dbg.ap]`: the AP is always the host that decodes, never a producer. A
 coprocessor with no `[dbg.<core>]` table simply has no debug ring.

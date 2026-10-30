@@ -33,10 +33,10 @@ fn panic(info: &PanicInfo) -> ! {
     static PANICKED: AtomicBool = AtomicBool::new(false);
     if !PANICKED.swap(true, Ordering::SeqCst) {
         defmt::error!("panic: {}", defmt::Display2Format(info));
-        if config::BASE != 0 {
-            // SAFETY: `config::BASE_PTR` describes the configured debug shared-memory
-            // region (the same layout the logger writes into above).
-            unsafe { ConsortiumLogger::mark_panic(config::BASE_PTR) };
+        if let Some((base, _)) = config::region() {
+            // SAFETY: `base` is the debug shared-memory region `ConsortiumLogger::init`
+            // recorded (the same ring the logger writes into above).
+            unsafe { ConsortiumLogger::mark_panic(base) };
         }
     }
 
