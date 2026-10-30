@@ -1,0 +1,6 @@
+2026-10-29T13:18:17.601238Z TRACE consortium_dbg::host: HostRing::from_raw_parts(base = 0xffffb3646000, len = 0x2000)
+2026-10-29T13:18:17.601463Z TRACE consortium_dbg::host: HostRing::from_raw_parts: descriptor capacity = 0x2000, read_ptr = 0x10, write_ptr = 0x552
+2026-10-29T13:18:17.601790Z  INFO consortium_dbg::host: defmt table parsed: encoding = Rzcobs, has_timestamp = true
+2026-10-29T13:18:17.602114Z  INFO melt_pot_stm32mp25_app: melt-pot: CA35 application started; IPC bring-up complete
+2026-10-29T13:18:18.603871Z  INFO consortium::dbg: sensor seq=0 temp_mdc=20000 core="cm33"
+2026-10-29T13:18:19.603902Z  INFO consortium::dbg: sensor seq=1 temp_mdc=20500 core="cm33"

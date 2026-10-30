@@ -13,4 +13,5 @@ peerDependencyRules:
     vite: '*'
     vitest: '*'
 packages:
+  - docs/landing
   - examples/melt-pot/stm32mp25/*
