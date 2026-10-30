@@ -135,7 +135,6 @@ Defaults are `host` and `logger`.
 | `panic-handler` | Installs `#[panic_handler]`; implies `logger`.                          |
 | `arch-cortex-m` | Interrupt-disable and halt for Cortex-M.                                |
 | `arch-riscv`    | Interrupt-disable and halt for RISC-V.                                  |
-| `doorbell-hsem` | Optional doorbell integration.                                          |
 
 `panic-handler` needs **exactly one** arch feature, and the two are mutually
 exclusive. Both conditions are `compile_error!`s rather than link-time surprises.

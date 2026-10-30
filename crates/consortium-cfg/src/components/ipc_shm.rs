@@ -461,34 +461,15 @@ impl DoorbellMeta {
         }
     }
 
-    /// The module that holds this doorbell type.
+    /// The doorbell's register-model path (`bell::ipcc::Ipcc<Side, N>`) and its
+    /// `BellA` alias (`bell::ipcc::IpccDoorbell`), in the transport crate.
     ///
-    /// IPCC and MU are Type-A bells inside the shared-memory transport crate; HSEM
-    /// still lives in its own `consortium-ipc-doorbell-hsem` crate.
-    fn module(&self) -> TokenStream {
-        match self.r#type {
-            HardwareDoorbellPeripheralType::Ipcc => {
-                quote::quote! { ::consortium_ipc_transport_memory::bell::ipcc }
-            }
-            HardwareDoorbellPeripheralType::Mu => {
-                quote::quote! { ::consortium_ipc_transport_memory::bell::mu }
-            }
-            other => {
-                let crate_ident = format_ident!(
-                    "consortium_ipc_doorbell_{}",
-                    other.to_string().to_lowercase()
-                );
-                quote::quote! { ::#crate_ident }
-            }
-        }
-    }
-
-    /// The doorbell's module path, type name, and IPC side marker ident.
-    ///
-    /// Shared by [`as_path`](Self::as_path) (expression position) and
-    /// [`as_type`](Self::as_type) (type position), which differ only in turbofish.
+    /// Every hardware doorbell is a Type-A bell, so the names follow from the type
+    /// alone: module `bell::<type>`, register model `<Type>`, doorbell
+    /// `<Type>Doorbell`.
     fn idents(&self, side: DoorbellRingerSide) -> (TokenStream, Ident, Ident) {
-        let type_ident = format_ident!("{}Doorbell", self.r#type.to_string());
+        let name = self.r#type.to_string();
+        let module = format_ident!("{}", name.to_lowercase());
         let side_ident = format_ident!(
             "{}",
             match side {
@@ -496,7 +477,11 @@ impl DoorbellMeta {
                 DoorbellRingerSide::Secondary => "Secondary",
             }
         );
-        (self.module(), type_ident, side_ident)
+        (
+            quote::quote! { ::consortium_ipc_transport_memory::bell::#module },
+            format_ident!("{name}Doorbell"),
+            side_ident,
+        )
     }
 
     /// The doorbell type in expression/path position (turbofish form), for
@@ -511,32 +496,18 @@ impl DoorbellMeta {
 
     /// The vector body that services this doorbell's interrupt from `side`.
     ///
-    /// Each doorbell crate exposes one bare-metal entry point that masks the
-    /// asserted lines before waking the futures waiting on them. All of them
-    /// derive the register window from the crate's own vetted address table, so
-    /// the call carries only the side and instance — no MMIO base ever appears
-    /// in generated code.
+    /// One generic entry point for every block, parameterized with its register
+    /// model: it masks the asserted lines before waking the futures waiting on
+    /// them. The register model derives the window from the transport's vetted
+    /// address table, so no MMIO base ever appears in generated code.
     pub fn service_call(&self, side: DoorbellRingerSide) -> TokenStream {
         let id = self.id.unwrap_or(1) as usize;
         let (module, _, side_ident) = self.idents(side);
-        match self.r#type {
-            // HSEM shares one waker across the block, and its `wait` future owns
-            // arming and masking the line, so the vector only wakes.
-            HardwareDoorbellPeripheralType::Hsem => quote::quote! {
-                #module::notify();
-            },
-            // Type-A bells: one generic service entry, parameterized with the
-            // block's register model.
-            HardwareDoorbellPeripheralType::Ipcc => quote::quote! {
-                ::consortium_ipc_transport_memory::bell::service_interrupt::<
-                    #module::Ipcc<::consortium_ipc::#side_ident, #id>
-                >();
-            },
-            HardwareDoorbellPeripheralType::Mu => quote::quote! {
-                ::consortium_ipc_transport_memory::bell::service_interrupt::<
-                    #module::Mu<::consortium_ipc::#side_ident, #id>
-                >();
-            },
+        let model = format_ident!("{}", self.r#type.to_string());
+        quote::quote! {
+            ::consortium_ipc_transport_memory::bell::service_interrupt::<
+                #module::#model<::consortium_ipc::#side_ident, #id>
+            >();
         }
     }
 
@@ -566,30 +537,18 @@ impl DoorbellMeta {
         let doorbell = self.as_path(side);
 
         // On the AP the UIO IRQ fanout runs a per-doorbell service on every M→A
-        // interrupt. Masking doorbells (IPCC, MU) bind their own IRQ entry point
-        // — cloned so the original can still move into the transport — which
-        // masks the asserted lines *before* waking, so a level-sensitive line
-        // does not immediately re-fire the UIO IRQ. Doorbells with no masking
-        // fall back to the plain `Notify` fanout.
-        let binding_uio_stmt = match core {
-            VisibleCore::Ap => {
-                let bind = match self.r#type {
-                    HardwareDoorbellPeripheralType::Ipcc | HardwareDoorbellPeripheralType::Mu => {
-                        quote::quote! {
-                            let __service_db = #doorbell_ident.clone();
-                            #uio_ident[#doorbell_uio_id].bind_service(::std::sync::Arc::new(
-                                move || __service_db.service_interrupt(),
-                            ));
-                        }
-                    }
-                    HardwareDoorbellPeripheralType::Hsem => quote::quote! {
-                        #uio_ident[#doorbell_uio_id].bind_notifier(#doorbell_ident.notifier());
-                    },
-                };
-                Some(bind)
+        // interrupt. Every Type-A bell binds its own IRQ entry point — cloned so
+        // the original can still move into the transport — which masks the
+        // asserted lines *before* waking, so a level-sensitive line does not
+        // immediately re-fire the UIO IRQ.
+        let binding_uio_stmt = (core == VisibleCore::Ap).then(|| {
+            quote::quote! {
+                let __service_db = #doorbell_ident.clone();
+                #uio_ident[#doorbell_uio_id].bind_service(::std::sync::Arc::new(
+                    move || __service_db.service_interrupt(),
+                ));
             }
-            _ => None,
-        };
+        });
 
         // The AP reaches the doorbell through an `mmap` of its UIO device, which
         // has no peripheral singleton; controller cores own the real peripheral,
@@ -932,10 +891,10 @@ mod tests {
         assert!(init.contains("uio [2usize] . mmap"), "{init}");
     }
 
-    /// HSEM is the non-masking doorbell: its `wait` future owns arming and
-    /// masking the line, so the AP binds a plain notifier instead of a service.
+    /// HSEM is a Type-A bell like the others, so the AP binds its masking
+    /// service rather than a plain notifier.
     #[test]
-    fn ap_binds_a_plain_notifier_for_hsem() {
+    fn ap_binds_the_masking_service_for_hsem() {
         let mut t = transceiver(SLOT_BASE + 4096, 128);
         t.doorbell_address.ap = ApAddress {
             uio_id: 2,
@@ -956,8 +915,9 @@ mod tests {
             )
             .to_string();
 
-        assert!(init.contains("uio [2usize] . bind_notifier"), "{init}");
-        assert!(!init.contains("bind_service"), "{init}");
+        assert!(init.contains("uio [2usize] . bind_service"), "{init}");
+        assert!(init.contains("service_interrupt ()"), "{init}");
+        assert!(!init.contains("bind_notifier"), "{init}");
     }
 
     #[test]
@@ -981,7 +941,9 @@ mod tests {
         };
 
         let tokens = doorbell.as_path(DoorbellRingerSide::Secondary).to_string();
-        assert!(tokens.contains(":: consortium_ipc_doorbell_hsem :: HsemDoorbell"));
+        assert!(
+            tokens.contains(":: consortium_ipc_transport_memory :: bell :: hsem :: HsemDoorbell")
+        );
         assert!(tokens.contains(":: consortium_ipc :: Secondary"));
         assert!(tokens.contains("1usize"));
     }

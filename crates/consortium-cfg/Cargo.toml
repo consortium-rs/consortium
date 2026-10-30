@@ -66,8 +66,7 @@ consortium-hal-stm32mp2 = { default-features = false, features = [
   "time-driver-gp-tim",
 ], path = "../consortium-hal-stm32mp2" }
 consortium-ipc = { path = "../consortium-ipc" }
-consortium-ipc-doorbell-hsem = { features = ["std"], path = "../consortium-ipc-doorbell-hsem" }
-# Generated code names the Type-A bells under `bell::ipcc` and `bell::mu`, which the
+# Generated code names the Type-A bells under `bell::{ipcc,mu,hsem}`, which the
 # transport exposes only with a chip of each family selected.
 consortium-ipc-transport-memory = { features = [
   "mimx95",

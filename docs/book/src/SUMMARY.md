@@ -39,7 +39,6 @@
     - [IPC Subsystem](maintenance/dev/ipc/index.md)
       - [IPC QoS Design](maintenance/dev/ipc/ipc-qos-design.md)
       - [IPC Design](maintenance/dev/ipc/ipc-design.md)
-      - [HSEM/MU Comparison](maintenance/dev/ipc/hsem-mu.md)
     - [Peripheral Drivers](maintenance/dev/hal/index.md)
       - [HAL Gap Roadmap](maintenance/dev/hal/embassy-gap-roadmap.md)
     - [TEE Subsystem](maintenance/dev/tee/index.md)

@@ -239,16 +239,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "consortium-hal-imx9"
-version = "0.4.0"
-dependencies = [
- "consortium-hal",
- "consortium-pac-imx9",
- "critical-section",
- "embassy-hal-internal",
-]
-
-[[package]]
 name = "consortium-hal-stm32mp2"
 version = "0.4.0"
 dependencies = [
@@ -266,33 +256,6 @@ dependencies = [
  "consortium-codec",
  "consortium-ipc-macros",
  "consortium-log",
-]
-
-[[package]]
-name = "consortium-ipc-doorbell-hsem"
-version = "0.4.0"
-dependencies = [
- "atomic-waker",
- "bitfield 0.19.5",
- "consortium-hal-stm32mp2",
- "consortium-ipc",
- "consortium-log",
- "critical-section",
- "thiserror",
- "tokio",
-]
-
-[[package]]
-name = "consortium-ipc-doorbell-mu"
-version = "0.4.0"
-dependencies = [
- "atomic-waker",
- "bitfield 0.19.5",
- "consortium-hal-imx9",
- "consortium-ipc",
- "critical-section",
- "thiserror",
- "tokio",
 ]
 
 [[package]]
@@ -321,8 +284,6 @@ dependencies = [
  "consortium-codec",
  "consortium-hal-stm32mp2",
  "consortium-ipc",
- "consortium-ipc-doorbell-hsem",
- "consortium-ipc-doorbell-mu",
  "consortium-log",
  "consortium-shared-memory",
  "crc32fast",
@@ -357,13 +318,6 @@ name = "consortium-macros-helpers"
 version = "0.4.0"
 dependencies = [
  "syn 3.0.3",
-]
-
-[[package]]
-name = "consortium-pac-imx9"
-version = "0.4.0"
-dependencies = [
- "cortex-m",
 ]
 
 [[package]]
@@ -771,7 +725,6 @@ version = "0.4.0"
 dependencies = [
  "consortium-codec",
  "consortium-ipc",
- "consortium-ipc-doorbell-hsem",
  "consortium-ipc-transport-memory",
  "consortium-log",
  "consortium-runtime-app",

@@ -25,7 +25,7 @@
 //!
 //! Memory primitives come from `consortium-shared-memory` ([`Region`] and its cache
 //! semantics, the descriptor header). Hardware signaling comes from the Type-A
-//! doorbells in [`bell`] (IPCC, MU) and the `consortium-ipc-doorbell-hsem` crate.
+//! doorbells in [`bell`] (IPCC, MU, HSEM); GPIO stays in `consortium-ipc-doorbell-gpio`.
 //! What this crate adds is the protocol.
 //!
 //! [`SendTransport`]: consortium_ipc::SendTransport
@@ -202,13 +202,11 @@
 //! | `std`                            | `alloc`, Tokio support, UIO errors, `tracing` logs |
 //! | `alloc`                          | link `alloc` through `consortium-ipc`             |
 //! | `defmt`                          | route protocol tracing to `defmt`; derive `Format` |
-//! | `doorbell-hsem`                  | re-export the HSEM crate under [`doorbell`]       |
-//! | `stm32mp21x` / `23x` / `25x`     | select the STM32MP2 chip; enables [`bell::ipcc`]  |
-//! | `mimx93` / `mimx95`              | select the i.MX 9 chip; enables [`bell::mu`]      |
+//! | `stm32mp21x` / `23x` / `25x`     | select the STM32MP2 chip; enables `bell::ipcc` (and `bell::hsem` on 23x/25x) |
+//! | `mimx93` / `mimx95`              | select the i.MX 9 chip; enables `bell::mu`        |
 //!
-//! Chip features exist so [`doorbell::SharedMemoryTransportDoorbell`] can report a
-//! doorbell peripheral's window address, which generated Linux bring-up needs in
-//! order to map it.
+//! The transport itself is generic over any [`Doorbell`] and needs none of them; the
+//! chip features only bring in the Type-A bells and their chip HAL.
 //!
 //! # Testing
 //!
@@ -230,22 +228,8 @@ extern crate alloc;
 
 /// Type-A doorbells: the generic [`BellA`](bell::BellA) over a per-block
 /// [`BellHw`](bell::BellHw) register model, and the blocks themselves behind their chip
-/// features (IPCC and MU).
+/// features (IPCC, MU, HSEM).
 pub mod bell;
-
-/// Doorbells commonly paired with the shared-memory transport.
-///
-/// Each chip feature exposes its doorbells here (as `hsem`, `ipcc`, or `mu`) and
-/// implements
-/// `SharedMemoryTransportDoorbell` for its driver type. That trait reports
-/// whether the doorbell is a real peripheral and where its register window lives —
-/// which is what generated Linux bring-up needs in order to `mmap` it, and which
-/// the doorbell crate itself keeps in its own base table so a security alias does
-/// not change.
-///
-/// Nothing here is required to use the transport: it is generic over any
-/// [`Doorbell`](consortium_ipc::Doorbell), including the fake ones the tests use.
-pub mod doorbell;
 
 mod descriptor;
 mod endpoint;
