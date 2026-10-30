@@ -64,6 +64,8 @@
 
 #[cfg(any(feature = "stm32mp21x", feature = "stm32mp23x", feature = "stm32mp25x"))]
 pub mod ipcc;
+#[cfg(feature = "mimx9x")]
+pub mod mu;
 
 use core::{
     future::Future,

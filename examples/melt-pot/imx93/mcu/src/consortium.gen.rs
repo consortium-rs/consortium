@@ -1,6 +1,7 @@
 ::consortium_ipc_transport_memory::channels!(SENSOR);
 ::consortium_ipc_transport_memory::impl_channel!(
-    SENSOR, ::consortium_ipc::Secondary, ::consortium_ipc_doorbell_mu::MuDoorbell <
+    SENSOR, ::consortium_ipc::Secondary,
+    ::consortium_ipc_transport_memory::bell::mu::MuDoorbell <
     ::consortium_ipc::Secondary, 1usize >,
     ::consortium_shared_memory::regions::UncachedRegion,
     ::melt_pot_shared::SensorReading, ::melt_pot_shared::Command,
@@ -23,7 +24,7 @@ fn __consortium_install_channels(
                 16384usize,
             )
         };
-        let doorbell = ::consortium_ipc_doorbell_mu::MuDoorbell::<
+        let doorbell = ::consortium_ipc_transport_memory::bell::mu::MuDoorbell::<
             ::consortium_ipc::Secondary,
             1usize,
         >::new(__db_mu1_mub);
@@ -61,9 +62,11 @@ mod __consortium_vectors {
     );
     #[::consortium_hal_imx9::interrupt]
     fn MU1_B() {
-        ::consortium_ipc_doorbell_mu::notify_gi_interrupt::<
-            ::consortium_ipc::Secondary,
-            1usize,
+        ::consortium_ipc_transport_memory::bell::service_interrupt::<
+            ::consortium_ipc_transport_memory::bell::mu::Mu<
+                ::consortium_ipc::Secondary,
+                1usize,
+            >,
         >();
     }
 }

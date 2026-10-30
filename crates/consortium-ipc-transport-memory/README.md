@@ -15,10 +15,10 @@ The pieces it does **not** own:
 | ------------------------------------------- | --------------------------- |
 | Trait stack, typed channels                 | `consortium-ipc`            |
 | `Region`, cache semantics, header magic     | `consortium-shared-memory`  |
-| Hardware wakeups (HSEM, MU, GPIO)           | `consortium-ipc-doorbell-*` |
+| Hardware wakeups (HSEM, GPIO)               | `consortium-ipc-doorbell-*` |
 | Window addresses, validation, bring-up code | `consortium-cfg`            |
 
-IPCC is the exception: as the first Type-A doorbell it lives here, under `bell`.
+IPCC and MU are the exception: as Type-A doorbells they live here, under `bell`.
 
 ## Type-A doorbells (`bell`)
 
@@ -34,8 +34,9 @@ H: BellHw     per block: ring, raw status, ack, arm/disarm, waker table
 
 A block implements only the `unsafe trait BellHw` register model; fences, critical
 sections, waker registration, and the `std` `Notify` re-subscription belong to the
-generic. `bell::ipcc` is the first block (`IpccDoorbell<S, N> = BellA<Ipcc<S, N>>`).
-Firmware vectors forward to `bell::service_interrupt::<bell::ipcc::Ipcc<S, N>>()`,
+generic. The blocks are `bell::ipcc` (`IpccDoorbell<S, N> = BellA<Ipcc<S, N>>`) and
+`bell::mu` (`MuDoorbell<S, N> = BellA<Mu<S, N>>`, GI and RF lines). Firmware vectors
+forward to `bell::service_interrupt::<H>()` with the block's register model,
 which `consortium-cfg` generates; on Linux, bind `BellA::service_interrupt` with
 `UioDevice::bind_service`.
 
@@ -177,9 +178,9 @@ Defaults to `std`. Firmware builds want `default-features = false`.
 | `std`                        | `alloc`, Tokio support, UIO errors, `tracing` logs |
 | `alloc`                      | link `alloc` through `consortium-ipc`              |
 | `defmt`                      | route protocol tracing to `defmt`; derive `Format` |
-| `doorbell-hsem` / `-mu`      | re-export a doorbell crate under `doorbell`        |
+| `doorbell-hsem`              | re-export the HSEM crate under `doorbell`          |
 | `stm32mp21x` / `23x` / `25x` | select the STM32MP2 chip; enables `bell::ipcc`     |
-| `mimx93` / `mimx95`          | select the i.MX 9 chip and its MU doorbell         |
+| `mimx93` / `mimx95`          | select the i.MX 9 chip; enables `bell::mu`         |
 
 Chip features exist so `doorbell::SharedMemoryTransportDoorbell` can report a
 doorbell peripheral's window address, which generated Linux bring-up needs in order
@@ -196,6 +197,7 @@ cargo test -p consortium-ipc-transport-memory
 cargo test -p consortium-ipc-transport-memory --no-default-features \
     --test async_atomic_waker_test    # no_std-shaped future path
 cargo test -p consortium-ipc-transport-memory -F stm32mp25x --lib  # bell + IPCC
+cargo test -p consortium-ipc-transport-memory -F mimx95 --lib      # bell + MU
 just test ipc host
 ```
 

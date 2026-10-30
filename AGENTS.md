@@ -93,7 +93,7 @@ A-core, TEE, HMI, UIO, Cog, WebKit, and Yocto/OpenSTLinux flows are Linux/SDK or
 | Core IPC        | `consortium-ipc`, `consortium-ipc-macros`, `consortium-ipc-macros-impl`                                                                                                                                                           |
 | Codecs          | `consortium-codec`, `consortium-codec-macros`, `consortium-codec-macros-impl`                                                                                                                                                     |
 | Transports      | `consortium-shared-memory`, `consortium-ipc-transport-memory`, `consortium-ipc-transport-uart*`, `consortium-ipc-transport-fdcan*`                                                                                                |
-| Doorbells       | `consortium-ipc-transport-memory::bell` (IPCC), `consortium-ipc-doorbell-hsem`, `consortium-ipc-doorbell-mu`, `consortium-ipc-doorbell-gpio`                                                                                      |
+| Doorbells       | `consortium-ipc-transport-memory::bell` (IPCC, MU), `consortium-ipc-doorbell-hsem`, `consortium-ipc-doorbell-gpio`                                                                                                                |
 | Configuration   | `consortium-cfg-common`, `consortium-cfg`, `consortium-dts`, `consortium-data`                                                                                                                                                    |
 | HAL/PAC         | `consortium-hal`, `consortium-hal-imx9`, `consortium-hal-stm32mp2`, `consortium-pac-imx9`, `consortium-pac-stm32mp2`                                                                                                              |
 | Macro helpers   | `consortium-macros-helpers`                                                                                                                                                                                                       |
@@ -320,7 +320,7 @@ documented `primary = "linux"`, but a manifest that swaps the roles keeps the wi
 `impl_channel!` takes the two as independent type parameters and `consortium-cfg` lowers
 them separately: the window comes from each party's `window:` field in the chip database
 (`Transceiver::doorbell_window`), the role from the manifest. Conflating them fails
-`MuDoorbell::new`'s `Instance<Side = S>` bound. The i.MX 93 CM33's chip map exposes both
+`bell::mu::MuDoorbell::new`'s `Instance<Side = S>` bound. The i.MX 93 CM33's chip map exposes both
 `MU1_MUA`/`MU1_MUB` (and MU2's), so the database, not the dump, picks MUB. A
 single-window doorbell (HSEM, IPCC) has no `window_length` and its marker keeps meaning
 the core bank, so it still follows the role.
@@ -330,16 +330,16 @@ A block supplies only its register model as an `unsafe trait BellHw` (`line_of`,
 `ring`, `raw_pending`, `ack`, `arm`/`disarm`, `asserted`/`disarm_all`, a per-line `waker`
 table, and `PHYS_BASE`); the generic `BellA<H>` implements `Doorbell`, `LineWait<H>` is the
 one wait future, and `service_interrupt::<H>()` (no_std) / `BellA::service_interrupt()`
-(std) is the one ISR core. IPCC is ported (`bell::ipcc`, `IpccDoorbell<S, N> =
-BellA<Ipcc<S, N>>`, enabled by the transport's `stm32mp2*` features); MU and HSEM still
-live in their own crates with hand-written wait futures aligned to the same protocol, and
-are to be ported next. Fences, critical sections, and waker handling belong to the
+(std) is the one ISR core. IPCC (`bell::ipcc`, `IpccDoorbell<S, N> = BellA<Ipcc<S, N>>`,
+the transport's `stm32mp2*` features) and MU (`bell::mu`, `MuDoorbell<S, N> =
+BellA<Mu<S, N>>`, the `mimx93`/`mimx95` features) are ported; HSEM still lives in its own
+crate with a hand-written wait future aligned to the same protocol, and is next. Fences, critical sections, and waker handling belong to the
 generic — a `BellHw` impl never does them. The protocol is covered once in
 `bell/tests.rs` against an in-memory `FakeBell`; a block's own tests only check its
 register mapping. In poll order:
 
 1. Register the `no_std` waker on **every** poll, before anything else — from a
-   **per-line** table (`BellHw::waker`, `MU_WAKERS`, `HSEM_WAKERS`), never one shared
+   **per-line** table (`BellHw::waker`, `HSEM_WAKERS`), never one shared
    `AtomicWaker`. An `AtomicWaker` holds exactly one waker, so a second task waiting on
    another line of the same instance overwrites the first registration and that task is
    never woken again. A duplex endpoint waits on two lines of one instance, so this is
@@ -366,7 +366,7 @@ register mapping. In poll order:
 `Doorbell::wait` is RPITIT (`-> impl Future<Output = Result<Chan, Self::Error>> + MaybeSend`),
 like `SendTransport`/`RecvTransport`, so implementations may be `async` bodies or named
 futures — the hardware doorbells keep named ones (`LineWait`, `HsemWaitFut`,
-`MuWaitFut`, `GpioWaitFut`) because each of the three MMIO ones carries a `Drop` that
+`GpioWaitFut`) because each of the two MMIO ones carries a `Drop` that
 disarms its line on cancel, and an `async` body would need a guard struct to reproduce
 that. A cancelled wait (a `select!` timeout, a dropped `recv`) must leave the line
 masked: nothing is left to clear the level-sensitive status, so `irq_loop` re-arming the
@@ -395,8 +395,12 @@ is not also pulled in (two chips = ambiguous PAC `Interrupt`).
   `consortium-hal-stm32mp2` with `default-features = false`; `std` (the transport's
   default) enables Tokio support. `ring` reports `BellError::Busy` while the previous
   signal is unconsumed.
-- `consortium-ipc-doorbell-mu` targets NXP i.MX MU. Chip features are `mimx93` and
-  `mimx95`; default is `mimx95`; channels `0..4` are GI lines and `4..8` are RF lines.
+- `consortium-ipc-transport-memory::bell::mu` targets NXP i.MX MU. It is enabled by the
+  transport's mutually exclusive `mimx93`/`mimx95` features, which pull in
+  `consortium-hal-imx9` with `default-features = false`. Channels `0..4` are GI lines and
+  `4..8` are RF lines (`MuLine`); neither reports `Busy` — a pending GI is idempotent and
+  an RF ring whose `TRn` is still full is skipped. `MuDoorbell::new` also opens the
+  window's i.MX 93 LPCG clock gate.
 - `consortium-ipc-doorbell-gpio` is a single-channel GPIO doorbell. The `no_std` path
   uses a software pending flag and IRQ-side `wake`; the `std` path exposes a Tokio
   `Notify` that external interrupt code must trigger.
@@ -406,8 +410,7 @@ feature. Each exposes one bare-metal service entry point instead, and every one 
 derives its register window from the crate's own `registers::base` table, so no MMIO
 base ever appears in the caller: HSEM calls `hsem::notify()`, IPCC RX lines call
 `bell::service_interrupt::<bell::ipcc::Ipcc<S, N>>()` (the window is `BellHw::PHYS_BASE`),
-and MU lines call
-`mu::notify_gi_interrupt::<S, N>()`. IPCC and MU are level-sensitive, so both mask every
+and MU lines call `bell::service_interrupt::<bell::mu::Mu<S, N>>()`. IPCC and MU are level-sensitive, so both mask every
 asserted line _before_ waking — an ISR that only woke would return with the line still
 asserted, re-enter, and starve the executor.
 

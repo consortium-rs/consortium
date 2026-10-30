@@ -60,6 +60,9 @@ name = "atomic-waker"
 version = "1.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1505bd5d3d116872e7271a6d4e16d81d0c8570876c8de68093a09ac269d8aac0"
+dependencies = [
+ "portable-atomic",
+]
 
 [[package]]
 name = "autocfg"
@@ -245,7 +248,7 @@ dependencies = [
 
 [[package]]
 name = "cogcore"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "cogcore-sys",
  "gio",
@@ -255,7 +258,7 @@ dependencies = [
 
 [[package]]
 name = "cogcore-sys"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "bindgen",
  "cc",
@@ -274,7 +277,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-cfg-common"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "serde",
  "uuid",
@@ -282,7 +285,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-codec"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "consortium-log",
  "postcard",
@@ -291,7 +294,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-dbg"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "bitflags 2.13.1",
  "consortium-log",
@@ -305,7 +308,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-hal"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "cortex-m",
  "critical-section",
@@ -314,7 +317,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-hal-imx9"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "consortium-hal",
  "consortium-pac-imx9",
@@ -324,7 +327,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-hal-stm32mp2"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "consortium-hal",
  "consortium-log",
@@ -335,7 +338,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-hmi"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "serde",
  "serde_json",
@@ -343,7 +346,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-hmi-webkit"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "cogcore",
  "consortium-hmi",
@@ -354,7 +357,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-ipc"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "consortium-codec",
  "consortium-ipc-macros",
@@ -363,40 +366,13 @@ dependencies = [
 
 [[package]]
 name = "consortium-ipc-doorbell-hsem"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "atomic-waker",
  "bitfield 0.19.5",
  "consortium-hal-stm32mp2",
  "consortium-ipc",
  "consortium-log",
- "critical-section",
- "thiserror",
- "tokio",
-]
-
-[[package]]
-name = "consortium-ipc-doorbell-ipcc"
-version = "0.3.0"
-dependencies = [
- "atomic-waker",
- "bitfield 0.19.5",
- "consortium-hal-stm32mp2",
- "consortium-ipc",
- "consortium-log",
- "critical-section",
- "thiserror",
- "tokio",
-]
-
-[[package]]
-name = "consortium-ipc-doorbell-mu"
-version = "0.3.0"
-dependencies = [
- "atomic-waker",
- "bitfield 0.19.5",
- "consortium-hal-imx9",
- "consortium-ipc",
  "critical-section",
  "thiserror",
  "tokio",
@@ -404,14 +380,14 @@ dependencies = [
 
 [[package]]
 name = "consortium-ipc-macros"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "consortium-ipc-macros-impl",
 ]
 
 [[package]]
 name = "consortium-ipc-macros-impl"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "consortium-macros-helpers",
  "proc-macro2",
@@ -421,13 +397,14 @@ dependencies = [
 
 [[package]]
 name = "consortium-ipc-transport-memory"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
+ "atomic-waker",
+ "bitfield 0.19.5",
  "consortium-codec",
+ "consortium-hal-imx9",
  "consortium-ipc",
  "consortium-ipc-doorbell-hsem",
- "consortium-ipc-doorbell-ipcc",
- "consortium-ipc-doorbell-mu",
  "consortium-log",
  "consortium-shared-memory",
  "crc32fast",
@@ -442,7 +419,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-log"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "consortium-log-macros",
  "tracing",
@@ -450,7 +427,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-log-macros"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -459,28 +436,28 @@ dependencies = [
 
 [[package]]
 name = "consortium-macros-helpers"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "syn 3.0.3",
 ]
 
 [[package]]
 name = "consortium-pac-imx9"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "cortex-m",
 ]
 
 [[package]]
 name = "consortium-pac-stm32mp2"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "cortex-m",
 ]
 
 [[package]]
 name = "consortium-runtime-app"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "consortium-dbg",
  "consortium-ipc",
@@ -497,14 +474,14 @@ dependencies = [
 
 [[package]]
 name = "consortium-runtime-macros"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "consortium-runtime-macros-impl",
 ]
 
 [[package]]
 name = "consortium-runtime-macros-impl"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "consortium-macros-helpers",
  "proc-macro2",
@@ -514,7 +491,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-shared-memory"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "cortex-m",
  "thiserror",
@@ -522,7 +499,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-tee"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "consortium-codec",
  "consortium-log",
@@ -534,14 +511,14 @@ dependencies = [
 
 [[package]]
 name = "consortium-tee-macros"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "consortium-tee-macros-impl",
 ]
 
 [[package]]
 name = "consortium-tee-macros-impl"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "consortium-macros-helpers",
  "heck",
@@ -1090,12 +1067,11 @@ dependencies = [
 
 [[package]]
 name = "melt-pot-imx95-app"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "consortium-codec",
  "consortium-hmi-webkit",
  "consortium-ipc",
- "consortium-ipc-doorbell-mu",
  "consortium-ipc-transport-memory",
  "consortium-runtime-app",
  "consortium-shared-memory",
@@ -1111,7 +1087,7 @@ dependencies = [
 
 [[package]]
 name = "melt-pot-imx95-ta"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "consortium-cfg-common",
  "consortium-tee",
@@ -1121,7 +1097,7 @@ dependencies = [
 
 [[package]]
 name = "melt-pot-shared"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "consortium-ipc",
  "serde",
@@ -1361,6 +1337,12 @@ name = "pkg-config"
 version = "0.3.33"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "19f132c84eca552bf34cab8ec81f1c1dcc229b811638f9d283dceabe58c5569e"
+
+[[package]]
+name = "portable-atomic"
+version = "1.15.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "05c8b63e8d9609db387f0324918f81d68fe27748f084ef092fb35954d0539a85"
 
 [[package]]
 name = "postcard"

@@ -71,7 +71,7 @@
 //! `consortium-cfg` generates the doorbell and time-driver vectors into
 //! `consortium.gen.rs`, each forwarding to its exported wake path —
 //! `hsem::notify()`, `bell::service_interrupt::<ipcc::Ipcc<S, N>>()`,
-//! `mu::notify_gi_interrupt::<S, N>()`. Vectors for peripherals the application drives
+//! `bell::service_interrupt::<mu::Mu<S, N>>()`. Vectors for peripherals the application drives
 //! itself, such as `uart::on_buffered_interrupt::<P>()`, stay hand-written. Enable the
 //! chip *HAL's* `rt` feature so the `#[interrupt]` macro and PAC vector table are
 //! available.

@@ -127,15 +127,15 @@ how a host tells a crash from a clean end-of-stream in retained memory.
 
 Defaults are `host` and `logger`.
 
-| Feature                         | Effect                                                                  |
-| ------------------------------- | ----------------------------------------------------------------------- |
-| `logger`                        | Firmware `#[global_logger]` writing into the ring.                      |
-| `host`                          | Host-side `HostRing` reader; implies `std`.                             |
-| `decode`                        | Adds `defmt-decoder`/`defmt-parser` for `DefmtSession`; implies `host`. |
-| `panic-handler`                 | Installs `#[panic_handler]`; implies `logger`.                          |
-| `arch-cortex-m`                 | Interrupt-disable and halt for Cortex-M.                                |
-| `arch-riscv`                    | Interrupt-disable and halt for RISC-V.                                  |
-| `doorbell-hsem` / `doorbell-mu` | Optional doorbell integration.                                          |
+| Feature         | Effect                                                                  |
+| --------------- | ----------------------------------------------------------------------- |
+| `logger`        | Firmware `#[global_logger]` writing into the ring.                      |
+| `host`          | Host-side `HostRing` reader; implies `std`.                             |
+| `decode`        | Adds `defmt-decoder`/`defmt-parser` for `DefmtSession`; implies `host`. |
+| `panic-handler` | Installs `#[panic_handler]`; implies `logger`.                          |
+| `arch-cortex-m` | Interrupt-disable and halt for Cortex-M.                                |
+| `arch-riscv`    | Interrupt-disable and halt for RISC-V.                                  |
+| `doorbell-hsem` | Optional doorbell integration.                                          |
 
 `panic-handler` needs **exactly one** arch feature, and the two are mutually
 exclusive. Both conditions are `compile_error!`s rather than link-time surprises.
