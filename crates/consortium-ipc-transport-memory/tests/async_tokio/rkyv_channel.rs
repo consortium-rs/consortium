@@ -20,9 +20,8 @@ fn rkyv_channel_sends_archived_message_over_shared_memory_transport() {
         let (doorbell, _remote) = HostDoorbell::pair();
         let ch_tx = unsafe { Chan::new_unchecked(0) };
         let ch_rx = unsafe { Chan::new_unchecked(1) };
-        let transport = unsafe {
-            SharedMemoryTransport::<Primary, _, _>::new(ch_tx, ch_rx, doorbell, region, base)
-        };
+        let transport =
+            unsafe { SharedMemoryTransport::<Primary, _, _>::new(ch_tx, ch_rx, doorbell, region) };
         let mut channel =
             Channel::<Tx, Message, _, RkyvCodec<128>>::new(ch_tx, transport, scratch::<MTU>());
 
@@ -71,9 +70,8 @@ fn rkyv_channel_receives_archived_message_over_shared_memory_transport() {
         let (doorbell, _remote) = HostDoorbell::pair();
         let ch_tx = unsafe { Chan::new_unchecked(0) };
         let ch_rx = unsafe { Chan::new_unchecked(1) };
-        let transport = unsafe {
-            SharedMemoryTransport::<Primary, _, _>::new(ch_tx, ch_rx, doorbell, region, base)
-        };
+        let transport =
+            unsafe { SharedMemoryTransport::<Primary, _, _>::new(ch_tx, ch_rx, doorbell, region) };
         let mut channel =
             Channel::<Rx, Message, _, RkyvCodec<128>>::new(ch_rx, transport, scratch::<MTU>());
 

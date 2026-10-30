@@ -113,7 +113,7 @@
 //!
 //! # Example
 //!
-//! `new` is `unsafe`: the caller guarantees `base` covers the descriptor, channel table,
+//! `new` is `unsafe`: the caller guarantees `region` covers the descriptor, channel table,
 //! and every slot, and that nothing else aliases the window.
 //!
 //! ```rust,ignore
@@ -121,7 +121,7 @@
 //! use consortium_ipc_transport_memory::{DescriptorLayout, SharedMemoryTransport};
 //!
 //! let mut transport = unsafe {
-//!     SharedMemoryTransport::<Secondary, _, _>::new(ch_tx, ch_rx, doorbell, region, base)
+//!     SharedMemoryTransport::<Secondary, _, _>::new(ch_tx, ch_rx, doorbell, region)
 //! };
 //!
 //! // Same call on both sides; Side selects the protocol role.

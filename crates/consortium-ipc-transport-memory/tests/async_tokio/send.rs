@@ -29,9 +29,8 @@ fn send_returns_no_channel_when_all_tx_slots_are_unconsumed() {
         let (doorbell, _remote) = HostDoorbell::pair();
         let ch1 = unsafe { Chan::new_unchecked(0) };
         let ch2 = unsafe { Chan::new_unchecked(1) };
-        let mut transport = unsafe {
-            SharedMemoryTransport::<Primary, _, _>::new(ch1, ch2, doorbell, region, base)
-        };
+        let mut transport =
+            unsafe { SharedMemoryTransport::<Primary, _, _>::new(ch1, ch2, doorbell, region) };
 
         let err = transport
             .send(b"new-payload")
@@ -57,9 +56,8 @@ fn send_accepts_payload_at_channel_capacity() {
         let (doorbell, _remote) = HostDoorbell::pair();
         let ch1 = unsafe { Chan::new_unchecked(0) };
         let ch2 = unsafe { Chan::new_unchecked(1) };
-        let mut transport = unsafe {
-            SharedMemoryTransport::<Primary, _, _>::new(ch1, ch2, doorbell, region, base)
-        };
+        let mut transport =
+            unsafe { SharedMemoryTransport::<Primary, _, _>::new(ch1, ch2, doorbell, region) };
 
         transport
             .send(&payload)
@@ -93,9 +91,8 @@ fn send_rejects_payload_larger_than_channel_capacity() {
         let (doorbell, _remote) = HostDoorbell::pair();
         let ch1 = unsafe { Chan::new_unchecked(0) };
         let ch2 = unsafe { Chan::new_unchecked(1) };
-        let mut transport = unsafe {
-            SharedMemoryTransport::<Primary, _, _>::new(ch1, ch2, doorbell, region, base)
-        };
+        let mut transport =
+            unsafe { SharedMemoryTransport::<Primary, _, _>::new(ch1, ch2, doorbell, region) };
 
         let err = transport
             .send(&payload)
@@ -144,9 +141,8 @@ fn send_uses_later_tx_channel_when_first_tx_slot_is_pending() {
         let (doorbell, _remote) = HostDoorbell::pair();
         let ch1 = unsafe { Chan::new_unchecked(0) };
         let ch2 = unsafe { Chan::new_unchecked(1) };
-        let mut transport = unsafe {
-            SharedMemoryTransport::<Primary, _, _>::new(ch1, ch2, doorbell, region, base)
-        };
+        let mut transport =
+            unsafe { SharedMemoryTransport::<Primary, _, _>::new(ch1, ch2, doorbell, region) };
 
         transport
             .send(b"second-slot")
@@ -179,9 +175,8 @@ fn send_invalidates_before_scan_and_flushes_after_writing() {
         let (doorbell, _remote) = HostDoorbell::pair();
         let ch1 = unsafe { Chan::new_unchecked(0) };
         let ch2 = unsafe { Chan::new_unchecked(1) };
-        let mut transport = unsafe {
-            SharedMemoryTransport::<Primary, _, _>::new(ch1, ch2, doorbell, region, base)
-        };
+        let mut transport =
+            unsafe { SharedMemoryTransport::<Primary, _, _>::new(ch1, ch2, doorbell, region) };
 
         transport.send(b"flush-me").await.expect("send payload");
 
