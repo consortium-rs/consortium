@@ -181,7 +181,7 @@ fn recv_future_wakes_on_embassy_platform_std_executor() {
     let ch2 = unsafe { Chan::new_unchecked(1) };
     let region = unsafe { UncachedRegion::new(base, REGION_LEN) };
     let (app_doorbell, remote_doorbell) = EmbassyDoorbell::pair();
-    let transport = unsafe { SharedMemoryTransport::new(ch1, ch2, app_doorbell, region, base) };
+    let transport = unsafe { SharedMemoryTransport::new(ch1, ch2, app_doorbell, region) };
     let done = Box::leak(Box::new(AtomicBool::new(false)));
     let executor = Box::leak(Box::new(Executor::new()));
 

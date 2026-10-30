@@ -155,24 +155,23 @@ pub(crate) async fn irq_loop(async_fd: AsyncFd<File>, services: Services) {
 /// Run every registered doorbell IRQ service.
 ///
 /// We do not know which channel fired, so each service masks its own asserted
-/// lines and re-wakes its `wait()` futures; a spurious run is harmless. The
-/// registry is snapshotted under the lock and the services run with the lock
-/// released, so a panicking service cannot poison the registry. A lock that is
-/// *already* poisoned (a registrar panicked mid-`push`) is recovered rather than
-/// propagated: a dead IRQ listener would stall every channel on the device, a
-/// far worse outcome than one lost registration.
+/// lines and re-wakes its `wait()` futures; a spurious run is harmless.
+///
+/// The services run with the registry lock held. That is what lets
+/// [`UioDevice`](crate::uio::UioDevice)'s `Drop` clear the registry and know no
+/// service is still touching a window it is about to unmap. A poisoned lock (a
+/// registrar or a service panicked while holding it) is recovered rather than
+/// propagated: a dead IRQ listener would stall every channel on the device, a far
+/// worse outcome than one lost registration.
 pub(crate) fn run_services(services: &Services) {
-    let snapshot = {
-        let guard = services
-            .lock()
-            .unwrap_or_else(|poisoned| poisoned.into_inner());
-        guard.clone()
-    };
+    let guard = services
+        .lock()
+        .unwrap_or_else(|poisoned| poisoned.into_inner());
     consortium_log::trace!(
         "run_services: servicing {} registered doorbell(s)",
-        snapshot.len()
+        guard.len()
     );
-    for service in &snapshot {
+    for service in guard.iter() {
         service();
     }
 }

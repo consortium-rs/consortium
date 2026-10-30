@@ -46,9 +46,8 @@ fn recv_prefers_updated_rx_channel_over_fallback_order() {
         let (doorbell, _remote) = HostDoorbell::pair();
         let ch1 = unsafe { Chan::new_unchecked(0) };
         let ch2 = unsafe { Chan::new_unchecked(1) };
-        let mut transport = unsafe {
-            SharedMemoryTransport::<Primary, _, _>::new(ch1, ch2, doorbell, region, base)
-        };
+        let mut transport =
+            unsafe { SharedMemoryTransport::<Primary, _, _>::new(ch1, ch2, doorbell, region) };
 
         let mut rx = [0; MTU];
         let n = transport.recv(&mut rx).await.expect("receive updated slot");
@@ -86,9 +85,8 @@ fn recv_falls_back_when_updated_id_is_wrong_direction() {
         let (doorbell, _remote) = HostDoorbell::pair();
         let ch1 = unsafe { Chan::new_unchecked(0) };
         let ch2 = unsafe { Chan::new_unchecked(1) };
-        let mut transport = unsafe {
-            SharedMemoryTransport::<Primary, _, _>::new(ch1, ch2, doorbell, region, base)
-        };
+        let mut transport =
+            unsafe { SharedMemoryTransport::<Primary, _, _>::new(ch1, ch2, doorbell, region) };
 
         let mut rx = [0; MTU];
         let n = transport
@@ -120,9 +118,8 @@ fn recv_falls_back_when_updated_id_is_out_of_range() {
         let (doorbell, _remote) = HostDoorbell::pair();
         let ch1 = unsafe { Chan::new_unchecked(0) };
         let ch2 = unsafe { Chan::new_unchecked(1) };
-        let mut transport = unsafe {
-            SharedMemoryTransport::<Primary, _, _>::new(ch1, ch2, doorbell, region, base)
-        };
+        let mut transport =
+            unsafe { SharedMemoryTransport::<Primary, _, _>::new(ch1, ch2, doorbell, region) };
 
         let mut rx = [0; MTU];
         let n = transport
@@ -148,9 +145,8 @@ fn recv_is_pending_when_no_rx_slot_contains_data() {
         let (doorbell, _remote) = HostDoorbell::pair();
         let ch1 = unsafe { Chan::new_unchecked(0) };
         let ch2 = unsafe { Chan::new_unchecked(1) };
-        let mut transport = unsafe {
-            SharedMemoryTransport::<Primary, _, _>::new(ch1, ch2, doorbell, region, base)
-        };
+        let mut transport =
+            unsafe { SharedMemoryTransport::<Primary, _, _>::new(ch1, ch2, doorbell, region) };
         let mut rx = [0; MTU];
 
         let recv = transport.recv(&mut rx);
@@ -174,9 +170,8 @@ fn recv_future_becomes_ready_after_pending_poll_then_doorbell_ring() {
         let (app_doorbell, remote_doorbell) = HostDoorbell::pair();
         let ch1 = unsafe { Chan::new_unchecked(0) };
         let ch2 = unsafe { Chan::new_unchecked(1) };
-        let mut transport = unsafe {
-            SharedMemoryTransport::<Primary, _, _>::new(ch1, ch2, app_doorbell, region, base)
-        };
+        let mut transport =
+            unsafe { SharedMemoryTransport::<Primary, _, _>::new(ch1, ch2, app_doorbell, region) };
         let mut rx = [0; MTU];
 
         // The recv future borrows `rx` until it is dropped; scope it so the
@@ -242,9 +237,8 @@ fn recv_delivers_when_remote_publishes_during_subscribe_window() {
             }
         });
 
-        let mut transport = unsafe {
-            SharedMemoryTransport::<Primary, _, _>::new(ch1, ch2, doorbell, region, base)
-        };
+        let mut transport =
+            unsafe { SharedMemoryTransport::<Primary, _, _>::new(ch1, ch2, doorbell, region) };
         let mut rx = [0; MTU];
 
         // A single poll: scan (empty) → subscribe (hook publishes; lossy ring
@@ -288,9 +282,8 @@ fn pending_recv_flushes_integrity_error_and_self_wakes() {
         let (doorbell, _remote) = HostDoorbell::pair();
         let ch1 = unsafe { Chan::new_unchecked(0) };
         let ch2 = unsafe { Chan::new_unchecked(1) };
-        let mut transport = unsafe {
-            SharedMemoryTransport::<Primary, _, _>::new(ch1, ch2, doorbell, region, base)
-        };
+        let mut transport =
+            unsafe { SharedMemoryTransport::<Primary, _, _>::new(ch1, ch2, doorbell, region) };
         let mut rx = [0; MTU];
 
         let recv = transport.recv(&mut rx);
@@ -324,9 +317,8 @@ fn immediate_recv_invalidates_before_read_and_flushes_consumed_flag() {
         let (doorbell, _remote) = HostDoorbell::pair();
         let ch1 = unsafe { Chan::new_unchecked(0) };
         let ch2 = unsafe { Chan::new_unchecked(1) };
-        let mut transport = unsafe {
-            SharedMemoryTransport::<Primary, _, _>::new(ch1, ch2, doorbell, region, base)
-        };
+        let mut transport =
+            unsafe { SharedMemoryTransport::<Primary, _, _>::new(ch1, ch2, doorbell, region) };
 
         let mut rx = [0; MTU];
         let n = transport

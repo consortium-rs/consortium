@@ -20,9 +20,8 @@ fn postcard_channel_sends_typed_message_over_shared_memory_transport() {
         let (doorbell, _remote) = HostDoorbell::pair();
         let ch_tx = unsafe { Chan::new_unchecked(0) };
         let ch_rx = unsafe { Chan::new_unchecked(1) };
-        let transport = unsafe {
-            SharedMemoryTransport::<Primary, _, _>::new(ch_tx, ch_rx, doorbell, region, base)
-        };
+        let transport =
+            unsafe { SharedMemoryTransport::<Primary, _, _>::new(ch_tx, ch_rx, doorbell, region) };
         let mut channel =
             Channel::<Tx, Message, _, PostcardCodec>::new(ch_tx, transport, scratch::<MTU>());
 
@@ -79,9 +78,8 @@ fn postcard_channel_receives_typed_message_over_shared_memory_transport() {
         let (doorbell, _remote) = HostDoorbell::pair();
         let ch_tx = unsafe { Chan::new_unchecked(0) };
         let ch_rx = unsafe { Chan::new_unchecked(1) };
-        let transport = unsafe {
-            SharedMemoryTransport::<Primary, _, _>::new(ch_tx, ch_rx, doorbell, region, base)
-        };
+        let transport =
+            unsafe { SharedMemoryTransport::<Primary, _, _>::new(ch_tx, ch_rx, doorbell, region) };
         let mut channel =
             Channel::<Rx, Message, _, PostcardCodec>::new(ch_rx, transport, scratch::<MTU>());
 

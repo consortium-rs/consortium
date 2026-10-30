@@ -50,7 +50,6 @@ unsafe fn primary(base: *mut u8, doorbell: LinedDoorbell) -> Transport<Primary> 
             ch(ACK_BY_S),
             doorbell,
             region,
-            base,
         )
     }
 }
@@ -70,7 +69,6 @@ unsafe fn secondary(base: *mut u8, doorbell: LinedDoorbell) -> Transport<Seconda
             ch(ACK_BY_P),
             doorbell,
             region,
-            base,
         )
     }
 }
@@ -417,7 +415,6 @@ fn send_acked_fails_fast_when_the_link_has_no_acknowledgement() {
                         ch(DATA_S2P),
                         p_bus,
                         region,
-                        base,
                     )
                 };
                 transport
@@ -445,7 +442,6 @@ fn send_acked_fails_fast_when_the_link_has_no_acknowledgement() {
                         ch(DATA_P2S),
                         s_bus,
                         region,
-                        base,
                     )
                 };
                 transport

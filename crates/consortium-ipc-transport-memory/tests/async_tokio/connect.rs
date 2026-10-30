@@ -41,9 +41,7 @@ fn connect_builds_a_usable_link_from_both_sides() {
                 let ch_rx = unsafe { Chan::new_unchecked(1) };
                 let region = unsafe { UncachedRegion::new(base, REGION_LEN) };
                 let mut transport = unsafe {
-                    SharedMemoryTransport::<Primary, _, _>::new(
-                        ch_tx, ch_rx, a_doorbell, region, base,
-                    )
+                    SharedMemoryTransport::<Primary, _, _>::new(ch_tx, ch_rx, a_doorbell, region)
                 };
 
                 // The channel table does not exist yet, so no size is knowable.
@@ -75,9 +73,7 @@ fn connect_builds_a_usable_link_from_both_sides() {
                 let ch_tx = unsafe { Chan::new_unchecked(1) };
                 let region = unsafe { UncachedRegion::new(base, REGION_LEN) };
                 let mut transport = unsafe {
-                    SharedMemoryTransport::<Secondary, _, _>::new(
-                        ch_tx, ch_rx, m_doorbell, region, base,
-                    )
+                    SharedMemoryTransport::<Secondary, _, _>::new(ch_tx, ch_rx, m_doorbell, region)
                 };
 
                 // Same call as the primary above; the `Side` picks the role.
@@ -127,9 +123,8 @@ async fn secondary_rejects_mismatched_channel_count() {
     let ch_rx = unsafe { Chan::new_unchecked(0) };
     let ch_tx = unsafe { Chan::new_unchecked(1) };
     let region = unsafe { UncachedRegion::new(base, REGION_LEN) };
-    let mut transport = unsafe {
-        SharedMemoryTransport::<Secondary, _, _>::new(ch_tx, ch_rx, m_doorbell, region, base)
-    };
+    let mut transport =
+        unsafe { SharedMemoryTransport::<Secondary, _, _>::new(ch_tx, ch_rx, m_doorbell, region) };
 
     let err = bring_up(&mut transport, DescriptorLayout::new(4, MTU))
         .await
