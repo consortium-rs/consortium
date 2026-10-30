@@ -26,7 +26,7 @@
 use std::path::{Path, PathBuf};
 
 use consortium_cfg_common::config::{
-    CSTI_MANIFEST_PATH_ENV, CSTI_MCU_PATH_ENV, Hmi, HmiEngine, MemoryRegion, Workspace,
+    CSTI_MANIFEST_PATH_ENV, CSTI_MCU_PATH_ENV, Hmi, HmiEngine, Workspace,
 };
 use serde::{Deserialize, Serialize};
 
@@ -67,91 +67,6 @@ impl CstiWorkspace {
             Workspace::Unified => &self.manifest_dir,
             Workspace::Nested => crate_dir,
         }
-    }
-}
-
-/// Shared-memory region layout for an IPC channel.
-///
-/// Injected as compile-time environment variables by the builder before invoking
-/// `cargo build`. The physical base address is **not** carried here: the IPC
-/// transport never resolves its region from the environment. Controller firmware
-/// gets the base baked into its generated init code (via the lowered `Address`),
-/// and the Linux application reaches the *same* memory through the UIO device
-/// named by `uio`; so no side needs a `CONSORTIUM_IPC_BASE`.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(deny_unknown_fields, rename_all = "snake_case")]
-pub struct SharedMemConfig {
-    /// Length of the region in bytes.
-    pub length: u64,
-    /// UIO device index the Linux application mmaps to reach the same region.
-    pub uio: u32,
-    /// Maximum transfer unit (payload bytes per slot) for the channel.
-    pub mtu: u32,
-}
-
-impl SharedMemConfig {
-    /// Builds a resolved config from a `[[ipc.channel]]` shared-memory region
-    /// plus the UIO index and MTU the lowering resolved.
-    ///
-    /// Only the region's `length` is carried; the physical base is resolved by
-    /// the generated code, not the environment (see the type docs). `uio` is the
-    /// AP-side UIO device index the Linux application mmaps (from `LoweredIr`'s
-    /// resolved `ApAddress`), and `mtu` is the channel MTU.
-    pub fn from_region(region: MemoryRegion, uio: u32, mtu: u32) -> Self {
-        Self {
-            length: u64::from(region.length),
-            uio,
-            mtu,
-        }
-    }
-
-    /// Environment variable suffixes used when the builder injects this config.
-    ///
-    /// The builder emits `CONSORTIUM_<PREFIX>_LENGTH`, `_UIO`, and `_MTU`, where
-    /// `<PREFIX>` is `IPC`. Consuming crates read these with `option_env!` and
-    /// parse them in a `const` context. Numeric values are emitted as decimal
-    /// strings even when the source manifest used hexadecimal TOML literals.
-    pub fn env_pairs(&self, prefix: &str) -> [(String, String); 3] {
-        [
-            (
-                format!("CONSORTIUM_{prefix}_LENGTH"),
-                self.length.to_string(),
-            ),
-            (format!("CONSORTIUM_{prefix}_UIO"), self.uio.to_string()),
-            (format!("CONSORTIUM_{prefix}_MTU"), self.mtu.to_string()),
-        ]
-    }
-}
-
-/// Debug-ring layout injected as `CONSORTIUM_DBG_*` compile-time variables.
-///
-/// Unlike IPC, the defmt logger *does* read its region from the environment:
-/// `consortium-dbg`'s `config` module resolves `CONSORTIUM_DBG_BASE` and
-/// `CONSORTIUM_DBG_LENGTH` with `option_env!` in a `const` context (and treats
-/// the presence of `BASE` as "debug configured"). So the debug carrier keeps the
-/// physical base the IPC carrier drops.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(deny_unknown_fields, rename_all = "snake_case")]
-pub struct DbgConfig {
-    /// Physical base of the debug ring, as seen by the logging core (raw memory).
-    pub base: u64,
-    /// Length of the ring in bytes.
-    pub length: u64,
-}
-
-impl DbgConfig {
-    /// Builds a debug carrier from a resolved ring base and length.
-    pub fn new(base: u64, length: u64) -> Self {
-        Self { base, length }
-    }
-
-    /// The `CONSORTIUM_DBG_BASE`/`_LENGTH` pairs `consortium-dbg` reads.
-    /// Numeric values are emitted as decimal strings.
-    pub fn env_pairs(&self) -> [(String, String); 2] {
-        [
-            ("CONSORTIUM_DBG_BASE".to_string(), self.base.to_string()),
-            ("CONSORTIUM_DBG_LENGTH".to_string(), self.length.to_string()),
-        ]
     }
 }
 
@@ -338,44 +253,6 @@ impl CortexMcuCore {
 mod tests {
     use super::*;
 
-    const SAMPLE: SharedMemConfig = SharedMemConfig {
-        length: 0x1000,
-        uio: 0,
-        mtu: 64,
-    };
-
-    #[test]
-    fn env_pairs_emit_the_ipc_layout_the_app_reads() {
-        // The IPC carrier no longer carries a base: nothing reads
-        // `CONSORTIUM_IPC_BASE` (the transport resolves its region from generated
-        // code / UIO). Numeric env-var values are decimal strings.
-        let pairs = SAMPLE.env_pairs("IPC");
-        assert_eq!(
-            pairs,
-            [
-                ("CONSORTIUM_IPC_LENGTH".to_string(), "4096".to_string()),
-                ("CONSORTIUM_IPC_UIO".to_string(), "0".to_string()),
-                ("CONSORTIUM_IPC_MTU".to_string(), "64".to_string()),
-            ]
-        );
-        // No base is emitted for IPC.
-        assert!(!pairs.iter().any(|(k, _)| k == "CONSORTIUM_IPC_BASE"));
-    }
-
-    #[test]
-    fn dbg_config_emits_the_base_and_length_the_logger_reads() {
-        // The debug carrier keeps base + length, matching exactly what
-        // `consortium-dbg`'s `config` module reads with `option_env!`.
-        let dbg = DbgConfig::new(0x2040_8000, 0x2000);
-        assert_eq!(
-            dbg.env_pairs(),
-            [
-                ("CONSORTIUM_DBG_BASE".to_string(), "541097984".to_string()),
-                ("CONSORTIUM_DBG_LENGTH".to_string(), "8192".to_string()),
-            ]
-        );
-    }
-
     #[test]
     fn hmi_env_pairs_emit_dist_and_optional_debug_url() {
         let with_url = HmiConfig::Cog {
@@ -431,32 +308,6 @@ mod tests {
                     "480".to_string()
                 ),
             ]
-        );
-    }
-
-    #[test]
-    fn from_region_widens_schema_region_into_injectable_config() {
-        // A resolved `[[ipc.channel]]` region plus the lowered UIO index and MTU
-        // produce the config the builder injects; the region's base is dropped
-        // (the IPC carrier has no base).
-        let region = MemoryRegion {
-            base: 0x2040_0000,
-            length: 0x4000,
-        };
-        let cfg = SharedMemConfig::from_region(region, 0, 128);
-        assert_eq!(
-            cfg,
-            SharedMemConfig {
-                length: 0x4000,
-                uio: 0,
-                mtu: 128,
-            }
-        );
-        // The widened length round-trips through the env injection.
-        let pairs = cfg.env_pairs("IPC");
-        assert_eq!(
-            pairs[0],
-            ("CONSORTIUM_IPC_LENGTH".to_string(), "16384".to_string())
         );
     }
 

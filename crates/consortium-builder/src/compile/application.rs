@@ -35,10 +35,10 @@ use thiserror::Error;
 use tokio::process::Command;
 
 use super::Compiler;
-use crate::compile::env::{CstiWorkspace, DbgConfig, HmiConfig, SharedMemConfig};
+use crate::compile::env::{CstiWorkspace, HmiConfig};
 use crate::compile::utils::{
-    clean_path, elf_path, inject_csti, inject_dbg, inject_hmi, inject_shared_mem, resolve_cargo,
-    resolve_rustc, run_command, verify_elf,
+    clean_path, elf_path, inject_csti, inject_hmi, resolve_cargo, resolve_rustc, run_command,
+    verify_elf,
 };
 use crate::progress::BuildReporter;
 
@@ -193,10 +193,6 @@ pub struct ApplicationConfiguration {
     /// Optional HMI config. `dist` must be an absolute path (resolved by the
     /// caller from the manifest directory before constructing this struct).
     pub hmi: Option<HmiConfig>,
-    /// IPC shared-memory layout, injected as `CONSORTIUM_IPC_*` env vars.
-    pub ipc: Option<SharedMemConfig>,
-    /// Debug ring layout, injected as `CONSORTIUM_DBG_*` env vars.
-    pub dbg: Option<DbgConfig>,
     /// Target sysroot from `[profile] sysroot`, resolved to an absolute path.
     /// Takes priority over the `SDKTARGETSYSROOT` / `OECORE_TARGET_SYSROOT`
     /// environment variables when present.
@@ -289,8 +285,6 @@ impl ApplicationCompiler {
 
         inject_hmi(&mut cmd, config.hmi.as_ref());
 
-        inject_shared_mem(&mut cmd, "IPC", config.ipc.as_ref());
-        inject_dbg(&mut cmd, config.dbg.as_ref());
         inject_csti(&mut cmd, config.workspace.as_ref());
 
         if config.release {
@@ -347,8 +341,6 @@ pub struct ApplicationBuilder {
     pub release: bool,
     pub target: String,
     pub hmi: Option<HmiConfig>,
-    pub ipc: Option<SharedMemConfig>,
-    pub dbg: Option<DbgConfig>,
     pub sysroot: Option<PathBuf>,
 }
 
@@ -361,8 +353,6 @@ impl ApplicationBuilder {
             release: self.release,
             offline: false,
             hmi: self.hmi.clone(),
-            ipc: self.ipc,
-            dbg: self.dbg,
             sysroot: self.sysroot.clone(),
             workspace: None,
         })
@@ -378,8 +368,6 @@ impl ApplicationBuilder {
             release: self.release,
             offline: false,
             hmi: self.hmi.clone(),
-            ipc: self.ipc,
-            dbg: self.dbg,
             sysroot: self.sysroot.clone(),
             workspace: None,
         })

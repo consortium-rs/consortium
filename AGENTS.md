@@ -564,11 +564,13 @@ builder's planning, compilation, staging, and external BitBake hand-off boundari
 
 ### Build-Time Configuration
 
-The builder flow injects compile-time environment variables such as `CONSORTIUM_IPC_*`,
-`CONSORTIUM_DBG_*`, `CONSORTIUM_HMI_*`, and `CONSORTIUM_TEE_UUID`. Consumers read them
-with `option_env!`/`env!`. The builder emits numeric env-var values as decimal strings;
-firmware-side consumers that need const parsing can use `const-str` and should not depend
-on the std-oriented schema crates.
+Memory layout has one source: generated code. Controller firmware gets its IPC region
+base and its `[dbg.<core>]` ring baked into generated `init()` (which calls
+`ConsortiumLogger::init(base, len)`), and the Linux application reaches the same memory
+through its UIO devices; no `CONSORTIUM_IPC_*` or `CONSORTIUM_DBG_*` variable exists. The
+builder still injects what generated code cannot know — `CONSORTIUM_HMI_*` and
+`CONSORTIUM_TEE_UUID` — read with `option_env!`/`env!`, with numeric values emitted as
+decimal strings.
 
 Every endpoint `cargo` invocation (application, firmware, TA) also receives two
 build-host directories: `CSTI_MANIFEST_PATH` (the absolute directory holding
@@ -579,10 +581,6 @@ workspace, or relative to `CSTI_MANIFEST_PATH` for a `unified` one, so the commi
 `consortium.gen.rs` carries no build-host path. A nested manifest with several firmware
 crates has no single `CSTI_MCU_PATH` and falls back to absolute paths.
 
-Current IPC build-time variables are channel-local metadata such as
-`CONSORTIUM_IPC_LENGTH`, `CONSORTIUM_IPC_UIO`, and `CONSORTIUM_IPC_MTU`; the shared
-memory base comes from generated code and UIO mapping, not `CONSORTIUM_IPC_BASE`.
-`consortium-dbg::config` reads `CONSORTIUM_DBG_BASE` and `CONSORTIUM_DBG_LENGTH`.
 `consortium-hmi-webkit` (engine `cog`) reads `CONSORTIUM_HMI_DIST` and optional
 `CONSORTIUM_HMI_DEBUG_URL`; the Cog build command is selected by
 `CONSORTIUM_HMI_BUILD_CMD`, then `vp`, then `npm`. `consortium-hmi-pocket` (engine
@@ -717,8 +715,9 @@ not have side effects because disabled log calls do not evaluate them.
 
 `consortium-dbg` implements defmt-over-shared-memory with `CDBG` descriptors. Its
 default features are `host` and `logger`; `decode` adds `defmt-decoder` and implies
-`host`. Debug configuration comes from `CONSORTIUM_DBG_*`; plain `cargo build` leaves
-the config unconfigured and the logger no-op unless the binary calls the const guard.
+`host`. The ring comes from generated controller `init()`, which calls the `unsafe`
+`ConsortiumLogger::init(base, len)`; until then (or in a binary that never calls it)
+every log call is a no-op.
 
 Preserve descriptor discipline when changing debug transport behavior. Host-side tests
 cover descriptor initialization, ring read/write behavior, decoding fixtures, and

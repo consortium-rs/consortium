@@ -19,9 +19,10 @@
 //! Two jobs, both of which every compiler needs and none of which belongs to any one of
 //! them.
 //!
-//! **Environment injection** (`inject_shared_mem`, `inject_dbg`, `inject_hmi`) turns the
-//! carriers in `compile::env` into the `CONSORTIUM_*` variables set on a
-//! `cargo`/`bun` invocation. Numeric values are written as decimal strings so a
+//! **Environment injection** (`inject_hmi`, `inject_csti`) turns the carriers in
+//! `compile::env` into the `CONSORTIUM_*`/`CSTI_*` variables set on a `cargo`/`bun`
+//! invocation. IPC and debug-ring layout are not among them: generated code carries
+//! those. Numeric values are written as decimal strings so a
 //! firmware-side consumer can const-parse them with `const-str` rather than depending on
 //! the std-oriented schema crates.
 //!
@@ -38,38 +39,13 @@
 //! the frontend build, so `csti fetch` owns it and `csti build --linux <DIR> --offline` does not
 //! repeat it.
 
-use crate::compile::env::{CstiWorkspace, DbgConfig, HmiConfig, SharedMemConfig};
+use crate::compile::env::{CstiWorkspace, HmiConfig};
 use crate::compile::web::HmiBuildCommand;
 use crate::progress::BuildReporter;
 use std::path::{Path, PathBuf};
 use std::process::{ExitStatus, Stdio};
 use tokio::io::{AsyncRead, AsyncReadExt};
 use tokio::process::Command;
-
-/// Injects a shared-memory region's layout as `CONSORTIUM_<PREFIX>_*` env vars
-/// onto a pending `cargo build` command, so the firmware/application crates can
-/// read them at compile time with `option_env!`. A `None` config injects
-/// nothing, leaving the consuming crate to emit its "build via consortium-builder"
-/// hint.
-pub fn inject_shared_mem(cmd: &mut Command, prefix: &str, config: Option<&SharedMemConfig>) {
-    if let Some(cfg) = config {
-        for (key, value) in cfg.env_pairs(prefix) {
-            cmd.env(key, value);
-        }
-    }
-}
-
-/// Injects the debug ring's `CONSORTIUM_DBG_BASE`/`_LENGTH` env vars onto a
-/// pending `cargo build` command, so `consortium-dbg`'s `config` module can read
-/// them at compile time with `option_env!`. A `None` config injects nothing,
-/// leaving the logger unconfigured (a no-op).
-pub fn inject_dbg(cmd: &mut Command, config: Option<&DbgConfig>) {
-    if let Some(cfg) = config {
-        for (key, value) in cfg.env_pairs() {
-            cmd.env(key, value);
-        }
-    }
-}
 
 /// Injects the `CSTI_*` build-host directories (see [`CstiWorkspace`]) onto a
 /// pending `cargo` command. A `None` workspace injects nothing.
@@ -481,130 +457,6 @@ mod tests {
                 Some((key.to_string(), v?.to_str()?.to_string()))
             })
             .collect()
-    }
-
-    #[test]
-    fn inject_shared_mem_sets_all_ipc_vars() {
-        let cfg = SharedMemConfig {
-            length: 0x1000,
-            uio: 3,
-            mtu: 64,
-        };
-        let mut cmd = Command::new("true");
-        inject_shared_mem(&mut cmd, "IPC", Some(&cfg));
-
-        let vars = injected_vars(&cmd);
-        // No base: nothing reads `CONSORTIUM_IPC_BASE`.
-        assert!(!vars.contains_key("CONSORTIUM_IPC_BASE"));
-        assert_eq!(
-            vars.get("CONSORTIUM_IPC_LENGTH").map(String::as_str),
-            Some("4096")
-        );
-        assert_eq!(
-            vars.get("CONSORTIUM_IPC_UIO").map(String::as_str),
-            Some("3")
-        );
-        assert_eq!(
-            vars.get("CONSORTIUM_IPC_MTU").map(String::as_str),
-            Some("64")
-        );
-        assert_eq!(vars.len(), 3);
-    }
-
-    #[test]
-    fn inject_shared_mem_none_injects_nothing() {
-        // A missing `[ipc]` section must leave the consuming crate to emit its own
-        // "build via consortium-builder" hint, not a silent zero.
-        let mut cmd = Command::new("true");
-        inject_shared_mem(&mut cmd, "IPC", None);
-        assert!(injected_vars(&cmd).is_empty());
-    }
-
-    #[test]
-    fn inject_dbg_emits_base_and_length() {
-        // The debug carrier keeps the base + length `consortium-dbg` reads.
-        let cfg = DbgConfig::new(0x204C_1000, 0x800);
-        let mut cmd = Command::new("true");
-        inject_dbg(&mut cmd, Some(&cfg));
-
-        let vars = injected_vars(&cmd);
-        assert!(vars.keys().all(|k| k.starts_with("CONSORTIUM_DBG_")));
-        assert_eq!(
-            vars.get("CONSORTIUM_DBG_BASE").map(String::as_str),
-            Some("541855744")
-        );
-        assert_eq!(
-            vars.get("CONSORTIUM_DBG_LENGTH").map(String::as_str),
-            Some("2048")
-        );
-        assert!(!vars.contains_key("CONSORTIUM_IPC_BASE"));
-    }
-
-    #[test]
-    fn inject_dbg_none_injects_nothing() {
-        let mut cmd = Command::new("true");
-        inject_dbg(&mut cmd, None);
-        assert!(injected_vars(&cmd).is_empty());
-    }
-
-    /// End-to-end: a `Consortium.toml` `[ipc]` table parses into a
-    /// [`SharedMemConfig`], the builder injects it as env vars, and parsing those
-    /// values back as decimals recovers the original numbers.
-    /// Hex TOML literals are normalized to decimal env-var strings.
-    #[test]
-    fn toml_ipc_section_round_trips_through_injected_env() {
-        #[derive(serde::Deserialize)]
-        struct Doc {
-            ipc: SharedMemConfig,
-        }
-
-        // No base: the IPC carrier resolves its region from generated code, not
-        // the environment.
-        let manifest = "\
-            [ipc]\n\
-            length = 0x1000\n\
-            uio    = 0\n\
-            mtu    = 64\n";
-
-        let doc: Doc = toml::from_str(manifest).expect("[ipc] should deserialize");
-        let cfg = doc.ipc;
-
-        let mut cmd = Command::new("true");
-        inject_shared_mem(&mut cmd, "IPC", Some(&cfg));
-        let vars = injected_vars(&cmd);
-
-        // Re-parse the injected strings exactly as the consuming crate does.
-        let read = |suffix: &str| -> &str {
-            vars.get(&format!("CONSORTIUM_IPC_{suffix}"))
-                .map(String::as_str)
-                .unwrap_or_else(|| panic!("missing CONSORTIUM_IPC_{suffix}"))
-        };
-        assert_eq!(read("LENGTH"), "4096");
-        assert_eq!(read("UIO"), "0");
-        assert_eq!(read("MTU"), "64");
-        assert_eq!(read("LENGTH").parse::<u64>().unwrap(), cfg.length);
-        assert_eq!(read("UIO").parse::<u32>().unwrap(), cfg.uio);
-        assert_eq!(read("MTU").parse::<u32>().unwrap(), cfg.mtu);
-
-        assert!(!vars.contains_key("CONSORTIUM_IPC_BASE"));
-        assert_eq!(cfg.uio, 0);
-    }
-
-    #[test]
-    fn toml_ipc_section_rejects_unknown_fields() {
-        // `SharedMemConfig` is `deny_unknown_fields`, so a typo'd key is a hard
-        // error rather than a silently dropped layout parameter.
-        #[derive(serde::Deserialize)]
-        struct Doc {
-            #[allow(dead_code)]
-            ipc: SharedMemConfig,
-        }
-        let manifest = "[ipc]\nlength = 0\nuio = 0\nmtu = 0\nbogus = 1\n";
-        let err = match toml::from_str::<Doc>(manifest) {
-            Ok(_) => panic!("unknown field `bogus` should have been rejected"),
-            Err(e) => e,
-        };
-        assert!(err.to_string().contains("bogus"), "unexpected error: {err}");
     }
 
     // ── HMI ─────────────────────────────────────────────────────────────────

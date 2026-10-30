@@ -24,12 +24,11 @@
 use std::path::PathBuf;
 
 use consortium_cfg::Session;
-use consortium_cfg::bridge::LoweredIr;
 use consortium_cfg_common::config::{Party, VisibleCore};
 use consortium_cfg_common::database::{ChipDatabase, Coprocessor, CoprocessorVariant};
 
-use super::{CargoOptions, PipelineError, core_rust_triple, ipc_config_for, visible_core_of};
-use crate::compile::env::{CstiWorkspace, DbgConfig};
+use super::{CargoOptions, PipelineError, core_rust_triple, visible_core_of};
+use crate::compile::env::CstiWorkspace;
 use crate::compile::firmware::FirmwareConfiguration;
 
 /// A resolved firmware build for one remote coprocessor.
@@ -97,9 +96,6 @@ pub fn plan_firmware_builds(
         let path = workspace.manifest_dir.join(root);
         let target = core_rust_triple(core);
 
-        let ipc = ipc_config_for(&ir, core);
-        let dbg = dbg_config_for(&ir, core);
-
         // The controller core's generated init module (MPU/NVIC weave plus its
         // disconnected IPC endpoints). This is the existing codegen; the pipeline
         // only writes it and builds.
@@ -117,8 +113,6 @@ pub fn plan_firmware_builds(
                 path,
                 release: cargo.release,
                 offline: cargo.offline,
-                ipc,
-                dbg,
                 remoteproc: ir.remoteproc.get(&core).cloned(),
                 workspace: Some(workspace.clone()),
             },
@@ -127,16 +121,6 @@ pub fn plan_firmware_builds(
     }
 
     Ok(plans)
-}
-
-/// The debug-ring layout for `core`, if it declares `[dbg.<core>]`.
-///
-/// The logging core reads its ring base + length from `CONSORTIUM_DBG_*` at
-/// compile time (via `consortium-dbg`'s `config`), so those are exactly the two
-/// values carried.
-fn dbg_config_for(ir: &LoweredIr, core: VisibleCore) -> Option<DbgConfig> {
-    let ring = ir.dbg.ring(core)?;
-    Some(DbgConfig::new(ring.base, ring.length))
 }
 
 /// The build-host path of a firmware crate's compiled ELF for the given target.
@@ -199,8 +183,9 @@ mod tests {
         assert!(plan.config.release);
         // The shared cargo flags reach every firmware plan.
         assert!(plan.config.offline);
-        // cm33 declares `[dbg.cm33]`, so a debug layout is resolved.
-        assert!(plan.config.dbg.is_some());
+        // cm33 declares `[dbg.cm33]`, so its generated init hands the ring to the
+        // logger; no `CONSORTIUM_DBG_*` variable is involved.
+        assert!(plan.generated.contains("ConsortiumLogger::init("));
         let remoteproc = plan.config.remoteproc.as_ref().expect("remoteproc layout");
         assert_eq!(remoteproc.flash.origin, 0x8010_1000);
         assert_eq!(remoteproc.ram.origin, 0x80a0_0000);

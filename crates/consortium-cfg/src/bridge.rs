@@ -75,8 +75,8 @@ pub struct LoweredIr {
     /// Linux UIO devices, named for their DTS node. Index 0 is the aggregate
     /// shared-memory device (`ipc-shm`); the rest are one per doorbell.
     pub uio: Vec<(String, UioDevice)>,
-    /// Per-coprocessor debug log rings. Generates no Rust; resolves each
-    /// logger's `CONSORTIUM_DBG_*` build-time configuration for the builder.
+    /// Per-coprocessor debug log rings: each logging core's generated `init()`
+    /// passes its ring to the logger, and the AP's maps every ring to read it.
     pub dbg: DebugLogs,
     /// Owned peripherals (I2C, GPIO) to bring up per controller core.
     pub peripherals: Peripherals,
@@ -339,7 +339,7 @@ impl LoweredIr {
     ///
     /// The generated `init`:
     ///
-    /// - resets the CDBG ring via `ConsortiumLogger::init()` when a
+    /// - resets the CDBG ring via `ConsortiumLogger::init(base, len)` when a
     ///   `[dbg.<core>]` logger is present, so the first `defmt` frame lands in a
     ///   fresh descriptor;
     /// - programs one Normal, shareable, non-cacheable MPU carveout per
@@ -460,17 +460,14 @@ impl LoweredIr {
 
         // A `[dbg.<core>]` logger means `defmt` is linked: reset the CDBG ring
         // first thing (before any trace) and emit a `defmt::timestamp!` source.
-        let dbg_present = self.dbg.ring(core).is_some();
-        let logger_init = if dbg_present {
-            quote! {
-                // Reset the CDBG ring on every boot so a warm reset does not
-                // leave a stale, valid-looking descriptor behind. Must run
-                // before the first `defmt` frame below.
-                ::consortium_dbg::logger::ConsortiumLogger::init();
-            }
-        } else {
-            quote! {}
-        };
+        let dbg_ring = self.dbg.ring(core);
+        let dbg_present = dbg_ring.is_some();
+        // Reset the CDBG ring on every boot so a warm reset does not leave a
+        // stale, valid-looking descriptor behind. Must run before the first
+        // `defmt` frame below.
+        let logger_init = dbg_ring
+            .map(|ring| ring.initialize_controller())
+            .unwrap_or_default();
 
         // Sealed Embassy time driver: `bringup` statement (into `init`), the
         // timer vector, and the `defmt::timestamp!` source. Empty when
@@ -1887,10 +1884,14 @@ mod tests {
         assert_eq!(ring.mtu, 64);
         assert!(ir.dbg.ring(cm0p()).is_none());
 
-        // The IR resolves the build-time vars the builder injects per core.
-        let env: std::collections::HashMap<_, _> = ring.env().into_iter().collect();
-        assert_eq!(env["CONSORTIUM_DBG_BASE"], "537272320");
-        assert_eq!(env["CONSORTIUM_DBG_LENGTH"], "8192");
+        // The logger is handed that resolved ring, not a build-time variable.
+        let init = ir
+            .initialize(cm33(), &syn::parse_quote!(::melt_pot_shared))
+            .to_string();
+        assert!(
+            init.contains("ConsortiumLogger :: init ((537272320usize) as * mut u8 , 8192u16)"),
+            "{init}"
+        );
     }
 
     #[test]

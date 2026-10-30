@@ -298,7 +298,6 @@ dependencies = [
  "bitflags 2.13.2",
  "consortium-log",
  "consortium-shared-memory",
- "const-str",
  "defmt",
  "defmt-decoder",
  "defmt-parser",
@@ -492,12 +491,6 @@ dependencies = [
  "quote",
  "syn 3.0.9",
 ]
-
-[[package]]
-name = "const-str"
-version = "1.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "18f12cc9948ed9604230cdddc7c86e270f9401ccbe3c2e98a4378c5e7632212f"
 
 [[package]]
 name = "core-foundation-sys"

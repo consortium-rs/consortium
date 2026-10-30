@@ -16,13 +16,11 @@
 
 //! Debug-logging IR: one defmt-over-shared-memory ring per coprocessor.
 //!
-//! Unlike the IPC ([`ShuHan`](crate::components::ipc_shm::ShuHan)) and doorbell
-//! ([`BellA`](crate::components::bella::BellA)) IR, this component generates no
-//! Rust. The debug log ring is configured at *build* time, not in generated
-//! source: the builder injects each logger's resolved layout as the
-//! `CONSORTIUM_DBG_*` environment variables that `consortium_dbg::config` reads
-//! with `option_env!`. This IR resolves those values per logging core so the
-//! builder does not re-derive addresses from the manifest.
+//! A logging core's generated `init()` hands its resolved ring to
+//! `ConsortiumLogger::init` ([`DebugRing::initialize_controller`]); the AP's
+//! generated `init()` maps every ring to read it ([`DebugLogs::initialize_host`]).
+//! Generated code is the only place the layout is written down; there are no
+//! build-time `CONSORTIUM_DBG_*` variables.
 
 use std::collections::HashMap;
 use std::path::PathBuf;
@@ -104,16 +102,32 @@ impl ElfLocation {
 }
 
 impl DebugRing {
-    /// The `CONSORTIUM_DBG_*` build-time variables a build of this core's
-    /// firmware reads through `consortium_dbg::config`.
+    /// The logging core's statement that resets this ring and starts logging into
+    /// it. It must run before the first `defmt` frame.
     ///
-    /// Only `BASE` and `LENGTH` are emitted, matching what `config.rs` parses;
-    /// values are decimal to match the other `CONSORTIUM_*` injections.
-    pub fn env(&self) -> Vec<(&'static str, String)> {
-        vec![
-            ("CONSORTIUM_DBG_BASE", self.base.to_string()),
-            ("CONSORTIUM_DBG_LENGTH", self.length.to_string()),
-        ]
+    /// The descriptor stores the length as a `u16`. A longer ring is a
+    /// `compile_error!` in the generated module rather than a silently truncated
+    /// ring.
+    pub fn initialize_controller(&self) -> TokenStream {
+        let base = proc_macro2::Literal::usize_suffixed(self.base as usize);
+        match u16::try_from(self.length) {
+            Ok(len) => {
+                let len = proc_macro2::Literal::u16_suffixed(len);
+                quote! {
+                    /// SAFETY: the ring is this core's validated `[dbg]` window,
+                    /// written only by this logger and read by the host.
+                    unsafe { ::consortium_dbg::logger::ConsortiumLogger::init((#base) as *mut u8, #len) }
+                }
+            }
+            Err(_) => {
+                let message = format!(
+                    "the [dbg] ring is {} bytes, but a debug descriptor holds at most {} bytes",
+                    self.length,
+                    u16::MAX
+                );
+                quote! { ::core::compile_error!(#message); }
+            }
+        }
     }
 }
 
@@ -262,17 +276,6 @@ impl DebugLogs {
             init,
         })
     }
-
-    /// Per-core `CONSORTIUM_DBG_*` build-time variables, keyed by logging core.
-    ///
-    /// The builder injects these into the matching controller-core firmware
-    /// image; a core absent from the map has no debug logging configured.
-    pub fn env(&self) -> HashMap<VisibleCore, Vec<(&'static str, String)>> {
-        self.rings
-            .iter()
-            .map(|(core, ring)| (*core, ring.env()))
-            .collect()
-    }
 }
 
 /// The fragments [`DebugLogs::initialize_host`] contributes to the AP's
@@ -307,22 +310,31 @@ mod tests {
     }
 
     #[test]
-    fn ring_emits_decimal_base_and_length_env() {
-        let env: HashMap<_, _> = ring().env().into_iter().collect();
-        assert_eq!(env["CONSORTIUM_DBG_BASE"], "541097984");
-        assert_eq!(env["CONSORTIUM_DBG_LENGTH"], "8192");
+    fn controller_init_passes_the_ring_to_the_logger() {
+        let tokens = ring().initialize_controller().to_string();
+        assert!(
+            tokens.contains(
+                ":: consortium_dbg :: logger :: ConsortiumLogger :: init ((541097984usize) as * mut u8 , 8192u16)"
+            ),
+            "{tokens}"
+        );
     }
 
     #[test]
-    fn logs_key_env_by_core() {
+    fn a_ring_too_long_for_the_descriptor_is_a_compile_error() {
+        let mut ring = ring();
+        ring.length = 0x1_0000;
+        let tokens = ring.initialize_controller().to_string();
+        assert!(tokens.contains("compile_error"), "{tokens}");
+        assert!(!tokens.contains("ConsortiumLogger"), "{tokens}");
+    }
+
+    #[test]
+    fn logs_key_rings_by_core() {
         let logs = DebugLogs::new(HashMap::from([(cm33(), ring())]), DbgMode::Auto);
 
         assert!(logs.ring(cm33()).is_some());
         assert!(logs.ring(VisibleCore::Ap).is_none());
-
-        let env = logs.env();
-        let cm33_env: HashMap<_, _> = env[&cm33()].iter().cloned().collect();
-        assert_eq!(cm33_env["CONSORTIUM_DBG_LENGTH"], "8192");
     }
 
     #[test]

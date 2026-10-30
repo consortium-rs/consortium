@@ -107,7 +107,14 @@ impl ::core::default::Default for Config {
 #[cfg(target_arch = "arm")]
 fn init(config: Config) -> (Peripherals, Channels) {
     if config.logger {
-        ::consortium_dbg::logger::ConsortiumLogger::init();
+        // SAFETY: the ring is this core's validated `[dbg]` window,
+        // written only by this logger and read by the host.
+        unsafe {
+            ::consortium_dbg::logger::ConsortiumLogger::init(
+                (541589504usize) as *mut u8,
+                8192u16,
+            )
+        }
     }
     ::consortium_runtime_mcu::log::trace!(
         "consortium controller init: mpu/nvic bring-up"
