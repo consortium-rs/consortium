@@ -60,7 +60,7 @@
 
 pub mod registers;
 
-use core::{marker::PhantomData, ops::Range};
+use core::marker::PhantomData;
 
 use consortium_hal_stm32mp2::{Peri, PeripheralType};
 use consortium_ipc::Side;
@@ -74,9 +74,6 @@ use super::{BellA, BellError, BellHw, LineSet};
 
 /// Number of channels per IPCC instance.
 pub const IPCC_CHAN_COUNT: u8 = 16;
-
-/// Channel ids reserved from user channels.
-pub const IPCC_CHAN_RESERVED: Range<u8> = 0..1;
 
 /// The IPCC doorbell for instance `N` (1-based), processor bank `S`.
 pub type IpccDoorbell<S, const N: usize> = BellA<Ipcc<S, N>>;
@@ -280,8 +277,6 @@ unsafe impl<S: Side, const N: usize> BellHw for Ipcc<S, N> {
     }
 
     const CHANNELS: u8 = IPCC_CHAN_COUNT;
-
-    const RESERVED: Range<u8> = IPCC_CHAN_RESERVED;
 
     #[inline]
     fn line(id: u8) -> u8 {

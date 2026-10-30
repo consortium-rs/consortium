@@ -73,7 +73,6 @@ pub mod mu;
 
 use core::{
     future::Future,
-    ops::Range,
     pin::Pin,
     sync::atomic::{Ordering, compiler_fence, fence},
     task::{Context, Poll},
@@ -89,9 +88,6 @@ pub enum BellError {
     /// The channel id names no line on this block.
     #[error("doorbell channel id out of range")]
     ChanOutOfRange,
-    /// The channel id is reserved and cannot carry a user channel.
-    #[error("doorbell channel id is reserved")]
-    ChanReserved,
     /// The previous signal on this line has not been consumed by the peer.
     #[error("doorbell line is still busy with the previous signal")]
     Busy,
@@ -126,10 +122,6 @@ pub unsafe trait BellHw: Clone + Sync + 'static {
 
     /// Number of channels; ids `0..CHANNELS` are lines, the rest are rejected.
     const CHANNELS: u8;
-
-    /// Channel ids reserved from user channels. Enforced by [`BellA`]'s
-    /// [`ChanValidate`], not by `ring`/`wait`.
-    const RESERVED: Range<u8>;
 
     /// A handle over the register window at `base`.
     ///
@@ -210,18 +202,15 @@ fn line_of<H: BellHw>(ch: Chan) -> Result<H::Line, BellError> {
     }
 }
 
-/// Validates user channel ids for this bell: in range and not reserved.
+/// Validates user channel ids for this bell: in range.
 impl<H: BellHw> ChanValidate for BellA<H> {
     type Error = BellError;
 
     fn validate(id: u8) -> Result<Chan, BellError> {
-        if H::RESERVED.contains(&id) {
-            Err(BellError::ChanReserved)
-        } else if id >= H::CHANNELS {
+        if id >= H::CHANNELS {
             Err(BellError::ChanOutOfRange)
         } else {
-            // SAFETY: `id` is below `CHANNELS` and outside the reserved range, so it
-            // names a user line of this bell.
+            // SAFETY: `id` is below `CHANNELS`, so it names a line of this bell.
             Ok(unsafe { Chan::new_unchecked(id) })
         }
     }

@@ -32,8 +32,8 @@ service       ISR core: read asserted lines, mask them, then wake
 H: BellHw     per block: ring, raw status, ack, arm/disarm, waker table
 ```
 
-A block implements only the `unsafe trait BellHw` register model — its channel count
-and reserved ids, the id-to-line mapping, and the register operations. Bounds
+A block implements only the `unsafe trait BellHw` register model — its channel count,
+the id-to-line mapping, and the register operations. Bounds
 checks, channel validation (`Chan::new::<IpccDoorbell<S, N>>(id)`), fences, critical
 sections, waker registration, and the `std` `Notify` re-subscription belong to the
 generic. The blocks are `bell::ipcc` (`IpccDoorbell<S, N> = BellA<Ipcc<S, N>>`),

@@ -58,7 +58,7 @@
 
 pub mod registers;
 
-use core::{marker::PhantomData, ops::Range};
+use core::marker::PhantomData;
 
 use consortium_hal_stm32mp2::{Peri, PeripheralType};
 use consortium_ipc::Side;
@@ -72,9 +72,6 @@ use super::{BellA, BellError, BellHw, LineSet};
 
 /// Number of semaphores, and so channels.
 pub const HSEM_CHAN_COUNT: u8 = 16;
-
-/// Semaphore ids reserved from user channels.
-pub const HSEM_CHAN_RESERVED: Range<u8> = 0..2;
 
 /// The HSEM doorbell for interrupt bank `S`; `N` is always `1`.
 pub type HsemDoorbell<S, const N: usize> = BellA<Hsem<S, N>>;
@@ -207,8 +204,6 @@ unsafe impl<S: Side, const N: usize> BellHw for Hsem<S, N> {
     const PHYS_BASE: usize = base::BASE[Self::INDEX];
 
     const CHANNELS: u8 = HSEM_CHAN_COUNT;
-
-    const RESERVED: Range<u8> = HSEM_CHAN_RESERVED;
 
     unsafe fn at(base: usize) -> Self {
         // Force the compile-time checks on `N` and `S`.
