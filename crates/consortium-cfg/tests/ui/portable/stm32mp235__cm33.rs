@@ -13,7 +13,8 @@ mod shared {
 
 ::consortium_ipc_transport_memory::channels!(SENSOR);
 ::consortium_ipc_transport_memory::impl_channel!(
-    SENSOR, ::consortium_ipc::Secondary, ::consortium_ipc_doorbell_ipcc::IpccDoorbell <
+    SENSOR, ::consortium_ipc::Secondary,
+    ::consortium_ipc_transport_memory::bell::ipcc::IpccDoorbell <
     ::consortium_ipc::Secondary, 1usize >,
     ::consortium_shared_memory::regions::UncachedRegion, crate ::shared::MotionControl,
     crate ::shared::SensorData, ::consortium_codec::PostcardCodec, 1u8, 0u8, 128usize,
@@ -35,7 +36,7 @@ fn __consortium_install_channels(
                 16384usize,
             )
         };
-        let doorbell = ::consortium_ipc_doorbell_ipcc::IpccDoorbell::<
+        let doorbell = ::consortium_ipc_transport_memory::bell::ipcc::IpccDoorbell::<
             ::consortium_ipc::Secondary,
             1usize,
         >::new(__db_ipcc1);
@@ -73,9 +74,11 @@ mod __consortium_vectors {
     );
     #[::consortium_hal_stm32mp2::interrupt]
     fn IPCC1_RX() {
-        ::consortium_ipc_doorbell_ipcc::notify_rx_occupied_interrupt::<
-            ::consortium_ipc::Secondary,
-            1usize,
+        ::consortium_ipc_transport_memory::bell::service_interrupt::<
+            ::consortium_ipc_transport_memory::bell::ipcc::Ipcc<
+                ::consortium_ipc::Secondary,
+                1usize,
+            >,
         >();
     }
 }

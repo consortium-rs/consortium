@@ -67,8 +67,12 @@ consortium-hal-stm32mp2 = { default-features = false, features = [
 ], path = "../consortium-hal-stm32mp2" }
 consortium-ipc = { path = "../consortium-ipc" }
 consortium-ipc-doorbell-hsem = { features = ["std"], path = "../consortium-ipc-doorbell-hsem" }
-consortium-ipc-doorbell-ipcc = { features = ["std"], path = "../consortium-ipc-doorbell-ipcc" }
 consortium-ipc-doorbell-mu = { features = ["std"], path = "../consortium-ipc-doorbell-mu" }
+# Generated code names the IPCC Type-A bell under `bell::ipcc`, which the transport
+# exposes only with an STM32MP2 chip selected.
+consortium-ipc-transport-memory = { features = [
+  "stm32mp25x",
+], path = "../consortium-ipc-transport-memory" }
 consortium-shared-memory = { path = "../consortium-shared-memory" }
 insta = "1"
 rkyv = { default-features = false, features = ["alloc", "bytecheck"], version = "0.8.16" }

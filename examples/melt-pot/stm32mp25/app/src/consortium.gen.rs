@@ -1,6 +1,7 @@
 ::consortium_ipc_transport_memory::channels!(SENSOR);
 ::consortium_ipc_transport_memory::impl_channel!(
-    SENSOR, ::consortium_ipc::Primary, ::consortium_ipc_doorbell_ipcc::IpccDoorbell <
+    SENSOR, ::consortium_ipc::Primary,
+    ::consortium_ipc_transport_memory::bell::ipcc::IpccDoorbell <
     ::consortium_ipc::Primary, 1usize >,
     ::consortium_shared_memory::regions::UncachedRegion, ::melt_pot_shared::Command,
     ::melt_pot_shared::SensorReading, ::consortium_codec::PostcardCodec, 0u8, 1u8,
@@ -20,7 +21,7 @@ fn __consortium_install_channels(
         // SAFETY: the base is the UIO-mapped doorbell register window,
         // resolved from the validated Consortium hardware database.
         let doorbell = unsafe {
-            ::consortium_ipc_doorbell_ipcc::IpccDoorbell::<
+            ::consortium_ipc_transport_memory::bell::ipcc::IpccDoorbell::<
                 ::consortium_ipc::Primary,
                 1usize,
             >::new_mapped(uio[2usize].mmap(0usize)?)
@@ -28,9 +29,7 @@ fn __consortium_install_channels(
         let __service_db = doorbell.clone();
         uio[2usize]
             .bind_service(
-                ::std::sync::Arc::new(move || {
-                    __service_db.notify_rx_occupied_interrupt()
-                }),
+                ::std::sync::Arc::new(move || __service_db.service_interrupt()),
             );
         // SAFETY: doorbell channel is verified to be valid in the config.
         let chan_tx = unsafe { ::consortium_ipc::Chan::new_unchecked(0u8) };
@@ -119,12 +118,12 @@ fn init(
         "consortium init: opening {} uio device(s)", 3usize
     );
     let uio = ::std::vec![
-        ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open(0usize,
-        false && config.uio_irqs,) ?),
-        ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open(1usize,
-        false && config.uio_irqs,) ?),
-        ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open(2usize, true
-        && config.uio_irqs,) ?)
+        ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open_named("dbg-shm",
+        537272320u64, false && config.uio_irqs,) ?),
+        ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open_named("ipc-shm",
+        537280512u64, false && config.uio_irqs,) ?),
+        ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open_named("ipcc1",
+        1078525952u64, true && config.uio_irqs,) ?)
     ];
     ::consortium_runtime_app::log::trace!("consortium init: installing ipc endpoints");
     __consortium_install_channels(&uio)?;

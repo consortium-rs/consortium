@@ -6,7 +6,7 @@ a32_target := "armv7-unknown-linux-gnueabihf"
 rv32imc_target := "riscv32imc-unknown-none-elf"
 rv32imac_target := "riscv32imac-unknown-none-elf"
 rv32imafcp_target := "riscv32imafc-unknown-none-elf"
-lint_crates := "consortium-builder consortium-cfg csti consortium-codec consortium-codec-macros consortium-codec-macros-impl consortium-dbg consortium-dts consortium-ffi consortium-hal-imx9 consortium-hal-stm32mp2 consortium-ipc consortium-ipc-doorbell-gpio consortium-ipc-doorbell-hsem consortium-ipc-doorbell-ipcc consortium-ipc-doorbell-mu consortium-ipc-macros consortium-ipc-macros-impl consortium-ipc-transport-fdcan consortium-ipc-transport-fdcan-embedded consortium-ipc-transport-memory consortium-ipc-transport-uart consortium-ipc-transport-uart-embedded consortium-ipc-transport-uart-unix consortium-ort consortium-runtime-mcu consortium-tee-macros consortium-tee-macros-impl melt-pot-shared"
+lint_crates := "consortium-builder consortium-cfg csti consortium-codec consortium-codec-macros consortium-codec-macros-impl consortium-dbg consortium-dts consortium-ffi consortium-hal-imx9 consortium-hal-stm32mp2 consortium-ipc consortium-ipc-doorbell-gpio consortium-ipc-doorbell-hsem consortium-ipc-doorbell-mu consortium-ipc-macros consortium-ipc-macros-impl consortium-ipc-transport-fdcan consortium-ipc-transport-fdcan-embedded consortium-ipc-transport-memory consortium-ipc-transport-uart consortium-ipc-transport-uart-embedded consortium-ipc-transport-uart-unix consortium-ort consortium-runtime-mcu consortium-tee-macros consortium-tee-macros-impl melt-pot-shared"
 rust_tools := "taplo-cli typos-cli cargo-deny cargo-expand cargo-insta cargo-shear"
 ls_lint_version := "2.3.1"
 
@@ -237,7 +237,7 @@ check-ipc-a64:
     cargo check -p consortium-ipc-transport-memory --target {{ a64_target }} -F std
     cargo check -p consortium-runtime-app --target {{ a64_target }}
     cargo check -p consortium-ipc-doorbell-hsem --target {{ a64_target }} -F std
-    cargo check -p consortium-ipc-doorbell-ipcc --target {{ a64_target }} -F std
+    cargo check -p consortium-ipc-transport-memory --target {{ a64_target }} -F stm32mp25x
     cargo check -p consortium-ipc-doorbell-mu --target {{ a64_target }} -F std
 
 build-ipc-a64:
@@ -246,7 +246,7 @@ build-ipc-a64:
     cargo build -p consortium-ipc-transport-memory --release --target {{ a64_target }} -F std
     cargo build -p consortium-runtime-app --release --target {{ a64_target }}
     cargo build -p consortium-ipc-doorbell-hsem --release --target {{ a64_target }} -F std
-    cargo build -p consortium-ipc-doorbell-ipcc --release --target {{ a64_target }} -F std
+    cargo build -p consortium-ipc-transport-memory --release --target {{ a64_target }} -F stm32mp25x
     cargo build -p consortium-ipc-doorbell-mu --release --target {{ a64_target }} -F std
 
 # Run/compile A-core IPC tests for aarch64 Linux.
@@ -255,7 +255,7 @@ test-ipc-a64:
     cargo test -p consortium-ipc --target {{ a64_target }} -F std
     cargo test -p consortium-ipc-transport-memory --target {{ a64_target }} -F std
     cargo test -p consortium-ipc-doorbell-hsem --target {{ a64_target }} -F std
-    cargo test -p consortium-ipc-doorbell-ipcc --target {{ a64_target }} -F std
+    cargo test -p consortium-ipc-transport-memory --target {{ a64_target }} -F stm32mp25x
     cargo test -p consortium-ipc-doorbell-mu --target {{ a64_target }} -F std
 
 # ── A-core (armv7 / Linux) ──────────────────────────────────────────────────
@@ -266,7 +266,7 @@ check-ipc-a32:
     cargo check -p consortium-ipc-transport-memory --target {{ a32_target }} -F std
     cargo check -p consortium-runtime-app --target {{ a32_target }}
     cargo check -p consortium-ipc-doorbell-hsem --target {{ a32_target }} -F std
-    cargo check -p consortium-ipc-doorbell-ipcc --target {{ a32_target }} -F std
+    cargo check -p consortium-ipc-transport-memory --target {{ a32_target }} -F stm32mp25x
     cargo check -p consortium-ipc-doorbell-mu --target {{ a32_target }} -F std
 
 build-ipc-a32:
@@ -275,7 +275,7 @@ build-ipc-a32:
     cargo build -p consortium-ipc-transport-memory --release --target {{ a32_target }} -F std
     cargo build -p consortium-runtime-app --release --target {{ a32_target }}
     cargo build -p consortium-ipc-doorbell-hsem --release --target {{ a32_target }} -F std
-    cargo build -p consortium-ipc-doorbell-ipcc --release --target {{ a32_target }} -F std
+    cargo build -p consortium-ipc-transport-memory --release --target {{ a32_target }} -F stm32mp25x
     cargo build -p consortium-ipc-doorbell-mu --release --target {{ a32_target }} -F std
 
 # Run/compile A-core IPC tests for armv7 Linux.
@@ -284,7 +284,7 @@ test-ipc-a32:
     cargo test -p consortium-ipc --target {{ a32_target }} -F std
     cargo test -p consortium-ipc-transport-memory --target {{ a32_target }} -F std
     cargo test -p consortium-ipc-doorbell-hsem --target {{ a32_target }} -F std
-    cargo test -p consortium-ipc-doorbell-ipcc --target {{ a32_target }} -F std
+    cargo test -p consortium-ipc-transport-memory --target {{ a32_target }} -F stm32mp25x
     cargo test -p consortium-ipc-doorbell-mu --target {{ a32_target }} -F std
 
 # ── HMI (Cog/WPE / Linux) ──────────────────────────────────────────────────
@@ -385,7 +385,7 @@ check-ipc-m8:
     cargo check -p consortium-runtime-mcu --target {{ m8_target }} --no-default-features --features ipc-uart
     cargo check -p consortium-runtime-mcu --target {{ m8_target }} --no-default-features --features ipc-fdcan
     cargo check -p consortium-ipc-doorbell-hsem --target {{ m8_target }}
-    cargo check -p consortium-ipc-doorbell-ipcc --target {{ m8_target }}
+    cargo check -p consortium-ipc-transport-memory --target {{ m8_target }} --no-default-features --features stm32mp25x
     cargo check -p consortium-ipc-doorbell-mu --target {{ m8_target }} --no-default-features --features mimx93
 
 build-ipc-m8:
@@ -400,7 +400,7 @@ build-ipc-m8:
     cargo build -p consortium-ipc-transport-uart-embedded --release --target {{ m8_target }} --features mimx93
     cargo build -p consortium-runtime-mcu --release --target {{ m8_target }}
     cargo build -p consortium-ipc-doorbell-hsem --release --target {{ m8_target }}
-    cargo build -p consortium-ipc-doorbell-ipcc --release --target {{ m8_target }}
+    cargo build -p consortium-ipc-transport-memory --release --target {{ m8_target }} --no-default-features --features stm32mp25x
     cargo build -p consortium-ipc-doorbell-mu --release --target {{ m8_target }} --no-default-features --features mimx93
 
 # Compile M-core IPC crates for thumbv8. Unit tests are not runnable on the host.
@@ -419,7 +419,7 @@ check-ipc-m7:
     cargo check -p consortium-runtime-mcu --target {{ m7_target }} --no-default-features --features ipc-uart
     cargo check -p consortium-runtime-mcu --target {{ m7_target }} --no-default-features --features ipc-fdcan
     cargo check -p consortium-ipc-doorbell-hsem --target {{ m7_target }}
-    cargo check -p consortium-ipc-doorbell-ipcc --target {{ m7_target }}
+    cargo check -p consortium-ipc-transport-memory --target {{ m7_target }} --no-default-features --features stm32mp25x
     cargo check -p consortium-ipc-doorbell-mu --target {{ m7_target }}
 
 build-ipc-m7:
@@ -431,7 +431,7 @@ build-ipc-m7:
     cargo build -p consortium-ipc-transport-uart-embedded --release --target {{ m7_target }} --features mimx95
     cargo build -p consortium-runtime-mcu --release --target {{ m7_target }}
     cargo build -p consortium-ipc-doorbell-hsem --release --target {{ m7_target }}
-    cargo build -p consortium-ipc-doorbell-ipcc --release --target {{ m7_target }}
+    cargo build -p consortium-ipc-transport-memory --release --target {{ m7_target }} --no-default-features --features stm32mp25x
     cargo build -p consortium-ipc-doorbell-mu --release --target {{ m7_target }}
 
 # Compile M-core IPC crates for thumbv7. Unit tests are not runnable on the host.
@@ -444,8 +444,7 @@ test-ipc-host:
     cargo test -p consortium-ipc-transport-memory --no-default-features --test async_atomic_waker_test
     cargo test -p consortium-ipc-doorbell-hsem
     cargo test -p consortium-ipc-doorbell-hsem --features std
-    cargo test -p consortium-ipc-doorbell-ipcc
-    cargo test -p consortium-ipc-doorbell-ipcc --features std
+    cargo test -p consortium-ipc-transport-memory --features stm32mp25x --lib
     cargo test -p consortium-ipc-doorbell-mu
     cargo test -p consortium-ipc-doorbell-mu --features std
     cargo test -p consortium-ipc-doorbell-mu --no-default-features --features mimx93,std

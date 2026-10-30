@@ -65,14 +65,16 @@
 //! Each `Transceiver::connect(c.NAME).await` performs that channel's handshake,
 //! then splits the transport and constructs its typed channels.
 //!
-//! # Interrupts are still yours
+//! # Interrupt vectors
 //!
 //! Neither this crate nor the doorbell or HAL crates install `#[interrupt]` handlers.
-//! The application owns the vector table and forwards each relevant IRQ into the
-//! exported wake path — `hsem::notify()`, `ipcc::notify_rx_occupied_interrupt()`,
-//! `mu::notify::<N>()`, `uart::on_buffered_interrupt::<P>()`. Enable the chip *HAL's*
-//! `rt` feature so the `#[interrupt]` macro and PAC vector table are available. See
-//! the melt-pot `mcu/src/main.rs` files for worked examples.
+//! `consortium-cfg` generates the doorbell and time-driver vectors into
+//! `consortium.gen.rs`, each forwarding to its exported wake path —
+//! `hsem::notify()`, `bell::service_interrupt::<ipcc::Ipcc<S, N>>()`,
+//! `mu::notify_gi_interrupt::<S, N>()`. Vectors for peripherals the application drives
+//! itself, such as `uart::on_buffered_interrupt::<P>()`, stay hand-written. Enable the
+//! chip *HAL's* `rt` feature so the `#[interrupt]` macro and PAC vector table are
+//! available.
 //!
 //! # Scratch buffers
 //!

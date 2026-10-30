@@ -37,7 +37,6 @@ default = ["std"]
 # directly as well as through the facade.
 defmt = [
   "consortium-ipc-doorbell-hsem?/defmt",
-  "consortium-ipc-doorbell-ipcc?/defmt",
   "consortium-ipc-doorbell-mu?/defmt",
   "consortium-ipc/defmt",
   "consortium-log/defmt",
@@ -45,7 +44,6 @@ defmt = [
   "dep:defmt",
 ]
 doorbell-hsem = ["dep:consortium-ipc-doorbell-hsem"]
-doorbell-ipcc = ["dep:consortium-ipc-doorbell-ipcc"]
 doorbell-mu = ["dep:consortium-ipc-doorbell-mu"]
 mimx93 = ["consortium-ipc-doorbell-mu/mimx93", "mimx9x"]
 mimx95 = ["consortium-ipc-doorbell-mu/mimx95", "mimx9x"]
@@ -53,31 +51,34 @@ mimx9x = ["doorbell-mu"]
 std = [
   "alloc",
   "consortium-ipc-doorbell-hsem?/std",
-  "consortium-ipc-doorbell-ipcc?/std",
   "consortium-ipc-doorbell-mu?/std",
   "consortium-log/tracing",
   "dep:tokio",
   "dep:uio",
 ]
-stm32mp21x = ["consortium-ipc-doorbell-ipcc/stm32mp21x", "doorbell-ipcc"]
+# STM32MP2 chip selection: forwarded to the chip HAL, whose IPCC singletons and PAC
+# the `bell::ipcc` register model binds to.
+stm32mp21x = ["consortium-hal-stm32mp2/stm32mp21x", "dep:consortium-hal-stm32mp2"]
 stm32mp23x = [
+  "consortium-hal-stm32mp2/stm32mp23x",
   "consortium-ipc-doorbell-hsem/stm32mp23x",
-  "consortium-ipc-doorbell-ipcc/stm32mp23x",
+  "dep:consortium-hal-stm32mp2",
   "doorbell-hsem",
-  "doorbell-ipcc",
 ]
 stm32mp25x = [
+  "consortium-hal-stm32mp2/stm32mp25x",
   "consortium-ipc-doorbell-hsem/stm32mp25x",
-  "consortium-ipc-doorbell-ipcc/stm32mp25x",
+  "dep:consortium-hal-stm32mp2",
   "doorbell-hsem",
-  "doorbell-ipcc",
 ]
 
 [dependencies]
+atomic-waker                 = "1.1.2"
+bitfield                     = "0.19.5"
 consortium-codec             = { default-features = false, path = "../consortium-codec", version = "0.4.0" }
 consortium-ipc               = { default-features = false, path = "../consortium-ipc", version = "0.4.0" }
 consortium-ipc-doorbell-hsem = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-hsem", version = "0.4.0" }
-consortium-ipc-doorbell-ipcc = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-ipcc", version = "0.4.0" }
+consortium-hal-stm32mp2      = { default-features = false, optional = true, path = "../consortium-hal-stm32mp2", version = "0.4.0" }
 consortium-ipc-doorbell-mu   = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-mu", version = "0.4.0" }
 consortium-log               = { default-features = false, path = "../consortium-log", version = "0.4.0" }
 consortium-shared-memory     = { path = "../consortium-shared-memory", version = "0.4.0" }
@@ -113,6 +114,12 @@ serde = { default-features = false, features = ["derive"], version = "1.0.228" }
 # `time` is test-only: the acknowledged-send tests bound every await so a protocol bug
 # fails the suite instead of wedging it.
 tokio = { features = ["macros", "net", "rt", "sync", "time"], version = "1" }
+
+# ARMv6-M (the STM32MP25 CM0+) has no compare-and-swap, so route `atomic-waker`
+# through `portable-atomic` there. The fallback is the binary's choice:
+# `consortium-runtime-mcu` enables portable-atomic's `critical-section` feature.
+[target.'cfg(not(target_has_atomic = "ptr"))'.dependencies]
+atomic-waker = { features = ["portable-atomic"], version = "1.1.2" }
 
 [lints]
 workspace = true

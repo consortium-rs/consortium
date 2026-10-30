@@ -25,6 +25,9 @@ name = "atomic-waker"
 version = "1.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1505bd5d3d116872e7271a6d4e16d81d0c8570876c8de68093a09ac269d8aac0"
+dependencies = [
+ "portable-atomic",
+]
 
 [[package]]
 name = "autocfg"
@@ -162,7 +165,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-codec"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "consortium-log",
  "defmt",
@@ -172,7 +175,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-dbg"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "bitflags 2.13.1",
  "consortium-log",
@@ -184,7 +187,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-hal"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "cortex-m",
  "critical-section",
@@ -193,7 +196,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-hal-imx9"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "consortium-hal",
  "consortium-pac-imx9",
@@ -203,7 +206,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-hal-stm32mp2"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "consortium-hal",
  "consortium-log",
@@ -218,7 +221,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-ipc"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "consortium-codec",
  "consortium-ipc-macros",
@@ -228,21 +231,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-ipc-doorbell-hsem"
-version = "0.3.0"
-dependencies = [
- "atomic-waker",
- "bitfield 0.19.5",
- "consortium-hal-stm32mp2",
- "consortium-ipc",
- "consortium-log",
- "critical-section",
- "defmt",
- "thiserror",
-]
-
-[[package]]
-name = "consortium-ipc-doorbell-ipcc"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "atomic-waker",
  "bitfield 0.19.5",
@@ -256,7 +245,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-ipc-doorbell-mu"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "atomic-waker",
  "bitfield 0.19.5",
@@ -269,14 +258,14 @@ dependencies = [
 
 [[package]]
 name = "consortium-ipc-macros"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "consortium-ipc-macros-impl",
 ]
 
 [[package]]
 name = "consortium-ipc-macros-impl"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "consortium-macros-helpers",
  "proc-macro2",
@@ -286,7 +275,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-ipc-transport-fdcan"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "consortium-ipc",
  "consortium-log",
@@ -297,12 +286,14 @@ dependencies = [
 
 [[package]]
 name = "consortium-ipc-transport-memory"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
+ "atomic-waker",
+ "bitfield 0.19.5",
  "consortium-codec",
+ "consortium-hal-stm32mp2",
  "consortium-ipc",
  "consortium-ipc-doorbell-hsem",
- "consortium-ipc-doorbell-ipcc",
  "consortium-ipc-doorbell-mu",
  "consortium-log",
  "consortium-shared-memory",
@@ -317,7 +308,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-ipc-transport-uart"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "cobs 0.5.1",
  "consortium-ipc",
@@ -330,7 +321,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-log"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "consortium-log-macros",
  "defmt",
@@ -338,7 +329,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-log-macros"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -347,21 +338,21 @@ dependencies = [
 
 [[package]]
 name = "consortium-macros-helpers"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "syn 3.0.3",
 ]
 
 [[package]]
 name = "consortium-pac-imx9"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "cortex-m",
 ]
 
 [[package]]
 name = "consortium-pac-stm32mp2"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "cortex-m",
  "cortex-m-rt",
@@ -369,14 +360,14 @@ dependencies = [
 
 [[package]]
 name = "consortium-runtime-macros"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "consortium-runtime-macros-impl",
 ]
 
 [[package]]
 name = "consortium-runtime-macros-impl"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "consortium-macros-helpers",
  "proc-macro2",
@@ -386,7 +377,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-runtime-mcu"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "consortium-ipc-transport-fdcan",
  "consortium-ipc-transport-memory",
@@ -402,14 +393,14 @@ dependencies = [
 
 [[package]]
 name = "consortium-runtime-sys"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "bindgen",
 ]
 
 [[package]]
 name = "consortium-shared-memory"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "cortex-m",
  "defmt",
@@ -869,7 +860,7 @@ dependencies = [
 
 [[package]]
 name = "melt-pot-shared"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "consortium-ipc",
  "serde",
@@ -877,14 +868,13 @@ dependencies = [
 
 [[package]]
 name = "melt-pot-stm32mp25-mcu"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "consortium-codec",
  "consortium-dbg",
  "consortium-hal-stm32mp2",
  "consortium-ipc",
  "consortium-ipc-doorbell-hsem",
- "consortium-ipc-doorbell-ipcc",
  "consortium-ipc-transport-memory",
  "consortium-runtime-mcu",
  "consortium-shared-memory",

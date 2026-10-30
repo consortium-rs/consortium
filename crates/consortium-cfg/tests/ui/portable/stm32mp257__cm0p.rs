@@ -21,7 +21,8 @@ mod shared {
 
 ::consortium_ipc_transport_memory::channels!(LP);
 ::consortium_ipc_transport_memory::impl_channel!(
-    LP, ::consortium_ipc::Secondary, ::consortium_ipc_doorbell_ipcc::IpccDoorbell <
+    LP, ::consortium_ipc::Secondary,
+    ::consortium_ipc_transport_memory::bell::ipcc::IpccDoorbell <
     ::consortium_ipc::Secondary, 2usize >,
     ::consortium_shared_memory::regions::UncachedRegion, crate ::shared::PowerMode, crate
     ::shared::PowerStatus, ::consortium_codec::RkyvCodec < 128usize >, 1u8, 0u8,
@@ -44,7 +45,7 @@ fn __consortium_install_channels(
                 16384usize,
             )
         };
-        let doorbell = ::consortium_ipc_doorbell_ipcc::IpccDoorbell::<
+        let doorbell = ::consortium_ipc_transport_memory::bell::ipcc::IpccDoorbell::<
             ::consortium_ipc::Secondary,
             2usize,
         >::new(__db_ipcc2);

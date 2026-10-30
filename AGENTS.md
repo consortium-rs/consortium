@@ -27,6 +27,7 @@ The current implementation centers on explicit cross-core contracts:
 - `consortium-hmi` owns the backend-neutral HMI command bridge;
   `consortium-hmi-webkit` adapts it to Cog/WPE WebKit, and
   `consortium-hmi-pocket` provides the native PocketJS prototype.
+  `consortium-hmi-input` is the shared `no_std`, `IpcSafe` input-event model.
 
 ## Commands
 
@@ -77,9 +78,7 @@ manifest and lockfile updates, formatting, and non-Rust linters.
   run natively.
 
 The `justfile` is the command index, but verify recipes against current crates before
-copying them into new docs. Some target and lint recipes still mention crates or type
-names that are not present in the current workspace, such as `consortium-common`,
-`consortium-runtime-prt`, `consortium-cfg-meta`, `SharedMemConfig`, or `HmiConfig`.
+copying them into new docs.
 
 The current target-oriented recipes include A-core Linux (`aarch64-unknown-linux-gnu`,
 `armv7-unknown-linux-gnueabihf`), M-core bare-metal (`thumbv8m.main-none-eabihf`,
@@ -94,15 +93,15 @@ A-core, TEE, HMI, UIO, Cog, WebKit, and Yocto/OpenSTLinux flows are Linux/SDK or
 | Core IPC        | `consortium-ipc`, `consortium-ipc-macros`, `consortium-ipc-macros-impl`                                                                                                                                                           |
 | Codecs          | `consortium-codec`, `consortium-codec-macros`, `consortium-codec-macros-impl`                                                                                                                                                     |
 | Transports      | `consortium-shared-memory`, `consortium-ipc-transport-memory`, `consortium-ipc-transport-uart*`, `consortium-ipc-transport-fdcan*`                                                                                                |
-| Doorbells       | `consortium-ipc-doorbell-hsem`, `consortium-ipc-doorbell-ipcc`, `consortium-ipc-doorbell-mu`, `consortium-ipc-doorbell-gpio`                                                                                                      |
+| Doorbells       | `consortium-ipc-transport-memory::bell` (IPCC), `consortium-ipc-doorbell-hsem`, `consortium-ipc-doorbell-mu`, `consortium-ipc-doorbell-gpio`                                                                                      |
 | Configuration   | `consortium-cfg-common`, `consortium-cfg`, `consortium-dts`, `consortium-data`                                                                                                                                                    |
 | HAL/PAC         | `consortium-hal`, `consortium-hal-imx9`, `consortium-hal-stm32mp2`, `consortium-pac-imx9`, `consortium-pac-stm32mp2`                                                                                                              |
 | Macro helpers   | `consortium-macros-helpers`                                                                                                                                                                                                       |
 | Runtimes/build  | `consortium-runtime-app`, `consortium-runtime-mcu`, `consortium-runtime-macros`, `consortium-runtime-macros-impl`, `consortium-runtime-spl`, `consortium-runtime-sys`, `consortium-builder`, `csti` (in `crates/consortium-cli/`) |
-| Logging/debug   | `consortium-log`, `consortium-dbg`                                                                                                                                                                                                |
+| Logging/debug   | `consortium-log`, `consortium-log-macros`, `consortium-dbg`                                                                                                                                                                       |
 | TEE             | `consortium-tee`, `consortium-tee-macros`, `consortium-tee-macros-impl`                                                                                                                                                           |
-| HMI/Cog/ORT/FFI | `consortium-hmi`, `consortium-hmi-webkit`, `consortium-hmi-pocket`, `cogcore`, `cogcore-sys`, `consortium-ort`, `consortium-ffi`                                                                                                  |
-| Examples        | `examples/melt-pot/*` for i.MX95 and STM32MP25 app/MCU/TA/shared message crates                                                                                                                                                   |
+| HMI/Cog/ORT/FFI | `consortium-hmi`, `consortium-hmi-input`, `consortium-hmi-webkit`, `consortium-hmi-pocket`, `cogcore`, `cogcore-sys`, `consortium-ort`, `consortium-ffi`                                                                          |
+| Examples        | `examples/melt-pot/*` for i.MX93, i.MX95, and STM32MP25 app/MCU/TA/shared message crates                                                                                                                                          |
 
 The root workspace includes `crates/*` and `examples/melt-pot/shared`. Per-endpoint
 example crates under `examples/melt-pot/{imx95,stm32mp25}/{app,mcu,ta}` are excluded
@@ -326,13 +325,21 @@ them separately: the window comes from each party's `window:` field in the chip 
 single-window doorbell (HSEM, IPCC) has no `window_length` and its marker keeps meaning
 the core bank, so it still follows the role.
 
-**`consortium-ipc-doorbell-ipcc` is the reference implementation.** It is the one that has
-been brought up on hardware, and HSEM and MU are aligned to it rather than to their own
-history — when changing any of them, read `IpccWaitFut` in full first and match it. The
-shared structure, in poll order:
+**Type-A doorbells are being consolidated into `consortium-ipc-transport-memory::bell`.**
+A block supplies only its register model as an `unsafe trait BellHw` (`line_of`, `slot`,
+`ring`, `raw_pending`, `ack`, `arm`/`disarm`, `asserted`/`disarm_all`, a per-line `waker`
+table, and `PHYS_BASE`); the generic `BellA<H>` implements `Doorbell`, `LineWait<H>` is the
+one wait future, and `service_interrupt::<H>()` (no_std) / `BellA::service_interrupt()`
+(std) is the one ISR core. IPCC is ported (`bell::ipcc`, `IpccDoorbell<S, N> =
+BellA<Ipcc<S, N>>`, enabled by the transport's `stm32mp2*` features); MU and HSEM still
+live in their own crates with hand-written wait futures aligned to the same protocol, and
+are to be ported next. Fences, critical sections, and waker handling belong to the
+generic — a `BellHw` impl never does them. The protocol is covered once in
+`bell/tests.rs` against an in-memory `FakeBell`; a block's own tests only check its
+register mapping. In poll order:
 
 1. Register the `no_std` waker on **every** poll, before anything else — from a
-   **per-line** table (`IPCC_WAKERS`, `MU_WAKERS`, `HSEM_WAKERS`), never one shared
+   **per-line** table (`BellHw::waker`, `MU_WAKERS`, `HSEM_WAKERS`), never one shared
    `AtomicWaker`. An `AtomicWaker` holds exactly one waker, so a second task waiting on
    another line of the same instance overwrites the first registration and that task is
    never woken again. A duplex endpoint waits on two lines of one instance, so this is
@@ -358,7 +365,7 @@ shared structure, in poll order:
 
 `Doorbell::wait` is RPITIT (`-> impl Future<Output = Result<Chan, Self::Error>> + MaybeSend`),
 like `SendTransport`/`RecvTransport`, so implementations may be `async` bodies or named
-futures — the four hardware crates keep named ones (`HsemWaitFut`, `IpccWaitFut`,
+futures — the hardware doorbells keep named ones (`LineWait`, `HsemWaitFut`,
 `MuWaitFut`, `GpioWaitFut`) because each of the three MMIO ones carries a `Drop` that
 disarms its line on cancel, and an `async` body would need a guard struct to reproduce
 that. A cancelled wait (a `select!` timeout, a dropped `recv`) must leave the line
@@ -383,8 +390,11 @@ is not also pulled in (two chips = ambiguous PAC `Interrupt`).
 - `consortium-ipc-doorbell-hsem` targets STM32 HSEM. Chip features are `stm32mp23x` and
   `stm32mp25x` (both map to the PAC's `stm32mp257`); default is `stm32mp25x`; `std`
   enables Tokio support.
-- `consortium-ipc-doorbell-ipcc` targets STM32 IPCC. Chip features are `stm32mp21x`,
-  `stm32mp23x`, `stm32mp25x`; default is `stm32mp25x`; `std` enables Tokio support.
+- `consortium-ipc-transport-memory::bell::ipcc` targets STM32 IPCC. It is enabled by the
+  transport's `stm32mp21x`/`stm32mp23x`/`stm32mp25x` features, which pull in
+  `consortium-hal-stm32mp2` with `default-features = false`; `std` (the transport's
+  default) enables Tokio support. `ring` reports `BellError::Busy` while the previous
+  signal is unconsumed.
 - `consortium-ipc-doorbell-mu` targets NXP i.MX MU. Chip features are `mimx93` and
   `mimx95`; default is `mimx95`; channels `0..4` are GI lines and `4..8` are RF lines.
 - `consortium-ipc-doorbell-gpio` is a single-channel GPIO doorbell. The `no_std` path
@@ -395,7 +405,8 @@ No hardware doorbell crate installs `#[interrupt]` handlers, and none exposes an
 feature. Each exposes one bare-metal service entry point instead, and every one of them
 derives its register window from the crate's own `registers::base` table, so no MMIO
 base ever appears in the caller: HSEM calls `hsem::notify()`, IPCC RX lines call
-`ipcc::notify_rx_occupied_interrupt::<S, N>()`, and MU lines call
+`bell::service_interrupt::<bell::ipcc::Ipcc<S, N>>()` (the window is `BellHw::PHYS_BASE`),
+and MU lines call
 `mu::notify_gi_interrupt::<S, N>()`. IPCC and MU are level-sensitive, so both mask every
 asserted line _before_ waking — an ISR that only woke would return with the line still
 asserted, re-enter, and starve the executor.
@@ -438,8 +449,9 @@ Never hand-edit the outputs; add or update a patch and re-run.
 
 `consortium-hal-imx9` and `consortium-hal-stm32mp2` re-export the shared HAL and their
 PAC crates (with `default-features = false`), re-export `interrupts`/`Interrupt` and the
-`rt`-gated `#[interrupt]` macro, and expose feature-gated CAN, DMA, GPIO, I2C, SPI,
-timer-driver, and UART modules (all on by default alongside the default chip). They also
+`rt`-gated `#[interrupt]` macro, and expose feature-gated ADC, CAN, DMA, GPIO, I2C, I3C,
+PWM, SPI, timer, UART, and watchdog modules plus the Embassy time driver (all on by
+default alongside the default chip; STM32MP2 adds LPTIM). They also
 own the chip-selection features forwarded to the PAC:
 `mimx93`/`mimx95` (hal-imx9, default `mimx95`) and `stm32mp21x`/`stm32mp23x`/`stm32mp25x`
 (hal-stm32mp2, default `stm32mp25x`, where `stm32mp23x`/`stm32mp25x` both map to the PAC's

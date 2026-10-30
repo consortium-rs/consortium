@@ -11,7 +11,7 @@ fn _generated() {
                 32768usize,
             )
         };
-        let doorbell = ::consortium_ipc_doorbell_ipcc::IpccDoorbell::<
+        let doorbell = ::consortium_ipc_transport_memory::bell::ipcc::IpccDoorbell::<
             ::consortium_ipc::Secondary,
             1usize,
         >::new(__db_ipcc1);

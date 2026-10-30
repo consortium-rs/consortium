@@ -461,15 +461,30 @@ impl DoorbellMeta {
         }
     }
 
-    /// The doorbell's crate path, type name, and IPC side marker idents.
+    /// The module that holds this doorbell type.
+    ///
+    /// IPCC is a Type-A bell inside the shared-memory transport crate; HSEM and MU
+    /// still live in their own `consortium-ipc-doorbell-*` crates.
+    fn module(&self) -> TokenStream {
+        match self.r#type {
+            HardwareDoorbellPeripheralType::Ipcc => {
+                quote::quote! { ::consortium_ipc_transport_memory::bell::ipcc }
+            }
+            other => {
+                let crate_ident = format_ident!(
+                    "consortium_ipc_doorbell_{}",
+                    other.to_string().to_lowercase()
+                );
+                quote::quote! { ::#crate_ident }
+            }
+        }
+    }
+
+    /// The doorbell's module path, type name, and IPC side marker ident.
     ///
     /// Shared by [`as_path`](Self::as_path) (expression position) and
     /// [`as_type`](Self::as_type) (type position), which differ only in turbofish.
-    fn idents(&self, side: DoorbellRingerSide) -> (Ident, Ident, Ident) {
-        let crate_ident = format_ident!(
-            "consortium_ipc_doorbell_{}",
-            self.r#type.to_string().to_lowercase()
-        );
+    fn idents(&self, side: DoorbellRingerSide) -> (TokenStream, Ident, Ident) {
         let type_ident = format_ident!("{}Doorbell", self.r#type.to_string());
         let side_ident = format_ident!(
             "{}",
@@ -478,16 +493,16 @@ impl DoorbellMeta {
                 DoorbellRingerSide::Secondary => "Secondary",
             }
         );
-        (crate_ident, type_ident, side_ident)
+        (self.module(), type_ident, side_ident)
     }
 
     /// The doorbell type in expression/path position (turbofish form), for
     /// `<doorbell>::new(...)` construction.
     pub fn as_path(&self, side: DoorbellRingerSide) -> TokenStream {
         let id = self.id.unwrap_or(1) as usize;
-        let (crate_ident, type_ident, side_ident) = self.idents(side);
+        let (module, type_ident, side_ident) = self.idents(side);
         quote::quote! {
-            ::#crate_ident::#type_ident::<::consortium_ipc::#side_ident, #id>
+            #module::#type_ident::<::consortium_ipc::#side_ident, #id>
         }
     }
 
@@ -500,20 +515,22 @@ impl DoorbellMeta {
     /// in generated code.
     pub fn service_call(&self, side: DoorbellRingerSide) -> TokenStream {
         let id = self.id.unwrap_or(1) as usize;
-        let (crate_ident, _, side_ident) = self.idents(side);
+        let (module, _, side_ident) = self.idents(side);
         match self.r#type {
             // HSEM shares one waker across the block, and its `wait` future owns
             // arming and masking the line, so the vector only wakes.
             HardwareDoorbellPeripheralType::Hsem => quote::quote! {
-                ::#crate_ident::notify();
+                #module::notify();
             },
+            // A Type-A bell: one generic service entry, parameterized with the
+            // block's register model.
             HardwareDoorbellPeripheralType::Ipcc => quote::quote! {
-                ::#crate_ident::notify_rx_occupied_interrupt::<
-                    ::consortium_ipc::#side_ident, #id
+                ::consortium_ipc_transport_memory::bell::service_interrupt::<
+                    #module::Ipcc<::consortium_ipc::#side_ident, #id>
                 >();
             },
             HardwareDoorbellPeripheralType::Mu => quote::quote! {
-                ::#crate_ident::notify_gi_interrupt::<
+                #module::notify_gi_interrupt::<
                     ::consortium_ipc::#side_ident, #id
                 >();
             },
@@ -524,9 +541,9 @@ impl DoorbellMeta {
     /// doorbell inside a transport type signature.
     pub fn as_type(&self, side: DoorbellRingerSide) -> TokenStream {
         let id = self.id.unwrap_or(1) as usize;
-        let (crate_ident, type_ident, side_ident) = self.idents(side);
+        let (module, type_ident, side_ident) = self.idents(side);
         quote::quote! {
-            ::#crate_ident::#type_ident<::consortium_ipc::#side_ident, #id>
+            #module::#type_ident<::consortium_ipc::#side_ident, #id>
         }
     }
 
@@ -557,7 +574,7 @@ impl DoorbellMeta {
                     HardwareDoorbellPeripheralType::Ipcc => quote::quote! {
                         let __service_db = #doorbell_ident.clone();
                         #uio_ident[#doorbell_uio_id].bind_service(::std::sync::Arc::new(
-                            move || __service_db.notify_rx_occupied_interrupt(),
+                            move || __service_db.service_interrupt(),
                         ));
                     },
                     HardwareDoorbellPeripheralType::Mu => quote::quote! {

@@ -352,15 +352,16 @@ mod tests {
         assert_eq!(tokens.len(), 2);
         assert!(tokens[0].contains("[:: consortium_hal_stm32mp2 :: interrupt] fn IPCC1_RX ()"));
         // Each instance forwards with its own number, and no MMIO base appears
-        // in generated code: the doorbell crate derives the window.
+        // in generated code: the register model derives the window.
         assert!(tokens[0].contains(
-            ":: consortium_ipc_doorbell_ipcc :: notify_rx_occupied_interrupt :: < :: \
-             consortium_ipc :: Secondary , 1usize > ()"
+            ":: consortium_ipc_transport_memory :: bell :: service_interrupt :: < :: \
+             consortium_ipc_transport_memory :: bell :: ipcc :: Ipcc < :: consortium_ipc :: \
+             Secondary , 1usize > > ()"
         ));
         assert!(tokens[1].contains("fn IPCC2_RX ()"));
         assert!(tokens[1].contains(
-            ":: consortium_ipc_doorbell_ipcc :: notify_rx_occupied_interrupt :: < :: \
-             consortium_ipc :: Secondary , 2usize > ()"
+            ":: consortium_ipc_transport_memory :: bell :: ipcc :: Ipcc < :: consortium_ipc :: \
+             Secondary , 2usize >"
         ));
     }
 
