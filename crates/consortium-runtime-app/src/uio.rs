@@ -263,21 +263,18 @@ impl UioDevice {
     /// Register a doorbell's IRQ service so the IRQ task runs it on every
     /// M→A interrupt.
     ///
-    /// A masking doorbell binds its own IRQ entry point here — e.g.
-    /// `BellA::service_interrupt` (IPCC) or
-    /// [`MuDoorbell::notify_gi_interrupt`] — which masks the asserted lines
+    /// A masking doorbell binds its own IRQ entry point here — for a Type-A
+    /// bell (IPCC, MU), `BellA::service_interrupt` — which masks the asserted lines
     /// before waking, so a level-sensitive line does not immediately re-fire the
     /// UIO IRQ. The doorbell is `Clone`, so bind a clone before moving the
     /// original into a transport:
     ///
     /// ```ignore
-    /// let mu = unsafe { MuDoorbell::<Primary, 7>::new(dev.mmap(1)?) };
+    /// let mu = unsafe { MuDoorbell::<Primary, 7>::new_mapped(dev.mmap(1)?) };
     /// let db = mu.clone();
-    /// dev.bind_service(::std::sync::Arc::new(move || db.notify_gi_interrupt()));
+    /// dev.bind_service(::std::sync::Arc::new(move || db.service_interrupt()));
     /// let transport = SharedMemoryTransport::<Primary, _, _>::new(mu, desc, slot_pair);
     /// ```
-    ///
-    /// [`MuDoorbell::notify_gi_interrupt`]: https://docs.rs/consortium-ipc-doorbell-mu
     pub fn bind_service(&self, service: Service) {
         consortium_log::trace!("UioDevice::bind_service: registering IRQ service");
         self.inner

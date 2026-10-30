@@ -128,13 +128,15 @@ fn _generated() {
 fn _generated() {
     ::consortium_ipc_transport_memory::channels!(SENSOR, LP);
     ::consortium_ipc_transport_memory::impl_channel!(
-        SENSOR, ::consortium_ipc::Primary, ::consortium_ipc_doorbell_mu::MuDoorbell <
+        SENSOR, ::consortium_ipc::Primary,
+        ::consortium_ipc_transport_memory::bell::mu::MuDoorbell <
         ::consortium_ipc::Primary, 1usize >,
         ::consortium_shared_memory::regions::UncachedRegion, ::shared::SensorData,
         ::shared::MotionControl, ::consortium_codec::PostcardCodec, 0u8, 1u8, 128usize,
     );
     ::consortium_ipc_transport_memory::impl_channel!(
-        LP, ::consortium_ipc::Primary, ::consortium_ipc_doorbell_mu::MuDoorbell <
+        LP, ::consortium_ipc::Primary,
+        ::consortium_ipc_transport_memory::bell::mu::MuDoorbell <
         ::consortium_ipc::Primary, 2usize >,
         ::consortium_shared_memory::regions::UncachedRegion, ::shared::LowPowerData,
         ::shared::PowerControl, ::consortium_codec::RkyvCodec < 128usize >, 4u8, 5u8,
@@ -154,7 +156,7 @@ fn _generated() {
             // SAFETY: the base is the UIO-mapped doorbell register window,
             // resolved from the validated Consortium hardware database.
             let doorbell = unsafe {
-                ::consortium_ipc_doorbell_mu::MuDoorbell::<
+                ::consortium_ipc_transport_memory::bell::mu::MuDoorbell::<
                     ::consortium_ipc::Primary,
                     1usize,
                 >::new_mapped(uio[3usize].mmap(0usize)?)
@@ -162,7 +164,7 @@ fn _generated() {
             let __service_db = doorbell.clone();
             uio[3usize]
                 .bind_service(
-                    ::std::sync::Arc::new(move || __service_db.notify_gi_interrupt()),
+                    ::std::sync::Arc::new(move || __service_db.service_interrupt()),
                 );
             // SAFETY: doorbell channel is verified to be valid in the config.
             let chan_tx = unsafe { ::consortium_ipc::Chan::new_unchecked(0u8) };
@@ -198,7 +200,7 @@ fn _generated() {
             // SAFETY: the base is the UIO-mapped doorbell register window,
             // resolved from the validated Consortium hardware database.
             let doorbell = unsafe {
-                ::consortium_ipc_doorbell_mu::MuDoorbell::<
+                ::consortium_ipc_transport_memory::bell::mu::MuDoorbell::<
                     ::consortium_ipc::Primary,
                     2usize,
                 >::new_mapped(uio[2usize].mmap(0usize)?)
@@ -206,7 +208,7 @@ fn _generated() {
             let __service_db = doorbell.clone();
             uio[2usize]
                 .bind_service(
-                    ::std::sync::Arc::new(move || __service_db.notify_gi_interrupt()),
+                    ::std::sync::Arc::new(move || __service_db.service_interrupt()),
                 );
             // SAFETY: doorbell channel is verified to be valid in the config.
             let chan_tx = unsafe { ::consortium_ipc::Chan::new_unchecked(4u8) };
@@ -369,13 +371,15 @@ fn _generated() {
 fn _generated() {
     ::consortium_ipc_transport_memory::channels!(SENSOR, LP);
     ::consortium_ipc_transport_memory::impl_channel!(
-        SENSOR, ::consortium_ipc::Secondary, ::consortium_ipc_doorbell_mu::MuDoorbell <
+        SENSOR, ::consortium_ipc::Secondary,
+        ::consortium_ipc_transport_memory::bell::mu::MuDoorbell <
         ::consortium_ipc::Secondary, 1usize >,
         ::consortium_shared_memory::regions::UncachedRegion, ::shared::MotionControl,
         ::shared::SensorData, ::consortium_codec::PostcardCodec, 1u8, 0u8, 128usize,
     );
     ::consortium_ipc_transport_memory::impl_channel!(
-        LP, ::consortium_ipc::Secondary, ::consortium_ipc_doorbell_mu::MuDoorbell <
+        LP, ::consortium_ipc::Secondary,
+        ::consortium_ipc_transport_memory::bell::mu::MuDoorbell <
         ::consortium_ipc::Secondary, 2usize >,
         ::consortium_shared_memory::regions::UncachedRegion, ::shared::PowerControl,
         ::shared::LowPowerData, ::consortium_codec::RkyvCodec < 128usize >, 5u8, 4u8,
@@ -402,7 +406,7 @@ fn _generated() {
                     16384usize,
                 )
             };
-            let doorbell = ::consortium_ipc_doorbell_mu::MuDoorbell::<
+            let doorbell = ::consortium_ipc_transport_memory::bell::mu::MuDoorbell::<
                 ::consortium_ipc::Secondary,
                 1usize,
             >::new(__db_mu1_mub);
@@ -430,7 +434,7 @@ fn _generated() {
                     16384usize,
                 )
             };
-            let doorbell = ::consortium_ipc_doorbell_mu::MuDoorbell::<
+            let doorbell = ::consortium_ipc_transport_memory::bell::mu::MuDoorbell::<
                 ::consortium_ipc::Secondary,
                 2usize,
             >::new(__db_mu2_mub);
@@ -468,9 +472,11 @@ fn _generated() {
         );
         #[::consortium_hal_imx9::interrupt]
         fn MU1_B() {
-            ::consortium_ipc_doorbell_mu::notify_gi_interrupt::<
-                ::consortium_ipc::Secondary,
-                1usize,
+            ::consortium_ipc_transport_memory::bell::service_interrupt::<
+                ::consortium_ipc_transport_memory::bell::mu::Mu<
+                    ::consortium_ipc::Secondary,
+                    1usize,
+                >,
             >();
         }
         const _: () = ::core::assert!(
@@ -479,9 +485,11 @@ fn _generated() {
         );
         #[::consortium_hal_imx9::interrupt]
         fn MU2_B() {
-            ::consortium_ipc_doorbell_mu::notify_gi_interrupt::<
-                ::consortium_ipc::Secondary,
-                2usize,
+            ::consortium_ipc_transport_memory::bell::service_interrupt::<
+                ::consortium_ipc_transport_memory::bell::mu::Mu<
+                    ::consortium_ipc::Secondary,
+                    2usize,
+                >,
             >();
         }
         const _: () = ::core::assert!(

@@ -21,7 +21,8 @@ mod shared {
 
 ::consortium_ipc_transport_memory::channels!(SENSOR);
 ::consortium_ipc_transport_memory::impl_channel!(
-    SENSOR, ::consortium_ipc::Secondary, ::consortium_ipc_doorbell_mu::MuDoorbell <
+    SENSOR, ::consortium_ipc::Secondary,
+    ::consortium_ipc_transport_memory::bell::mu::MuDoorbell <
     ::consortium_ipc::Secondary, 7usize >,
     ::consortium_shared_memory::regions::CachedRegion, crate ::shared::MotionControl,
     crate ::shared::SensorData, ::consortium_codec::RkyvCodec < 128usize >, 7u8, 6u8,
@@ -44,7 +45,7 @@ fn __consortium_install_channels(
                 16384usize,
             )
         };
-        let doorbell = ::consortium_ipc_doorbell_mu::MuDoorbell::<
+        let doorbell = ::consortium_ipc_transport_memory::bell::mu::MuDoorbell::<
             ::consortium_ipc::Secondary,
             7usize,
         >::new(__db_mu7_mub);
@@ -77,9 +78,11 @@ mod __consortium_vectors {
     );
     #[::consortium_hal_imx9::interrupt]
     fn MU7_B() {
-        ::consortium_ipc_doorbell_mu::notify_gi_interrupt::<
-            ::consortium_ipc::Secondary,
-            7usize,
+        ::consortium_ipc_transport_memory::bell::service_interrupt::<
+            ::consortium_ipc_transport_memory::bell::mu::Mu<
+                ::consortium_ipc::Secondary,
+                7usize,
+            >,
         >();
     }
     const _: () = ::core::assert!(

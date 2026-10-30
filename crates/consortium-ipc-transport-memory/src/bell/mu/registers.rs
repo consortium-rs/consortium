@@ -24,7 +24,7 @@
 
 /// MU instance base addresses and the per-instance register-window length.
 pub mod base {
-    use crate::chan::MU_INSTANCE_COUNT;
+    use super::super::MU_INSTANCE_COUNT;
 
     /// Side-A (MUA) physical base address of each MU instance, index 0 = MU1.
     ///
@@ -45,7 +45,7 @@ pub mod base {
     ///
     /// `not(mimx95)` suppresses a duplicate-definition cascade when both chip
     /// features are on; that combination is already fatal via the
-    /// `compile_error!` in [`crate::chan`].
+    /// `compile_error!` in `bell::mu`.
     #[cfg(all(not(feature = "mimx95"), feature = "mimx93"))]
     pub const BASE: [usize; MU_INSTANCE_COUNT] = [
         0x4422_0000, // MU1

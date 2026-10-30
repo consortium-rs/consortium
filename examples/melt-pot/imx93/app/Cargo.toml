@@ -48,10 +48,6 @@ consortium-ipc = { features = [
 # `default-features = false` is load-bearing: the doorbell's default is
 # `mimx95`, and cargo would unify it with the `mimx93` selected below into a
 # both-chips build, which the crate rejects with a `compile_error!`.
-consortium-ipc-doorbell-mu = { default-features = false, features = [
-  "mimx93",
-  "std",
-], path = "../../../../crates/consortium-ipc-doorbell-mu", version = "0.4.0" }
 consortium-ipc-transport-memory = { features = [
   "mimx93",
   "std",

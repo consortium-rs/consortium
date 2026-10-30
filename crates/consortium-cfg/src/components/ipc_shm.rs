@@ -463,12 +463,15 @@ impl DoorbellMeta {
 
     /// The module that holds this doorbell type.
     ///
-    /// IPCC is a Type-A bell inside the shared-memory transport crate; HSEM and MU
-    /// still live in their own `consortium-ipc-doorbell-*` crates.
+    /// IPCC and MU are Type-A bells inside the shared-memory transport crate; HSEM
+    /// still lives in its own `consortium-ipc-doorbell-hsem` crate.
     fn module(&self) -> TokenStream {
         match self.r#type {
             HardwareDoorbellPeripheralType::Ipcc => {
                 quote::quote! { ::consortium_ipc_transport_memory::bell::ipcc }
+            }
+            HardwareDoorbellPeripheralType::Mu => {
+                quote::quote! { ::consortium_ipc_transport_memory::bell::mu }
             }
             other => {
                 let crate_ident = format_ident!(
@@ -522,7 +525,7 @@ impl DoorbellMeta {
             HardwareDoorbellPeripheralType::Hsem => quote::quote! {
                 #module::notify();
             },
-            // A Type-A bell: one generic service entry, parameterized with the
+            // Type-A bells: one generic service entry, parameterized with the
             // block's register model.
             HardwareDoorbellPeripheralType::Ipcc => quote::quote! {
                 ::consortium_ipc_transport_memory::bell::service_interrupt::<
@@ -530,8 +533,8 @@ impl DoorbellMeta {
                 >();
             },
             HardwareDoorbellPeripheralType::Mu => quote::quote! {
-                #module::notify_gi_interrupt::<
-                    ::consortium_ipc::#side_ident, #id
+                ::consortium_ipc_transport_memory::bell::service_interrupt::<
+                    #module::Mu<::consortium_ipc::#side_ident, #id>
                 >();
             },
         }
@@ -571,18 +574,14 @@ impl DoorbellMeta {
         let binding_uio_stmt = match core {
             VisibleCore::Ap => {
                 let bind = match self.r#type {
-                    HardwareDoorbellPeripheralType::Ipcc => quote::quote! {
-                        let __service_db = #doorbell_ident.clone();
-                        #uio_ident[#doorbell_uio_id].bind_service(::std::sync::Arc::new(
-                            move || __service_db.service_interrupt(),
-                        ));
-                    },
-                    HardwareDoorbellPeripheralType::Mu => quote::quote! {
-                        let __service_db = #doorbell_ident.clone();
-                        #uio_ident[#doorbell_uio_id].bind_service(::std::sync::Arc::new(
-                            move || __service_db.notify_gi_interrupt(),
-                        ));
-                    },
+                    HardwareDoorbellPeripheralType::Ipcc | HardwareDoorbellPeripheralType::Mu => {
+                        quote::quote! {
+                            let __service_db = #doorbell_ident.clone();
+                            #uio_ident[#doorbell_uio_id].bind_service(::std::sync::Arc::new(
+                                move || __service_db.service_interrupt(),
+                            ));
+                        }
+                    }
                     HardwareDoorbellPeripheralType::Hsem => quote::quote! {
                         #uio_ident[#doorbell_uio_id].bind_notifier(#doorbell_ident.notifier());
                     },
@@ -969,7 +968,7 @@ mod tests {
         };
 
         let tokens = doorbell.as_path(DoorbellRingerSide::Primary).to_string();
-        assert!(tokens.contains(":: consortium_ipc_doorbell_mu :: MuDoorbell"));
+        assert!(tokens.contains(":: consortium_ipc_transport_memory :: bell :: mu :: MuDoorbell"));
         assert!(tokens.contains(":: consortium_ipc :: Primary"));
         assert!(tokens.contains("7usize"));
     }

@@ -45,9 +45,6 @@ consortium-codec = { features = [
 consortium-ipc = { features = [
   "std",
 ], path = "../../../../crates/consortium-ipc", version = "0.4.0" }
-consortium-ipc-doorbell-mu = { features = [
-  "std",
-], path = "../../../../crates/consortium-ipc-doorbell-mu", version = "0.4.0" }
 consortium-ipc-transport-memory = { features = [
   "mimx95",
   "std",
