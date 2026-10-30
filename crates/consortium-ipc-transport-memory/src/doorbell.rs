@@ -6,7 +6,7 @@
 pub use consortium_ipc_doorbell_hsem as hsem;
 
 #[cfg(any(feature = "stm32mp21x", feature = "stm32mp23x", feature = "stm32mp25x"))]
-pub use consortium_ipc_doorbell_ipcc as ipcc;
+pub use crate::bell::ipcc;
 
 #[cfg(feature = "mimx9x")]
 pub use consortium_ipc_doorbell_mu as mu;
@@ -30,15 +30,12 @@ impl<S: consortium_ipc::Side, const N: usize> SharedMemoryTransportDoorbell
     }
 }
 
-#[cfg(any(feature = "stm32mp21x", feature = "stm32mp23x", feature = "stm32mp25x"))]
-impl<S: consortium_ipc::Side, const N: usize> SharedMemoryTransportDoorbell
-    for ipcc::IpccDoorbell<S, N>
-{
+impl<H: crate::bell::BellHw> SharedMemoryTransportDoorbell for crate::bell::BellA<H> {
     fn is_hardware_peripheral() -> bool {
         true
     }
     fn address() -> usize {
-        ipcc::registers::base::BASE[N - 1]
+        H::PHYS_BASE
     }
 }
 

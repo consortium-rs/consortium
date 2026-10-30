@@ -46,9 +46,6 @@ consortium-ipc = { features = [
 consortium-ipc-doorbell-hsem = { features = [
   "std",
 ], path = "../../../../crates/consortium-ipc-doorbell-hsem", version = "0.4.0" }
-consortium-ipc-doorbell-ipcc = { features = [
-  "std",
-], path = "../../../../crates/consortium-ipc-doorbell-ipcc", version = "0.4.0" }
 consortium-ipc-transport-memory = { features = [
   "std",
   "stm32mp25x",

@@ -52,9 +52,14 @@ the Linux/A-core as primary and the firmware core as secondary.
 | `sysroot`       | no       | Linux target sysroot; overrides SDK environment variables                                  |
 | `kernel_recipe` | no       | Yocto kernel recipe name used to generate a `.bbappend`                                    |
 | `time_driver`   | no       | Generate the firmware Embassy time driver; defaults to `true`                              |
+| `workspace`     | no       | `nested` (default): each endpoint has its own `target/`; `unified`: one Cargo workspace    |
 
 The generated time driver uses the reference timer for the family: TIM2 on STM32MP2 or
 LPIT1 on i.MX9. Set `time_driver = false` when firmware owns another time base.
+
+With `workspace = "unified"`, every endpoint crate is a member of one Cargo workspace
+rooted beside `Consortium.toml`, which must then hold a root `Cargo.toml` with a
+`[workspace]` table. The melt-pot examples use `nested`.
 
 ### `[endpoints]`
 

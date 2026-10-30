@@ -6,7 +6,6 @@ learn its public workflow.
 - **Engineering logs** preserve dated hardware bring-up investigations and evidence.
 - **Development notes** record subsystem designs, implementation status, and proposed
   architecture.
-- **Stale and superseded drafts** retain completed plans for historical context.
 
 These pages are intentionally separated from the user guide. Some describe an earlier
 implementation and may use names or APIs that no longer exist. For current behavior,

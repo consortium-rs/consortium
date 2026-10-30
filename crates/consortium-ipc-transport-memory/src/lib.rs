@@ -24,8 +24,9 @@
 //! [`Doorbell`] for wakeups because shared memory on its own cannot notify anybody.
 //!
 //! Memory primitives come from `consortium-shared-memory` ([`Region`] and its cache
-//! semantics, the descriptor header); hardware signaling comes from the
-//! `consortium-ipc-doorbell-*` crates. What this crate adds is the protocol.
+//! semantics, the descriptor header). Hardware signaling comes from the Type-A
+//! doorbells in [`bell`] (IPCC) and the `consortium-ipc-doorbell-hsem`/`-mu` crates.
+//! What this crate adds is the protocol.
 //!
 //! [`SendTransport`]: consortium_ipc::SendTransport
 //! [`RecvTransport`]: consortium_ipc::RecvTransport
@@ -201,8 +202,8 @@
 //! | `std`                            | `alloc`, Tokio support, UIO errors, `tracing` logs |
 //! | `alloc`                          | link `alloc` through `consortium-ipc`             |
 //! | `defmt`                          | route protocol tracing to `defmt`; derive `Format` |
-//! | `doorbell-hsem` / `-ipcc` / `-mu` | re-export a doorbell crate under [`doorbell`]     |
-//! | `stm32mp21x` / `23x` / `25x`     | select the STM32MP2 chip and its doorbells        |
+//! | `doorbell-hsem` / `-mu`          | re-export a doorbell crate under [`doorbell`]     |
+//! | `stm32mp21x` / `23x` / `25x`     | select the STM32MP2 chip; enables [`bell::ipcc`]  |
 //! | `mimx93` / `mimx95`              | select the i.MX 9 chip and its MU doorbell        |
 //!
 //! Chip features exist so [`doorbell::SharedMemoryTransportDoorbell`] can report a
@@ -227,10 +228,15 @@
 #[cfg(feature = "alloc")]
 extern crate alloc;
 
+/// Type-A doorbells: the generic [`BellA`](bell::BellA) over a per-block
+/// [`BellHw`](bell::BellHw) register model, and the blocks themselves behind their chip
+/// features (IPCC today).
+pub mod bell;
+
 /// Doorbells commonly paired with the shared-memory transport.
 ///
-/// Each `doorbell-*` or chip feature re-exports one `consortium-ipc-doorbell-*`
-/// crate here (as `hsem`, `ipcc`, or `mu`) and implements
+/// Each chip feature exposes its doorbells here (as `hsem`, `ipcc`, or `mu`) and
+/// implements
 /// `SharedMemoryTransportDoorbell` for its driver type. That trait reports
 /// whether the doorbell is a real peripheral and where its register window lives —
 /// which is what generated Linux bring-up needs in order to `mmap` it, and which

@@ -64,7 +64,9 @@ the handshake before splitting the transport into its Tx and Rx halves.
 
 The UART transport uses the same byte-transport traits but needs no separate doorbell:
 byte arrival is the notification. Its wire format is a COBS-delimited frame containing
-a logical channel, payload, and little-endian CRC32.
+a logical channel, payload, and little-endian CRC32. The FDCAN transport is likewise
+doorbell-free: the controller already delimits and checksums frames, so it only segments
+messages into CAN frames and reassembles them, filtering each direction by CAN identifier.
 
 ## Boundary safety
 
@@ -89,5 +91,7 @@ Consortium makes ownership concrete at every layer:
 - channels own their fixed scratch buffers, so normal send and receive paths do not
   allocate.
 
-The application still owns interrupt handlers on firmware. Doorbell and HAL crates
-export wake functions, but do not install vectors behind the application's back.
+Doorbell and HAL crates export wake functions but never install interrupt vectors
+themselves. On firmware, `consortium-cfg` generates the doorbell and time-driver vectors
+the manifest implies into `consortium.gen.rs`; vectors for peripherals the application
+drives directly remain the application's to write.
