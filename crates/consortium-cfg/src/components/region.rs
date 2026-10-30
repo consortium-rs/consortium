@@ -33,23 +33,23 @@ pub struct Region {
 impl Region {
     pub fn initialize(&self, core: VisibleCore, uio_ident: &Ident) -> proc_macro2::TokenStream {
         // The AP owns the first touch of the shared-memory carveout and clears it
-        // (`mmap_zeroed`) so a warm reboot's stale descriptor/slot bytes never
-        // read as valid; controller cores embed a physical base and leave the
-        // handshake to zero what it needs.
-        let address = match core {
-            VisibleCore::Ap => {
-                let uio_id = self.address.ap.uio_id;
-                let mmap_id = self.address.ap.mmap_id;
-                quote::quote! { #uio_ident[#uio_id].mmap_zeroed(#mmap_id)? }
-            }
-            _ => self.address.memory_lookup(core, uio_ident),
-        };
+        // (`UioRegion::zeroed`) so a warm reboot's stale descriptor/slot bytes never
+        // read as valid. The region also owns the UIO device it is mapped from, so
+        // the mapping lives exactly as long as the transport using it. Controller
+        // cores embed a physical base and leave the handshake to zero what it needs.
+        if core == VisibleCore::Ap {
+            let uio_id = self.address.ap.uio_id;
+            let mmap_id = self.address.ap.mmap_id;
+            return quote::quote! {
+                ::consortium_runtime_app::uio::UioRegion::zeroed(&#uio_ident[#uio_id], #mmap_id)?
+            };
+        }
+        let address = self.address.memory_lookup(core, uio_ident);
         let length = proc_macro2::Literal::usize_suffixed(self.length as usize);
-        let region_identifier = match (core, self.cache) {
-            (VisibleCore::Ap, _) | (_, false) => {
-                quote::quote! { ::consortium_shared_memory::regions::UncachedRegion }
-            }
-            (_, true) => quote::quote! { ::consortium_shared_memory::regions::CachedRegion },
+        let region_identifier = if self.cache {
+            quote::quote! { ::consortium_shared_memory::regions::CachedRegion }
+        } else {
+            quote::quote! { ::consortium_shared_memory::regions::UncachedRegion }
         };
         quote::quote! {
             unsafe { #region_identifier::new((#address) as *mut u8, #length) }
@@ -81,17 +81,20 @@ mod tests {
     }
 
     #[test]
-    fn uncached_region_wraps_ap_lookup_in_unsafe_new() {
+    fn ap_region_is_a_zeroed_uio_region_owning_its_device() {
         let uio = format_ident!("uio");
         let tokens = ap_region().initialize(VisibleCore::Ap, &uio).to_string();
 
-        assert!(tokens.contains("unsafe"));
-        assert!(tokens.contains(":: consortium_shared_memory :: regions :: UncachedRegion :: new"));
-        // base is cast to a raw pointer; length is a usize literal.
-        assert!(tokens.contains("as * mut u8"));
-        assert!(tokens.contains("32768usize"));
-        // address resolves through the AP UIO mmap window, zeroing it first.
-        assert!(tokens.contains("uio [0usize] . mmap_zeroed (1usize) ?"));
+        // No raw pointer and no `unsafe`: the region maps (and zeroes) its own
+        // window and holds the device, so nothing can outlive the mapping.
+        assert!(!tokens.contains("unsafe"), "{tokens}");
+        assert!(!tokens.contains("as * mut u8"), "{tokens}");
+        assert!(
+            tokens.contains(
+                ":: consortium_runtime_app :: uio :: UioRegion :: zeroed (& uio [0usize] , 1usize) ?"
+            ),
+            "{tokens}"
+        );
     }
 
     #[test]
@@ -105,6 +108,6 @@ mod tests {
         let controller = region.initialize(cm7, &uio).to_string();
         let ap = region.initialize(VisibleCore::Ap, &uio).to_string();
         assert!(controller.contains(":: consortium_shared_memory :: regions :: CachedRegion"));
-        assert!(ap.contains(":: consortium_shared_memory :: regions :: UncachedRegion"));
+        assert!(ap.contains(":: consortium_runtime_app :: uio :: UioRegion"));
     }
 }

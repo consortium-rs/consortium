@@ -44,7 +44,7 @@ mimx93  = ["consortium-ipc-transport-memory?/mimx93", "mimx9x"]
 mimx95  = ["consortium-ipc-transport-memory?/mimx95", "mimx9x"]
 mimx9x  = []
 ipc     = ["dep:consortium-ipc"]
-ipc-shm = ["dep:consortium-ipc-transport-memory", "ipc"]
+ipc-shm = ["dep:consortium-ipc-transport-memory", "dep:consortium-shared-memory", "ipc"]
 # Re-export the `#[consortium_runtime_app::main]` entry macro.
 macros     = ["dep:consortium-runtime-macros"]
 ort        = ["consortium-ort"]
@@ -78,6 +78,7 @@ consortium-ipc-transport-memory = { features = [
   "std",
 ], optional = true, path = "../consortium-ipc-transport-memory", version = "0.4.0" }
 consortium-ort = { optional = true, path = "../consortium-ort", version = "0.4.0" }
+consortium-shared-memory = { optional = true, path = "../consortium-shared-memory", version = "0.4.0" }
 consortium-runtime-macros = { optional = true, path = "../consortium-runtime-macros", version = "0.4.0" }
 consortium-tee = { optional = true, path = "../consortium-tee", version = "0.4.0" }
 thiserror = { version = "2.0" }

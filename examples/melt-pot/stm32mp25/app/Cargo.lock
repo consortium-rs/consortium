@@ -292,7 +292,6 @@ dependencies = [
  "num_enum",
  "pin-project",
  "thiserror",
- "tokio",
  "uio",
 ]
 
@@ -336,6 +335,7 @@ dependencies = [
  "consortium-ipc-transport-memory",
  "consortium-log",
  "consortium-runtime-macros",
+ "consortium-shared-memory",
  "libc",
  "thiserror",
  "tokio",
