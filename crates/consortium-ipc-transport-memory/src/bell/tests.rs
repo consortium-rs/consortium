@@ -63,11 +63,15 @@ struct FakeBell(Arc<Regs>);
 
 const LINES: u8 = 8;
 
-// SAFETY: an in-memory model; `slot` is the line, `< 8`.
+// SAFETY: an in-memory model; status bit `n` is channel `n`, `< 8`.
 unsafe impl BellHw for FakeBell {
     type Line = u8;
 
     const PHYS_BASE: usize = 0;
+
+    const CHANNELS: u8 = LINES;
+
+    const RESERVED: Range<u8> = 0..1;
 
     unsafe fn at(base: usize) -> Self {
         // SAFETY: tests pass a pointer leaked from `Arc::into_raw` (see `bell`).
@@ -78,14 +82,8 @@ unsafe impl BellHw for FakeBell {
         this
     }
 
-    fn line_of(ch: Chan) -> Result<u8, BellError> {
-        (ch.id() < LINES)
-            .then_some(ch.id())
-            .ok_or(BellError::ChanOutOfRange)
-    }
-
-    fn slot(line: u8) -> u8 {
-        line
+    fn line(id: u8) -> u8 {
+        id
     }
 
     fn ring(&self, line: u8) -> Result<(), BellError> {
@@ -376,4 +374,12 @@ fn clones_share_one_wake_source() {
 
     assert_eq!(wakes.load(Ordering::SeqCst), 1);
     assert_eq!(wait.as_mut().poll(&mut cx), Poll::Ready(Ok(ch(3))));
+}
+
+#[test]
+fn chan_validate_uses_the_block_bounds() {
+    type Db = BellA<FakeBell>;
+    assert_eq!(Chan::new::<Db>(0), Err(BellError::ChanReserved));
+    assert_eq!(Chan::new::<Db>(1).map(|c| c.id()), Ok(1));
+    assert_eq!(Chan::new::<Db>(LINES), Err(BellError::ChanOutOfRange));
 }

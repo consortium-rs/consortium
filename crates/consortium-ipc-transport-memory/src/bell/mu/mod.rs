@@ -67,7 +67,7 @@ pub mod registers;
 use core::{marker::PhantomData, ops::Range};
 
 use consortium_hal_imx9::{Peri, PeripheralType};
-use consortium_ipc::{Chan, ChanValidate, Side};
+use consortium_ipc::Side;
 
 use self::registers::{
     base,
@@ -120,25 +120,6 @@ pub enum MuLine {
     Gi(u8),
     /// Receive-full line `0..MU_RF_CHAN_COUNT`.
     Rf(u8),
-}
-
-/// [`ChanValidate`] for MU channel ids: GI and RF lines, none reserved.
-pub struct MuChanValidate;
-
-impl ChanValidate for MuChanValidate {
-    type Error = BellError;
-
-    fn validate(id: u8) -> Result<Chan, Self::Error> {
-        if MU_CHAN_RESERVED.contains(&id) {
-            Err(BellError::ChanReserved)
-        } else if id >= MU_CHAN_COUNT {
-            Err(BellError::ChanOutOfRange)
-        } else {
-            // SAFETY: `id` is outside the reserved range and below the count, so it
-            // names a GI or RF line of the instance.
-            Ok(unsafe { Chan::new_unchecked(id) })
-        }
-    }
 }
 
 /// A chip-HAL peripheral singleton naming one MU register window.
@@ -316,8 +297,8 @@ const GI_MASK: LineSet = (1 << MU_GI_CHAN_COUNT) - 1;
 
 // SAFETY: `PHYS_BASE` is the vetted `base::BASE` entry plus the window offset;
 // `raw_pending` and `asserted` read the raw `GSR`/`RSR`, independent of
-// `GIER`/`RCR`; every write touches only the line bits it is given; `slot` is
-// `0..8`, GI lines first, and `asserted` packs the same way.
+// `GIER`/`RCR`; every write touches only the line bits it is given; channel ids
+// are `0..8`, GI lines first, and `asserted` packs the same way.
 unsafe impl<S: Side, const N: usize> BellHw for Mu<S, N> {
     type Line = MuLine;
 
@@ -332,20 +313,16 @@ unsafe impl<S: Side, const N: usize> BellHw for Mu<S, N> {
         }
     }
 
-    #[inline]
-    fn line_of(ch: Chan) -> Result<MuLine, BellError> {
-        match ch.id() {
-            id if id < MU_GI_CHAN_COUNT => Ok(MuLine::Gi(id)),
-            id if id < MU_CHAN_COUNT => Ok(MuLine::Rf(id - MU_GI_CHAN_COUNT)),
-            _ => Err(BellError::ChanOutOfRange),
-        }
-    }
+    const CHANNELS: u8 = MU_CHAN_COUNT;
+
+    const RESERVED: Range<u8> = MU_CHAN_RESERVED;
 
     #[inline]
-    fn slot(line: MuLine) -> u8 {
-        match line {
-            MuLine::Gi(gi) => gi,
-            MuLine::Rf(rf) => MU_GI_CHAN_COUNT + rf,
+    fn line(id: u8) -> MuLine {
+        if id < MU_GI_CHAN_COUNT {
+            MuLine::Gi(id)
+        } else {
+            MuLine::Rf(id - MU_GI_CHAN_COUNT)
         }
     }
 
@@ -434,8 +411,8 @@ unsafe impl<S: Side, const N: usize> BellHw for Mu<S, N> {
 
     #[cfg(not(feature = "std"))]
     #[inline]
-    fn waker(slot: u8) -> &'static atomic_waker::AtomicWaker {
-        &MU_WAKERS[Self::INDEX][slot as usize]
+    fn waker(id: u8) -> &'static atomic_waker::AtomicWaker {
+        &MU_WAKERS[Self::INDEX][id as usize]
     }
 }
 

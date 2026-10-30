@@ -365,10 +365,10 @@ mod tests {
         ));
     }
 
-    /// HSEM shares one waker across the block and its `wait` future owns the
-    /// masking, so its vector only wakes — unlike the IPCC/MU service calls.
+    /// HSEM has no instance number, so it services instance 1 — through the same
+    /// generic entry as IPCC and MU, naming its bank so the vector can mask.
     #[test]
-    fn generates_hsem_doorbell_vector_without_an_instance() {
+    fn generates_hsem_doorbell_vector_for_instance_one() {
         let core = VisibleCore::Mcore(McoreName::Cm33);
         let mut bella = BellA {
             bells: vec![typed_bell(
@@ -384,7 +384,11 @@ mod tests {
         let tokens = bella.vectors(&core, "::consortium_hal_stm32mp2")[0].to_string();
 
         assert!(tokens.contains("fn HSEM ()"));
-        assert!(tokens.contains(":: consortium_ipc_doorbell_hsem :: notify ()"));
+        assert!(tokens.contains(
+            ":: consortium_ipc_transport_memory :: bell :: service_interrupt :: < :: \
+             consortium_ipc_transport_memory :: bell :: hsem :: Hsem < :: consortium_ipc :: \
+             Secondary , 1usize > > ()"
+        ));
     }
 
     #[test]

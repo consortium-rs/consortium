@@ -63,8 +63,8 @@
 //!
 //! | Doorbell kind                | Bind with        | Because                        |
 //! | ---------------------------- | ---------------- | ------------------------------ |
-//! | plain (GPIO, HSEM)           | `bind_notifier`   | edge-driven; nothing to mask    |
-//! | masking (IPCC, MU)           | `bind_service`    | must mask asserted lines first   |
+//! | plain (GPIO)                 | `bind_notifier`   | edge-driven; nothing to mask    |
+//! | Type-A bell (IPCC, MU, HSEM) | `bind_service`    | must mask asserted lines first   |
 //!
 //! Windows are mapped by kind, too: `mmap` for register and doorbell windows,
 //! `mmap_zeroed` for data windows — the AP owns first touch of a shared carveout,

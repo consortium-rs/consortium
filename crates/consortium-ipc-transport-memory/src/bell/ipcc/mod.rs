@@ -63,7 +63,7 @@ pub mod registers;
 use core::{marker::PhantomData, ops::Range};
 
 use consortium_hal_stm32mp2::{Peri, PeripheralType};
-use consortium_ipc::{Chan, ChanValidate, Side};
+use consortium_ipc::Side;
 
 use self::registers::{
     base,
@@ -80,25 +80,6 @@ pub const IPCC_CHAN_RESERVED: Range<u8> = 0..1;
 
 /// The IPCC doorbell for instance `N` (1-based), processor bank `S`.
 pub type IpccDoorbell<S, const N: usize> = BellA<Ipcc<S, N>>;
-
-/// [`ChanValidate`] for IPCC channel ids: in range and not reserved.
-pub struct IpccChanValidate;
-
-impl ChanValidate for IpccChanValidate {
-    type Error = BellError;
-
-    fn validate(id: u8) -> Result<Chan, Self::Error> {
-        if IPCC_CHAN_RESERVED.contains(&id) {
-            Err(BellError::ChanReserved)
-        } else if id >= IPCC_CHAN_COUNT {
-            Err(BellError::ChanOutOfRange)
-        } else {
-            // SAFETY: `id` is outside the reserved range and below the count, so it
-            // is a valid IPCC channel id.
-            Ok(unsafe { Chan::new_unchecked(id) })
-        }
-    }
-}
 
 /// A chip-HAL peripheral singleton naming one IPCC instance.
 pub trait Instance: PeripheralType {
@@ -283,7 +264,7 @@ impl<S: Side, const N: usize> Ipcc<S, N> {
 
 // SAFETY: `PHYS_BASE` comes from the vetted `base::BASE` table; `raw_pending` and
 // `asserted` read the raw `CyTOCxSR`, not the `CxMR`-filtered view; every write
-// touches only the channel bits it is given; `slot` is the channel id, `< 16`.
+// touches only the channel bits it is given; status bit `n` is channel `n`, `< 16`.
 unsafe impl<S: Side, const N: usize> BellHw for Ipcc<S, N> {
     type Line = u8;
 
@@ -298,19 +279,13 @@ unsafe impl<S: Side, const N: usize> BellHw for Ipcc<S, N> {
         }
     }
 
-    #[inline]
-    fn line_of(ch: Chan) -> Result<u8, BellError> {
-        let id = ch.id();
-        if id < IPCC_CHAN_COUNT {
-            Ok(id)
-        } else {
-            Err(BellError::ChanOutOfRange)
-        }
-    }
+    const CHANNELS: u8 = IPCC_CHAN_COUNT;
+
+    const RESERVED: Range<u8> = IPCC_CHAN_RESERVED;
 
     #[inline]
-    fn slot(line: u8) -> u8 {
-        line
+    fn line(id: u8) -> u8 {
+        id
     }
 
     fn ring(&self, line: u8) -> Result<(), BellError> {
@@ -368,8 +343,8 @@ unsafe impl<S: Side, const N: usize> BellHw for Ipcc<S, N> {
 
     #[cfg(not(feature = "std"))]
     #[inline]
-    fn waker(slot: u8) -> &'static atomic_waker::AtomicWaker {
-        &IPCC_WAKERS[Self::INDEX][slot as usize]
+    fn waker(id: u8) -> &'static atomic_waker::AtomicWaker {
+        &IPCC_WAKERS[Self::INDEX][id as usize]
     }
 }
 

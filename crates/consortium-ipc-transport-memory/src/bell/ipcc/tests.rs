@@ -179,14 +179,17 @@ fn out_of_range_channels_are_rejected() {
 #[test]
 fn chan_validate_rejects_reserved_and_out_of_range() {
     assert_eq!(
-        Chan::new::<IpccChanValidate>(0),
+        Chan::new::<IpccDoorbell<Primary, 1>>(0),
         Err(BellError::ChanReserved)
     );
     assert_eq!(
-        Chan::new::<IpccChanValidate>(IPCC_CHAN_COUNT),
+        Chan::new::<IpccDoorbell<Primary, 1>>(IPCC_CHAN_COUNT),
         Err(BellError::ChanOutOfRange)
     );
-    assert_eq!(Chan::new::<IpccChanValidate>(1).map(|c| c.id()), Ok(1));
+    assert_eq!(
+        Chan::new::<IpccDoorbell<Primary, 1>>(1).map(|c| c.id()),
+        Ok(1)
+    );
 }
 
 #[test]

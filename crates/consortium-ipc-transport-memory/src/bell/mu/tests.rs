@@ -41,24 +41,23 @@ fn word(regs: &[u32], offset: u32) -> u32 {
 #[test]
 fn channels_split_into_gi_then_rf_lines() {
     type M = Mu<Primary, N>;
-    assert_eq!(M::line_of(ch(0)), Ok(MuLine::Gi(0)));
-    assert_eq!(M::line_of(ch(3)), Ok(MuLine::Gi(3)));
-    assert_eq!(M::line_of(ch(4)), Ok(MuLine::Rf(0)));
-    assert_eq!(M::line_of(ch(7)), Ok(MuLine::Rf(3)));
-    assert_eq!(M::line_of(ch(8)), Err(BellError::ChanOutOfRange));
-
-    for id in 0..MU_CHAN_COUNT {
-        assert_eq!(M::slot(M::line_of(ch(id)).unwrap()), id);
-    }
+    assert_eq!(M::line(0), MuLine::Gi(0));
+    assert_eq!(M::line(3), MuLine::Gi(3));
+    assert_eq!(M::line(4), MuLine::Rf(0));
+    assert_eq!(M::line(7), MuLine::Rf(3));
+    assert_eq!(M::CHANNELS, 8);
 }
 
 #[test]
 fn chan_validate_accepts_every_line() {
     for id in 0..MU_CHAN_COUNT {
-        assert_eq!(Chan::new::<MuChanValidate>(id).map(|c| c.id()), Ok(id));
+        assert_eq!(
+            Chan::new::<MuDoorbell<Primary, N>>(id).map(|c| c.id()),
+            Ok(id)
+        );
     }
     assert_eq!(
-        Chan::new::<MuChanValidate>(MU_CHAN_COUNT),
+        Chan::new::<MuDoorbell<Primary, N>>(MU_CHAN_COUNT),
         Err(BellError::ChanOutOfRange)
     );
 }
@@ -250,7 +249,7 @@ fn distinct_lines_keep_distinct_wakers() {
         window.add(offsets::RSR as usize / 4).write_volatile(1 << 1);
     }
     // The ISR core, without the real `PHYS_BASE` that `service_interrupt` uses.
-    super::super::service(db.hw(), |slot| Mu::<Primary, N>::waker(slot).wake());
+    super::super::service(db.hw(), |id| Mu::<Primary, N>::waker(id).wake());
 
     assert_eq!(first_wakes.load(Ordering::SeqCst), 1);
     assert_eq!(second_wakes.load(Ordering::SeqCst), 1);

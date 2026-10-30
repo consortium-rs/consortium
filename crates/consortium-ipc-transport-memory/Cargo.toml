@@ -36,60 +36,40 @@ default = ["std"]
 # expand to literal `defmt::` paths, so the crate must depend on `defmt`
 # directly as well as through the facade.
 defmt = [
-  "consortium-ipc-doorbell-hsem?/defmt",
   "consortium-ipc/defmt",
   "consortium-log/defmt",
   "consortium-shared-memory/defmt",
   "dep:defmt",
 ]
-doorbell-hsem = ["dep:consortium-ipc-doorbell-hsem"]
 # i.MX 9 chip selection: forwarded to the chip HAL, whose MU singletons, clock gates,
 # and PAC the `bell::mu` register model binds to. Mutually exclusive.
-mimx93 = ["consortium-hal-imx9/mimx93", "mimx9x"]
-mimx95 = ["consortium-hal-imx9/mimx95", "mimx9x"]
-mimx9x = ["dep:consortium-hal-imx9"]
-std = [
-  "alloc",
-  "consortium-ipc-doorbell-hsem?/std",
-  "consortium-log/tracing",
-  "dep:tokio",
-  "dep:uio",
-]
-# STM32MP2 chip selection: forwarded to the chip HAL, whose IPCC singletons and PAC
-# the `bell::ipcc` register model binds to.
+mimx93 = ["consortium-hal-imx9/mimx93", "dep:consortium-hal-imx9"]
+mimx95 = ["consortium-hal-imx9/mimx95", "dep:consortium-hal-imx9"]
+std    = ["alloc", "consortium-log/tracing", "dep:tokio", "dep:uio"]
+# STM32MP2 chip selection: forwarded to the chip HAL, whose IPCC/HSEM singletons and
+# PAC the `bell::ipcc` and `bell::hsem` register models bind to (HSEM is absent on MP21).
 stm32mp21x = ["consortium-hal-stm32mp2/stm32mp21x", "dep:consortium-hal-stm32mp2"]
-stm32mp23x = [
-  "consortium-hal-stm32mp2/stm32mp23x",
-  "consortium-ipc-doorbell-hsem/stm32mp23x",
-  "dep:consortium-hal-stm32mp2",
-  "doorbell-hsem",
-]
-stm32mp25x = [
-  "consortium-hal-stm32mp2/stm32mp25x",
-  "consortium-ipc-doorbell-hsem/stm32mp25x",
-  "dep:consortium-hal-stm32mp2",
-  "doorbell-hsem",
-]
+stm32mp23x = ["consortium-hal-stm32mp2/stm32mp23x", "dep:consortium-hal-stm32mp2"]
+stm32mp25x = ["consortium-hal-stm32mp2/stm32mp25x", "dep:consortium-hal-stm32mp2"]
 
 [dependencies]
-atomic-waker                 = "1.1.2"
-bitfield                     = "0.19.5"
-consortium-codec             = { default-features = false, path = "../consortium-codec", version = "0.4.0" }
-consortium-ipc               = { default-features = false, path = "../consortium-ipc", version = "0.4.0" }
-consortium-ipc-doorbell-hsem = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-hsem", version = "0.4.0" }
-consortium-hal-stm32mp2      = { default-features = false, optional = true, path = "../consortium-hal-stm32mp2", version = "0.4.0" }
-consortium-hal-imx9          = { default-features = false, optional = true, path = "../consortium-hal-imx9", version = "0.4.0" }
-consortium-log               = { default-features = false, path = "../consortium-log", version = "0.4.0" }
-consortium-shared-memory     = { path = "../consortium-shared-memory", version = "0.4.0" }
-critical-section             = "1.2.0"
-crc32fast                    = { default-features = false, version = "1.5.0" }
-defmt                        = { optional = true, version = "1.1.0" }
-embassy-hal-internal         = "0.5.0"
-num_enum                     = { default-features = false, version = "0.7.3" }
-pin-project                  = { version = "1.1.11" }
-thiserror                    = { default-features = false, version = "2.0" }
-tokio                        = { features = ["net", "rt", "sync"], optional = true, version = "1" }
-uio                          = { optional = true, version = "0.6.0" }
+atomic-waker             = "1.1.2"
+bitfield                 = "0.19.5"
+consortium-codec         = { default-features = false, path = "../consortium-codec", version = "0.4.0" }
+consortium-ipc           = { default-features = false, path = "../consortium-ipc", version = "0.4.0" }
+consortium-hal-stm32mp2  = { default-features = false, optional = true, path = "../consortium-hal-stm32mp2", version = "0.4.0" }
+consortium-hal-imx9      = { default-features = false, optional = true, path = "../consortium-hal-imx9", version = "0.4.0" }
+consortium-log           = { default-features = false, path = "../consortium-log", version = "0.4.0" }
+consortium-shared-memory = { path = "../consortium-shared-memory", version = "0.4.0" }
+critical-section         = "1.2.0"
+crc32fast                = { default-features = false, version = "1.5.0" }
+defmt                    = { optional = true, version = "1.1.0" }
+embassy-hal-internal     = "0.5.0"
+num_enum                 = { default-features = false, version = "0.7.3" }
+pin-project              = { version = "1.1.11" }
+thiserror                = { default-features = false, version = "2.0" }
+tokio                    = { features = ["net", "rt", "sync"], optional = true, version = "1" }
+uio                      = { optional = true, version = "0.6.0" }
 
 [dev-dependencies]
 atomic-waker = "1.1.2"

@@ -93,7 +93,7 @@ A-core, TEE, HMI, UIO, Cog, WebKit, and Yocto/OpenSTLinux flows are Linux/SDK or
 | Core IPC        | `consortium-ipc`, `consortium-ipc-macros`, `consortium-ipc-macros-impl`                                                                                                                                                           |
 | Codecs          | `consortium-codec`, `consortium-codec-macros`, `consortium-codec-macros-impl`                                                                                                                                                     |
 | Transports      | `consortium-shared-memory`, `consortium-ipc-transport-memory`, `consortium-ipc-transport-uart*`, `consortium-ipc-transport-fdcan*`                                                                                                |
-| Doorbells       | `consortium-ipc-transport-memory::bell` (IPCC, MU), `consortium-ipc-doorbell-hsem`, `consortium-ipc-doorbell-gpio`                                                                                                                |
+| Doorbells       | `consortium-ipc-transport-memory::bell` (IPCC, MU, HSEM), `consortium-ipc-doorbell-gpio`                                                                                                                                          |
 | Configuration   | `consortium-cfg-common`, `consortium-cfg`, `consortium-dts`, `consortium-data`                                                                                                                                                    |
 | HAL/PAC         | `consortium-hal`, `consortium-hal-imx9`, `consortium-hal-stm32mp2`, `consortium-pac-imx9`, `consortium-pac-stm32mp2`                                                                                                              |
 | Macro helpers   | `consortium-macros-helpers`                                                                                                                                                                                                       |
@@ -290,7 +290,7 @@ the data lines. Every line carries exactly one waiter: the hardware doorbells ho
 `AtomicWaker` per line, arm and disarm it unrefcounted, and _consume_ the status on the
 first poll, so one edge reaches one waiter no matter what. The receive half is already
 parked on the data line. Reclaiming those two channels would mean reworking per-line waker
-fan-out, arm/disarm refcounting, and status acknowledgement across `ipcc`/`hsem`/`mu` —
+fan-out, arm/disarm refcounting, and status acknowledgement in the `bell` protocol —
 deliberately not attempted.
 
 Three behaviours worth knowing: two peers both awaiting an acknowledgement with neither
@@ -308,10 +308,43 @@ Prefer extending these heap-backed or fake-doorbell tests before requiring hardw
 ### Doorbells
 
 Doorbells provide wakeup/signaling and should keep MMIO safety invariants documented.
-Use typed register abstractions and validate channel bounds through the local validation
-type where available.
+There are two kinds:
 
-**A doorbell's `Side` is its register window, not the transport's descriptor role.**
+- **Type-A bells** — IPCC, MU, and (frozen) HSEM — live in
+  `consortium-ipc-transport-memory::bell`, behind the transport's chip features.
+- **`consortium-ipc-doorbell-gpio`** is a single-channel GPIO doorbell. The `no_std`
+  path uses a software pending flag and IRQ-side `wake`; the `std` path exposes a Tokio
+  `Notify` that external interrupt code must trigger, bound with `bind_notifier`.
+
+**A Type-A bell is one protocol over a per-block register model.** A block implements
+only `unsafe trait BellHw`: `CHANNELS`, `RESERVED`, `PHYS_BASE`, `line(id)`, `ring`,
+`raw_pending`, `ack`, `arm`/`disarm`, `asserted`/`disarm_all`, and a per-line `waker`
+table, where status bit `n` is channel `n`. Everything else is written once in
+`bell/mod.rs`: `BellA<H>` implements `Doorbell` and `ChanValidate` (one bounds check),
+`LineWait<H>` is the one wait future, and `service_interrupt::<H>()` (no_std) /
+`BellA::service_interrupt()` (std) is the one ISR core, which masks every asserted line
+**before** waking. Fences, critical sections, waker registration, and the `std` `Notify`
+re-subscription belong to the generic — a `BellHw` impl never does them. The protocol,
+and why each step of its poll order is load-bearing, is documented on `bell/mod.rs` and
+tested once against an in-memory `FakeBell` in `bell/tests.rs`; a block's own tests only
+check its register mapping. Read both before changing any block.
+
+- `bell::ipcc` — STM32 IPCC (`stm32mp21x`/`23x`/`25x`); `IpccDoorbell<S, N>`. `ring`
+  reports `BellError::Busy` while the previous signal is unconsumed. The recommended
+  STM32MP2 doorbell, and the one validated on hardware.
+- `bell::mu` — NXP i.MX MU (`mimx93`/`mimx95`, mutually exclusive); `MuDoorbell<S, N>`.
+  Channels `0..4` are GI lines and `4..8` RF lines (`MuLine`); neither reports `Busy` — a
+  pending GI is idempotent and an RF ring whose `TRn` is still full is skipped.
+  `MuDoorbell::new` also opens the window's i.MX 93 LPCG clock gate.
+- `bell::hsem` — STM32 HSEM (`stm32mp23x`/`25x`); `HsemDoorbell<S, 1>`. Frozen: prefer
+  IPCC. `ring` is a 1-step read-lock then unlock, and reports `Busy` when another core
+  holds the semaphore. `S` is the interrupt bank (`Tertiary` is C3).
+
+The chip features pull in `consortium-hal-stm32mp2`/`consortium-hal-imx9` with
+`default-features = false` and forward the chip, so the PAC's register/interrupt
+definitions match the target (two chips of one family = ambiguous PAC `Interrupt`).
+
+**A bell's `Side` is its register window or bank, not the transport's descriptor role.**
 For an i.MX MU, `Primary` means MUA and `Secondary` means MUB — which half of the block
 this core drives — while `SharedMemoryTransport`'s `Primary`/`Secondary` is the
 shared-memory protocol's role, chosen by the manifest's `primary`/`secondary`. On both
@@ -320,118 +353,33 @@ documented `primary = "linux"`, but a manifest that swaps the roles keeps the wi
 `impl_channel!` takes the two as independent type parameters and `consortium-cfg` lowers
 them separately: the window comes from each party's `window:` field in the chip database
 (`Transceiver::doorbell_window`), the role from the manifest. Conflating them fails
-`bell::mu::MuDoorbell::new`'s `Instance<Side = S>` bound. The i.MX 93 CM33's chip map exposes both
+`MuDoorbell::new`'s `Instance<Side = S>` bound. The i.MX 93 CM33's chip map exposes both
 `MU1_MUA`/`MU1_MUB` (and MU2's), so the database, not the dump, picks MUB. A
-single-window doorbell (HSEM, IPCC) has no `window_length` and its marker keeps meaning
-the core bank, so it still follows the role.
-
-**Type-A doorbells are being consolidated into `consortium-ipc-transport-memory::bell`.**
-A block supplies only its register model as an `unsafe trait BellHw` (`line_of`, `slot`,
-`ring`, `raw_pending`, `ack`, `arm`/`disarm`, `asserted`/`disarm_all`, a per-line `waker`
-table, and `PHYS_BASE`); the generic `BellA<H>` implements `Doorbell`, `LineWait<H>` is the
-one wait future, and `service_interrupt::<H>()` (no_std) / `BellA::service_interrupt()`
-(std) is the one ISR core. IPCC (`bell::ipcc`, `IpccDoorbell<S, N> = BellA<Ipcc<S, N>>`,
-the transport's `stm32mp2*` features) and MU (`bell::mu`, `MuDoorbell<S, N> =
-BellA<Mu<S, N>>`, the `mimx93`/`mimx95` features) are ported; HSEM still lives in its own
-crate with a hand-written wait future aligned to the same protocol, and is next. Fences, critical sections, and waker handling belong to the
-generic — a `BellHw` impl never does them. The protocol is covered once in
-`bell/tests.rs` against an in-memory `FakeBell`; a block's own tests only check its
-register mapping. In poll order:
-
-1. Register the `no_std` waker on **every** poll, before anything else — from a
-   **per-line** table (`BellHw::waker`, `HSEM_WAKERS`), never one shared
-   `AtomicWaker`. An `AtomicWaker` holds exactly one waker, so a second task waiting on
-   another line of the same instance overwrites the first registration and that task is
-   never woken again. A duplex endpoint waits on two lines of one instance, so this is
-   the ordinary case, not a corner. The ISR service routine therefore wakes **by line
-   id** (`wake: impl FnMut(u8)`), collecting asserted lines inside the critical section
-   and waking outside it.
-2. `compiler_fence(SeqCst)`, then arm the enable register once, gated on an `armed` flag.
-3. Every enable-register read-modify-write — arm, completion, `Drop`, ISR service — runs
-   inside `with_interrupts_masked` (a `critical_section` on `no_std`, a no-op on `std`),
-   because task context and the vector both write it.
-4. On `std`, `subscribe(cx)` on **every** poll, _before_ the status read. The instance's
-   `Notify` is shared by every line, so a foreign wake consumes this future's `Notified`,
-   and a consumed `Notified` never fires again — it must be replaced or the future parks
-   forever.
-5. `compiler_fence(SeqCst)`, then decide readiness from the **raw** status register
-   (`CnISR`, `GSR`/`RSR`, the incoming-occupied bits) — never from the masked view
-   (`CnMISR`) and never from the `Notify` completing. The status outlives masking, so a
-   line the ISR already masked is still delivered; and the `Notify` says only that
-   _something_ on the instance fired, not that this line did.
-6. Arming never acknowledges. A status bit set before the wait began is an unconsumed
-   notification, and the remote cannot signal again while it waits for a reply.
-7. On readiness: `fence(Acquire)`, acknowledge, then mask.
+single-window block (HSEM, IPCC) has no `window_length` and its marker keeps meaning the
+core bank, so it still follows the role.
 
 `Doorbell::wait` is RPITIT (`-> impl Future<Output = Result<Chan, Self::Error>> + MaybeSend`),
-like `SendTransport`/`RecvTransport`, so implementations may be `async` bodies or named
-futures — the hardware doorbells keep named ones (`LineWait`, `HsemWaitFut`,
-`GpioWaitFut`) because each of the two MMIO ones carries a `Drop` that
-disarms its line on cancel, and an `async` body would need a guard struct to reproduce
-that. A cancelled wait (a `select!` timeout, a dropped `recv`) must leave the line
-masked: nothing is left to clear the level-sensitive status, so `irq_loop` re-arming the
-UIO IRQ would re-fire it forever. Each `Drop` is gated on the `armed` flag and
-**disarms only** — it never acknowledges `CnISR`/`GSR`/`RSR`/the occupied flag, for the
-same reason as step 6. `GpioWaitFut` has no hardware line and needs no guard. The trade is that the
-future type is unnameable through the trait: a consumer cannot store it in a struct field,
-so a receive loop has to hold it as a local across an `.await` rather than as persisted
-poll state. `consortium-ipc-transport-memory`'s `recv_bytes` is the worked example, and
-its ordering is load-bearing — create the wait future, poll it **once** through a
-`poll_fn` to register the waker, re-scan the slots, and only then park on it. Awaiting it
-directly registers and parks in one step, which reopens the lost-wakeup race the
-`RacyDoorbell` test covers (the fan-out `notify_waiters()` stores no permit).
+like `SendTransport`/`RecvTransport`. `LineWait` is a named future because its `Drop`
+disarms its line on cancel (a `select!` timeout, a dropped `recv`) — **disarm only**,
+never acknowledge, or an unconsumed notification is lost. The trade is that the future
+type is unnameable through the trait, so a receive loop holds it as a local across an
+`.await`. `recv_bytes` in the transport is the worked example, and its ordering is
+load-bearing — create the wait future, poll it **once** through a `poll_fn` to register
+the waker, re-scan the slots, and only then park on it. Awaiting it directly registers and
+parks in one step, which reopens the lost-wakeup race the `RacyDoorbell` test covers (the
+fan-out `notify_waiters()` stores no permit).
 
-Each hardware doorbell depends on its related chip HAL (`consortium-hal-stm32mp2` or
-`consortium-hal-imx9`) and forwards its chip-selection feature to the HAL, so the shared
-PAC's register/interrupt definitions match the target. A doorbell dep that
-selects a non-default chip must set `default-features = false` so the HAL's default chip
-is not also pulled in (two chips = ambiguous PAC `Interrupt`).
-
-- `consortium-ipc-doorbell-hsem` targets STM32 HSEM. Chip features are `stm32mp23x` and
-  `stm32mp25x` (both map to the PAC's `stm32mp257`); default is `stm32mp25x`; `std`
-  enables Tokio support.
-- `consortium-ipc-transport-memory::bell::ipcc` targets STM32 IPCC. It is enabled by the
-  transport's `stm32mp21x`/`stm32mp23x`/`stm32mp25x` features, which pull in
-  `consortium-hal-stm32mp2` with `default-features = false`; `std` (the transport's
-  default) enables Tokio support. `ring` reports `BellError::Busy` while the previous
-  signal is unconsumed.
-- `consortium-ipc-transport-memory::bell::mu` targets NXP i.MX MU. It is enabled by the
-  transport's mutually exclusive `mimx93`/`mimx95` features, which pull in
-  `consortium-hal-imx9` with `default-features = false`. Channels `0..4` are GI lines and
-  `4..8` are RF lines (`MuLine`); neither reports `Busy` — a pending GI is idempotent and
-  an RF ring whose `TRn` is still full is skipped. `MuDoorbell::new` also opens the
-  window's i.MX 93 LPCG clock gate.
-- `consortium-ipc-doorbell-gpio` is a single-channel GPIO doorbell. The `no_std` path
-  uses a software pending flag and IRQ-side `wake`; the `std` path exposes a Tokio
-  `Notify` that external interrupt code must trigger.
-
-No hardware doorbell crate installs `#[interrupt]` handlers, and none exposes an `rt`
-feature. Each exposes one bare-metal service entry point instead, and every one of them
-derives its register window from the crate's own `registers::base` table, so no MMIO
-base ever appears in the caller: HSEM calls `hsem::notify()`, IPCC RX lines call
-`bell::service_interrupt::<bell::ipcc::Ipcc<S, N>>()` (the window is `BellHw::PHYS_BASE`),
-and MU lines call `bell::service_interrupt::<bell::mu::Mu<S, N>>()`. IPCC and MU are level-sensitive, so both mask every
-asserted line _before_ waking — an ISR that only woke would return with the line still
-asserted, re-enter, and starve the executor.
-
-`consortium-cfg` **generates** those vectors into `consortium.gen.rs`'s
-`__consortium_vectors` module from the manifest, alongside the time-driver and
-peripheral vectors, so firmware `main.rs` writes none of them (see the melt-pot
-examples). Enable the _HAL's_ `rt` feature (`consortium-hal-*/rt`) so the `#[interrupt]`
-macro and PAC vector table are available to that generated code. A core the chip PAC's
-shipped interrupt table does not describe (STM32MP2's CM0+) has no `Interrupt` variant to
-name and keeps writing its vectors by hand. The relevant vectors are HSEM (non-secure),
-IPCC1_RX/IPCC2_RX (non-secure), and the MU lines a core drives (i.MX93 CM33 `MU1_B`/`MU2_B`;
-i.MX95 CM7 `MU5_A`/`MU7_B`/`MU8_B`).
-
-The `std` doorbell paths are host-testable with fake MMIO and Tokio `Notify`. On `std`
-the wait path normally blocks on the doorbell's `Notify`: `wait()` enables the line's
-interrupt while pending and disarms/masks it on completion (for HSEM, enabling `CnIER` and
-acknowledging via `CnICR`/status), so userspace owns the mask and re-arming the UIO IRQ
-does not immediately re-fire a level-sensitive line. Runtime UIO integrations bind each
-doorbell to the Linux UIO IRQ fan-out before receiving — `bind_notifier` for a plain
-doorbell, or `bind_service` for a masking doorbell that must mask its lines before the
-wake.
+No doorbell installs `#[interrupt]` handlers, and none exposes an `rt` feature.
+`consortium-cfg` **generates** each Type-A vector into `consortium.gen.rs`'s
+`__consortium_vectors` module from the manifest, alongside the time-driver vector, as
+`bell::service_interrupt::<bell::<block>::<Block><S, N>>()` — the window is
+`BellHw::PHYS_BASE`, so no MMIO base appears in generated code — and binds the AP side
+with `uio.bind_service(move || db.service_interrupt())`. Enable the _HAL's_ `rt` feature
+(`consortium-hal-*/rt`) so the `#[interrupt]` macro and PAC vector table are available to
+that code. A core the chip PAC's shipped interrupt table does not describe (STM32MP2's
+CM0+) has no `Interrupt` variant to name and keeps writing its vectors by hand. The
+relevant vectors are HSEM and IPCC1_RX/IPCC2_RX (non-secure), and the MU lines a core
+drives (i.MX93 CM33 `MU1_B`/`MU2_B`; i.MX95 CM7 `MU5_A`/`MU7_B`/`MU8_B`).
 
 ## HAL and PAC
 
@@ -495,11 +443,11 @@ eDMA channels have no dump entry, so the generator synthesizes `<CONTROLLER>_CH<
 singletons from the layout table in `dma.rs`; STM32MP2 dumps list channels directly.
 Re-run the generator (not hand edits) after changing a chip dump.
 
-Doorbell crates depend on the chip HAL, so they bind the HAL's MU/HSEM/IPCC singletons
+The Type-A bells depend on the chip HAL, so they bind the HAL's MU/HSEM/IPCC singletons
 themselves. `<Doorbell>::new(p.MU7_MUB)` is the firmware path — a const assertion checks
 the singleton against the doorbell's `<Side, N>` type parameters, and the window address
-still comes from the doorbell crate's own `registers::base` table so its security alias
-does not change. Linux/UIO windows are `mmap`s with no singleton, so the AP side keeps
+still comes from the block's own `registers::base` table (`BellHw::PHYS_BASE`) so its
+security alias does not change. Linux/UIO windows are `mmap`s with no singleton, so the AP side keeps
 `unsafe fn new_mapped(base)`.
 
 Generated `init(Config)` calls `<hal>::init()` once and moves fields out of it: to the
@@ -652,8 +600,8 @@ opens the device, maps regions (`mmap` for register/doorbell windows, `mmap_zero
 zero-initialized data windows), and runs `irq::irq_loop`: wait for the fd to become
 readable, drain the 4-byte interrupt count, re-arm the interrupt with a 4-byte write, then
 fan the wakeup out to every registered doorbell service. Bind a doorbell with
-`bind_notifier(Arc<Notify>)` (a non-masking doorbell, wakeup is just `notify_waiters()`)
-or `bind_service(Arc<dyn Fn()>)` (a masking doorbell such as IPCC or MU registers a service
+`bind_notifier(Arc<Notify>)` (a non-masking doorbell such as GPIO, wakeup is just
+`notify_waiters()`) or `bind_service(Arc<dyn Fn()>)` (every Type-A bell registers a service
 that masks its asserted lines _before_ waking, so a level-sensitive line does not
 immediately re-fire the UIO IRQ when the loop re-arms).
 
