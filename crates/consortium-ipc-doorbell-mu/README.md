@@ -60,18 +60,21 @@ reach whichever half is waiting.
 
 ## Interrupts, and why MU needs masking
 
-**This crate installs no `#[interrupt]` handlers.** The application owns the vector
-table and forwards each MU vector a core drives into `notify::<N>()`, parameterized
-with that instance number. The relevant vectors are i.MX93 CM33 `MU1_B` / `MU2_B` and
-i.MX95 CM7 `MU5_A` / `MU7_B` / `MU8_B`. Enable the _HAL's_ `rt` feature
-(`consortium-hal-imx9/rt`) so the `#[interrupt]` macro and PAC vector table are
-available to that code.
+**This crate installs no `#[interrupt]` handlers.** Each MU vector a core drives is
+forwarded into `notify_gi_interrupt::<S, N>()`, parameterized with the register window
+and instance number; the window base comes from this crate's own `registers::base`
+table. The relevant vectors are i.MX93 CM33 `MU1_B` / `MU2_B` and i.MX95 CM7
+`MU5_A` / `MU7_B` / `MU8_B`. `consortium-cfg` generates these vectors into the endpoint's `consortium.gen.rs`
+(`__consortium_vectors`) from the manifest, so firmware `main.rs` normally writes none.
+Enable the _HAL's_ `rt` feature (`consortium-hal-imx9/rt`) so the `#[interrupt]`
+macro and PAC vector table are available to that code. The generated forwarder looks
+like:
 
 ```rust,ignore
-// Firmware
+// Firmware (generated)
 #[interrupt]
 fn MU7_B() {
-    consortium_ipc_doorbell_mu::notify::<7>();
+    consortium_ipc_doorbell_mu::notify_gi_interrupt::<consortium_ipc::Secondary, 7>();
 }
 ```
 

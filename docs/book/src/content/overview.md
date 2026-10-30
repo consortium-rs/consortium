@@ -31,11 +31,12 @@ Consortium.toml + shared types + endpoint crates
 ## What Consortium provides
 
 - **Typed IPC.** Allocation-free channels combine a transport, codec, direction, and
-  message type. Shared-memory and UART transports use the same core contracts.
+  message type. Shared-memory, UART, and FDCAN transports use the same core contracts.
 - **Cross-core configuration.** Chip databases validate memory placement, doorbell
   channels, visible cores, peripheral ownership, and generated Linux integration.
-- **Generated bring-up.** Linux and firmware entry macros receive a ready `Context`
-  instead of repeating transport, debug-ring, timer, and peripheral setup.
+- **Generated bring-up.** A generated `init(Config)` returns the endpoint's owned
+  `Peripherals` and `Channels`, replacing hand-written transport, debug-ring, timer,
+  interrupt-vector, and peripheral setup.
 - **Target integration.** The builder emits remoteproc-ready firmware, device-tree and
   kernel inputs, a systemd unit, and a BitBake-ready staging tree.
 - **Optional services.** OP-TEE contracts, shared-memory `defmt` logging, and Cog or

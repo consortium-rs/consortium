@@ -52,9 +52,13 @@ Before traffic begins, both processors run a readiness rendezvous through `Conne
 2. the secondary validates the magic, version, channel count, and MTU; and
 3. the secondary acknowledges the descriptor.
 
-Generated initialization performs this handshake once, before splitting the transport.
-`Connect` intentionally has no timeout; callers using the lower-level API own their
-deadline policy.
+Each endpoint performs this handshake once, when the application connects it
+(`Transceiver::connect(c.SENSOR).await?`), before the transport is split into its Tx and
+Rx halves. `Connect` intentionally has no timeout; callers own their deadline policy.
+
+Sends are fire-and-forget. A channel declared with `config.ack = true` also offers
+`send_acked`, which resolves once the peer has drained that message's slot; it uses its
+own pair of doorbell lines, declared per party as `ack_chan`.
 
 A doorbell carries no payload. It publishes the fact that transport state changed and
 provides the ordering edge that makes earlier shared-memory writes visible to the peer.

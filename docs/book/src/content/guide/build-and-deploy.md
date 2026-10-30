@@ -16,18 +16,19 @@ Inside the Consortium workspace, the equivalent command is:
 cargo run -p csti -- build --linux ~/src/linux --manifest Consortium.toml --dist dist --release
 ```
 
-| Flag                        | Purpose                                                       |
-| --------------------------- | ------------------------------------------------------------- |
-| `--manifest <PATH>`         | Manifest to build; defaults to `Consortium.toml`              |
-| `--dist <DIR>`              | Local staging root; defaults to `dist`                        |
-| `--linux <DIR>`             | Required Linux checkout supplying BSP DTS and dt-bindings     |
-| `--release`                 | Build endpoint artifacts in release mode                      |
-| `--offline`                 | Run every cargo invocation with `--offline`                   |
-| `--skip-tee-sign`           | Stage an unsigned TA ELF when signing material is unavailable |
-| `--bitbake-files-dir <DIR>` | Copy the assembled tree into a recipe's `files/` directory    |
-| `--bitbake-recipe <PN>`     | Invoke a BitBake recipe; requires its build directory         |
-| `--bitbake-build-dir <DIR>` | Yocto build directory used for BitBake                        |
-| `--bitbake-dry-run`         | Resolve and report the BitBake command without running it     |
+| Flag                        | Purpose                                                                     |
+| --------------------------- | --------------------------------------------------------------------------- |
+| `--manifest <PATH>`         | Manifest to build; defaults to `Consortium.toml`                            |
+| `--dist <DIR>`              | Local staging root; defaults to `dist`                                      |
+| `--linux <DIR>`             | Required Linux checkout supplying BSP DTS and dt-bindings                   |
+| `--release`                 | Build endpoint artifacts in release mode                                    |
+| `--offline`                 | Run every cargo invocation with `--offline`                                 |
+| `--skip-tee-sign`           | Stage an unsigned TA ELF when signing material is unavailable               |
+| `--skip-remoteproc-check`   | Warn instead of failing when the kernel tree lacks a core's remoteproc node |
+| `--bitbake-files-dir <DIR>` | Copy the assembled tree into a recipe's `files/` directory                  |
+| `--bitbake-recipe <PN>`     | Invoke a BitBake recipe; requires its build directory                       |
+| `--bitbake-build-dir <DIR>` | Yocto build directory used for BitBake                                      |
+| `--bitbake-dry-run`         | Resolve and report the BitBake command without running it                   |
 
 ## Pipeline
 
@@ -46,6 +47,22 @@ boundaries:
 Linux remoteproc expects the firmware vector table as `.isr_vectors`, while
 `cortex-m-rt` emits `.vector_table`. The pipeline performs that rename and retains the
 original/debug artifact alongside the deployable ELF.
+
+## Type-checking without a build
+
+`csti check` is the pipeline's `cargo check`. It validates the manifest, writes each
+endpoint's `consortium.gen.rs` and `memory.x`, and runs `cargo check` per project with
+the same targets and injected environment as a build — no link, objcopy, signing, HMI
+build, `dist/`, or `dtc`:
+
+```bash
+csti check --manifest Consortium.toml
+```
+
+`--linux` is optional here; when given, the device tree is rendered and validated too.
+The trusted application is skipped rather than failing when `TA_DEV_KIT_DIR` is unset.
+An application that embeds a not-yet-built debug firmware ELF gets an empty stand-in
+until the next `csti build`.
 
 ## Offline builds
 
