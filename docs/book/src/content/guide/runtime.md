@@ -114,7 +114,7 @@ implies, each forwarding to the owning crate's service entry point:
 
 - HSEM: `consortium_ipc_doorbell_hsem::notify()`;
 - IPCC RX: `consortium_ipc_transport_memory::bell::service_interrupt::<bell::ipcc::Ipcc<S, N>>()`;
-- MU: `consortium_ipc_doorbell_mu::notify_gi_interrupt::<S, N>()`; and
+- MU: `consortium_ipc_transport_memory::bell::service_interrupt::<bell::mu::Mu<S, N>>()`; and
 - the time driver: the chip HAL's `timer_driver::on_timer_interrupt()` (TIM2 on
   STM32MP2, LPIT1 on i.MX9).
 

@@ -21,13 +21,15 @@ mod shared {
 
 ::consortium_ipc_transport_memory::channels!(SENSOR, LP);
 ::consortium_ipc_transport_memory::impl_channel!(
-    SENSOR, ::consortium_ipc::Secondary, ::consortium_ipc_doorbell_mu::MuDoorbell <
+    SENSOR, ::consortium_ipc::Secondary,
+    ::consortium_ipc_transport_memory::bell::mu::MuDoorbell <
     ::consortium_ipc::Secondary, 1usize >,
     ::consortium_shared_memory::regions::UncachedRegion, crate ::shared::MotionControl,
     crate ::shared::SensorData, ::consortium_codec::PostcardCodec, 1u8, 0u8, 128usize,
 );
 ::consortium_ipc_transport_memory::impl_channel!(
-    LP, ::consortium_ipc::Secondary, ::consortium_ipc_doorbell_mu::MuDoorbell <
+    LP, ::consortium_ipc::Secondary,
+    ::consortium_ipc_transport_memory::bell::mu::MuDoorbell <
     ::consortium_ipc::Secondary, 2usize >,
     ::consortium_shared_memory::regions::UncachedRegion, crate ::shared::PowerControl,
     crate ::shared::LowPowerData, ::consortium_codec::RkyvCodec < 128usize >, 5u8, 4u8,
@@ -54,7 +56,7 @@ fn __consortium_install_channels(
                 16384usize,
             )
         };
-        let doorbell = ::consortium_ipc_doorbell_mu::MuDoorbell::<
+        let doorbell = ::consortium_ipc_transport_memory::bell::mu::MuDoorbell::<
             ::consortium_ipc::Secondary,
             1usize,
         >::new(__db_mu1_mub);
@@ -82,7 +84,7 @@ fn __consortium_install_channels(
                 16384usize,
             )
         };
-        let doorbell = ::consortium_ipc_doorbell_mu::MuDoorbell::<
+        let doorbell = ::consortium_ipc_transport_memory::bell::mu::MuDoorbell::<
             ::consortium_ipc::Secondary,
             2usize,
         >::new(__db_mu2_mub);
@@ -120,9 +122,11 @@ mod __consortium_vectors {
     );
     #[::consortium_hal_imx9::interrupt]
     fn MU1_B() {
-        ::consortium_ipc_doorbell_mu::notify_gi_interrupt::<
-            ::consortium_ipc::Secondary,
-            1usize,
+        ::consortium_ipc_transport_memory::bell::service_interrupt::<
+            ::consortium_ipc_transport_memory::bell::mu::Mu<
+                ::consortium_ipc::Secondary,
+                1usize,
+            >,
         >();
     }
     const _: () = ::core::assert!(
@@ -131,9 +135,11 @@ mod __consortium_vectors {
     );
     #[::consortium_hal_imx9::interrupt]
     fn MU2_B() {
-        ::consortium_ipc_doorbell_mu::notify_gi_interrupt::<
-            ::consortium_ipc::Secondary,
-            2usize,
+        ::consortium_ipc_transport_memory::bell::service_interrupt::<
+            ::consortium_ipc_transport_memory::bell::mu::Mu<
+                ::consortium_ipc::Secondary,
+                2usize,
+            >,
         >();
     }
     const _: () = ::core::assert!(

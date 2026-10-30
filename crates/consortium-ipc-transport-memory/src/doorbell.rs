@@ -9,7 +9,7 @@ pub use consortium_ipc_doorbell_hsem as hsem;
 pub use crate::bell::ipcc;
 
 #[cfg(feature = "mimx9x")]
-pub use consortium_ipc_doorbell_mu as mu;
+pub use crate::bell::mu;
 
 pub trait SharedMemoryTransportDoorbell {
     fn is_hardware_peripheral() -> bool;
@@ -36,17 +36,5 @@ impl<H: crate::bell::BellHw> SharedMemoryTransportDoorbell for crate::bell::Bell
     }
     fn address() -> usize {
         H::PHYS_BASE
-    }
-}
-
-#[cfg(feature = "mimx9x")]
-impl<S: consortium_ipc::Side, const N: usize> SharedMemoryTransportDoorbell
-    for mu::MuDoorbell<S, N>
-{
-    fn is_hardware_peripheral() -> bool {
-        true
-    }
-    fn address() -> usize {
-        mu::registers::base::BASE[N - 1]
     }
 }

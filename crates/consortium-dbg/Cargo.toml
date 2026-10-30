@@ -18,7 +18,6 @@ arch-riscv    = ["dep:riscv"]
 decode        = ["dep:defmt-decoder", "dep:defmt-parser", "host"]
 default       = ["host", "logger"]
 doorbell-hsem = ["consortium-ipc-doorbell-hsem"]
-doorbell-mu   = ["consortium-ipc-doorbell-mu"]
 host          = ["consortium-log/tracing"]
 logger        = []
 panic-handler = ["logger"]
@@ -26,7 +25,6 @@ panic-handler = ["logger"]
 [dependencies]
 bitflags                     = "2.11.1"
 consortium-ipc-doorbell-hsem = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-hsem", version = "0.4.0" }
-consortium-ipc-doorbell-mu   = { default-features = false, optional = true, path = "../consortium-ipc-doorbell-mu", version = "0.4.0" }
 consortium-shared-memory     = { path = "../consortium-shared-memory", version = "0.4.0" }
 const-str                    = { default-features = false, version = "1.1.0" }
 cortex-m                     = { optional = true, version = "0.7" }

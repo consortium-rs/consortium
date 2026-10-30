@@ -405,8 +405,9 @@ mod tests {
 
         assert!(tokens.contains("fn MU7_B ()"));
         assert!(tokens.contains(
-            ":: consortium_ipc_doorbell_mu :: notify_gi_interrupt :: < :: consortium_ipc :: \
-             Secondary , 7usize > ()"
+            ":: consortium_ipc_transport_memory :: bell :: service_interrupt :: < :: \
+             consortium_ipc_transport_memory :: bell :: mu :: Mu < :: consortium_ipc :: \
+             Secondary , 7usize > > ()"
         ));
     }
 

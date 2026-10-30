@@ -666,7 +666,6 @@ dependencies = [
  "consortium-hal-stm32mp2",
  "consortium-ipc",
  "consortium-ipc-doorbell-hsem",
- "consortium-ipc-doorbell-mu",
  "consortium-ipc-transport-memory",
  "consortium-log",
  "consortium-runtime-app",
@@ -742,7 +741,6 @@ version = "0.4.0"
 dependencies = [
  "bitflags 2.13.1",
  "consortium-ipc-doorbell-hsem",
- "consortium-ipc-doorbell-mu",
  "consortium-log",
  "consortium-shared-memory",
  "const-str",
@@ -902,20 +900,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "consortium-ipc-doorbell-mu"
-version = "0.4.0"
-dependencies = [
- "atomic-waker",
- "bitfield 0.19.5",
- "consortium-hal-imx9",
- "consortium-ipc",
- "critical-section",
- "defmt",
- "thiserror 2.0.19",
- "tokio",
-]
-
-[[package]]
 name = "consortium-ipc-macros"
 version = "0.4.0"
 dependencies = [
@@ -964,10 +948,10 @@ dependencies = [
  "atomic-waker",
  "bitfield 0.19.5",
  "consortium-codec",
+ "consortium-hal-imx9",
  "consortium-hal-stm32mp2",
  "consortium-ipc",
  "consortium-ipc-doorbell-hsem",
- "consortium-ipc-doorbell-mu",
  "consortium-log",
  "consortium-shared-memory",
  "crc32fast",

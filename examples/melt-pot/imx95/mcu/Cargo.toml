@@ -40,9 +40,6 @@ consortium-codec = { default-features = false, features = [
   "postcard",
 ], path = "../../../../crates/consortium-codec", version = "0.4.0" }
 consortium-ipc = { default-features = false, path = "../../../../crates/consortium-ipc", version = "0.4.0" }
-consortium-ipc-doorbell-mu = { default-features = false, features = [
-  "mimx95",
-], path = "../../../../crates/consortium-ipc-doorbell-mu", version = "0.4.0" }
 consortium-ipc-transport-memory = { default-features = false, features = [
   "defmt",
   "mimx95",

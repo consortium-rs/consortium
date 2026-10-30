@@ -9,8 +9,8 @@ free is the integrator's here.
 ## When to reach for this
 
 GPIO is the fallback, not the default. Prefer a real IPC peripheral —
-IPCC (`consortium-ipc-transport-memory::bell::ipcc`) on STM32MP2,
-[`consortium-ipc-doorbell-mu`](../consortium-ipc-doorbell-mu) on i.MX 9 — whenever
+IPCC (`consortium-ipc-transport-memory::bell::ipcc`) on STM32MP2, MU
+(`bell::mu`) on i.MX 9 — whenever
 the two cores share one.
 
 GPIO earns its place when they do not:

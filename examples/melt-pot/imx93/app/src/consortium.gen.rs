@@ -1,10 +1,10 @@
 ::consortium_ipc_transport_memory::channels!(SENSOR);
 ::consortium_ipc_transport_memory::impl_channel!(
-    SENSOR, ::consortium_ipc::Primary, ::consortium_ipc_doorbell_mu::MuDoorbell <
-    ::consortium_ipc::Primary, 1usize >,
-    ::consortium_shared_memory::regions::UncachedRegion, ::melt_pot_shared::Command,
-    ::melt_pot_shared::SensorReading, ::consortium_codec::PostcardCodec, 6u8, 7u8,
-    128usize,
+    SENSOR, ::consortium_ipc::Primary,
+    ::consortium_ipc_transport_memory::bell::mu::MuDoorbell < ::consortium_ipc::Primary,
+    1usize >, ::consortium_shared_memory::regions::UncachedRegion,
+    ::melt_pot_shared::Command, ::melt_pot_shared::SensorReading,
+    ::consortium_codec::PostcardCodec, 6u8, 7u8, 128usize,
 );
 fn __consortium_install_channels(
     uio: &[::std::sync::Arc<::consortium_runtime_app::uio::UioDevice>],
@@ -20,7 +20,7 @@ fn __consortium_install_channels(
         // SAFETY: the base is the UIO-mapped doorbell register window,
         // resolved from the validated Consortium hardware database.
         let doorbell = unsafe {
-            ::consortium_ipc_doorbell_mu::MuDoorbell::<
+            ::consortium_ipc_transport_memory::bell::mu::MuDoorbell::<
                 ::consortium_ipc::Primary,
                 1usize,
             >::new_mapped(uio[2usize].mmap(0usize)?)
@@ -28,7 +28,7 @@ fn __consortium_install_channels(
         let __service_db = doorbell.clone();
         uio[2usize]
             .bind_service(
-                ::std::sync::Arc::new(move || __service_db.notify_gi_interrupt()),
+                ::std::sync::Arc::new(move || __service_db.service_interrupt()),
             );
         // SAFETY: doorbell channel is verified to be valid in the config.
         let chan_tx = unsafe { ::consortium_ipc::Chan::new_unchecked(6u8) };
