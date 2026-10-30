@@ -14,31 +14,40 @@ fn configure(slot: u32, config: DeviceConfig) -> u32 {
 }
 #[cfg(feature = "ta")]
 fn configure_dispatched(
-    params: &mut ::optee_utee::deprecated::Parameters,
+    params: &mut ::optee_utee::ParametersAny<'_>,
 ) -> ::optee_utee::Result<()> {
-    let mut __p_0 = unsafe { params.0.as_value()? };
+    let (__p_0, __p_1, __p_2, __p_3) = params;
+    let __h_0 = __p_0.as_value_input()?;
     let slot = <u32 as ::consortium_tee::TeeParam<
         TestCodec,
     >>::from_tee_param(::consortium_tee::TeeParamSlot::Primitive {
-            a: __p_0.a(),
-            b: __p_0.b(),
+            a: ::optee_utee::ParameterValueRead::get_a(__h_0),
+            b: ::optee_utee::ParameterValueRead::get_b(__h_0),
         })
         .map_err(|_| ::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters))?;
-    let mut __p_1 = unsafe { params.1.as_memref()? };
+    let __h_1 = __p_1.as_memref_input()?;
+    if ::optee_utee::ParameterMemref::buffer_len(__h_1)
+        > <DeviceConfig as ::consortium_tee::TeeParam<TestCodec>>::MAX_SIZE
+    {
+        return Err(::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters));
+    }
+    let __buf_1 = ::optee_utee::ParameterMemrefRead::read_to_vec(__h_1);
     let config = <DeviceConfig as ::consortium_tee::TeeParam<
         TestCodec,
-    >>::from_tee_param(::consortium_tee::TeeParamSlot::Serialized(__p_1.buffer()))
+    >>::from_tee_param(::consortium_tee::TeeParamSlot::Serialized(&__buf_1))
         .map_err(|_| ::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters))?;
+    let __out = __p_2.as_value_output()?;
+    __p_3.as_none()?;
     let __ret_val = configure(slot, config);
-    let mut __p_out = unsafe { params.2.as_value()? };
-    let __repr_out = <u32 as ::consortium_tee::TeeParam<
+    let ::consortium_tee::TeeParamSlot::Primitive { a: __out_a, b: __out_b } = <u32 as ::consortium_tee::TeeParam<
         TestCodec,
     >>::into_tee_param(&__ret_val)
-        .map_err(|_| ::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters))?;
-    let ::consortium_tee::TeeParamSlot::Primitive { a: __pa_out, b: __pb_out } = __repr_out
-    else { unreachable!() };
-    __p_out.set_a(__pa_out);
-    __p_out.set_b(__pb_out);
+        .map_err(|_| ::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters))?
+    else {
+        return Err(::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters));
+    };
+    ::optee_utee::ParameterValueWrite::set_a(&mut *__out, __out_a);
+    ::optee_utee::ParameterValueWrite::set_b(&mut *__out, __out_b);
     Ok(())
 }
 #[cfg(feature = "ca")]
@@ -47,21 +56,22 @@ pub fn call_configure(
     slot: u32,
     config: DeviceConfig,
 ) -> ::consortium_tee::TeeResult<u32> {
-    let __repr_0 = <u32 as ::consortium_tee::TeeParam<TestCodec>>::into_tee_param(&slot)
-        .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?;
-    let ::consortium_tee::TeeParamSlot::Primitive { a: __pa_0, b: __pb_0 } = __repr_0
-    else { unreachable!() };
+    let ::consortium_tee::TeeParamSlot::Primitive { a: __pa_0, b: __pb_0 } = <u32 as ::consortium_tee::TeeParam<
+        TestCodec,
+    >>::into_tee_param(&slot)
+        .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)? else {
+        return Err(::consortium_tee::TeeError::ParamMismatch);
+    };
     let _p0 = ::optee_teec::ParamValue::new(
         __pa_0,
         __pb_0,
         ::optee_teec::ParamType::ValueInput,
     );
-    let __repr_1 = <DeviceConfig as ::consortium_tee::TeeParam<
+    let ::consortium_tee::TeeParamSlot::Serialized(__bytes_1) = <DeviceConfig as ::consortium_tee::TeeParam<
         TestCodec,
     >>::into_tee_param(&config)
-        .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?;
-    let ::consortium_tee::TeeParamSlot::Serialized(ref __bytes_1) = __repr_1 else {
-        unreachable!()
+        .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)? else {
+        return Err(::consortium_tee::TeeError::ParamMismatch);
     };
     let _p1 = ::optee_teec::ParamTmpRef::new_input(__bytes_1.as_slice());
     let _p2 = ::optee_teec::ParamValue::new(0, 0, ::optee_teec::ParamType::ValueOutput);
@@ -73,14 +83,15 @@ pub fn call_configure(
         ::optee_teec::ParamNone,
     );
     session.invoke_command(Command::Configure as u32, &mut _operation)?;
-    Ok({
-        let __v = _operation.parameters().2;
-        <u32 as ::consortium_tee::TeeParam<
-            TestCodec,
-        >>::from_tee_param(::consortium_tee::TeeParamSlot::Primitive {
-                a: __v.a(),
-                b: __v.b(),
-            })
-            .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?
-    })
+    let __after = _operation.parameters();
+    let __out_a = __after.2.a();
+    let __out_b = __after.2.b();
+    let __ret_val = <u32 as ::consortium_tee::TeeParam<
+        TestCodec,
+    >>::from_tee_param(::consortium_tee::TeeParamSlot::Primitive {
+            a: __out_a,
+            b: __out_b,
+        })
+        .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?;
+    Ok(__ret_val)
 }

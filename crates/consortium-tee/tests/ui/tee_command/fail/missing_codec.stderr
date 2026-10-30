@@ -1,23 +1,23 @@
 error[E0277]: the trait bound `NoCodec: CodecFor<Config>` is not satisfied
-  --> tests/ui/tee_command/fail/missing_codec.rs:52:23
+  --> tests/ui/tee_command/fail/missing_codec.rs:18:23
    |
-52 | fn configure(_config: Config) -> optee_utee::Result<()> {
+18 | fn configure(_config: Config) -> optee_utee::Result<()> {
    |                       ^^^^^^ the trait `CodecFor<Config>` is not implemented for `NoCodec`
    |
 help: the trait `TeeParam<__TeeCodec>` is conditionally implemented for `Config`
-  --> tests/ui/tee_command/fail/missing_codec.rs:42:10
+  --> tests/ui/tee_command/fail/missing_codec.rs:8:10
    |
-42 | #[derive(TeeParam)]
+ 8 | #[derive(TeeParam)]
    |          ^^^^^^^^
    |          |
    |          unsatisfied requirement introduced here: `NoCodec: CodecFor<Config>`
    |          unsatisfied requirement introduced here: `for<'__buf> <NoCodec as CodecFor<Config>>::Decoded<'__buf> == Config`
 note: required for `Config` to implement `TeeParam`
-  --> tests/ui/tee_command/fail/missing_codec.rs:43:8
+  --> tests/ui/tee_command/fail/missing_codec.rs:9:8
    |
-42 | #[derive(TeeParam)]
+ 8 | #[derive(TeeParam)]
    |          -------- type parameter would need to implement `TeeParam`
-43 | struct Config {
+ 9 | struct Config {
    |        ^^^^^^
    = help: consider manually implementing `TeeParam` to avoid undesired bounds caused by "imperfect derives"
    = note: to learn more, visit <https://github.com/rust-lang/rust/issues/26925>

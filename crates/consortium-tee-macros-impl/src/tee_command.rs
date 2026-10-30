@@ -78,9 +78,12 @@ impl syn::parse::Parse for TeeArgs {
 
 /// Generates two companion functions for a TA command handler.
 ///
-/// **`function_name_dispatched`** (TA side, default, `#[cfg(feature = "ta")]`): unpacks `::optee_utee::deprecated::Parameters` via the
-/// `TeeParam` trait, calls the original function, and flushes any output or inout values
-/// back into their slots.
+/// **`function_name_dispatched`** (TA side, `#[cfg(feature = "ta")]`): takes the TA's
+/// `optee_utee::ParametersAny`, checks every slot's runtime type with the typed accessors
+/// (`as_value_input`, `as_memref_output`, ...; unused slots must be `None`), unpacks the
+/// arguments via the `TeeParam` trait, calls the original function, and writes any output
+/// or inout values back. All checks run before the call, so a mismatched layout returns
+/// `BadParameters` without running the handler. There is no `unsafe` in the expansion.
 ///
 /// **`call_function_name`** (CA side, `#[cfg(feature = "ca")]`): packs arguments via
 /// `TeeParam`, calls `invoke_command`, then reads output slots back.
@@ -107,13 +110,20 @@ impl syn::parse::Parse for TeeArgs {
 ///
 /// | Rust type            | TEE slot       | Notes                                          |
 /// |----------------------|----------------|------------------------------------------------|
-/// | `&[u8]`              | `MemrefInput`  |                                                |
-/// | `&mut [u8]`          | `MemrefInout`  |                                                |
+/// | `&[u8]`              | `MemrefInput`  | TA receives a TA-owned copy                    |
+/// | `&mut [u8]`          | `MemrefInout`  | copied in, written back whole                  |
 /// | `&mut u32`           | `ValueInout`   | TA reads initial, writes result back           |
 /// | `&mut i32`           | `ValueInout`   | bit-cast through u32                           |
 /// | `&mut u64`           | `ValueInout`   | split across a(low)/b(high)                    |
 /// | `T: TeeParam<C>`     | Value/Memref   | dispatched via `T::into_tee_param` / `from`    |
-/// | `&mut T: TeeParam<C>`| `MemrefInout`  | inout codec round-trip                         |
+/// | `&mut T: TeeParam<C>`| `MemrefInout`  | length-framed codec round-trip                 |
+///
+/// Memref contents are copied, never borrowed from shared memory, so the Normal World
+/// cannot change them after the TA has looked. A serialized input larger than its
+/// `TeeParam::MAX_SIZE` is rejected before it is copied. A `&mut T` slot carries a
+/// 4-byte length header ahead of the payload (see `consortium_tee::inout`), because an
+/// in/out buffer is sized for the worst case and its size field cannot say how much
+/// of it the CA's encoding filled.
 ///
 /// `ctx` marks the first parameter as TA context. The parameter must be a mutable
 /// reference to a named path type and is skipped when assigning TEE slots. `ctx = name`
@@ -169,7 +179,8 @@ pub fn tee_command(attr: TokenStream2, item: TokenStream2) -> TokenStream2 {
     let has_output = output_ty.is_some();
     let ret_is_result = is_result_returning(&input.sig.output);
 
-    // TA side: unpack stmts
+    // TA side. Every slot is checked before the handler runs, so a CA that sends a
+    // different layout gets `BadParameters` without any handler side effect.
     let mut slot_index = 0usize;
     let mut unpack_stmts = vec![];
     let mut post_call_stmts = vec![];
@@ -191,77 +202,60 @@ pub fn tee_command(attr: TokenStream2, item: TokenStream2) -> TokenStream2 {
         slot_index = next;
     }
 
-    // Output slot index (immediately after the last input slot).
-    let output_slot = slot_index;
+    // Output slot (immediately after the last input slot). Its accessor is taken up
+    // front with the inputs; only the write happens after the call.
+    let output_write = if let Some(out_ty) = output_ty {
+        let (acquire, write) = gen_output_ta(slot_index, out_ty, &codec_ty);
+        unpack_stmts.push(acquire);
+        slot_index += 1;
+        write
+    } else {
+        quote! {}
+    };
 
-    // TA side: call + optional flush
-    let call_and_flush = if let Some(out_ty) = output_ty {
-        let flush = gen_flush_ta(output_slot, out_ty, &codec_ty);
-        if ret_is_result {
-            quote! {
-                let __ret_val = #fn_name(#(#dispatch_call_args),*)?;
-                #(#post_call_stmts)*
-                #flush
-                Ok(())
-            }
-        } else {
-            quote! {
-                let __ret_val = #fn_name(#(#dispatch_call_args),*);
-                #(#post_call_stmts)*
-                #flush
-                Ok(())
-            }
-        }
-    } else if !post_call_stmts.is_empty() {
-        if ret_is_result {
-            quote! {
-                #fn_name(#(#dispatch_call_args),*)?;
-                #(#post_call_stmts)*
-                Ok(())
-            }
-        } else {
-            quote! {
-                #fn_name(#(#dispatch_call_args),*);
-                #(#post_call_stmts)*
-                Ok(())
-            }
-        }
+    // Slots the command does not use must arrive as `None`.
+    for slot in slot_index..4 {
+        let p = slot_ident(slot);
+        unpack_stmts.push(quote! { #p.as_none()?; });
+    }
+
+    let call = if ret_is_result {
+        quote! { #fn_name(#(#dispatch_call_args),*)? }
     } else {
         quote! { #fn_name(#(#dispatch_call_args),*) }
     };
-
-    let param_binding = if !tee_params.is_empty() || has_output {
-        quote! { params }
+    let call_stmt = if has_output {
+        quote! { let __ret_val = #call; }
     } else {
-        quote! { _params }
+        quote! { #call; }
     };
 
     // TA dispatched fn (only compiled when the "ta" feature is active).
     // Without this gate a CA-only consumer would pull in ::optee_utee even though
     // it only needs the generated `call_*` functions on the CA side.
-    let dispatched_fn = if let Some(ctx) = ctx_param {
+    let ctx_arg = ctx_param.map(|ctx| {
         let ctx_pat = &ctx.pat;
         let ctx_ty = &ctx.ty;
-        quote! {
-            #[cfg(feature = "ta")]
-            fn #dispatched_name(#ctx_pat: #ctx_ty, #param_binding: &mut ::optee_utee::deprecated::Parameters) -> ::optee_utee::Result<()> {
-                #(#unpack_stmts)*
-                #call_and_flush
-            }
-        }
-    } else {
-        quote! {
-            #[cfg(feature = "ta")]
-            fn #dispatched_name(#param_binding: &mut ::optee_utee::deprecated::Parameters) -> ::optee_utee::Result<()> {
-                #(#unpack_stmts)*
-                #call_and_flush
-            }
+        quote! { #ctx_pat: #ctx_ty, }
+    });
+    let dispatched_fn = quote! {
+        #[cfg(feature = "ta")]
+        fn #dispatched_name(#ctx_arg params: &mut ::optee_utee::ParametersAny<'_>) -> ::optee_utee::Result<()> {
+            let (__p_0, __p_1, __p_2, __p_3) = params;
+            #(#unpack_stmts)*
+            #call_stmt
+            #(#post_call_stmts)*
+            #output_write
+            Ok(())
         }
     };
 
-    // CA side: pack stmts
+    // CA side. Read-back happens in two phases: `capture` copies sizes and values out
+    // of the finished operation, which ends its borrow of the slot buffers, and only
+    // then does `decode` read those buffers.
     let mut pack_stmts = vec![];
-    let mut post_invoke_stmts = vec![];
+    let mut capture_stmts = vec![];
+    let mut decode_stmts = vec![];
     let mut ca_sig_args = vec![];
     let mut new_params_args = vec![];
 
@@ -270,62 +264,49 @@ pub fn tee_command(attr: TokenStream2, item: TokenStream2) -> TokenStream2 {
         let ty = &param.ty;
         let slot_ident = Ident::new(&format!("_p{}", i), Span::call_site());
         ca_sig_args.push(quote! { #pat: #ty });
-        let (pack, post) = gen_pack_ca(&slot_ident, pat, ty, i, &codec_ty);
+        let (pack, capture, decode) = gen_pack_ca(&slot_ident, pat, ty, i, &codec_ty);
         pack_stmts.push(pack);
-        if let Some(p) = post {
-            post_invoke_stmts.push(p);
-        }
+        capture_stmts.push(capture);
+        decode_stmts.push(decode);
         new_params_args.push(quote! { #slot_ident });
     }
 
-    if has_output {
-        let out_ty = output_ty.unwrap();
+    let (ret_ty, ret_value) = if let Some(out_ty) = output_ty {
         let out_slot = tee_params.len();
         let slot_ident = Ident::new(&format!("_p{}", out_slot), Span::call_site());
         pack_stmts.push(gen_output_pack_ca(&slot_ident, out_ty, out_slot, &codec_ty));
         new_params_args.push(quote! { #slot_ident });
-    }
+        let (capture, value) = gen_output_read_ca(out_slot, out_ty, &codec_ty);
+        capture_stmts.push(capture);
+        decode_stmts.push(quote! { let __ret_val = #value; });
+        (quote! { #out_ty }, quote! { __ret_val })
+    } else {
+        (quote! { () }, quote! { () })
+    };
 
     while new_params_args.len() < 4 {
         new_params_args.push(quote! { ::optee_teec::ParamNone });
     }
 
+    let after = if capture_stmts.iter().any(|c| !c.is_empty()) {
+        quote! { let __after = _operation.parameters(); }
+    } else {
+        quote! {}
+    };
+
     let command_variant = Ident::new(&fn_name.to_string().to_pascal_case(), fn_name.span());
 
     // CA side function (only compiled when the "ca" feature is active).
-    let ca_fn = if has_output {
-        let out_ty = output_ty.unwrap();
-        let read_back = gen_output_read_ca(tee_params.len(), out_ty, &codec_ty);
-        quote! {
-            #[cfg(feature = "ca")]
-            pub fn #call_name(session: &mut ::optee_teec::Session, #(#ca_sig_args),*) -> ::consortium_tee::TeeResult<#out_ty> {
-                #(#pack_stmts)*
-                let mut _operation = ::optee_teec::Operation::new(0, #(#new_params_args),*);
-                session.invoke_command(Command::#command_variant as u32, &mut _operation)?;
-                #(#post_invoke_stmts)*
-                Ok(#read_back)
-            }
-        }
-    } else if !post_invoke_stmts.is_empty() {
-        quote! {
-            #[cfg(feature = "ca")]
-            pub fn #call_name(session: &mut ::optee_teec::Session, #(#ca_sig_args),*) -> ::consortium_tee::TeeResult<()> {
-                #(#pack_stmts)*
-                let mut _operation = ::optee_teec::Operation::new(0, #(#new_params_args),*);
-                session.invoke_command(Command::#command_variant as u32, &mut _operation)?;
-                #(#post_invoke_stmts)*
-                Ok(())
-            }
-        }
-    } else {
-        quote! {
-            #[cfg(feature = "ca")]
-            pub fn #call_name(session: &mut ::optee_teec::Session, #(#ca_sig_args),*) -> ::consortium_tee::TeeResult<()> {
-                #(#pack_stmts)*
-                let mut _operation = ::optee_teec::Operation::new(0, #(#new_params_args),*);
-                session.invoke_command(Command::#command_variant as u32, &mut _operation)?;
-                Ok(())
-            }
+    let ca_fn = quote! {
+        #[cfg(feature = "ca")]
+        pub fn #call_name(session: &mut ::optee_teec::Session, #(#ca_sig_args),*) -> ::consortium_tee::TeeResult<#ret_ty> {
+            #(#pack_stmts)*
+            let mut _operation = ::optee_teec::Operation::new(0, #(#new_params_args),*);
+            session.invoke_command(Command::#command_variant as u32, &mut _operation)?;
+            #after
+            #(#capture_stmts)*
+            #(#decode_stmts)*
+            Ok(#ret_value)
         }
     };
 
@@ -420,7 +401,33 @@ fn gen_deprecated_ctx_value_warning(index: usize) -> TokenStream2 {
     }
 }
 
+// ── Shared helpers ───────────────────────────────────────────────────────────
+
+/// The TA-side binding for slot `slot`, a `&mut optee_utee::ParameterAny`.
+fn slot_ident(slot: usize) -> Ident {
+    Ident::new(&format!("__p_{}", slot), Span::call_site())
+}
+
+/// Types that travel in a Value slot rather than a Memref.
+fn is_value_slot(ty: &syn::Type) -> bool {
+    ["u8", "u16", "u32", "u64", "i8", "i16", "i32", "i64", "bool"]
+        .iter()
+        .any(|name| is_primitive(ty, name))
+        || is_tuple_u32_u32(ty)
+}
+
+fn bad_parameters() -> TokenStream2 {
+    quote! { ::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters) }
+}
+
 // ── TA-side unpack / flush code generation ───────────────────────────────────
+//
+// Every accessor below is a safe, type-checked call on `optee_utee::ParameterAny`
+// (`as_value_input`, `as_memref_output`, ...) that returns `BadParameters` when the
+// slot's runtime type differs. Memref contents are only ever *copied* in and out
+// (`read_to_vec`, `set_output`, `write_at`), never borrowed, so the Normal World cannot
+// change bytes between the TA's validation and its use of them. Trait methods are
+// called by path so the TA crate does not have to import `optee_utee::prelude`.
 
 /// Returns `(unpack_stmt, optional_post_call_flush, next_slot_index)`.
 fn gen_unpack(
@@ -436,142 +443,137 @@ fn gen_unpack(
             slot,
         );
     }
-    let idx = syn::Index::from(slot);
-    let tmp = Ident::new(&format!("__p_{}", slot), Span::call_site());
+    let p = slot_ident(slot);
+    let bad = bad_parameters();
+    let handle = Ident::new(&format!("__h_{}", slot), Span::call_site());
+    let buf = Ident::new(&format!("__buf_{}", slot), Span::call_site());
+    let val = Ident::new(&format!("__val_{}", slot), Span::call_site());
 
-    // Priority 1: &[u8]
+    // Priority 1: &[u8] (MemrefInput), handed to the handler as a TA-owned copy.
     if is_slice_ref(ty, false) {
         let stmt = quote! {
-            // SAFETY: slot #idx is MemrefInput - type match guaranteed by #[tee_command]
-            let mut #tmp = unsafe { params.#idx.as_memref()? };
-            let #pat: &[u8] = #tmp.buffer();
+            let #buf = ::optee_utee::ParameterMemrefRead::read_to_vec(#p.as_memref_input()?);
+            let #pat: &[u8] = &#buf;
         };
         return (stmt, None, slot + 1);
     }
 
-    // Priority 2: &mut [u8]
+    // Priority 2: &mut [u8] (MemrefInout), copied in, then written back whole.
     if is_slice_ref(ty, true) {
         let stmt = quote! {
-            // SAFETY: slot #idx is MemrefInout - type match guaranteed by #[tee_command]
-            let mut #tmp = unsafe { params.#idx.as_memref()? };
-            let #pat: &mut [u8] = #tmp.buffer();
+            let #handle = #p.as_memref_inout()?;
+            let mut #buf = ::optee_utee::ParameterMemrefRead::read_to_vec(&*#handle);
+            let #pat: &mut [u8] = &mut #buf;
         };
-        return (stmt, None, slot + 1);
+        let flush = quote! {
+            ::optee_utee::ParameterMemrefWrite::write_at(&mut *#handle, 0, &#buf)?;
+        };
+        return (stmt, Some(flush), slot + 1);
     }
 
     // Priority 3: &mut u32 / &mut i32 / &mut u64 (ValueInout)
     if let Some(scalar) = mut_scalar_inner(ty) {
-        let val_tmp = Ident::new(&format!("__val_{}", slot), Span::call_site());
-        let (unpack_stmt, flush_stmt) = match scalar {
-            "u32" => {
-                let u = quote! {
-                    // SAFETY: slot #idx is ValueInout - type match guaranteed by #[tee_command]
-                    let mut #tmp = unsafe { params.#idx.as_value()? };
-                    let mut #val_tmp: u32 = #tmp.a();
-                    let #pat: &mut u32 = &mut #val_tmp;
-                };
-                let f = quote! {
-                    // Flush &mut u32 back into ValueInout slot.
-                    #tmp.set_a(*#pat);
-                };
-                (u, f)
-            }
-            "i32" => {
-                let u = quote! {
-                    // SAFETY: slot #idx is ValueInout - type match guaranteed by #[tee_command]
-                    let mut #tmp = unsafe { params.#idx.as_value()? };
-                    let mut #val_tmp: i32 = #tmp.a() as i32;
-                    let #pat: &mut i32 = &mut #val_tmp;
-                };
-                let f = quote! {
-                    // Flush &mut i32 back into ValueInout slot (bit-cast).
-                    #tmp.set_a(*#pat as u32);
-                };
-                (u, f)
-            }
-            "u64" => {
-                let u = quote! {
-                    // SAFETY: slot #idx is ValueInout - type match guaranteed by #[tee_command]
-                    let mut #tmp = unsafe { params.#idx.as_value()? };
-                    let mut #val_tmp: u64 = (#tmp.b() as u64) << 32 | #tmp.a() as u64;
-                    let #pat: &mut u64 = &mut #val_tmp;
-                };
-                let f = quote! {
-                    // Flush &mut u64 back into ValueInout slot (split across a/b).
-                    #tmp.set_a(*#pat as u32);
-                    #tmp.set_b((*#pat >> 32) as u32);
-                };
-                (u, f)
-            }
+        let read_a = quote! { ::optee_utee::ParameterValueRead::get_a(&*#handle) };
+        let read_b = quote! { ::optee_utee::ParameterValueRead::get_b(&*#handle) };
+        let (init, flush) = match scalar {
+            "u32" => (
+                quote! { let mut #val: u32 = #read_a; },
+                quote! {
+                    // Flush &mut u32 back into the ValueInout slot.
+                    ::optee_utee::ParameterValueWrite::set_a(&mut *#handle, #val);
+                },
+            ),
+            "i32" => (
+                quote! { let mut #val: i32 = #read_a as i32; },
+                quote! {
+                    // Flush &mut i32 back into the ValueInout slot (bit-cast).
+                    ::optee_utee::ParameterValueWrite::set_a(&mut *#handle, #val as u32);
+                },
+            ),
+            "u64" => (
+                quote! { let mut #val: u64 = (#read_b as u64) << 32 | #read_a as u64; },
+                quote! {
+                    // Flush &mut u64 back into the ValueInout slot (split across a/b).
+                    ::optee_utee::ParameterValueWrite::set_a(&mut *#handle, #val as u32);
+                    ::optee_utee::ParameterValueWrite::set_b(&mut *#handle, (#val >> 32) as u32);
+                },
+            ),
             _ => unreachable!(),
         };
-        return (unpack_stmt, Some(flush_stmt), slot + 1);
+        let unpack = quote! {
+            let #handle = #p.as_value_inout()?;
+            #init
+            let #pat = &mut #val;
+        };
+        return (unpack, Some(flush), slot + 1);
     }
 
-    // Priority 4: &mut T: TeeParam  (MemrefInout, round-trip via TeeParam<C>)
+    // Priority 4: &mut T: TeeParam (MemrefInout, length-framed round-trip via TeeParam<C>)
     if is_mut_tee_param_ref(ty) {
         let inner_ty = if let syn::Type::Reference(r) = ty {
             r.elem.as_ref()
         } else {
             unreachable!()
         };
-        let val_tmp = Ident::new(&format!("__val_{}", slot), Span::call_site());
-        let repr_flush = Ident::new(&format!("__repr_flush_{}", slot), Span::call_site());
-        let flush_bytes = Ident::new(&format!("__flush_bytes_{}", slot), Span::call_site());
+        let param = quote! { <#inner_ty as ::consortium_tee::TeeParam<#codec>> };
+        let bytes = Ident::new(&format!("__bytes_{}", slot), Span::call_site());
+        let frame = Ident::new(&format!("__frame_{}", slot), Span::call_site());
         let unpack = quote! {
-            // SAFETY: slot #idx is MemrefInout - type match guaranteed by #[tee_command]
-            let mut #tmp = unsafe { params.#idx.as_memref()? };
-            let mut #val_tmp: #inner_ty =
-                <#inner_ty as ::consortium_tee::TeeParam<#codec>>::from_tee_param(
-                    ::consortium_tee::TeeParamSlot::Serialized(#tmp.buffer())
-                ).map_err(|_| ::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters))?;
-            let #pat: &mut #inner_ty = &mut #val_tmp;
+            let #handle = #p.as_memref_inout()?;
+            if ::optee_utee::ParameterMemref::buffer_len(&*#handle)
+                > ::consortium_tee::inout::capacity(#param::MAX_SIZE)
+            {
+                return Err(#bad);
+            }
+            let #buf = ::optee_utee::ParameterMemrefRead::read_to_vec(&*#handle);
+            let mut #val: #inner_ty = #param::from_tee_param(
+                ::consortium_tee::TeeParamSlot::Serialized(
+                    ::consortium_tee::inout::read(&#buf, #param::MAX_SIZE).map_err(|_| #bad)?
+                )
+            ).map_err(|_| #bad)?;
+            let #pat: &mut #inner_ty = &mut #val;
         };
         let flush = quote! {
-            // Re-serialize modified &mut T back into MemrefInout slot.
-            let #repr_flush =
-                <#inner_ty as ::consortium_tee::TeeParam<#codec>>::into_tee_param(&#val_tmp)
-                    .map_err(|_| ::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters))?;
-            let ::consortium_tee::TeeParamSlot::Serialized(ref #flush_bytes) = #repr_flush
-                else { unreachable!() };
-            #tmp.buffer()[..#flush_bytes.len()].copy_from_slice(#flush_bytes.as_slice());
+            // Re-serialize the modified &mut T and write it back framed.
+            let ::consortium_tee::TeeParamSlot::Serialized(#bytes) =
+                #param::into_tee_param(&#val).map_err(|_| #bad)?
+            else {
+                return Err(#bad);
+            };
+            let #frame = ::consortium_tee::inout::to_vec(&#bytes).map_err(|_| #bad)?;
+            ::optee_utee::ParameterMemrefWrite::set_output(&mut *#handle, &#frame)?;
         };
         return (unpack, Some(flush), slot + 1);
     }
 
-    // Priority 5: any remaining owned type (primitives, (u32,u32), Vec<u8>, T: TeeParam).
-    // The slot kind (Value vs Memref) is determined by whether the TeeParam impl returns
-    // Primitive or Serialized; we use the type name to pick the right `as_value` / `as_memref`.
-    let is_value_slot = is_primitive(ty, "u8")
-        || is_primitive(ty, "u16")
-        || is_primitive(ty, "u32")
-        || is_primitive(ty, "u64")
-        || is_primitive(ty, "i8")
-        || is_primitive(ty, "i16")
-        || is_primitive(ty, "i32")
-        || is_primitive(ty, "i64")
-        || is_primitive(ty, "bool")
-        || is_tuple_u32_u32(ty);
-
-    if is_value_slot {
+    // Priority 5: owned Value-slot types (primitives, (u32, u32)).
+    if is_value_slot(ty) {
         let stmt = quote! {
-            // SAFETY: slot #idx is ValueInput - type match guaranteed by #[tee_command]
-            let mut #tmp = unsafe { params.#idx.as_value()? };
+            let #handle = #p.as_value_input()?;
             let #pat = <#ty as ::consortium_tee::TeeParam<#codec>>::from_tee_param(
-                ::consortium_tee::TeeParamSlot::Primitive { a: #tmp.a(), b: #tmp.b() }
-            ).map_err(|_| ::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters))?;
+                ::consortium_tee::TeeParamSlot::Primitive {
+                    a: ::optee_utee::ParameterValueRead::get_a(#handle),
+                    b: ::optee_utee::ParameterValueRead::get_b(#handle),
+                }
+            ).map_err(|_| #bad)?;
         };
         return (stmt, None, slot + 1);
     }
 
-    // Vec<u8> and T: TeeParam — Memref slot.
+    // Priority 6: Vec<u8> and T: TeeParam (MemrefInput). `MAX_SIZE` bounds the copy, so
+    // a CA cannot make the TA allocate more than the type admits.
     if is_vec_u8(ty) || is_tee_param_path(ty) {
         let stmt = quote! {
-            // SAFETY: slot #idx is MemrefInput - type match guaranteed by #[tee_command]
-            let mut #tmp = unsafe { params.#idx.as_memref()? };
+            let #handle = #p.as_memref_input()?;
+            if ::optee_utee::ParameterMemref::buffer_len(#handle)
+                > <#ty as ::consortium_tee::TeeParam<#codec>>::MAX_SIZE
+            {
+                return Err(#bad);
+            }
+            let #buf = ::optee_utee::ParameterMemrefRead::read_to_vec(#handle);
             let #pat = <#ty as ::consortium_tee::TeeParam<#codec>>::from_tee_param(
-                ::consortium_tee::TeeParamSlot::Serialized(#tmp.buffer())
-            ).map_err(|_| ::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters))?;
+                ::consortium_tee::TeeParamSlot::Serialized(&#buf)
+            ).map_err(|_| #bad)?;
         };
         return (stmt, None, slot + 1);
     }
@@ -583,68 +585,82 @@ fn gen_unpack(
     )
 }
 
-/// Emits statements that write `__ret_val` into the output parameter slot at `slot`.
-fn gen_flush_ta(slot: usize, ty: &syn::Type, codec: &TokenStream2) -> TokenStream2 {
+/// Returns `(acquire, write)` for the return value's slot: `acquire` takes the typed
+/// output accessor before the handler runs, `write` stores `__ret_val` into it after.
+fn gen_output_ta(
+    slot: usize,
+    ty: &syn::Type,
+    codec: &TokenStream2,
+) -> (TokenStream2, TokenStream2) {
     if slot >= 4 {
-        return quote! { compile_error!("Too many parameters: no room for the output slot (TEE max 4)"); };
+        return (
+            quote! { compile_error!("Too many parameters: no room for the output slot (TEE max 4)"); },
+            quote! {},
+        );
     }
-    let idx = syn::Index::from(slot);
+    let p = slot_ident(slot);
+    let bad = bad_parameters();
 
-    let is_value_slot = is_primitive(ty, "u8")
-        || is_primitive(ty, "u16")
-        || is_primitive(ty, "u32")
-        || is_primitive(ty, "u64")
-        || is_primitive(ty, "i8")
-        || is_primitive(ty, "i16")
-        || is_primitive(ty, "i32")
-        || is_primitive(ty, "i64")
-        || is_primitive(ty, "bool")
-        || is_tuple_u32_u32(ty);
-
-    if is_value_slot {
-        return quote! {
-            // SAFETY: slot #idx is ValueOutput - type match guaranteed by #[tee_command]
-            let mut __p_out = unsafe { params.#idx.as_value()? };
-            let __repr_out = <#ty as ::consortium_tee::TeeParam<#codec>>::into_tee_param(&__ret_val)
-                .map_err(|_| ::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters))?;
-            let ::consortium_tee::TeeParamSlot::Primitive { a: __pa_out, b: __pb_out } = __repr_out
-                else { unreachable!() };
-            __p_out.set_a(__pa_out);
-            __p_out.set_b(__pb_out);
-        };
+    if is_value_slot(ty) {
+        return (
+            quote! { let __out = #p.as_value_output()?; },
+            quote! {
+                let ::consortium_tee::TeeParamSlot::Primitive { a: __out_a, b: __out_b } =
+                    <#ty as ::consortium_tee::TeeParam<#codec>>::into_tee_param(&__ret_val)
+                        .map_err(|_| #bad)?
+                else {
+                    return Err(#bad);
+                };
+                ::optee_utee::ParameterValueWrite::set_a(&mut *__out, __out_a);
+                ::optee_utee::ParameterValueWrite::set_b(&mut *__out, __out_b);
+            },
+        );
     }
 
-    // Vec<u8> and T: TeeParam — Memref slot.
+    // Vec<u8> and T: TeeParam — Memref slot. `set_output` copies the bytes, sets the size
+    // the CA reads back, and fails with `ShortBuffer` instead of overrunning.
     if is_vec_u8(ty) || is_tee_param_path(ty) {
-        return quote! {
-            // SAFETY: slot #idx is MemrefOutput - type match guaranteed by #[tee_command]
-            let mut __p_out = unsafe { params.#idx.as_memref()? };
-            let __repr_out = <#ty as ::consortium_tee::TeeParam<#codec>>::into_tee_param(&__ret_val)
-                .map_err(|_| ::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters))?;
-            let ::consortium_tee::TeeParamSlot::Serialized(ref __out_bytes) = __repr_out
-                else { unreachable!() };
-            __p_out.buffer()[..__out_bytes.len()].copy_from_slice(__out_bytes.as_slice());
-        };
+        return (
+            quote! { let __out = #p.as_memref_output()?; },
+            quote! {
+                let ::consortium_tee::TeeParamSlot::Serialized(__out_bytes) =
+                    <#ty as ::consortium_tee::TeeParam<#codec>>::into_tee_param(&__ret_val)
+                        .map_err(|_| #bad)?
+                else {
+                    return Err(#bad);
+                };
+                ::optee_utee::ParameterMemrefWrite::set_output(&mut *__out, &__out_bytes)?;
+            },
+        );
     }
 
-    quote! { compile_error!("Unsupported TEE return type"); }
+    (
+        quote! { compile_error!("Unsupported TEE return type"); },
+        quote! {},
+    )
 }
 
 // ── CA-side pack / read-back code generation ─────────────────────────────────
 
-/// Returns `(pack_stmt, optional_post_invoke_readback)`.
+/// Returns `(pack_stmt, capture_stmt, decode_stmt)`; the last two may be empty.
+///
+/// `capture` runs while `__after` (the operation's parameters) is live and copies out
+/// plain values; `decode` runs after it, once the slot buffers are free to borrow.
 fn gen_pack_ca(
     slot_ident: &Ident,
     pat: &syn::Pat,
     ty: &syn::Type,
     slot: usize,
     codec: &TokenStream2,
-) -> (TokenStream2, Option<TokenStream2>) {
+) -> (TokenStream2, TokenStream2, TokenStream2) {
+    let slot_idx = syn::Index::from(slot);
+
     // Priority 1: &[u8]
     if is_slice_ref(ty, false) {
         return (
             quote! { let #slot_ident = ::optee_teec::ParamTmpRef::new_input(#pat); },
-            None,
+            quote! {},
+            quote! {},
         );
     }
 
@@ -652,103 +668,98 @@ fn gen_pack_ca(
     if is_slice_ref(ty, true) {
         return (
             quote! { let #slot_ident = ::optee_teec::ParamTmpRef::new_inout(#pat); },
-            None,
+            quote! {},
+            quote! {},
         );
     }
 
     // Priority 3: &mut u32 / &mut i32 / &mut u64 (ValueInout)
     if let Some(scalar) = mut_scalar_inner(ty) {
-        let slot_idx = syn::Index::from(slot);
-        let (pack, read_back) = match scalar {
+        let (pack, capture) = match scalar {
             "u32" => (
                 quote! { let #slot_ident = ::optee_teec::ParamValue::new(*#pat, 0, ::optee_teec::ParamType::ValueInout); },
-                quote! { *#pat = _operation.parameters().#slot_idx.a(); },
+                quote! { *#pat = __after.#slot_idx.a(); },
             ),
             "i32" => (
                 quote! { let #slot_ident = ::optee_teec::ParamValue::new(*#pat as u32, 0, ::optee_teec::ParamType::ValueInout); },
-                quote! { *#pat = _operation.parameters().#slot_idx.a() as i32; },
+                quote! { *#pat = __after.#slot_idx.a() as i32; },
             ),
             "u64" => (
                 quote! { let #slot_ident = ::optee_teec::ParamValue::new(*#pat as u32, (*#pat >> 32) as u32, ::optee_teec::ParamType::ValueInout); },
                 quote! {
-                    *#pat = (_operation.parameters().#slot_idx.b() as u64) << 32
-                        | _operation.parameters().#slot_idx.a() as u64;
+                    *#pat = (__after.#slot_idx.b() as u64) << 32 | __after.#slot_idx.a() as u64;
                 },
             ),
             _ => unreachable!(),
         };
-        return (pack, Some(read_back));
+        return (pack, capture, quote! {});
     }
 
-    // Priority 4: &mut T: TeeParam  (MemrefInout)
+    // Priority 4: &mut T: TeeParam (MemrefInout, length-framed; see `consortium_tee::inout`)
     if is_mut_tee_param_ref(ty) {
         let inner_ty = if let syn::Type::Reference(r) = ty {
             r.elem.as_ref()
         } else {
             unreachable!()
         };
+        let param = quote! { <#inner_ty as ::consortium_tee::TeeParam<#codec>> };
         let buf_ident = Ident::new(&format!("__inout_buf_{}", slot), Span::call_site());
-        let repr_ident = Ident::new(&format!("__repr_inout_{}", slot), Span::call_site());
         let src_ident = Ident::new(&format!("__src_inout_{}", slot), Span::call_site());
-        let slot_idx = syn::Index::from(slot);
+        let size_ident = Ident::new(&format!("__inout_size_{}", slot), Span::call_site());
         let pack = quote! {
-            let mut #buf_ident = vec![0u8; <#inner_ty as ::consortium_tee::TeeParam<#codec>>::MAX_SIZE];
-            let #repr_ident = <#inner_ty as ::consortium_tee::TeeParam<#codec>>::into_tee_param(#pat)
+            let mut #buf_ident = vec![0u8; ::consortium_tee::inout::capacity(#param::MAX_SIZE)];
+            let ::consortium_tee::TeeParamSlot::Serialized(#src_ident) =
+                #param::into_tee_param(#pat).map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?
+            else {
+                return Err(::consortium_tee::TeeError::ParamMismatch);
+            };
+            ::consortium_tee::inout::write(&mut #buf_ident, &#src_ident)
                 .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?;
-            let ::consortium_tee::TeeParamSlot::Serialized(ref #src_ident) = #repr_ident
-                else { unreachable!() };
-            #buf_ident[..#src_ident.len()].copy_from_slice(#src_ident.as_slice());
             let #slot_ident = ::optee_teec::ParamTmpRef::new_inout(&mut #buf_ident);
         };
-        let read_back = quote! {
-            *#pat = {
-                let __updated_size = _operation.parameters().#slot_idx.updated_size();
-                <#inner_ty as ::consortium_tee::TeeParam<#codec>>::from_tee_param(
-                    ::consortium_tee::TeeParamSlot::Serialized(&#buf_ident[..__updated_size])
-                ).map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?
-            };
+        let capture = quote! { let #size_ident = __after.#slot_idx.updated_size(); };
+        let decode = quote! {
+            *#pat = #param::from_tee_param(
+                ::consortium_tee::TeeParamSlot::Serialized(
+                    ::consortium_tee::inout::read(
+                        &#buf_ident[..#size_ident.min(#buf_ident.len())],
+                        #param::MAX_SIZE,
+                    ).map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?
+                )
+            ).map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?;
         };
-        return (pack, Some(read_back));
+        return (pack, capture, decode);
     }
 
     // Priority 5: Value-slot owned types.
-    let is_value_slot = is_primitive(ty, "u8")
-        || is_primitive(ty, "u16")
-        || is_primitive(ty, "u32")
-        || is_primitive(ty, "u64")
-        || is_primitive(ty, "i8")
-        || is_primitive(ty, "i16")
-        || is_primitive(ty, "i32")
-        || is_primitive(ty, "i64")
-        || is_primitive(ty, "bool")
-        || is_tuple_u32_u32(ty);
-
-    if is_value_slot {
-        let repr_ident = Ident::new(&format!("__repr_{}", slot), Span::call_site());
+    if is_value_slot(ty) {
         let pa_ident = Ident::new(&format!("__pa_{}", slot), Span::call_site());
         let pb_ident = Ident::new(&format!("__pb_{}", slot), Span::call_site());
         let pack = quote! {
-            let #repr_ident = <#ty as ::consortium_tee::TeeParam<#codec>>::into_tee_param(&#pat)
-                .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?;
-            let ::consortium_tee::TeeParamSlot::Primitive { a: #pa_ident, b: #pb_ident } = #repr_ident
-                else { unreachable!() };
+            let ::consortium_tee::TeeParamSlot::Primitive { a: #pa_ident, b: #pb_ident } =
+                <#ty as ::consortium_tee::TeeParam<#codec>>::into_tee_param(&#pat)
+                    .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?
+            else {
+                return Err(::consortium_tee::TeeError::ParamMismatch);
+            };
             let #slot_ident = ::optee_teec::ParamValue::new(#pa_ident, #pb_ident, ::optee_teec::ParamType::ValueInput);
         };
-        return (pack, None);
+        return (pack, quote! {}, quote! {});
     }
 
     // Priority 6: Vec<u8> and T: TeeParam — Memref slot.
     if is_vec_u8(ty) || is_tee_param_path(ty) {
-        let repr_ident = Ident::new(&format!("__repr_{}", slot), Span::call_site());
         let bytes_ident = Ident::new(&format!("__bytes_{}", slot), Span::call_site());
         let pack = quote! {
-            let #repr_ident = <#ty as ::consortium_tee::TeeParam<#codec>>::into_tee_param(&#pat)
-                .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?;
-            let ::consortium_tee::TeeParamSlot::Serialized(ref #bytes_ident) = #repr_ident
-                else { unreachable!() };
+            let ::consortium_tee::TeeParamSlot::Serialized(#bytes_ident) =
+                <#ty as ::consortium_tee::TeeParam<#codec>>::into_tee_param(&#pat)
+                    .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?
+            else {
+                return Err(::consortium_tee::TeeError::ParamMismatch);
+            };
             let #slot_ident = ::optee_teec::ParamTmpRef::new_input(#bytes_ident.as_slice());
         };
-        return (pack, None);
+        return (pack, quote! {}, quote! {});
     }
 
     (
@@ -756,7 +767,8 @@ fn gen_pack_ca(
             let #slot_ident = ::optee_teec::ParamNone;
             compile_error!("Unsupported TEE parameter type");
         },
-        None,
+        quote! {},
+        quote! {},
     )
 }
 
@@ -767,18 +779,7 @@ fn gen_output_pack_ca(
     slot: usize,
     codec: &TokenStream2,
 ) -> TokenStream2 {
-    let is_value_slot = is_primitive(ty, "u8")
-        || is_primitive(ty, "u16")
-        || is_primitive(ty, "u32")
-        || is_primitive(ty, "u64")
-        || is_primitive(ty, "i8")
-        || is_primitive(ty, "i16")
-        || is_primitive(ty, "i32")
-        || is_primitive(ty, "i64")
-        || is_primitive(ty, "bool")
-        || is_tuple_u32_u32(ty);
-
-    if is_value_slot {
+    if is_value_slot(ty) {
         return quote! { let #slot_ident = ::optee_teec::ParamValue::new(0, 0, ::optee_teec::ParamType::ValueOutput); };
     }
 
@@ -793,46 +794,44 @@ fn gen_output_pack_ca(
     quote! { compile_error!("Unsupported TEE return type for output parameter"); }
 }
 
-/// Emits the expression that reads the return value back from `_operation` on the CA side.
-fn gen_output_read_ca(slot: usize, ty: &syn::Type, codec: &TokenStream2) -> TokenStream2 {
+/// Returns `(capture_stmt, value_expr)` reading the return value back on the CA side.
+fn gen_output_read_ca(
+    slot: usize,
+    ty: &syn::Type,
+    codec: &TokenStream2,
+) -> (TokenStream2, TokenStream2) {
     let slot_idx = syn::Index::from(slot);
     let buf_ident = Ident::new(&format!("__out_buf_{}", slot), Span::call_site());
 
-    let is_value_slot = is_primitive(ty, "u8")
-        || is_primitive(ty, "u16")
-        || is_primitive(ty, "u32")
-        || is_primitive(ty, "u64")
-        || is_primitive(ty, "i8")
-        || is_primitive(ty, "i16")
-        || is_primitive(ty, "i32")
-        || is_primitive(ty, "i64")
-        || is_primitive(ty, "bool")
-        || is_tuple_u32_u32(ty);
-
-    if is_value_slot {
-        return quote! {
-            {
-                let __v = _operation.parameters().#slot_idx;
+    if is_value_slot(ty) {
+        return (
+            quote! {
+                let __out_a = __after.#slot_idx.a();
+                let __out_b = __after.#slot_idx.b();
+            },
+            quote! {
                 <#ty as ::consortium_tee::TeeParam<#codec>>::from_tee_param(
-                    ::consortium_tee::TeeParamSlot::Primitive { a: __v.a(), b: __v.b() }
+                    ::consortium_tee::TeeParamSlot::Primitive { a: __out_a, b: __out_b }
                 ).map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?
-            }
-        };
+            },
+        );
     }
 
     if is_vec_u8(ty) || is_tee_param_path(ty) {
-        // `__out_buf_N` was declared by gen_output_pack_ca. After invoke_command the
-        // TA has written into it; the reconstructed parameter's updated_size() reflects
-        // how many bytes were actually written.
-        return quote! {
-            {
-                let __updated_size = _operation.parameters().#slot_idx.updated_size();
+        // `__out_buf_N` was declared by gen_output_pack_ca. The TA's `set_output` reported
+        // how many bytes it wrote; clamp in case a TA reports more than the buffer holds.
+        return (
+            quote! { let __out_size = __after.#slot_idx.updated_size(); },
+            quote! {
                 <#ty as ::consortium_tee::TeeParam<#codec>>::from_tee_param(
-                    ::consortium_tee::TeeParamSlot::Serialized(&#buf_ident[..__updated_size])
+                    ::consortium_tee::TeeParamSlot::Serialized(&#buf_ident[..__out_size.min(#buf_ident.len())])
                 ).map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?
-            }
-        };
+            },
+        );
     }
 
-    quote! { compile_error!("Unsupported TEE return type") }
+    (
+        quote! {},
+        quote! { compile_error!("Unsupported TEE return type") },
+    )
 }

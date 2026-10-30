@@ -14,22 +14,47 @@ fn adjust_config(config: &mut DeviceConfig) {
 }
 #[cfg(feature = "ta")]
 fn adjust_config_dispatched(
-    params: &mut ::optee_utee::deprecated::Parameters,
+    params: &mut ::optee_utee::ParametersAny<'_>,
 ) -> ::optee_utee::Result<()> {
-    let mut __p_0 = unsafe { params.0.as_memref()? };
+    let (__p_0, __p_1, __p_2, __p_3) = params;
+    let __h_0 = __p_0.as_memref_inout()?;
+    if ::optee_utee::ParameterMemref::buffer_len(&*__h_0)
+        > ::consortium_tee::inout::capacity(
+            <DeviceConfig as ::consortium_tee::TeeParam<TestCodec>>::MAX_SIZE,
+        )
+    {
+        return Err(::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters));
+    }
+    let __buf_0 = ::optee_utee::ParameterMemrefRead::read_to_vec(&*__h_0);
     let mut __val_0: DeviceConfig = <DeviceConfig as ::consortium_tee::TeeParam<
         TestCodec,
-    >>::from_tee_param(::consortium_tee::TeeParamSlot::Serialized(__p_0.buffer()))
+    >>::from_tee_param(
+            ::consortium_tee::TeeParamSlot::Serialized(
+                ::consortium_tee::inout::read(
+                        &__buf_0,
+                        <DeviceConfig as ::consortium_tee::TeeParam<TestCodec>>::MAX_SIZE,
+                    )
+                    .map_err(|_| ::optee_utee::Error::new(
+                        ::optee_utee::ErrorKind::BadParameters,
+                    ))?,
+            ),
+        )
         .map_err(|_| ::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters))?;
     let config: &mut DeviceConfig = &mut __val_0;
+    __p_1.as_none()?;
+    __p_2.as_none()?;
+    __p_3.as_none()?;
     adjust_config(config);
-    let __repr_flush_0 = <DeviceConfig as ::consortium_tee::TeeParam<
+    let ::consortium_tee::TeeParamSlot::Serialized(__bytes_0) = <DeviceConfig as ::consortium_tee::TeeParam<
         TestCodec,
     >>::into_tee_param(&__val_0)
+        .map_err(|_| ::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters))?
+    else {
+        return Err(::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters));
+    };
+    let __frame_0 = ::consortium_tee::inout::to_vec(&__bytes_0)
         .map_err(|_| ::optee_utee::Error::new(::optee_utee::ErrorKind::BadParameters))?;
-    let ::consortium_tee::TeeParamSlot::Serialized(ref __flush_bytes_0) = __repr_flush_0
-    else { unreachable!() };
-    __p_0.buffer()[..__flush_bytes_0.len()].copy_from_slice(__flush_bytes_0.as_slice());
+    ::optee_utee::ParameterMemrefWrite::set_output(&mut *__h_0, &__frame_0)?;
     Ok(())
 }
 #[cfg(feature = "ca")]
@@ -38,15 +63,17 @@ pub fn call_adjust_config(
     config: &mut DeviceConfig,
 ) -> ::consortium_tee::TeeResult<()> {
     let mut __inout_buf_0 = vec![
-        0u8; < DeviceConfig as ::consortium_tee::TeeParam < TestCodec >> ::MAX_SIZE
+        0u8; ::consortium_tee::inout::capacity(< DeviceConfig as
+        ::consortium_tee::TeeParam < TestCodec >> ::MAX_SIZE)
     ];
-    let __repr_inout_0 = <DeviceConfig as ::consortium_tee::TeeParam<
+    let ::consortium_tee::TeeParamSlot::Serialized(__src_inout_0) = <DeviceConfig as ::consortium_tee::TeeParam<
         TestCodec,
     >>::into_tee_param(config)
+        .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)? else {
+        return Err(::consortium_tee::TeeError::ParamMismatch);
+    };
+    ::consortium_tee::inout::write(&mut __inout_buf_0, &__src_inout_0)
         .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?;
-    let ::consortium_tee::TeeParamSlot::Serialized(ref __src_inout_0) = __repr_inout_0
-    else { unreachable!() };
-    __inout_buf_0[..__src_inout_0.len()].copy_from_slice(__src_inout_0.as_slice());
     let _p0 = ::optee_teec::ParamTmpRef::new_inout(&mut __inout_buf_0);
     let mut _operation = ::optee_teec::Operation::new(
         0,
@@ -56,16 +83,19 @@ pub fn call_adjust_config(
         ::optee_teec::ParamNone,
     );
     session.invoke_command(Command::AdjustConfig as u32, &mut _operation)?;
-    *config = {
-        let __updated_size = _operation.parameters().0.updated_size();
-        <DeviceConfig as ::consortium_tee::TeeParam<
-            TestCodec,
-        >>::from_tee_param(
-                ::consortium_tee::TeeParamSlot::Serialized(
-                    &__inout_buf_0[..__updated_size],
-                ),
-            )
-            .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?
-    };
+    let __after = _operation.parameters();
+    let __inout_size_0 = __after.0.updated_size();
+    *config = <DeviceConfig as ::consortium_tee::TeeParam<
+        TestCodec,
+    >>::from_tee_param(
+            ::consortium_tee::TeeParamSlot::Serialized(
+                ::consortium_tee::inout::read(
+                        &__inout_buf_0[..__inout_size_0.min(__inout_buf_0.len())],
+                        <DeviceConfig as ::consortium_tee::TeeParam<TestCodec>>::MAX_SIZE,
+                    )
+                    .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?,
+            ),
+        )
+        .map_err(|_| ::consortium_tee::TeeError::ParamMismatch)?;
     Ok(())
 }

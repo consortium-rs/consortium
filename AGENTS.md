@@ -682,8 +682,25 @@ map to memref slots and require a `CodecFor<T>` implementation. `#[derive(TeePar
 generates serialized support; `#[tee(max_size = N)]` overrides the default serialized
 buffer bound.
 
+The TA side targets `optee_utee` 0.10's **typed parameter API**, not the deprecated
+`optee_utee::deprecated::Parameters`. `tee_service!`'s `invoke_command` takes
+`&mut ParametersAny<'_>` (one entry point, a layout per command), so a TA's
+`#[ta_invoke_command]` hook takes that and `#[ta_open_session]` takes `ParametersNone`.
+Each generated dispatcher checks all four slots with the typed accessors — unused slots
+must be `None` — and takes its output accessor _before_ calling the handler, so a bad
+layout is `BadParameters` with no handler side effect. Memrefs are only copied
+(`read_to_vec`, `set_output`, `write_at`), never borrowed from Normal-World memory, and
+the expansion has no `unsafe`. Two wire details follow from GlobalPlatform's single
+Memref size field: outputs report their exact written length via `set_output`, and a
+serialized `&mut T` slot carries a 4-byte length frame (`consortium_tee::inout`) because
+its buffer is pre-sized to `MAX_SIZE`. A serialized input over `MAX_SIZE` is rejected
+before it is copied. `RkyvCodec` cannot reach a slot at all: the `TeeParam` derive needs
+an owned `Decoded<'buf> = Self`.
+
 When changing TEE macros, update trybuild coverage and insta snapshots in the macro
-implementation crate before relying on the proc-macro facade.
+implementation crate before relying on the proc-macro facade. `tests/tee_command_ta.rs`
+runs the TA expansion against `tests/support/optee_utee_mock.rs`, a host stand-in whose
+signatures follow the real typed API; keep the two in step when `optee_utee` changes.
 
 ## Debug Logging
 

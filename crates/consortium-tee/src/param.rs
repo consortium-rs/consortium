@@ -6,8 +6,10 @@
 //!
 //! [`TeeParamSlot`] is the wire shape, generic over its byte buffer so the same enum
 //! serves both directions: [`TeeParamRepr`] owns a `Vec<u8>` on the way out,
-//! [`TeeParamReprRef`] borrows a `&[u8]` on the way in. Nothing is copied to read an
-//! incoming Memref.
+//! [`TeeParamReprRef`] borrows a `&[u8]` on the way in, so decoding adds no copy of its
+//! own. On the TA side that borrow is of a TA-owned copy: `optee_utee`'s typed Memref
+//! accessors only copy out of shared memory, which the Normal World can still write
+//! while the TA runs, so validation and use see the same bytes.
 //!
 //! # Why the codec is a type parameter
 //!
