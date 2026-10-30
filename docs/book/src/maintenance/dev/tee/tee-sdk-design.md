@@ -244,15 +244,15 @@ Slot assignment is sequential by argument order, skipping the context. Both the 
 
 ### Input parameters
 
-| Rust type    | GP TEE slot    | TA unpacks via                                                                 | CA packs via                                |
-| ------------ | -------------- | ------------------------------------------------------------------------------ | ------------------------------------------- |
-| `bool`       | `VALUE_INPUT`  | `pN.as_value_input()?.get_a() != 0`                                            | `ParamValue::new(x as u32, 0, ValueInput)`  |
-| `u32`        | `VALUE_INPUT`  | `pN.as_value_input()?.get_a()`                                                 | `ParamValue::new(x, 0, ValueInput)`         |
-| `&mut u32`   | `VALUE_INOUT`  | `pN.as_value_inout()?`: `get_a()`, then `set_a()` after the call                | `ParamValue::new(*x, 0, ValueInout)`        |
-| `&[u8]`      | `MEMREF_INPUT` | `pN.as_memref_input()?.read_to_vec()`                                          | `ParamTmpRef::new_input(x)`                 |
-| `&mut [u8]`  | `MEMREF_INOUT` | `pN.as_memref_inout()?`: `read_to_vec()`, then `write_at(0, ..)`                | `ParamTmpRef::new_inout(x)`                 |
-| `T`          | `MEMREF_INPUT` | `pN.as_memref_input()?`: reject `buffer_len() > MAX_SIZE`, `read_to_vec()`, decode | `ParamTmpRef::new_input(&encoded)`      |
-| `&mut T`     | `MEMREF_INOUT` | as `T`, framed by a 4-byte length (`consortium_tee::inout`); `set_output` back | `new_inout` over a `capacity(MAX_SIZE)` frame |
+| Rust type   | GP TEE slot    | TA unpacks via                                                                     | CA packs via                                  |
+| ----------- | -------------- | ---------------------------------------------------------------------------------- | --------------------------------------------- |
+| `bool`      | `VALUE_INPUT`  | `pN.as_value_input()?.get_a() != 0`                                                | `ParamValue::new(x as u32, 0, ValueInput)`    |
+| `u32`       | `VALUE_INPUT`  | `pN.as_value_input()?.get_a()`                                                     | `ParamValue::new(x, 0, ValueInput)`           |
+| `&mut u32`  | `VALUE_INOUT`  | `pN.as_value_inout()?`: `get_a()`, then `set_a()` after the call                   | `ParamValue::new(*x, 0, ValueInout)`          |
+| `&[u8]`     | `MEMREF_INPUT` | `pN.as_memref_input()?.read_to_vec()`                                              | `ParamTmpRef::new_input(x)`                   |
+| `&mut [u8]` | `MEMREF_INOUT` | `pN.as_memref_inout()?`: `read_to_vec()`, then `write_at(0, ..)`                   | `ParamTmpRef::new_inout(x)`                   |
+| `T`         | `MEMREF_INPUT` | `pN.as_memref_input()?`: reject `buffer_len() > MAX_SIZE`, `read_to_vec()`, decode | `ParamTmpRef::new_input(&encoded)`            |
+| `&mut T`    | `MEMREF_INOUT` | as `T`, framed by a 4-byte length (`consortium_tee::inout`); `set_output` back     | `new_inout` over a `capacity(MAX_SIZE)` frame |
 
 ### Return value (output slot)
 
@@ -260,12 +260,12 @@ The output slot is always allocated as the last slot. A non-`()` return type tri
 
 The TA takes the output accessor before the call, so a wrong output slot type is rejected without running the handler.
 
-| Rust return type | GP TEE slot     | TA flushes via                                         | CA reads back via                                                    |
-| ---------------- | --------------- | ------------------------------------------------------ | -------------------------------------------------------------------- |
-| `u32`            | `VALUE_OUTPUT`  | `pN.as_value_output()?`: `set_a(v); set_b(0)`          | `_operation.parameters().N.a()`                                      |
-| `u64`            | `VALUE_OUTPUT`  | `set_a(v as u32); set_b((v >> 32) as u32)`             | `(b as u64) << 32 \| (a as u64)`                                     |
-| `bool`           | `VALUE_OUTPUT`  | `set_a(v as u32); set_b(0)`                            | `a != 0`                                                             |
-| `Vec<u8>` / `T`  | `MEMREF_OUTPUT` | `pN.as_memref_output()?.set_output(bytes)?`            | `ParamTmpRef::new_output(&mut buf)`; decode `buf[..updated_size()]` |
+| Rust return type | GP TEE slot     | TA flushes via                                | CA reads back via                                                   |
+| ---------------- | --------------- | --------------------------------------------- | ------------------------------------------------------------------- |
+| `u32`            | `VALUE_OUTPUT`  | `pN.as_value_output()?`: `set_a(v); set_b(0)` | `_operation.parameters().N.a()`                                     |
+| `u64`            | `VALUE_OUTPUT`  | `set_a(v as u32); set_b((v >> 32) as u32)`    | `(b as u64) << 32 \| (a as u64)`                                    |
+| `bool`           | `VALUE_OUTPUT`  | `set_a(v as u32); set_b(0)`                   | `a != 0`                                                            |
+| `Vec<u8>` / `T`  | `MEMREF_OUTPUT` | `pN.as_memref_output()?.set_output(bytes)?`   | `ParamTmpRef::new_output(&mut buf)`; decode `buf[..updated_size()]` |
 
 `set_output` reports the exact length written, which the CA decodes; an encoding larger than the CA's `MAX_SIZE` buffer fails with `ShortBuffer` instead of overrunning it.
 
