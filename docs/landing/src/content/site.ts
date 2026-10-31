@@ -35,6 +35,7 @@ export const site: Site = {
     eyebrow: 'Rust for HAMPU systems',
     title: 'One workspace for every component in your SoC.',
     lede: 'Consortium pairs a Linux-capable A-core with Cortex-M real-time cores, the heterogeneous and asymmetric multiprocessing (HAMPU) pattern behind SoCs such as i.MX 9 and STM32MP2, with typed IPC, explicit cross-core contracts, and code generated from one manifest.',
+    install: 'cargo install csti',
     primary: { label: 'Read the docs', href: docs },
     secondary: { label: 'View source', href: github },
     code: { title: 'mcu/src/main.rs · CM33', snippet: 'hero-mcu.rs', lang: 'rust' },
@@ -102,6 +103,10 @@ export const site: Site = {
       'Each channel then runs its own async `Transceiver::connect` handshake, so bring-up is one line per side with no `Primary`/`Secondary` branch.',
     ],
     commands: [
+      {
+        cmd: 'csti new my-soc --chip stm32mp257f',
+        desc: 'Scaffold a manifest plus app, firmware and shared crates; `-i` asks instead.',
+      },
       { cmd: 'csti check', desc: 'Validate the manifest and `cargo check` every endpoint.' },
       {
         cmd: 'csti build --linux <DIR>',

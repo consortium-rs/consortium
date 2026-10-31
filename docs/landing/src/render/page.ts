@@ -93,6 +93,7 @@ function hero(site: Site, load: SnippetLoader): string {
     <div class="eyebrow">${esc(h.eyebrow)}</div>
     <h1>${esc(h.title)}</h1>
     <p>${rich(h.lede)}</p>
+    <code class="cmd hero-install">${esc(h.install)}</code>
     <div class="hero-cta">
       ${link(h.primary, 'btn-primary')}
       ${link(h.secondary, 'btn-ghost')}

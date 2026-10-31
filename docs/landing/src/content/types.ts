@@ -158,6 +158,8 @@ export interface Site {
     title: string
     /** Rich text. */
     lede: string
+    /** Shell command shown above the call-to-action buttons. */
+    install: string
     primary: Link
     secondary: Link
     code: CodePanel

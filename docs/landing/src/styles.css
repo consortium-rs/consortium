@@ -198,7 +198,7 @@ nav.top {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
   gap: 64px;
-  align-items: center;
+  align-items: end;
 }
 .eyebrow {
   font-family: var(--mono);
@@ -223,6 +223,12 @@ h1 {
   margin: 0 0 36px;
   max-width: 46ch;
   text-wrap: pretty;
+}
+.hero-install {
+  display: block;
+  font-size: 15px;
+  padding: 10px 16px;
+  margin: -12px 0 24px;
 }
 .hero-cta {
   display: flex;
@@ -470,7 +476,6 @@ h2.sm {
   display: grid;
   grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
   gap: 64px;
-  align-items: start;
 }
 .manifest p {
   font-size: 16px;
@@ -509,8 +514,11 @@ h2.sm {
 }
 .panel.tabbed {
   background: var(--bg);
+  display: flex;
+  flex-direction: column;
 }
 .panel.tabbed [role='tabpanel'] {
+  flex: 1;
   min-height: 520px;
 }
 .tabs {
