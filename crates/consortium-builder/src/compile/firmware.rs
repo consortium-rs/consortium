@@ -109,11 +109,12 @@ async fn objcopy_firmware(
     src: &Path,
     dest: &Path,
     layout: Option<&RemoteprocMemoryLayout>,
+    strict: bool,
     reporter: Option<&dyn BuildReporter>,
 ) -> Result<(), FirmwareCompileError> {
     let vector_section = layout.map_or(".isr_vectors", |layout| layout.vector_section.as_str());
     if let Some(layout) = layout {
-        validate_firmware_elf(src, ".vector_table", layout).await?;
+        validate_firmware_elf(src, ".vector_table", layout, strict).await?;
     }
     let objcopy = resolve_objcopy();
     let mut cmd = Command::new(&objcopy);
@@ -134,7 +135,7 @@ async fn objcopy_firmware(
         )));
     }
     if let Some(layout) = layout {
-        validate_firmware_elf(dest, vector_section, layout).await?;
+        validate_firmware_elf(dest, vector_section, layout, strict).await?;
     }
     Ok(())
 }
@@ -143,6 +144,7 @@ async fn validate_firmware_elf(
     path: &Path,
     vector_section: &str,
     layout: &RemoteprocMemoryLayout,
+    strict: bool,
 ) -> Result<(), FirmwareCompileError> {
     let bytes = tokio::fs::read(path)
         .await
@@ -162,6 +164,16 @@ async fn validate_firmware_elf(
         )));
     }
     if section.address() != layout.vector.window.origin {
+        if !strict {
+            consortium_log::warn!(
+                "{} section '{}' starts at {:#x}, not vector origin {:#x}; continuing (--skip-remoteproc-check)",
+                path.display(),
+                vector_section,
+                section.address(),
+                layout.vector.window.origin
+            );
+            return Ok(());
+        }
         return Err(FirmwareCompileError::ElfLayout(format!(
             "{} section '{vector_section}' starts at {:#x}, expected vector origin {:#x}",
             path.display(),
@@ -233,6 +245,11 @@ pub struct FirmwareConfiguration {
     /// Resolved remoteproc linker/ELF/DTS contract. The pipeline always sets
     /// this; `None` retains the legacy `.isr_vectors` behavior for direct users.
     pub remoteproc: Option<RemoteprocMemoryLayout>,
+    /// Require the vector table to start at the remoteproc vector window's
+    /// origin. `csti build --skip-remoteproc-check` clears it: with `separate`
+    /// vector placement `cortex-m-rt` links `.vector_table` at `ORIGIN(FLASH)`,
+    /// so the check cannot pass there yet.
+    pub strict_remoteproc: bool,
     /// Build-host directories injected as `CSTI_*` env vars, and the workspace
     /// layout locating `target/`. `None` injects nothing and uses the crate's
     /// own `target/`.
@@ -269,7 +286,14 @@ impl FirmwareCompiler {
         // `<name>.elf`: the remoteproc-loadable image deployed to the target
         // (`.vector_table` → `.isr_vectors`, `.defmt` stripped).
         let deploy = deploy_elf_path(&elf);
-        objcopy_firmware(&elf, &deploy, config.remoteproc.as_ref(), reporter).await?;
+        objcopy_firmware(
+            &elf,
+            &deploy,
+            config.remoteproc.as_ref(),
+            config.strict_remoteproc,
+            reporter,
+        )
+        .await?;
 
         Ok(FirmwareArtifacts { original, deploy })
     }
@@ -365,6 +389,7 @@ impl FirmwareBuilder {
             release: self.release,
             offline: false,
             remoteproc: None,
+            strict_remoteproc: true,
             workspace: None,
         })
         .await
@@ -380,6 +405,7 @@ impl FirmwareBuilder {
             release: self.release,
             offline: false,
             remoteproc: None,
+            strict_remoteproc: true,
             workspace: None,
         })
         .await
