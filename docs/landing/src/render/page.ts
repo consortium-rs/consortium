@@ -6,7 +6,15 @@
  * Layout and markup live here; words live in `src/content/site.ts`.
  */
 
-import type { Accent, ArchNode, CodePanel, Link, SectionHead, Site } from '../content/types.ts'
+import type {
+  Accent,
+  ArchNode,
+  CodePanel,
+  Link,
+  SectionHead,
+  Site,
+  TargetStatus,
+} from '../content/types.ts'
 import { escapeHtml as esc, highlight } from './highlight.ts'
 
 export type SnippetLoader = (file: string) => string
@@ -240,6 +248,12 @@ function crates(site: Site): string {
 </section>`
 }
 
+const TARGET_TAGS: Record<TargetStatus, string> = {
+  verified: 'hardware',
+  compiles: '',
+  planned: 'will support',
+}
+
 function targets(site: Site): string {
   const t = site.targets
   const chips = t.chips
@@ -264,7 +278,7 @@ function targets(site: Site): string {
       (g) => `
       <div>
         <div class="target-col-head ${accentClass(g.accent)}">${esc(g.title)}</div>
-        <div class="target-list">${g.triples.map((x) => `<span>${esc(x)}</span>`).join('')}</div>
+        <div class="target-list">${g.targets.map((x) => `<span class="target-${x.status}">${esc(x.triple)}${TARGET_TAGS[x.status] ? `<em>${TARGET_TAGS[x.status]}</em>` : ''}</span>`).join('')}</div>
       </div>`,
     )
     .join('')
@@ -273,6 +287,7 @@ function targets(site: Site): string {
   <div class="wrap pad-lg">
     ${sectionHead(t, true)}
     <div class="chips-grid">${chips}</div>
+    ${sectionHead(t.arch, true)}
     <div class="targets-grid">${groups}</div>
   </div>
 </section>`
