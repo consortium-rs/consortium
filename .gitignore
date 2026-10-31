@@ -42,3 +42,6 @@ __pycache__/
 
 # Wrangler's local build/cache state for the docs and landing Pages projects.
 .wrangler/
+
+# Local scratch notes and debugging sources; kept out of history.
+/misc/
