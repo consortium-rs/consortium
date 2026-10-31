@@ -108,8 +108,9 @@ export interface Crate {
  * - `official`: supported and verified on hardware.
  * - `derived`: reuses another chip's support without formal verification.
  * - `in-progress`: support is still being brought up.
+ * - `planned`: on the roadmap; bring-up has not started.
  */
-export type Support = 'official' | 'derived' | 'in-progress'
+export type Support = 'official' | 'derived' | 'in-progress' | 'planned'
 
 export interface Chip {
   name: string
@@ -123,10 +124,22 @@ export interface Chip {
   note: string
 }
 
+/**
+ * - `verified`: runs on real hardware.
+ * - `compiles`: the code builds for it, but it has not run on hardware.
+ * - `planned`: not built yet; support is coming.
+ */
+export type TargetStatus = 'verified' | 'compiles' | 'planned'
+
+export interface Target {
+  triple: string
+  status: TargetStatus
+}
+
 export interface TargetGroup {
   title: string
   accent: Accent
-  triples: string[]
+  targets: Target[]
 }
 
 export interface Site {
@@ -154,7 +167,7 @@ export interface Site {
   transports: Transports
   logs: SectionHead & { code: CodePanel }
   crates: SectionHead & { items: Crate[] }
-  targets: SectionHead & { chips: Chip[]; groups: TargetGroup[] }
+  targets: SectionHead & { chips: Chip[]; arch: SectionHead; groups: TargetGroup[] }
   footer: {
     copyright: string
     links: Link[]

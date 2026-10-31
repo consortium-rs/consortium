@@ -32,9 +32,9 @@ export const site: Site = {
   ],
 
   hero: {
-    eyebrow: 'Rust · HAMPU systems',
-    title: 'One workspace for every core in your SoC.',
-    lede: 'Consortium pairs a Linux-capable A-core with Cortex-M or RISC-V real-time cores — the heterogeneous, asymmetric multiprocessing (HAMPU) pattern behind SoCs such as i.MX 9 and STM32MP2 — with typed IPC, explicit cross-core contracts, and code generated from one manifest.',
+    eyebrow: 'Rust for HAMPU systems',
+    title: 'One workspace for every component in your SoC.',
+    lede: 'Consortium pairs a Linux-capable A-core with Cortex-M real-time cores, the heterogeneous and asymmetric multiprocessing (HAMPU) pattern behind SoCs such as i.MX 9 and STM32MP2, with typed IPC, explicit cross-core contracts, and code generated from one manifest.',
     primary: { label: 'Read the docs', href: docs },
     secondary: { label: 'View source', href: github },
     code: { title: 'mcu/src/main.rs · CM33', snippet: 'hero-mcu.rs', lang: 'rust' },
@@ -43,7 +43,7 @@ export const site: Site = {
   architecture: {
     id: 'architecture',
     title: 'Explicit contracts across the core boundary',
-    lede: 'The Linux host sits at the center — talking down to the real-time controller, up into the secure world, left to the kiosk interface, and right into the broader ecosystem.',
+    lede: 'The Linux host sits at the center: talking down to the real-time controller, up into the secure world, left to the kiosk interface, and right into the broader ecosystem.',
     nodes: {
       secure: {
         tag: 'TrustZone',
@@ -98,7 +98,7 @@ export const site: Site = {
     id: 'manifest',
     title: 'One manifest drives the whole build.',
     body: [
-      '`csti` reads `Consortium.toml`, validates it against the embedded chip database, and generates a `consortium.gen.rs` for every endpoint — memory map, doorbell vectors, time driver, and a synchronous `init()` that hands back typed `Peripherals` and `Channels`.',
+      '`csti` reads `Consortium.toml`, validates it against the embedded chip database, and generates a `consortium.gen.rs` for every endpoint, including memory map, doorbell vectors, time driver, and a synchronous `init()` that hands back typed `Peripherals` and `Channels`.',
       'Each channel then runs its own async `Transceiver::connect` handshake, so bring-up is one line per side with no `Primary`/`Secondary` branch.',
     ],
     commands: [
@@ -242,16 +242,16 @@ export const site: Site = {
   targets: {
     id: 'targets',
     title: 'Supported chips & targets',
-    lede: 'STM32MP25 and i.MX 93 are officially supported and tested in hardware. STM32MP23 and STM32MP21 reuse the STM32MP25 support without formal verification, and i.MX 95 is still being brought up.',
+    lede: 'STM32MP25 and i.MX 93 are officially supported and tested in hardware. STM32MP23 and STM32MP21 reuse the STM32MP25 support without formal verification, i.MX 95 is still being brought up, and i.MX 94 is planned.',
     chips: [
       {
         name: 'STM32MP25',
         cores: 'A35 + M33 + M0+ · NPU/GPU',
         controller: 'Cortex-M33',
-        doorbells: 'IPCC · HSEM',
+        doorbells: 'IPCC',
         support: 'official',
         supportLabel: 'Verified',
-        note: 'SIL 3, TrustZone partition isolation.',
+        note: 'Advanced industrial HMI, AI and multimedia.',
       },
       {
         name: 'i.MX 93',
@@ -260,25 +260,25 @@ export const site: Site = {
         doorbells: 'MU',
         support: 'official',
         supportLabel: 'Verified',
-        note: 'Cost-balanced: home, wearables, IoT.',
+        note: 'Low-power intelligent edge devices.',
       },
       {
         name: 'STM32MP23',
         cores: 'A35 + M33',
         controller: 'Cortex-M33',
-        doorbells: 'IPCC · HSEM',
-        support: 'derived',
+        doorbells: 'IPCC',
+        support: 'official',
         supportLabel: 'Derived from MP25',
-        note: 'The MP25 die with a trimmed peripheral map.',
+        note: 'Mid-range HMI and lightweight edge AI.',
       },
       {
         name: 'STM32MP21',
         cores: 'A35 + M33',
         controller: 'Cortex-M33',
         doorbells: 'IPCC',
-        support: 'derived',
-        supportLabel: 'Derived from MP25',
-        note: 'No NPU/GPU — industrial and IoT baseline.',
+        support: 'in-progress',
+        supportLabel: 'In progress',
+        note: 'Cost-sensitive industrial control and gateways.',
       },
       {
         name: 'i.MX 95',
@@ -287,27 +287,47 @@ export const site: Site = {
         doorbells: 'MU',
         support: 'in-progress',
         supportLabel: 'In progress',
-        note: 'Flagship: AI, multimedia, real-time control.',
+        note: 'High-performance edge AI and multi-camera vision.',
+      },
+      {
+        name: 'i.MX 94',
+        cores: 'A55 + M7 + M33 · NPU',
+        controller: '2 Cortex-M7 & 1 Cortex-M33',
+        doorbells: 'MU',
+        support: 'planned',
+        supportLabel: 'Planned',
+        note: 'Industrial and automotive networking with TSN.',
       },
     ],
+    arch: {
+      title: 'Architecture targets',
+      lede: '`aarch64-unknown-linux-gnu` and `thumbv8m.main-none-eabihf` run on real hardware. The other listed targets compile the code, but have not run on a board yet. Dashed targets are not built yet; support is coming.',
+    },
     groups: [
       {
-        title: 'A-core · Linux',
+        title: 'A-core Linux',
         accent: 'accent',
-        triples: ['aarch64-unknown-linux-gnu', 'armv7-unknown-linux-gnueabihf'],
+        targets: [
+          { triple: 'aarch64-unknown-linux-gnu', status: 'verified' },
+          { triple: 'armv7-unknown-linux-gnueabihf', status: 'compiles' },
+        ],
       },
       {
-        title: 'M-core · bare metal',
+        title: 'M-core bare-metal',
         accent: 'accent2',
-        triples: ['thumbv8m.main-none-eabihf', 'thumbv7em-none-eabihf'],
+        targets: [
+          { triple: 'thumbv8m.main-none-eabihf', status: 'verified' },
+          { triple: 'thumbv7em-none-eabihf', status: 'compiles' },
+          { triple: 'thumbv6m-none-eabi', status: 'planned' },
+        ],
       },
       {
         title: 'RISC-V',
         accent: 'neutral',
-        triples: [
-          'riscv32imc-unknown-none-elf',
-          'riscv32imac-unknown-none-elf',
-          'riscv32imafc-unknown-none-elf',
+        targets: [
+          { triple: 'riscv32imc-unknown-none-elf', status: 'planned' },
+          { triple: 'riscv32imac-unknown-none-elf', status: 'planned' },
+          { triple: 'riscv32imafc-unknown-none-elf', status: 'planned' },
         ],
       },
     ],

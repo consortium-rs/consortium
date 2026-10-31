@@ -657,7 +657,7 @@ h2.sm {
 }
 .chips-grid {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
   margin-bottom: 48px;
 }
@@ -701,6 +701,13 @@ h2.sm {
 .pill-warn {
   color: var(--accent2);
   border-color: var(--accent2-soft);
+}
+.support-planned {
+  color: var(--text-muted);
+  border-style: dashed;
+}
+.support-planned-card {
+  border-style: dashed;
 }
 .support-official-card {
   border-color: color-mix(in oklab, var(--accent) 45%, var(--border));
@@ -769,6 +776,28 @@ h2.sm {
   border-radius: 8px;
   padding: 8px 12px;
   background: var(--bg);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+.target-list em {
+  font-style: normal;
+  font-size: 10px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.target-list .target-verified {
+  border-color: color-mix(in oklab, var(--accent) 45%, var(--border));
+}
+.target-verified em {
+  color: var(--accent);
+}
+.target-list .target-planned {
+  border-style: dashed;
+  background: transparent;
+  color: var(--text-muted);
 }
 
 /* Footer ────────────────────────────────────────────────────────────────── */
@@ -819,9 +848,6 @@ footer {
 @media (max-width: 1180px) {
   .nav-links {
     gap: 22px;
-  }
-  .chips-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
