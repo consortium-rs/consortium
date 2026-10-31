@@ -2,3 +2,4 @@
 # `src/consortium.gen.rs` modules are committed.
 **/target/
 **/dist/
+**/dist-bringup/

@@ -161,7 +161,7 @@ fn init(config: Config) -> (Peripherals, Channels) {
     }
     __consortium_install_channels(__p.IPCC1);
     let channels = Channels::take();
-    let peripherals = Peripherals { SPI1: __p.SPI1 };
+    let peripherals = Peripherals {};
     ::consortium_runtime_mcu::log::trace!("consortium controller init: resources ready");
     (peripherals, channels)
 }
@@ -186,9 +186,4 @@ for ConsortiumError {
 /// be moved into drivers independently.
 #[cfg(target_arch = "arm")]
 #[allow(non_snake_case)]
-pub struct Peripherals {
-    pub SPI1: ::consortium_hal_stm32mp2::Peri<
-        'static,
-        ::consortium_hal_stm32mp2::peripherals::SPI1,
-    >,
-}
+pub struct Peripherals {}

@@ -74,7 +74,10 @@ embassy-executor = { default-features = false, features = [
 embassy-time = { default-features = false, features = ["tick-hz-24_000_000"], version = "0.5.1" }
 
 [profile.dev]
-panic = "abort"
+# The CM33 runs from 128 KiB of TCM; an unoptimized build with the HIL
+# narration no longer fits. "s" keeps debug info and debug assertions.
+opt-level = "s"
+panic     = "abort"
 
 [profile.release]
 lto   = true

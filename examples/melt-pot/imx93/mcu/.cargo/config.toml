@@ -24,7 +24,11 @@ rustflags = [
 
 [env]
 # defmt's compile-time filter defaults to `error` when DEFMT_LOG is unset, which
-# would drop the `defmt::info!` sensor stream this firmware exists to emit. Match
-# the embassy examples and enable all levels; the CA55 decodes them from the CDBG
-# ring described by `[dbg.cm33]`.
-DEFMT_LOG = "trace"
+# would drop the `defmt::info!` sensor stream this firmware exists to emit; the
+# CA55 decodes it from the CDBG ring described by `[dbg.cm33]`.
+#
+# `trace` stays on for this crate (generated init, HIL stages), the IPC
+# transport and the runtime. Everything else, the HAL included, is `info`: the
+# time driver traces every timer interrupt, which floods the 8 KiB ring in
+# moments while nothing drains it before the AP application starts.
+DEFMT_LOG = "info,melt_pot_imx93_mcu=trace,consortium_ipc_transport_memory=trace,consortium_runtime_mcu=trace"

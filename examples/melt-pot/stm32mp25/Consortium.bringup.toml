@@ -1,0 +1,74 @@
+# SPDX-License-Identifier: Apache-2.0
+
+# Bring-up subset of `Consortium.toml`: only the A-core application, the M-core
+# Embassy firmware, the `[dbg]` defmt ring and the `sensor` IPC channel. No TA,
+# no HMI and no `[peripheral.*]` entries, so a HIL run exercises exactly IPC,
+# DBG and system bring-up. Build with `csti build --manifest Consortium.bringup.toml`.
+
+# melt-pot on STM32MP257: CA35 Linux application + CM33 real-time firmware.
+# The CM0+ low-power core is intentionally not used by this example.
+
+[profile]
+# The Rust compile targets are looked up from the embedded chip database for
+# this chip (CM33 firmware target and CA35 application target); they are not
+# listed here.
+chip = "stm32mp257fak3"
+# Development board whose device tree the Linux device tree is built on. Its full
+# file stem is matched against the vendor DTS database; omit it to build on the
+# generic `stm32mp257.dtsi` instead.
+devkit      = "stm32mp257f-dk"
+shared      = "../shared"
+deploy_root = "/opt/consortium"
+# sysroot     = "/workspace/stm32mp-yocto-bsp/build-openstlinuxweston-stm32mp2/tmp-glibc/sysroots"
+sysroot       = "/"
+kernel_recipe = "linux-stm32mp"
+# Each endpoint crate is its own Cargo project with its own `target/` (they are
+# excluded from the repository workspace), so the AP embeds the firmware's debug
+# ELF relative to `CSTI_MCU_PATH`. `unified` would instead expect every endpoint
+# in one Cargo workspace rooted beside this file and read `CSTI_MANIFEST_PATH`.
+workspace = "nested"
+
+# Device-tree generation. The selected board source and all of its includes are
+# read from the kernel checkout passed to `csti build --linux <DIR>`.
+[dts]
+mode = "merge" # or "overlay"
+
+# Optional per-field overrides inherit the recommended STM32MP25 CM33 DDR defaults.
+# [remoteproc.cm33]
+# vector = { origin = 0x80100000, length = 0x00001000 }
+# flash = { origin = 0x80101000, length = 0x007ff000, reserve = true }
+# shmem = { origin = 0x812f8000, length = 0x00008000, reserve = true }
+# ram   = { origin = 0x80a00000, length = 0x00100000, reserve = true }
+
+# The mandatory `SHMEM` window is the vendor map's former `VIRTIO_SHMEM` area.
+
+[endpoints]
+# Runtime endpoint name -> crate root. `cm33` is the single remote coprocessor.
+linux = "./app"
+cm33  = "./mcu"
+
+[dbg]
+# How the AP consumes the defmt rings: "auto" forwards decoded frames to
+# `tracing`; "interface" hands back reader handles.
+mode = "auto"
+
+# defmt ring for the CM33, in SRAM2 (see the stm32mp25 chip database), just
+# above the IPC region below.
+[dbg.cm33]
+memory = { base = 0x00062000, length = 0x2000 }
+mtu    = 64
+
+# One shared descriptor + slots for the sensor channel, signalled over IPCC1.
+# The region lives in SRAM2 (base 0x00060000 in the stm32mp25 chip database);
+# the CM33 reaches it through the raw physical base and the CA35 maps the same
+# memory through its UIO device.
+[[ipc.channel]]
+name          = "sensor"
+doorbell      = "ipcc1"
+pattern       = "memory"
+primary       = "linux"
+secondary     = "cm33"
+party.linux   = { chan = 0, type = "Command" }
+party.cm33    = { chan = 1, type = "SensorReading" }
+config.memory = { base = 0x00064000, length = 0x4000 }
+mtu           = 128

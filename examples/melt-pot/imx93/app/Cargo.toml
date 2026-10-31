@@ -34,9 +34,7 @@ path = "src/main.rs"
 
 [target.'cfg(target_os = "linux")'.dependencies]
 melt-pot-shared = { path = "../../shared", version = "0.4.0" }
-melt-pot-imx93-ta = { default-features = false, features = [
-  "ca",
-], path = "../ta", version = "0.4.0" }
+# melt-pot-imx93-ta = { default-features = false, features = ["ca"], path = "../ta" }
 
 # Named directly by the generated `consortium.gen.rs`.
 consortium-codec = { features = [
@@ -58,13 +56,13 @@ consortium-runtime-app = { features = [
 ], path = "../../../../crates/consortium-runtime-app", version = "0.4.0" }
 
 # Application runtime.
-consortium-tee = { default-features = false, features = [
-  "ca",
-], path = "../../../../crates/consortium-tee", version = "0.4.0" }
-consortium-hmi-webkit = { path = "../../../../crates/consortium-hmi-webkit", version = "0.4.0" }
+# consortium-tee = { default-features = false, features = [
+#   "ca",
+# ], path = "../../../../crates/consortium-tee" }
+# consortium-hmi-webkit = { path = "../../../../crates/consortium-hmi-webkit" }
 
-glib       = "0.22"
-optee-teec = "0.10.0"
+# glib       = "0.22"
+# optee-teec = "0.10.0"
 serde      = { features = ["derive"], version = "1" }
 serde_json = "1"
 tokio      = { features = ["macros", "rt-multi-thread", "sync"], version = "1" }
