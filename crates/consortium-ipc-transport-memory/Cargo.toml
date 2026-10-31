@@ -55,12 +55,12 @@ stm32mp25x = ["consortium-hal-stm32mp2/stm32mp25x", "dep:consortium-hal-stm32mp2
 [dependencies]
 atomic-waker             = "1.1.2"
 bitfield                 = "0.20"
-consortium-codec         = { default-features = false, path = "../consortium-codec", version = "0.4.0" }
-consortium-ipc           = { default-features = false, path = "../consortium-ipc", version = "0.4.0" }
-consortium-hal-stm32mp2  = { default-features = false, optional = true, path = "../consortium-hal-stm32mp2", version = "0.4.0" }
-consortium-hal-imx9      = { default-features = false, optional = true, path = "../consortium-hal-imx9", version = "0.4.0" }
-consortium-log           = { default-features = false, path = "../consortium-log", version = "0.4.0" }
-consortium-shared-memory = { path = "../consortium-shared-memory", version = "0.4.0" }
+consortium-codec         = { default-features = false, path = "../consortium-codec", version = "0.5.0" }
+consortium-ipc           = { default-features = false, path = "../consortium-ipc", version = "0.5.0" }
+consortium-hal-stm32mp2  = { default-features = false, optional = true, path = "../consortium-hal-stm32mp2", version = "0.5.0" }
+consortium-hal-imx9      = { default-features = false, optional = true, path = "../consortium-hal-imx9", version = "0.5.0" }
+consortium-log           = { default-features = false, path = "../consortium-log", version = "0.5.0" }
+consortium-shared-memory = { path = "../consortium-shared-memory", version = "0.5.0" }
 critical-section         = "1.2.0"
 crc32fast                = { default-features = false, version = "1.5.0" }
 defmt                    = { optional = true, version = "1.1.0" }

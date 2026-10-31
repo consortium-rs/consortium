@@ -43,8 +43,8 @@ default = []
 shell = ["dep:winit"]
 
 [dependencies]
-consortium-hmi       = { path = "../consortium-hmi", version = "0.4.0" }
-consortium-hmi-input = { path = "../consortium-hmi-input", version = "0.4.0" }
+consortium-hmi       = { path = "../consortium-hmi", version = "0.5.0" }
+consortium-hmi-input = { path = "../consortium-hmi-input", version = "0.5.0" }
 pocket-mod           = { git = "https://github.com/pocket-stack/pocketjs.git", rev = "b21bd28dd0a2fcb717757241d69b9901c4f7e1b5" }
 pocket-ui-wgpu       = { git = "https://github.com/pocket-stack/pocketjs.git", rev = "b21bd28dd0a2fcb717757241d69b9901c4f7e1b5" }
 pocket3d             = { default-features = false, git = "https://github.com/pocket-stack/pocketjs.git", rev = "b21bd28dd0a2fcb717757241d69b9901c4f7e1b5" }
