@@ -61,7 +61,8 @@ pub struct BuildArgs {
     /// manifest core (e.g. mainline Linux instead of a vendor BSP fork); the
     /// affected core's DTS fixups are skipped, so that firmware will not
     /// actually be loadable via the rendered device tree until the checkout
-    /// has the real node.
+    /// has the real node. It also downgrades a firmware vector table that does
+    /// not start at the remoteproc vector origin to a warning.
     #[arg(long)]
     skip_remoteproc_check: bool,
 

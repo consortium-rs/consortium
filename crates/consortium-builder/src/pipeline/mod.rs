@@ -410,7 +410,10 @@ pub async fn plan(
     let workspace = resolve_workspace(session, &manifest_dir)?;
 
     // Stage 1: firmware plans + expected ELF outputs.
-    let firmware = firmware::plan_firmware_builds(session, &workspace, cargo, &ty_crate)?;
+    let mut firmware = firmware::plan_firmware_builds(session, &workspace, cargo, &ty_crate)?;
+    for plan in &mut firmware {
+        plan.config.strict_remoteproc = config.strict_remoteproc;
+    }
     let mut firmware_outputs = HashMap::new();
     for plan in &firmware {
         let elf = firmware::firmware_elf_path(&plan.config).await?;

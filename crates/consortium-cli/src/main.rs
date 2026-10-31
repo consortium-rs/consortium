@@ -29,6 +29,10 @@
 //! the manifest, writes the generated endpoint modules, and type-checks the
 //! firmware, TA, and application crates without linking or staging anything.
 //!
+//! `csti new` scaffolds a project: a `Consortium.toml`, a root Cargo workspace, and
+//! the endpoint crates for one of the supported chips, optionally with an OP-TEE
+//! trusted application and a Cog/WebKit HMI.
+//!
 //! `csti fetch` is its network half: it resolves the same Cargo projects the
 //! build plan does and downloads their dependencies (plus each cross target's
 //! `std` and the HMI frontend's packages) ahead of time, so `csti build
@@ -46,6 +50,7 @@
 mod build;
 mod check;
 mod fetch;
+mod new;
 mod reporter;
 
 use std::process::ExitCode;
@@ -55,6 +60,7 @@ use clap::{Parser, Subcommand};
 use crate::build::BuildArgs;
 use crate::check::CheckArgs;
 use crate::fetch::FetchArgs;
+use crate::new::NewArgs;
 
 /// Build and package Consortium applications and runtimes.
 #[derive(Parser)]
@@ -76,6 +82,9 @@ enum Command {
     /// Download every dependency that build would need, so it can then run
     /// with `--offline`.
     Fetch(FetchArgs),
+
+    /// Create a new Consortium project, from flags or interactively.
+    New(NewArgs),
 }
 
 #[tokio::main]
@@ -85,6 +94,7 @@ async fn main() -> ExitCode {
         Command::Build(args) => build::run(args).await,
         Command::Check(args) => check::run(args).await,
         Command::Fetch(args) => fetch::run(args).await,
+        Command::New(args) => new::run(args),
     };
 
     match result {
@@ -112,5 +122,19 @@ mod tests {
         assert!(Cli::try_parse_from(["csti", "check", "--linux", "/src/linux"]).is_ok());
         // The remoteproc downgrade only means something when a DTS is rendered.
         assert!(Cli::try_parse_from(["csti", "check", "--skip-remoteproc-check"]).is_err());
+    }
+
+    #[test]
+    fn new_needs_a_chip_unless_interactive() {
+        assert!(Cli::try_parse_from(["csti", "new", "demo"]).is_err());
+        assert!(Cli::try_parse_from(["csti", "new", "demo", "--chip", "stm32mp257f"]).is_ok());
+        assert!(
+            Cli::try_parse_from([
+                "csti", "new", "demo", "--chip", "mimx9352", "--tee", "--hmi"
+            ])
+            .is_ok()
+        );
+        assert!(Cli::try_parse_from(["csti", "new", "demo", "--chip", "mimx95"]).is_err());
+        assert!(Cli::try_parse_from(["csti", "new", "-i"]).is_ok());
     }
 }

@@ -114,6 +114,7 @@ pub fn plan_firmware_builds(
                 release: cargo.release,
                 offline: cargo.offline,
                 remoteproc: ir.remoteproc.get(&core).cloned(),
+                strict_remoteproc: true,
                 workspace: Some(workspace.clone()),
             },
             generated,
