@@ -29,7 +29,7 @@ repository.workspace   = true
 rust-version.workspace = true
 
 [dependencies]
-consortium-macros-helpers = { path = "../consortium-macros-helpers", version = "0.4.0" }
+consortium-macros-helpers = { path = "../consortium-macros-helpers", version = "0.5.0" }
 proc-macro2               = "1.0.106"
 quote                     = "1.0.45"
 syn                       = { features = ["full"], version = "3.0" }

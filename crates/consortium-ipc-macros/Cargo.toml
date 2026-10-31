@@ -19,4 +19,4 @@ workspace = true
 proc-macro = true
 
 [dependencies]
-consortium-ipc-macros-impl = { path = "../consortium-ipc-macros-impl", version = "0.4.0" }
+consortium-ipc-macros-impl = { path = "../consortium-ipc-macros-impl", version = "0.5.0" }

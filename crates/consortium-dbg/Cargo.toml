@@ -23,14 +23,14 @@ panic-handler = ["logger"]
 
 [dependencies]
 bitflags                 = "2.11.1"
-consortium-shared-memory = { path = "../consortium-shared-memory", version = "0.4.0" }
+consortium-shared-memory = { path = "../consortium-shared-memory", version = "0.5.0" }
 cortex-m                 = { optional = true, version = "0.7" }
 defmt                    = "1.1.0"
 defmt-decoder            = { optional = true, version = "1.1" }
 defmt-parser             = { optional = true, version = "1" }
 riscv                    = { optional = true, version = "0.16.1" }
 thiserror                = { default-features = false, version = "2.0" }
-consortium-log           = { path = "../consortium-log", version = "0.4.0" }
+consortium-log           = { path = "../consortium-log", version = "0.5.0" }
 
 [dev-dependencies]
 hex = "0.4"

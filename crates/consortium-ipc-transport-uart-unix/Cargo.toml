@@ -31,7 +31,7 @@ rust-version.workspace = true
 [dependencies]
 consortium-ipc-transport-uart = { features = [
   "std",
-], path = "../consortium-ipc-transport-uart", version = "0.4.0" }
+], path = "../consortium-ipc-transport-uart", version = "0.5.0" }
 thiserror = { version = "2.0" }
 tokio = { features = ["io-util"], version = "1" }
 tokio-serial = { version = "5.4" }
