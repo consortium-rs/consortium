@@ -1,0 +1,71 @@
+# SPDX-License-Identifier: Apache-2.0
+
+# Bring-up subset of `Consortium.toml`: only the A-core application, the M-core
+# Embassy firmware, the `[dbg]` defmt ring and the `sensor` IPC channel. No TA,
+# no HMI and no `[peripheral.*]` entries, so a HIL run exercises exactly IPC,
+# DBG and system bring-up. Build with `csti build --manifest Consortium.bringup.toml`.
+
+# melt-pot on i.MX93: CA55 Linux application + CM33 real-time firmware.
+#
+# The i.MX93 counterpart of `../imx95`. The coprocessor is a Cortex-M33
+# (`thumbv8m.main-none-eabihf`), not a CM7, so it has no L1 data cache and
+# `config.cache` is rejected on its channels. As on i.MX95, Linux drives MU
+# side A and the coprocessor side B.
+
+[profile]
+# The Rust compile targets are looked up from the embedded chip database for
+# this chip (CM33 firmware target and CA55 application target).
+chip = "mimx9352"
+# FRDM-i.MX93. Matched against the vendor DTS database by full file stem; see
+# `arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts`.
+devkit        = "imx93-11x11-frdm"
+shared        = "../shared"
+deploy_root   = "/opt/consortium"
+sysroot       = "/"
+kernel_recipe = "linux-imx"
+# Each endpoint crate is its own Cargo project with its own `target/` (they are
+# excluded from the repository workspace), so the AP embeds the firmware's debug
+# ELF relative to `CSTI_MCU_PATH`. `unified` would instead expect every endpoint
+# in one Cargo workspace rooted beside this file and read `CSTI_MANIFEST_PATH`.
+workspace = "nested"
+
+[dts]
+# mode  = "merge"        # or "overlay"
+
+# The CM33 runs from TCM, not a DDR carveout — see `[remoteproc.cm33]` defaults
+# in the mimx93 chip database, derived from `imx_rproc_att_imx93`. Override
+# per-field here if your board partitions TCM differently.
+# [remoteproc.cm33]
+# ram = { origin = 0x20003000, length = 0x1B000 }
+
+[endpoints]
+# Runtime endpoint name -> crate root. `cm33` is the single remote coprocessor.
+linux = "./app"
+cm33  = "./mcu"
+
+[dbg]
+mode = "auto"
+
+# defmt ring for the CM33, in OCRAM (see the mimx93 chip database: base
+# 0x00480000, length 0x40000), just above the IPC region below.
+[dbg.cm33]
+memory = { base = 0x00484000, length = 0x2000 }
+mtu    = 64
+
+# One shared descriptor + slots for the sensor channel, signalled over MU1
+# (Linux on side A, the CM33 on side B). The board DTS wires MU1 to the CM33
+# remoteproc node as the RPMsg mailbox; the generated DTS deletes those
+# `mboxes` so the kernel never drives it alongside us.
+#
+# The region lives in OCRAM; the CM33 reaches it through the raw physical base
+# and the CA55 maps the same memory through its UIO device.
+[[ipc.channel]]
+name          = "sensor"
+doorbell      = "mu1"
+pattern       = "memory"
+primary       = "linux"
+secondary     = "cm33"
+party.linux   = { chan = 6, type = "Command" }
+party.cm33    = { chan = 7, type = "SensorReading" }
+config.memory = { base = 0x00480000, length = 0x4000 }
+mtu           = 128

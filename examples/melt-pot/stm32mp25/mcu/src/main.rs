@@ -39,10 +39,19 @@ use melt_pot_shared::SensorReading;
 // the `defmt::info!` frames below land in the CDBG ring described by `[dbg.cm33]`.
 include!("consortium.gen.rs");
 
+mod hil;
+
 #[consortium_runtime_mcu::main]
-async fn main(_spawner: Spawner) -> Result<(), ConsortiumError> {
+async fn main(spawner: Spawner) -> Result<(), ConsortiumError> {
     let (_p, c) = init(Config::default());
-    let mut sensor = ::consortium_ipc_transport_memory::Transceiver::connect(c.SENSOR).await?;
+    hil::launched();
+    spawner.spawn(hil::monitor().unwrap());
+
+    hil::connecting();
+    let mut sensor = ::consortium_ipc_transport_memory::Transceiver::connect(c.SENSOR)
+        .await
+        .inspect_err(|e| defmt::error!("HIL M6 FAIL Connect returned {}", e))?;
+    hil::connected();
 
     let mut seq: u32 = 0;
     loop {
@@ -60,7 +69,8 @@ async fn main(_spawner: Spawner) -> Result<(), ConsortiumError> {
 
         // Ignore send errors: if the CA35 hasn't consumed the previous slot yet,
         // skip this sample rather than blocking.
-        let _ = sensor.send(&reading).await;
+        let sent = sensor.send(&reading).await;
+        hil::sent(reading.seq, sent.is_ok());
 
         seq = seq.wrapping_add(1);
 
