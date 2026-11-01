@@ -22,8 +22,7 @@
 //! type parameter. There is no `Side` parameter either — direction is carried
 //! by the identifier each half is bound to.
 //!
-//! Unlike the UART transport there is only one impl family here, because the
-//! [`CanTx`]/[`CanRx`] seam is this crate's own and its futures are declared
+//! There is only one impl family here, because the [`CanTx`]/[`CanRx`] seam is this crate's own and its futures are declared
 //! `MaybeSend` directly. The `std` feature changes what `MaybeSend` requires,
 //! not which code is compiled.
 

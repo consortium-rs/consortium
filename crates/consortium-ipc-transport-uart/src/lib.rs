@@ -80,18 +80,21 @@
 //!
 //! # Backend selection
 //!
-//! The IO bounds are chosen by the `std` feature, and this is the crate's one real
-//! wrinkle:
+//! The transport is written once, against this crate's [`UartRead`]/[`UartWrite`]
+//! seam, and the `std` feature picks which IO traits that seam is
+//! blanket-implemented for:
 //!
-//! - **without `std` (firmware)** — generic over [`embedded_io_async::Read`] and
-//!   [`Write`](embedded_io_async::Write), the async serial traits Embassy and modern
-//!   HAL UART drivers implement.
-//! - **with `std` (Linux/host)** — generic over Tokio `AsyncRead`/`AsyncWrite`.
+//! - **without `std` (firmware)** — every [`embedded_io_async::Read`] and
+//!   [`Write`](embedded_io_async::Write), the async serial traits Embassy and
+//!   modern HAL UART drivers implement.
+//! - **with `std` (Linux/host)** — every Tokio `AsyncRead`/`AsyncWrite` that is
+//!   `Unpin + Send`.
 //!
-//! The split exists because under `std` transport futures must be `Send` (see
+//! The seam exists because under `std` transport futures must be `Send` (see
 //! `consortium_ipc::MaybeSend`), and `embedded_io_async`'s unnameable `async fn`
-//! futures cannot guarantee that generically. So the two families are separate impl
-//! blocks over the same types rather than one generic implementation.
+//! futures cannot guarantee that generically. Carrying the `MaybeSend` bounds on
+//! the seam, as the FDCAN transport does with `CanTx`/`CanRx`, keeps one transport
+//! impl for both; only the two small adapters in [`io`] differ.
 //!
 //! Optional modules supply the concrete IO: `unix` (`unix` feature) opens
 //! `/dev/tty*` devices for the Tokio family, and `imx9` / `stm32mp2` (chip
@@ -183,14 +186,16 @@
 //! cargo test -p consortium-ipc-transport-uart --features unix        # pseudo-terminals (Linux)
 //! ```
 //!
-//! Run all three when touching the protocol: the two feature paths are distinct impl
-//! blocks, so a change to one is not covered by the other's tests.
+//! The protocol is one impl, so the first two exercise the same code; run both anyway
+//! when touching the protocol or the [`io`] adapters, since each adapter is only
+//! compiled under its own feature.
 
 #[cfg(feature = "alloc")]
 extern crate alloc;
 
 pub(crate) mod error;
 pub(crate) mod frame;
+pub mod io;
 pub(crate) mod transport;
 
 #[cfg(feature = "unix")]
@@ -200,6 +205,7 @@ pub use {
     embedded_io_async,
     error::Error,
     frame::{FRAME_OVERHEAD, max_frame_len, rx_buf_len, tx_buf_len},
+    io::{UartRead, UartWrite},
     transport::{UartTransport, UartTransportRx, UartTransportTx},
 };
 
