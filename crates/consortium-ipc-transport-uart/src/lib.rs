@@ -93,10 +93,60 @@
 //! futures cannot guarantee that generically. So the two families are separate impl
 //! blocks over the same types rather than one generic implementation.
 //!
-//! Sibling crates supply the concrete IO: `consortium-ipc-transport-uart-unix`
-//! opens `/dev/tty*` devices for the Tokio family, and
-//! `consortium-ipc-transport-uart-embedded` re-exports a chip HAL's
-//! interrupt-buffered driver for the `embedded-io-async` family.
+//! Optional modules supply the concrete IO: `unix` (`unix` feature) opens
+//! `/dev/tty*` devices for the Tokio family, and `imx9` / `stm32mp2` (chip
+//! features) re-export a chip HAL's interrupt-buffered driver for the
+//! `embedded-io-async` family. With no chip feature, any driver implementing the
+//! `embedded-io-async` traits works directly.
+//!
+//! # Firmware: interrupt-buffered receive
+//!
+//! The chip HALs' `BufferedUart` receiver is interrupt-driven: its IRQ handler
+//! drains the receive FIFO into a ring so no bytes are lost between the wake and
+//! the next poll of the transport's `recv`. Per repository convention, this crate
+//! does **not** install `#[interrupt]` handlers — the application owns the vector
+//! table and forwards the UART interrupt into `on_buffered_interrupt::<T>`,
+//! parameterized with the same peripheral singleton the driver took. Enable the
+//! *HAL's* `rt` feature for the `#[interrupt]` macro and PAC vector table.
+//!
+//! ```ignore
+//! // `stm32mp25x` feature, plus `consortium-hal-stm32mp2/rt`.
+//! use consortium_ipc::Chan;
+//! use consortium_ipc_transport_uart::{
+//!     UartTransport, rx_buf_len, tx_buf_len,
+//!     stm32mp2::{BufferedUart, Config, on_buffered_interrupt},
+//! };
+//! use consortium_runtime_mcu::static_buf;
+//!
+//! const MTU: usize = 256;
+//!
+//! // Ring storage for the IRQ handler, plus the transport scratch buffers.
+//! static_buf!(RX_RING, 512);
+//! static_buf!(RX_SCRATCH, rx_buf_len(MTU));
+//! static_buf!(TX_SCRATCH, tx_buf_len(MTU));
+//!
+//! // The platform must leave USART2 clocked and pinned out.
+//! let p = consortium_hal_stm32mp2::init();
+//! let uart = BufferedUart::new(p.USART2, KERNEL_HZ, Config::default(), RX_RING.init([0; 512]));
+//! let (tx_wire, rx_wire) = uart.split();
+//!
+//! let transport = UartTransport::new(
+//!     Chan::new(0)?,
+//!     rx_wire,
+//!     tx_wire,
+//!     RX_SCRATCH.init([0; rx_buf_len(MTU)]),
+//!     TX_SCRATCH.init([0; tx_buf_len(MTU)]),
+//!     MTU,
+//! )?;
+//! let (tx, rx) = transport.split();
+//!
+//! #[interrupt]
+//! fn USART2() {
+//!     on_buffered_interrupt::<consortium_hal_stm32mp2::peripherals::USART2>();
+//! }
+//! ```
+//!
+//! The i.MX9 flow is identical with `imx9::BufferedUart` and an `LPUARTn` vector.
 //!
 //! # Example
 //!
@@ -117,14 +167,20 @@
 //!
 //! - `std` — `alloc`, Tokio IO bounds, `Send` futures, `tracing` diagnostics.
 //! - `alloc` — link `alloc` through `consortium-ipc`.
-//! - `defmt` — route diagnostics to `defmt` and derive `defmt::Format` on [`Error`].
+//! - `defmt` — route diagnostics to `defmt` and derive `defmt::Format` on [`Error`]
+//!   (and forward `defmt` to a selected chip HAL).
+//! - `unix` — implies `std`; adds the `unix` module (`open`, `pty_pair`) over
+//!   `tokio-serial`.
+//! - `mimx93` / `mimx95` — re-export `consortium_hal_imx9::uart` as `imx9`.
+//! - `stm32mp21x` / `stm32mp23x` / `stm32mp25x` — re-export
+//!   `consortium_hal_stm32mp2::uart` as `stm32mp2`.
 //!
 //! # Testing
 //!
 //! ```bash
 //! cargo test -p consortium-ipc-transport-uart                        # Tokio family
 //! cargo test -p consortium-ipc-transport-uart --no-default-features  # embedded-io family
-//! cargo test -p consortium-ipc-transport-uart-unix                   # pseudo-terminals
+//! cargo test -p consortium-ipc-transport-uart --features unix        # pseudo-terminals (Linux)
 //! ```
 //!
 //! Run all three when touching the protocol: the two feature paths are distinct impl
@@ -137,8 +193,24 @@ pub(crate) mod error;
 pub(crate) mod frame;
 pub(crate) mod transport;
 
+#[cfg(feature = "unix")]
+pub mod unix;
+
 pub use {
+    embedded_io_async,
     error::Error,
     frame::{FRAME_OVERHEAD, max_frame_len, rx_buf_len, tx_buf_len},
     transport::{UartTransport, UartTransportRx, UartTransportTx},
 };
+
+/// i.MX9 LPUART driver, including the interrupt-buffered `BufferedUart`.
+#[cfg(any(feature = "mimx93", feature = "mimx95"))]
+pub mod imx9 {
+    pub use consortium_hal_imx9::uart::*;
+}
+
+/// STM32MP2 USART driver, including the interrupt-buffered `BufferedUart`.
+#[cfg(any(feature = "stm32mp21x", feature = "stm32mp23x", feature = "stm32mp25x"))]
+pub mod stm32mp2 {
+    pub use consortium_hal_stm32mp2::uart::*;
+}

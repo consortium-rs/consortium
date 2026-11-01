@@ -959,34 +959,14 @@ version = "0.5.0"
 dependencies = [
  "cobs 0.5.1",
  "consortium-codec",
+ "consortium-hal-imx9",
+ "consortium-hal-stm32mp2",
  "consortium-ipc",
  "consortium-log",
  "crc32fast",
  "defmt",
  "embedded-io-async",
  "futures",
- "serde",
- "thiserror 2.0.21",
- "tokio",
-]
-
-[[package]]
-name = "consortium-ipc-transport-uart-embedded"
-version = "0.5.0"
-dependencies = [
- "consortium-hal-imx9",
- "consortium-hal-stm32mp2",
- "consortium-ipc-transport-uart",
- "embedded-io-async",
-]
-
-[[package]]
-name = "consortium-ipc-transport-uart-unix"
-version = "0.5.0"
-dependencies = [
- "consortium-codec",
- "consortium-ipc",
- "consortium-ipc-transport-uart",
  "serde",
  "thiserror 2.0.21",
  "tokio",

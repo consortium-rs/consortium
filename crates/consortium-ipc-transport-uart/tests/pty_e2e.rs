@@ -21,7 +21,7 @@
 //! pty file descriptors, so `tokio-serial`'s async reads never wake and the
 //! exchange stalls. This is a host-test limitation, not a transport one: the
 //! `/dev/tty*` deployment target is the Linux A-core, and the portable
-//! in-memory duplex loopback tests in `consortium-ipc-transport-uart` cover
+//! in-memory duplex loopback tests in this crate (`tests/loopback*.rs`) cover
 //! the same transport logic on every host. Each test still wraps its awaits
 //! in a wall-clock timeout so a regression fails fast instead of hanging.
 #![cfg(target_os = "linux")]
@@ -30,8 +30,8 @@ use std::time::Duration;
 
 use consortium_codec::PostcardCodec;
 use consortium_ipc::{Chan, Channel, RecvTransport, Rx, SendTransport, Tx};
-use consortium_ipc_transport_uart_unix::{
-    UartTransport, UartTransportRx, UartTransportTx, pty_pair, rx_buf_len, tx_buf_len,
+use consortium_ipc_transport_uart::{
+    UartTransport, UartTransportRx, UartTransportTx, rx_buf_len, tx_buf_len, unix::pty_pair,
 };
 use serde::{Deserialize, Serialize};
 
