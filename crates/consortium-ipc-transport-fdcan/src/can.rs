@@ -21,12 +21,12 @@
 //! `nb` traits, and a bus carries discrete frames rather than bytes. So this
 //! crate declares its own three-trait seam.
 //!
-//! Owning the seam buys something the UART crate does not have. Its futures are
-//! declared `impl Future<..> + MaybeSend` — the same RPITIT shape the upstream
+//! Owning the seam is what keeps one impl family. Its futures are declared
+//! `impl Future<..> + MaybeSend` — the same RPITIT shape the upstream
 //! [`SendTransport`](consortium_ipc::SendTransport) uses — so one set of
-//! transport impls satisfies both firmware and `std`. The UART crate needs two
-//! parallel impl families only because `embedded_io_async`'s unnameable futures
-//! cannot be proven `Send` generically.
+//! transport impls satisfies both firmware and `std`. The UART crate does the
+//! same with its `UartRead`/`UartWrite` seam, for the same reason:
+//! `embedded_io_async`'s unnameable futures cannot be proven `Send` generically.
 //!
 //! [`CanFrame`] is blanket-implemented for every [`embedded_can::Frame`], so
 //! both chip HAL frame types work with no adapter, and an FD frame type with a

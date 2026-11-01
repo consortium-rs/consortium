@@ -22,20 +22,18 @@
 //! type parameter. There is no `Side` parameter either — direction is
 //! physical (the TX and RX wires).
 //!
-//! The generic IO bounds are selected by the `std` feature:
-//!
-//! - without `std` (firmware): `embedded_io_async::Read`/`Write`, the async
-//!   serial traits implemented by Embassy and modern HAL UART drivers;
-//! - with `std` (Linux/host): Tokio `AsyncRead`/`AsyncWrite`, because under
-//!   `std` transport futures must be `Send` (`MaybeSend`) and
-//!   `embedded_io_async`'s `async fn` futures cannot guarantee that
-//!   generically. The `unix` module (`unix` feature) supplies
-//!   `/dev/tty*`-backed halves for this family.
+//! The halves are generic over the crate's [`UartRead`]/[`UartWrite`] seam,
+//! so there is one impl family; the `std` feature only decides which IO
+//! traits (`embedded-io-async` or Tokio) that seam is blanket-implemented for.
+//! See [`crate::io`].
 
-use consortium_ipc::Chan;
+use consortium_ipc::{
+    Chan, Connect, MaybeSend, RecvTransport, SendTransport, TransportError as TransportErrorTrait,
+};
 
 use crate::error::Error;
 use crate::frame::{self, Deframer, Push, RX_CHUNK};
+use crate::io::{UartRead, UartWrite};
 
 /// Send half of a UART transport: frames payloads and writes them to the
 /// UART TX wire. Pass it to `Channel::<Tx, …>`.
@@ -236,224 +234,94 @@ impl<R, W> UartTransport<R, W> {
     }
 }
 
-/// `embedded-io-async` implementation family (firmware-side).
-#[cfg(not(feature = "std"))]
-mod impl_embedded {
-    use consortium_ipc::{
-        Connect, MaybeSend, RecvTransport, SendTransport, TransportError as TransportErrorTrait,
-    };
-    use embedded_io_async::{ErrorType, Read, Write};
+impl<W: UartWrite> TransportErrorTrait for UartTransportTx<W> {
+    type Error = Error<W::Error>;
+}
 
-    use super::{UartTransport, UartTransportRx, UartTransportTx};
-    use crate::error::Error;
-    use crate::frame::RX_CHUNK;
-
-    impl<W: Write> TransportErrorTrait for UartTransportTx<W> {
-        type Error = Error<W::Error>;
+impl<W: UartWrite> SendTransport for UartTransportTx<W> {
+    async fn send(&mut self, data: &[u8]) -> Result<(), Self::Error> {
+        let (start, len) = self.stage(data)?;
+        self.io
+            .write_all(&self.buf[start..start + len])
+            .await
+            .map_err(Error::Io)?;
+        self.io.flush().await.map_err(Error::Io)
     }
 
-    impl<W: Write> SendTransport for UartTransportTx<W> {
-        async fn send(&mut self, data: &[u8]) -> Result<(), Self::Error> {
-            let (start, len) = self.stage(data)?;
-            self.io
-                .write_all(&self.buf[start..start + len])
-                .await
-                .map_err(Error::Io)?;
-            self.io.flush().await.map_err(Error::Io)
-        }
-
-        fn max_send_size(&self) -> usize {
-            self.mtu
-        }
-    }
-
-    impl<R: Read> TransportErrorTrait for UartTransportRx<R> {
-        type Error = Error<R::Error>;
-    }
-
-    impl<R: Read> RecvTransport for UartTransportRx<R> {
-        async fn recv(&mut self, buf: &mut [u8]) -> Result<usize, Self::Error> {
-            if buf.len() < self.mtu {
-                return Err(Error::BufferTooSmall {
-                    needed: self.mtu,
-                    got: buf.len(),
-                });
-            }
-            loop {
-                if let Some(n) = self.drain(buf) {
-                    return Ok(n);
-                }
-                let chunk = &mut self.buf[..RX_CHUNK];
-                let n = self.io.read(chunk).await.map_err(Error::Io)?;
-                if n == 0 {
-                    return Err(Error::Eof);
-                }
-                self.chunk_pos = 0;
-                self.chunk_len = n;
-            }
-        }
-
-        fn max_recv_size(&self) -> usize {
-            self.mtu
-        }
-    }
-
-    impl<R: Read, W: Write + ErrorType<Error = R::Error>> TransportErrorTrait for UartTransport<R, W> {
-        type Error = Error<R::Error>;
-    }
-
-    impl<R: Read, W: Write + ErrorType<Error = R::Error>> SendTransport for UartTransport<R, W> {
-        fn send(
-            &mut self,
-            data: &[u8],
-        ) -> impl Future<Output = Result<(), Self::Error>> + MaybeSend {
-            self.tx.send(data)
-        }
-
-        fn max_send_size(&self) -> usize {
-            self.tx.max_send_size()
-        }
-    }
-
-    impl<R: Read, W: Write + ErrorType<Error = R::Error>> RecvTransport for UartTransport<R, W> {
-        fn recv(
-            &mut self,
-            buf: &mut [u8],
-        ) -> impl Future<Output = Result<usize, Self::Error>> + MaybeSend {
-            self.rx.recv(buf)
-        }
-
-        fn max_recv_size(&self) -> usize {
-            self.rx.max_recv_size()
-        }
-    }
-
-    /// UART has nothing to rendezvous over: the link is a pair of wires, byte
-    /// arrival is itself the notification, and neither end publishes state the
-    /// other must validate. `connect` is therefore an immediate no-op, provided
-    /// so bring-up code can drive every transport through the same call.
-    ///
-    /// A future link-level hello (version or MTU negotiation over the wire)
-    /// would slot in here without touching callers.
-    impl<R: Read, W: Write + ErrorType<Error = R::Error>> Connect for UartTransport<R, W> {
-        type Params = ();
-
-        async fn connect(&mut self, _params: ()) -> Result<(), Self::Error> {
-            Ok(())
-        }
+    fn max_send_size(&self) -> usize {
+        self.mtu
     }
 }
 
-/// Tokio implementation family (Linux/host-side).
-#[cfg(feature = "std")]
-mod impl_tokio {
-    use consortium_ipc::{
-        Connect, MaybeSend, RecvTransport, SendTransport, TransportError as TransportErrorTrait,
-    };
-    use tokio::io::{AsyncRead, AsyncReadExt, AsyncWrite, AsyncWriteExt};
+impl<R: UartRead> TransportErrorTrait for UartTransportRx<R> {
+    type Error = Error<R::Error>;
+}
 
-    use super::{UartTransport, UartTransportRx, UartTransportTx};
-    use crate::error::Error;
-    use crate::frame::RX_CHUNK;
-
-    impl<W: AsyncWrite + Unpin + Send> TransportErrorTrait for UartTransportTx<W> {
-        type Error = Error<std::io::Error>;
-    }
-
-    impl<W: AsyncWrite + Unpin + Send> SendTransport for UartTransportTx<W> {
-        async fn send(&mut self, data: &[u8]) -> Result<(), Self::Error> {
-            let (start, len) = self.stage(data)?;
-            self.io
-                .write_all(&self.buf[start..start + len])
-                .await
-                .map_err(Error::Io)?;
-            self.io.flush().await.map_err(Error::Io)
+impl<R: UartRead> RecvTransport for UartTransportRx<R> {
+    async fn recv(&mut self, buf: &mut [u8]) -> Result<usize, Self::Error> {
+        if buf.len() < self.mtu {
+            return Err(Error::BufferTooSmall {
+                needed: self.mtu,
+                got: buf.len(),
+            });
         }
-
-        fn max_send_size(&self) -> usize {
-            self.mtu
-        }
-    }
-
-    impl<R: AsyncRead + Unpin + Send> TransportErrorTrait for UartTransportRx<R> {
-        type Error = Error<std::io::Error>;
-    }
-
-    impl<R: AsyncRead + Unpin + Send> RecvTransport for UartTransportRx<R> {
-        async fn recv(&mut self, buf: &mut [u8]) -> Result<usize, Self::Error> {
-            if buf.len() < self.mtu {
-                return Err(Error::BufferTooSmall {
-                    needed: self.mtu,
-                    got: buf.len(),
-                });
+        loop {
+            if let Some(n) = self.drain(buf) {
+                return Ok(n);
             }
-            loop {
-                if let Some(n) = self.drain(buf) {
-                    return Ok(n);
-                }
-                let chunk = &mut self.buf[..RX_CHUNK];
-                let n = self.io.read(chunk).await.map_err(Error::Io)?;
-                if n == 0 {
-                    return Err(Error::Eof);
-                }
-                self.chunk_pos = 0;
-                self.chunk_len = n;
+            let chunk = &mut self.buf[..RX_CHUNK];
+            let n = self.io.read(chunk).await.map_err(Error::Io)?;
+            if n == 0 {
+                return Err(Error::Eof);
             }
-        }
-
-        fn max_recv_size(&self) -> usize {
-            self.mtu
+            self.chunk_pos = 0;
+            self.chunk_len = n;
         }
     }
 
-    impl<R: AsyncRead + Unpin + Send, W: AsyncWrite + Unpin + Send> TransportErrorTrait
-        for UartTransport<R, W>
-    {
-        type Error = Error<std::io::Error>;
+    fn max_recv_size(&self) -> usize {
+        self.mtu
+    }
+}
+
+impl<R: UartRead, W: UartWrite<Error = R::Error>> TransportErrorTrait for UartTransport<R, W> {
+    type Error = Error<R::Error>;
+}
+
+impl<R: UartRead, W: UartWrite<Error = R::Error>> SendTransport for UartTransport<R, W> {
+    fn send(&mut self, data: &[u8]) -> impl Future<Output = Result<(), Self::Error>> + MaybeSend {
+        self.tx.send(data)
     }
 
-    impl<R: AsyncRead + Unpin + Send, W: AsyncWrite + Unpin + Send> SendTransport
-        for UartTransport<R, W>
-    {
-        fn send(
-            &mut self,
-            data: &[u8],
-        ) -> impl Future<Output = Result<(), Self::Error>> + MaybeSend {
-            self.tx.send(data)
-        }
+    fn max_send_size(&self) -> usize {
+        self.tx.max_send_size()
+    }
+}
 
-        fn max_send_size(&self) -> usize {
-            self.tx.max_send_size()
-        }
+impl<R: UartRead, W: UartWrite<Error = R::Error>> RecvTransport for UartTransport<R, W> {
+    fn recv(
+        &mut self,
+        buf: &mut [u8],
+    ) -> impl Future<Output = Result<usize, Self::Error>> + MaybeSend {
+        self.rx.recv(buf)
     }
 
-    impl<R: AsyncRead + Unpin + Send, W: AsyncWrite + Unpin + Send> RecvTransport
-        for UartTransport<R, W>
-    {
-        fn recv(
-            &mut self,
-            buf: &mut [u8],
-        ) -> impl Future<Output = Result<usize, Self::Error>> + MaybeSend {
-            self.rx.recv(buf)
-        }
-
-        fn max_recv_size(&self) -> usize {
-            self.rx.max_recv_size()
-        }
+    fn max_recv_size(&self) -> usize {
+        self.rx.max_recv_size()
     }
+}
 
-    /// UART has nothing to rendezvous over: the link is a pair of wires, byte
-    /// arrival is itself the notification, and neither end publishes state the
-    /// other must validate. `connect` is therefore an immediate no-op, provided
-    /// so bring-up code can drive every transport through the same call.
-    ///
-    /// A future link-level hello (version or MTU negotiation over the wire)
-    /// would slot in here without touching callers.
-    impl<R: AsyncRead + Unpin + Send, W: AsyncWrite + Unpin + Send> Connect for UartTransport<R, W> {
-        type Params = ();
+/// UART has nothing to rendezvous over: the link is a pair of wires, byte
+/// arrival is itself the notification, and neither end publishes state the
+/// other must validate. `connect` is therefore an immediate no-op, provided
+/// so bring-up code can drive every transport through the same call.
+///
+/// A future link-level hello (version or MTU negotiation over the wire)
+/// would slot in here without touching callers.
+impl<R: UartRead, W: UartWrite<Error = R::Error>> Connect for UartTransport<R, W> {
+    type Params = ();
 
-        async fn connect(&mut self, _params: ()) -> Result<(), Self::Error> {
-            Ok(())
-        }
+    async fn connect(&mut self, _params: ()) -> Result<(), Self::Error> {
+        Ok(())
     }
 }

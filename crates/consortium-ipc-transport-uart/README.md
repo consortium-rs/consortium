@@ -60,20 +60,22 @@ caller.
 
 ## Backend selection
 
-The IO bounds are chosen by the `std` feature, and this is the crate's one real
-wrinkle:
+The transport is written once, against this crate's `UartRead`/`UartWrite` seam.
+The `std` feature only picks which IO traits that seam is blanket-implemented for:
 
 | Build    | IO traits                                 | Supplied by                                       |
 | -------- | ----------------------------------------- | ------------------------------------------------- |
 | no `std` | `embedded_io_async::Read` / `Write` (0.7) | chip feature → `imx9` / `stm32mp2` `BufferedUart` |
 | `std`    | Tokio `AsyncRead` / `AsyncWrite`          | `unix` feature → `unix::open` / `unix::pty_pair`  |
 
-The split is not cosmetic. Under `std`, transport futures must be `Send` (see
+The seam is not cosmetic. Under `std`, transport futures must be `Send` (see
 `consortium_ipc::MaybeSend`, which Tokio's multi-threaded executor requires), and
 `embedded_io_async`'s unnameable `async fn` futures cannot guarantee that
-generically. So the two families are **separate impl blocks over the same types**
-rather than one generic implementation — which is why protocol changes need testing
-under both.
+generically. Carrying the `MaybeSend` bounds on `UartRead`/`UartWrite` — as the FDCAN
+transport does with `CanTx`/`CanRx` — keeps **one impl family**; only two small
+adapters differ. They cannot both be compiled (a type may implement both trait
+families), which is why the choice is a feature. A driver that fits neither can
+implement the seam directly.
 
 ## Example
 
@@ -179,8 +181,9 @@ cargo test -p consortium-ipc-transport-uart --no-default-features  # embedded-io
 cargo test -p consortium-ipc-transport-uart --features unix        # pseudo-terminals (Linux)
 ```
 
-Run all three when touching the protocol — the two feature paths are distinct impl
-blocks, so a change to one is not covered by the other's tests.
+The protocol is one impl, so the first two exercise the same code; still run both
+when touching it or the IO adapters, since each adapter only compiles under its own
+feature.
 
 ## License
 
