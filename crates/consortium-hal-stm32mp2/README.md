@@ -54,7 +54,7 @@ Each behind a feature, all on by default:
 
 `timer_driver` is what `consortium-cfg` brings up in the generated `init()` unless
 `[profile] time_driver = false`. `uart`'s `BufferedUart` is what
-`consortium-ipc-transport-uart-embedded` binds to.
+`consortium-ipc-transport-uart`'s chip features bind to.
 
 ## Chip selection
 

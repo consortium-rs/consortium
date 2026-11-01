@@ -29,7 +29,7 @@
 //! - with `std` (Linux/host): Tokio `AsyncRead`/`AsyncWrite`, because under
 //!   `std` transport futures must be `Send` (`MaybeSend`) and
 //!   `embedded_io_async`'s `async fn` futures cannot guarantee that
-//!   generically. The `consortium-ipc-transport-uart-unix` crate supplies
+//!   generically. The `unix` module (`unix` feature) supplies
 //!   `/dev/tty*`-backed halves for this family.
 
 use consortium_ipc::Chan;
