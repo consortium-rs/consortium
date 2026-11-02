@@ -93,7 +93,7 @@ coverage that does not need hardware:
 - `cargo test -p consortium-ipc-transport-memory --no-default-features --test async_atomic_waker_test`
   for the no-std-shaped shared-memory future path.
 - UART protocol changes should run `cargo test -p consortium-ipc-transport-uart`, the
-  same with `--no-default-features`, and `cargo test -p consortium-ipc-transport-uart-unix`.
+  same with `--no-default-features`, and `cargo test -p consortium-ipc-transport-uart --features unix`.
 - FDCAN protocol changes should run `cargo test -p consortium-ipc-transport-fdcan` and the
   same with `--no-default-features`; the second runs the identical tests as `no_std`.
 

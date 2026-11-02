@@ -14,16 +14,16 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-//! `/dev/tty*` backend for the Consortium UART IPC transport.
+//! `/dev/tty*` backend for the Tokio transport family (`unix` feature).
 //!
 //! Opens a serial device in raw mode via `tokio-serial` and hands its Tokio
 //! `AsyncRead`/`AsyncWrite` halves to
-//! [`UartTransport`]'s `std`
+//! [`UartTransport`](crate::UartTransport)'s `std`
 //! implementation family:
 //!
 //! ```no_run
 //! use consortium_ipc_transport_uart::{UartTransport, rx_buf_len, tx_buf_len};
-//! use consortium_ipc_transport_uart_unix::open;
+//! use consortium_ipc_transport_uart::unix::open;
 //!
 //! # fn scratch(n: usize) -> &'static mut [u8] { Box::leak(vec![0; n].into_boxed_slice()) }
 //! # async fn demo(chan: consortium_ipc::Chan) -> Result<(), Box<dyn std::error::Error>> {
@@ -52,7 +52,7 @@
 //! - **A Tokio runtime must already be entered.** `open` registers the stream with
 //!   the current reactor, so calling it outside a runtime fails.
 //! - **Line discipline is bypassed, not configured.** `open_native_async` puts the
-//!   device in raw mode; this crate does not restore prior termios settings on drop.
+//!   device in raw mode; this module does not restore prior termios settings on drop.
 //! - **`Error::Eof` is reachable here.** A real UART never reports end-of-stream,
 //!   but a pseudo-terminal whose peer closed does. Host tests should expect it.
 //!
@@ -61,14 +61,11 @@
 //! [`pty_pair`] returns two connected pseudo-terminals, each already split into
 //! `(rx, tx)` halves, so bytes written to one side's `tx` arrive on the other's
 //! `rx` — a crossed UART cable with no hardware. That is how
-//! `tests/` exercises the `std` transport family end to end.
+//! `tests/pty_e2e.rs` exercises the `std` transport family end to end.
 
 use tokio::io::{ReadHalf, WriteHalf};
 use tokio_serial::{SerialPortBuilderExt, SerialStream};
 
-pub use consortium_ipc_transport_uart::{
-    Error, UartTransport, UartTransportRx, UartTransportTx, rx_buf_len, tx_buf_len,
-};
 pub use tokio_serial;
 
 /// Receive wire half of an opened serial device.
@@ -95,7 +92,7 @@ pub enum OpenError {
 
 /// Open `path` (e.g. `/dev/ttySTM1`, `/dev/ttyUSB0`) at `baud` in raw 8N1
 /// mode and split it into `(rx, tx)` wire halves for
-/// [`UartTransport::new`].
+/// [`UartTransport::new`](crate::UartTransport::new).
 ///
 /// Must be called from within a Tokio runtime (the stream registers with the
 /// current reactor).

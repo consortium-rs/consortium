@@ -33,22 +33,55 @@ alloc   = ["consortium-ipc/alloc"]
 default = ["std"]
 # Route this crate's protocol tracing to `defmt` for firmware-side builds; the
 # `std` path routes the same call sites to `tracing` instead.
-defmt = ["consortium-ipc/defmt", "consortium-log/defmt", "dep:defmt"]
+defmt = [
+  "consortium-hal-imx9?/defmt",
+  "consortium-hal-stm32mp2?/defmt",
+  "consortium-ipc/defmt",
+  "consortium-log/defmt",
+  "dep:defmt",
+]
 # `std` switches the transport impls from `embedded-io-async` to Tokio
 # `AsyncRead`/`AsyncWrite`: under `std` the transport futures must be `Send`
 # (`MaybeSend`), which `embedded_io_async`'s unnameable `async fn` futures
 # cannot guarantee generically.
 std = ["alloc", "consortium-ipc/std", "consortium-log/tracing", "dep:tokio"]
+# `/dev/tty*` backend for the Tokio family: `unix::open` and `unix::pty_pair`
+# over `tokio-serial`.
+unix = ["dep:tokio-serial", "std"]
+# Chip selection for firmware — pulls in the matching chip HAL (with its `uart`
+# driver) and re-exports it as `imx9`/`stm32mp2`, forwarding the chip feature
+# so the shared PAC's register/interrupt definitions match the target. Choose
+# at most one; the HAL rejects several at once.
+mimx93 = ["consortium-hal-imx9/mimx93", "consortium-hal-imx9/uart", "dep:consortium-hal-imx9"]
+mimx95 = ["consortium-hal-imx9/mimx95", "consortium-hal-imx9/uart", "dep:consortium-hal-imx9"]
+stm32mp21x = [
+  "consortium-hal-stm32mp2/stm32mp21x",
+  "consortium-hal-stm32mp2/uart",
+  "dep:consortium-hal-stm32mp2",
+]
+stm32mp23x = [
+  "consortium-hal-stm32mp2/stm32mp23x",
+  "consortium-hal-stm32mp2/uart",
+  "dep:consortium-hal-stm32mp2",
+]
+stm32mp25x = [
+  "consortium-hal-stm32mp2/stm32mp25x",
+  "consortium-hal-stm32mp2/uart",
+  "dep:consortium-hal-stm32mp2",
+]
 
 [dependencies]
-cobs              = { default-features = false, version = "0.5" }
-consortium-ipc    = { default-features = false, path = "../consortium-ipc", version = "0.5.0" }
-consortium-log    = { default-features = false, path = "../consortium-log", version = "0.5.0" }
-crc32fast         = { default-features = false, version = "1.5.0" }
-defmt             = { optional = true, version = "1.1.0" }
-embedded-io-async = { version = "0.7" }
-thiserror         = { default-features = false, version = "2.0" }
-tokio             = { features = ["io-util"], optional = true, version = "1" }
+cobs                    = { default-features = false, version = "0.5" }
+consortium-hal-imx9     = { default-features = false, optional = true, path = "../consortium-hal-imx9", version = "0.5.0" }
+consortium-hal-stm32mp2 = { default-features = false, optional = true, path = "../consortium-hal-stm32mp2", version = "0.5.0" }
+consortium-ipc          = { default-features = false, path = "../consortium-ipc", version = "0.5.0" }
+consortium-log          = { default-features = false, path = "../consortium-log", version = "0.5.0" }
+crc32fast               = { default-features = false, version = "1.5.0" }
+defmt                   = { optional = true, version = "1.1.0" }
+embedded-io-async       = { version = "0.7" }
+thiserror               = { default-features = false, version = "2.0" }
+tokio                   = { features = ["io-util"], optional = true, version = "1" }
+tokio-serial            = { optional = true, version = "5.4" }
 
 [dev-dependencies]
 consortium-codec  = { features = ["alloc", "postcard"], path = "../consortium-codec" }
@@ -56,6 +89,10 @@ embedded-io-async = { version = "0.7" }
 futures           = "0.3"
 serde             = { default-features = false, features = ["derive"], version = "1.0.228" }
 tokio             = { features = ["io-util", "macros", "rt", "sync", "time"], version = "1" }
+
+[[test]]
+name              = "pty_e2e"
+required-features = ["unix"]
 
 [lints]
 workspace = true

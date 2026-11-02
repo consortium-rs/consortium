@@ -174,13 +174,17 @@ the shared protocol as `COBS(chan | payload | CRC32-LE) + 0x00`, with one logica
 `Chan` per transport and explicit RX/TX scratch buffers derived with `rx_buf_len()` and
 `tx_buf_len()`.
 
-The core crate defaults to `std`: Tokio `AsyncRead`/`AsyncWrite` and `Send` futures. Its
-no-std path uses `embedded-io-async` (0.7). `consortium-ipc-transport-uart-unix` opens raw
-8N1 `/dev/tty*` devices with `tokio-serial` and provides pseudo-terminal pairs for tests.
-`consortium-ipc-transport-uart-embedded` is the firmware glue: with a chip feature
-(`mimx93`/`mimx95` or `stm32mp21x`/`stm32mp23x`/`stm32mp25x`) it re-exports that chip
-HAL's interrupt-buffered UART driver (`BufferedUart`, in `imx9`/`stm32mp2` submodules);
-with no chip feature it stays chip-agnostic over any `embedded-io-async` driver. The
+The crate defaults to `std`. The transport is written once against its own
+`MaybeSend`-bounded `UartRead`/`UartWrite` seam (`io.rs`), and `std` only selects which
+blanket impl backs it: Tokio `AsyncRead`/`AsyncWrite` (`Unpin + Send`) under `std`,
+`embedded-io-async` (0.7) without. The two blankets cannot coexist, hence the feature.
+Both backends live in the same crate: the `unix` feature (implies `std`) adds a `unix`
+module that opens raw 8N1 `/dev/tty*` devices with `tokio-serial` and provides
+pseudo-terminal pairs for tests, and a chip feature (`mimx93`/`mimx95` or
+`stm32mp21x`/`stm32mp23x`/`stm32mp25x`, used with `default-features = false`) re-exports
+that chip HAL's interrupt-buffered UART driver (`BufferedUart`, in `imx9`/`stm32mp2`
+submodules); with no chip feature it stays chip-agnostic over any `embedded-io-async`
+driver. The
 `BufferedUart` RX path is IRQ-buffered: the application forwards the UART interrupt into
 `BufferedUartState::on_interrupt`, which drains the FIFO into an
 `embassy_hal_internal::atomic_ring_buffer::RingBuffer` so no bytes are lost before the
@@ -198,11 +202,12 @@ and a bus carries frames rather than bytes. `consortium-ipc-transport-fdcan` the
 declares its own `CanTx`/`CanRx`/`CanErrorType` traits, with `CanFrame` blanket-implemented
 for every `embedded_can::Frame` so both chip HAL frame types work unadapted.
 
-Second, **there is one impl family, not two**. UART needs parallel `std`/`no_std` impls only
-because `embedded_io_async`'s futures cannot be proven `Send` generically; because this
-crate owns its seam, the `MaybeSend` bounds live on `CanTx`/`CanRx` and one set of transport
-impls serves both. `tests/loopback.rs` runs unchanged under `--no-default-features`, which
-is the evidence for that claim — keep it that way.
+Second, **there is one impl family, not two**. `embedded_io_async`'s futures cannot be
+proven `Send` generically, so a transport generic over a foreign IO trait would need
+parallel `std`/`no_std` impls; because this crate owns its seam, the `MaybeSend` bounds
+live on `CanTx`/`CanRx` and one set of transport impls serves both (UART does the same
+with `UartRead`/`UartWrite`). `tests/loopback.rs` runs unchanged under
+`--no-default-features`, which is the evidence for that claim — keep it that way.
 
 Third, **there is nothing to frame or checksum**: the controller already delimits frames and
 CRCs them, so the framing layer only segments and reassembles. One header byte per frame,
@@ -760,7 +765,8 @@ block with the pointer lifetime or ownership invariant.
   for the no-std-shaped shared-memory future path.
 - UART protocol changes should run `cargo test -p consortium-ipc-transport-uart`,
   `cargo test -p consortium-ipc-transport-uart --no-default-features`, and
-  `cargo test -p consortium-ipc-transport-uart-unix` for pseudo-terminal integration.
+  `cargo test -p consortium-ipc-transport-uart --features unix` for pseudo-terminal
+  integration (Linux only; the `pty_e2e` test is compiled out elsewhere).
 - FDCAN protocol changes should run `cargo test -p consortium-ipc-transport-fdcan` and
   the same with `--no-default-features`. Both must pass: the second is what proves the
   one-impl-family claim, since it runs the identical `loopback` test as `no_std`.

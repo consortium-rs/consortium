@@ -105,7 +105,7 @@ whose frame type already implements that trait needs no adapter.
 | `alloc` | Implied by `std`; enables `consortium-ipc`'s allocating paths.         |
 | `defmt` | Routes logging to `defmt` and derives `Format` on `Error`.             |
 
-Unlike the UART transport, `std` does not select a second set of impls: the
+`std` does not select a second set of impls: the
 `CanTx`/`CanRx` seam belongs to this crate, so its futures are declared
 `MaybeSend` once and one impl family serves both firmware and host.
 
