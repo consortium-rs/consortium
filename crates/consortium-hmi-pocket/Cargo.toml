@@ -15,42 +15,42 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [package]
-description       = "Native PocketJS adapter for Consortium HMI"
-edition.workspace = true
-license.workspace = true
-name              = "consortium-hmi-pocket"
-version.workspace = true
-# PocketJS is not on crates.io yet, so this crate pins it to an upstream commit.
-# The pin is the upstream `main` commit `submodules/pocketjs` is checked out at
-# (after `v0.13.0`), so the Rust crates and the bun-built `<app>.js`/`.pak` come
-# from one PocketJS revision; bump both together. cargo refuses to publish a
-# package with a git dependency, so this stays unpublished until PocketJS lands on the
-# registry; at that point the three `pocket*` deps become plain version
-# requirements and this line goes away.
-publish                = false
-authors.workspace      = true
-categories.workspace   = true
-homepage.workspace     = true
-keywords.workspace     = true
-readme                 = "README.md"
-repository.workspace   = true
-rust-version.workspace = true
+description          = "Native PocketJS adapter for Consortium HMI"
+edition.workspace    = true
+license.workspace    = true
+name                 = "consortium-hmi-pocket"
+version.workspace    = true
+authors.workspace    = true
+categories.workspace = true
+homepage.workspace   = true
+keywords.workspace   = true
+readme               = "README.md"
+repository.workspace = true
+# The PocketJS crates require Rust 1.93, above the workspace MSRV.
+rust-version = "1.93"
 
 [features]
 default = []
 # Windowed winit shell: opens a native window (Wayland/X11 on Linux, Cocoa on
-# macOS), drives `PocketApp` per frame, and scales the UI to the surface.
-shell = ["dep:winit"]
+# macOS), drives `PocketApp` per frame, and presents the CPU-rasterized UI
+# through softbuffer.
+shell = ["dep:softbuffer", "dep:winit"]
 
+# The PocketJS crates are pinned to the release `submodules/pocketjs` is checked
+# out at (`v0.16.0`), so the Rust crates and the bun-built `<app>.js`/`.pak`
+# share one binding generation; bump both together.
 [dependencies]
-consortium-hmi       = { path = "../consortium-hmi", version = "0.5.0" }
-consortium-hmi-input = { path = "../consortium-hmi-input", version = "0.5.0" }
-pocket-mod           = { git = "https://github.com/pocket-stack/pocketjs.git", rev = "b21bd28dd0a2fcb717757241d69b9901c4f7e1b5" }
-pocket-ui-wgpu       = { git = "https://github.com/pocket-stack/pocketjs.git", rev = "b21bd28dd0a2fcb717757241d69b9901c4f7e1b5" }
-pocket3d             = { default-features = false, git = "https://github.com/pocket-stack/pocketjs.git", rev = "b21bd28dd0a2fcb717757241d69b9901c4f7e1b5" }
-thiserror            = "2.0.18"
-tokio                = { features = ["rt", "sync"], version = "1" }
-winit                = { optional = true, version = "0.30" }
+consortium-hmi        = { path = "../consortium-hmi", version = "0.5.0" }
+consortium-hmi-input  = { path = "../consortium-hmi-input", version = "0.5.0" }
+pocket-guest-rquickjs = "0.16.0"
+pocket-raster         = "0.16.0"
+pocket-runtime        = "0.16.0"
+pocketjs-core         = "0.16.0"
+rquickjs              = "0.12"
+softbuffer            = { optional = true, version = "0.4" }
+thiserror             = "2.0.18"
+tokio                 = { features = ["rt", "sync"], version = "1" }
+winit                 = { optional = true, version = "0.30" }
 
 [dev-dependencies]
 tokio = { features = ["rt-multi-thread"], version = "1" }

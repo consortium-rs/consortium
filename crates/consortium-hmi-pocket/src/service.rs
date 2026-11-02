@@ -34,13 +34,13 @@
 //! loop, never from a worker thread.
 
 use consortium_hmi::Bridge;
-use pocket_mod::{
-    Guest,
-    qjs::{Coerced, Function},
-};
+use pocket_guest_rquickjs::RquickjsGuest;
+use pocket_runtime::Guest;
+use rquickjs::{Coerced, Function, Object};
 use tokio::sync::mpsc::{UnboundedReceiver, unbounded_channel};
 
 use crate::error::{PocketError, Result};
+use crate::guest_error;
 
 /// Installed before the product bundle. The native surface remains a minimal
 /// queueing primitive; this JS adapter owns correlation and integrates with
@@ -58,13 +58,14 @@ pub(super) struct PocketService {
 
 impl PocketService {
     pub(super) fn mount(
-        guest: &Guest,
+        guest: &mut RquickjsGuest,
         bridge: Bridge,
         runtime: tokio::runtime::Handle,
     ) -> Result<Self> {
         let (completion_tx, completions) = unbounded_channel();
         guest
-            .mount("__consortiumNative", move |ctx, namespace| {
+            .with(|ctx| -> rquickjs::Result<()> {
+                let namespace = Object::new(ctx.clone())?;
                 namespace.set(
                     "invoke",
                     Function::new(
@@ -89,30 +90,39 @@ impl PocketService {
                         },
                     )?,
                 )?;
-                Ok(())
+                ctx.globals().set("__consortiumNative", namespace)
             })
+            .ok_or_else(|| {
+                PocketError::host(
+                    "mounting Consortium PocketJS service surface",
+                    "guest is not initialized",
+                )
+            })?
             .map_err(|e| PocketError::host("mounting Consortium PocketJS service surface", e))?;
         guest
-            .eval("consortium-service", SERVICE_PRELUDE)
-            .map_err(|e| PocketError::host("installing Consortium PocketJS service adapter", e))?;
+            .evaluate(SERVICE_PRELUDE.as_bytes())
+            .map_err(|e| guest_error(guest, "installing Consortium PocketJS service adapter", e))?;
         Ok(Self { completions })
     }
 
-    pub(super) fn pump(&mut self, guest: &Guest) -> Result<usize> {
+    pub(super) fn pump(&mut self, guest: &mut RquickjsGuest) -> Result<usize> {
         let mut delivered = 0;
         while let Ok(completion) = self.completions.try_recv() {
             guest
-                .with(|ctx| -> pocket_mod::qjs::Result<()> {
+                .with(|ctx| -> rquickjs::Result<()> {
                     let callback: Function = ctx.globals().get("__consortiumComplete")?;
                     callback.call((completion.ticket, completion.result.as_str()))
                 })
-                .map_err(|error| {
-                    PocketError::host("delivering Consortium response", error.to_string())
-                })?;
+                .ok_or_else(|| {
+                    PocketError::host("delivering Consortium response", "guest is not initialized")
+                })?
+                .map_err(|e| PocketError::host("delivering Consortium response", e))?;
             delivered += 1;
         }
         if delivered > 0 {
-            guest.drain_jobs();
+            guest
+                .collect()
+                .map_err(|e| guest_error(guest, "running Consortium response jobs", e))?;
         }
         Ok(delivered)
     }
