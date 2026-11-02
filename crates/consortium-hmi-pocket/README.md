@@ -3,21 +3,27 @@
 Native PocketJS backend for [`consortium-hmi`](../consortium-hmi).
 
 Hosts a PocketJS bundle in QuickJS, mounts the Consortium command bridge into it, and
-renders the UI with wgpu. The alternative to
+rasterizes the UI on the CPU. The alternative to
 [`consortium-hmi-webkit`](../consortium-hmi-webkit), with no browser engine and a far
 smaller dependency footprint — select with `[hmi] engine = "pocket"`.
 
-> **`publish = false`.** Its `pocket-mod`, `pocket-ui-wgpu`, and `pocket3d` dependencies
-> come from an **upstream commit**, and cargo refuses to publish a package with a git
-> dependency. This stays unpublished until PocketJS reaches crates.io. The pin is the same
-> upstream `main` commit that `submodules/pocketjs` is checked out at, so the Rust crates
-> and the bun-built bundle come from one PocketJS revision; bump the two together. The
-> `submodules/pocketjs` checkout is still needed for the bun/JS side.
+Built on the published PocketJS crates (MIT): `pocketjs-core` (retained tree, layout,
+DrawList), `pocket-runtime` (op dispatch, asset admission), `pocket-guest-rquickjs`
+(QuickJS realm and the generated `ui.*` bindings), and `pocket-raster` (software
+DrawList rasterizer). No GPU stack and no `pocket3d` are involved.
+
+> **Versions move together.** The PocketJS crate versions match the release that
+> `submodules/pocketjs` is checked out at (`v0.16.0`), so the Rust host and the bun-built
+> bundle share one binding generation; the guest refuses a bundle whose
+> `ui.__hostAbi` differs. Bump the two together. The submodule is still needed for the
+> bun/JS side. **MSRV is 1.93**, above the workspace's, because the PocketJS crates
+> require it.
 
 ## Usage
 
 ```rust,ignore
-use consortium_hmi_pocket::{Bridge, PocketApp};
+use consortium_hmi::Bridge;
+use consortium_hmi_pocket::{FrameRenderer, PocketApp};
 
 let mut bridge = Bridge::new();
 bridge.handle("ping", |_| r#""pong""#.into());
@@ -25,8 +31,12 @@ bridge.handle("ping", |_| r#""pong""#.into());
 // Loads the bundle+pak pair the builder injected.
 let mut app = PocketApp::from_env(bridge, tokio::runtime::Handle::current())?;
 
+let mut renderer = FrameRenderer::new(1)?;
+let (width, height) = renderer.size(&app);
+let mut frame = vec![0; (width * height * 4) as usize];
 loop {
-    app.frame(&mut source)?;   // drain input, run JS, deliver responses, render
+    app.frame_from(&mut source)?;                  // drain input, deliver responses, run JS, tick
+    renderer.render_xrgb_into(&app, &mut frame)?;  // DrawList -> XRGB8888 pixels
 }
 ```
 
@@ -61,20 +71,22 @@ delivered at a **frame boundary** rather than whenever they resolve.
 
 ## Rendering
 
-| Path               | Host                                                |
-| ------------------ | --------------------------------------------------- |
-| `HeadlessRenderer` | Offscreen wgpu target. No compositor, no `DISPLAY`. |
-| `shell` feature    | A thin `winit` window host (`run` / `ShellConfig`). |
+| Path            | Host                                                                          |
+| --------------- | ----------------------------------------------------------------------------- |
+| `FrameRenderer` | `pocket-raster` into a caller-owned RGBA8 or XRGB8888 buffer, 1–4× scale.     |
+| `shell` feature | A thin `winit` window host (`run` / `ShellConfig`) presenting via softbuffer. |
 
-The headless path is what makes the whole stack testable in CI: QuickJS evaluation,
-bridge dispatch, UI layout, and GPU submission all run with no display, and output can be
+Rendering is CPU-only, so the whole stack is testable in CI: QuickJS evaluation, bridge
+dispatch, UI layout, and rasterization run with no GPU and no display, and output can be
 compared against image goldens — so a rendering regression is a diff rather than a bug
-report.
+report. XRGB8888 is the layout of a KMS dumb buffer, which is what a DRM/KMS presenter
+writes.
 
 The `shell` feature opens a native window (Wayland/X11 on Linux, Cocoa on macOS), drives
-`PocketApp::frame`, and blits the logical-size UI to the surface. Both drive the same
-frame contract, so a change verified headlessly holds for the shell too. The `kiosk`
-example runs a built `<app>-main.{js,pak}` in it.
+`PocketApp::frame_pad` at 60 Hz, rasterizes at the largest integer scale that fits the
+window, and letterboxes the result into the surface. It uses the same `FrameRenderer`,
+so the window shows the pixels the headless path produces. The `kiosk` example runs a
+built `<app>-main.{js,pak}` in it.
 
 ## Input
 
@@ -130,7 +142,8 @@ Three consequences worth knowing:
 - **No production DRM/KMS shell yet.** The `shell` feature is a `winit` host, not a
   seat/`libinput` kiosk shell. `Hmi::validate` therefore rejects
   `engine = "pocket"` together with `backend = "drm"`.
-- **`publish = false`,** as above.
+- **Every frame is redrawn.** `FrameRenderer` rasterizes the full DrawList; damage-limited
+  presentation (`pocket-present`) is not wired in yet.
 - **Prototype status.** The crate is described in-tree as the native prototype; the
   `PocketApp` frame contract is the part intended to be stable, so a production event
   shell can be built on it.
@@ -144,9 +157,9 @@ logical viewport, defaulting to 480 × 272.
 
 ## Features
 
-| Feature | Effect                                                                       |
-| ------- | ---------------------------------------------------------------------------- |
-| `shell` | Adds the `winit` window host (`run`, `ShellConfig`) and the `kiosk` example. |
+| Feature | Effect                                                                                  |
+| ------- | --------------------------------------------------------------------------------------- |
+| `shell` | Adds the `winit`/softbuffer window host (`run`, `ShellConfig`) and the `kiosk` example. |
 
 Default is no features — the headless path only.
 

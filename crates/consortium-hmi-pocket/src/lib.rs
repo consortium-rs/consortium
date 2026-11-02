@@ -16,18 +16,24 @@
 
 //! Native PocketJS backend for [`consortium_hmi`].
 //!
-//! The prototype hosts a PocketJS bundle in QuickJS, mounts the retained UI
-//! surface, mounts Consortium application services as a separate native
-//! surface, and provides deterministic headless wgpu rendering. A production
-//! Wayland/DRM event shell can build on the same [`PocketApp`] frame contract.
+//! The prototype hosts a PocketJS bundle in QuickJS through the published
+//! `pocket-runtime` and `pocket-guest-rquickjs` crates, mounts Consortium
+//! application services as a separate native namespace, and rasterizes the
+//! retained UI on the CPU with `pocket-raster`. A production DRM/KMS shell
+//! builds on the same [`PocketApp`] frame contract.
 
 mod error;
 mod pad;
+mod render;
 mod service;
 
 use std::{fs, path::Path};
 
-use pocket_mod::{Guest, qjs::Object};
+use pocket_guest_rquickjs::RquickjsGuest;
+use pocket_runtime::{
+    Guest, GuestEnvironment, GuestFrame, OpContext, RuntimeError, generated_ops::BINDING_GENERATION,
+};
+use rquickjs::Value;
 
 use consortium_hmi::Bridge;
 use service::PocketService;
@@ -36,37 +42,35 @@ pub use consortium_hmi_input::{
     ButtonCode, InputEvent, InputSource, PointerButton, ScrollAxis, SliceSource, TouchPhase,
 };
 pub use error::{PocketError, Result};
-pub use headless::HeadlessRenderer;
 pub use pad::{MAX_CONTACTS, MAX_COORD, POINTER_CONTACT_ID, PadState};
-pub use pocket_ui_wgpu::{UiRenderer, UiSurface};
-
-mod headless;
+pub use pocketjs_core::Ui;
+pub use render::FrameRenderer;
 
 #[cfg(feature = "shell")]
 mod shell;
 #[cfg(feature = "shell")]
 pub use shell::{ShellConfig, run};
 
+/// Guest frames and core ticks per second.
+///
+/// The guest runs one frame per core tick, so `after(seconds)` in the bundle
+/// and the core's animation clock agree.
+const TICK_HZ: u32 = 60;
+
 /// PocketJS host identity and logical display configuration.
 #[derive(Clone, Debug)]
 pub struct PocketConfig {
-    /// Label used in QuickJS evaluation errors and logs.
-    pub app_label: String,
     /// Logical UI size used by `pocketjs-core`.
     pub logical_size: (u32, u32),
     /// Target identity published as `ui.__host`.
     pub host_target: String,
-    /// Host ABI published as `ui.__hostAbi`.
-    pub host_abi: u32,
 }
 
 impl Default for PocketConfig {
     fn default() -> Self {
         Self {
-            app_label: "consortium-pocket".into(),
             logical_size: (480, 272),
             host_target: "desktop".into(),
-            host_abi: 1,
         }
     }
 }
@@ -90,14 +94,14 @@ impl PocketConfig {
     }
 }
 
-/// A PocketJS guest, retained UI surface, and Consortium service adapter.
+/// A PocketJS guest, retained UI core, and Consortium service adapter.
 ///
 /// `PocketApp` is intentionally single-threaded. The display/event-loop thread
 /// owns it; Tokio handlers run elsewhere and return through a channel drained
 /// by [`frame`](Self::frame) or [`pump_bridge`](Self::pump_bridge).
 pub struct PocketApp {
-    guest: Guest,
-    ui: UiSurface,
+    guest: RquickjsGuest,
+    ops: OpContext,
     service: PocketService,
     logical_size: (u32, u32),
     pad: PadState,
@@ -126,29 +130,56 @@ impl PocketApp {
                 max: pad::MAX_COORD,
             });
         }
-        if config.host_target.is_empty() || config.host_abi == 0 {
+        if config.host_target.is_empty() {
             return Err(PocketError::InvalidHostContract);
         }
 
-        let guest =
-            Guest::new().map_err(|e| PocketError::host("creating PocketJS QuickJS guest", e))?;
-        let ui = UiSurface::new((config.logical_size.0 as f32, config.logical_size.1 as f32));
-        ui.feed_pak(pak);
-        ui.mount(&guest)
-            .map_err(|e| PocketError::host("mounting PocketJS ui surface", e))?;
-        publish_host_contract(&guest, &config)?;
+        let mut ui = Ui::new();
+        ui.set_viewport(config.logical_size.0 as f32, config.logical_size.1 as f32);
+        ui.set_tick_rate(TICK_HZ);
+        let ops = OpContext::from_ui(ui);
+        // Styles and font atlases go to the core and images upload as
+        // textures before the guest mounts, so `ui.__textures` names them.
+        let assets = ops
+            .install_assets(pak)
+            .map_err(|e| runtime_error("installing PocketJS asset pack", e))?;
+        let environment = GuestEnvironment {
+            host: &config.host_target,
+            host_abi: BINDING_GENERATION,
+            tick_hz: TICK_HZ,
+            sim_hz: TICK_HZ,
+            viewport: [config.logical_size.0, config.logical_size.1],
+            auxiliary_viewport: None,
+            auxiliary_root: -1,
+            raster_density: 1,
+            heap_limit: 0,
+            pak,
+            worker_javascript: &[],
+            assets: Some(&assets),
+        };
 
-        let service = PocketService::mount(&guest, bridge, runtime)?;
+        let mut guest = RquickjsGuest::default();
         guest
-            .eval(&config.app_label, bundle)
-            .map_err(|e| PocketError::host("evaluating PocketJS application bundle", e))?;
-        if !guest.has_frame() {
+            .initialize(ops.clone(), &environment)
+            .map_err(|e| guest_error(&guest, "creating PocketJS QuickJS guest", e))?;
+        let service = PocketService::mount(&mut guest, bridge, runtime)?;
+        guest
+            .evaluate(bundle.as_bytes())
+            .map_err(|e| guest_error(&guest, "evaluating PocketJS application bundle", e))?;
+        let has_frame = guest
+            .with(|ctx| {
+                ctx.globals()
+                    .get::<_, Value>("frame")
+                    .is_ok_and(|frame| frame.is_function())
+            })
+            .unwrap_or(false);
+        if !has_frame {
             return Err(PocketError::MissingFrame);
         }
 
         Ok(Self {
             guest,
-            ui,
+            ops,
             service,
             logical_size: config.logical_size,
             pad: PadState::new(),
@@ -198,20 +229,15 @@ impl PocketApp {
     /// Completed Consortium commands are delivered before `frame()`, so
     /// PocketJS's effect shell observes them at the next frame boundary.
     pub fn frame(&mut self, buttons: u32, analog: u32) -> Result<usize> {
-        let delivered = self.pump_bridge()?;
-        self.guest
-            .frame_with_analog(buttons, analog)
-            .map_err(|e| PocketError::host("running PocketJS guest frame", e))?;
-        self.ui.tick();
-        Ok(delivered)
+        self.frame_with_touches(buttons, analog, &[])
     }
 
     /// Runs one guest turn carrying touch contacts, and advances the UI once.
     ///
     /// `touches` holds packed contacts in the guest's wire format; build it
-    /// with [`PadState::touches`]. This is the 3-argument `globalThis.frame`
-    /// path, so a bundle whose `frame` takes only `(buttons, analog)` ignores
-    /// the extra argument.
+    /// with [`PadState::touches`]. Each new contact is hit-tested once against
+    /// the committed layout, and the node id rides along as the frame's touch
+    /// hits until that contact lifts.
     pub fn frame_with_touches(
         &mut self,
         buttons: u32,
@@ -219,10 +245,33 @@ impl PocketApp {
         touches: &[u32],
     ) -> Result<usize> {
         let delivered = self.pump_bridge()?;
+        let mut hits = [0i32; pad::MAX_CONTACTS];
+        let count = self
+            .ops
+            .core_mut()
+            .map_err(|e| runtime_error("resolving PocketJS touch hits", e))?
+            .ui
+            .touch_hits(touches, &mut hits);
+        let surfaces = [0u8; pad::MAX_CONTACTS];
+        let frame = GuestFrame {
+            buttons,
+            analog,
+            touches,
+            hits: &hits[..count],
+            touch_surfaces: &surfaces[..count],
+            right_analog: pad::ANALOG_CENTER,
+            axis_deltas: &[],
+            motion: None,
+            text: &[],
+        };
         self.guest
-            .frame_with_touches(buttons, analog, touches)
-            .map_err(|e| PocketError::host("running PocketJS guest frame", e))?;
-        self.ui.tick();
+            .frame(&frame)
+            .map_err(|e| guest_error(&self.guest, "running PocketJS guest frame", e))?;
+        self.ops
+            .core_mut()
+            .map_err(|e| runtime_error("ticking the PocketJS UI core", e))?
+            .ui
+            .tick();
         Ok(delivered)
     }
 
@@ -275,29 +324,47 @@ impl PocketApp {
     /// call this directly when they need to observe an async completion without
     /// advancing virtual time.
     pub fn pump_bridge(&mut self) -> Result<usize> {
-        self.service.pump(&self.guest)
+        self.service.pump(&mut self.guest)
     }
 
     /// Evaluates an additional global script, useful for diagnostics and hot
-    /// reload prototypes.
-    pub fn eval(&self, label: &str, source: &str) -> Result<()> {
+    /// reload prototypes. Promise jobs the script queues run before it returns.
+    pub fn eval(&mut self, source: &str) -> Result<()> {
         self.guest
-            .eval(label, source)
-            .map_err(|e| PocketError::host("evaluating PocketJS script", e))
+            .evaluate(source.as_bytes())
+            .map_err(|e| guest_error(&self.guest, "evaluating PocketJS script", e))
     }
 
-    /// Returns the native PocketJS UI surface for a window renderer.
-    pub fn ui(&self) -> &UiSurface {
-        &self.ui
+    /// Borrows the retained UI core, e.g. to draw its DrawList or read its
+    /// resources. Use [`FrameRenderer`] for pixels.
+    pub fn with_ui<R>(&self, f: impl FnOnce(&mut Ui) -> R) -> Result<R> {
+        let mut core = self
+            .ops
+            .core_mut()
+            .map_err(|e| runtime_error("borrowing the PocketJS UI core", e))?;
+        Ok(f(&mut core.ui))
     }
 
     /// Logical UI size the guest renders at, in PocketJS units.
     ///
-    /// A window shell sizes its offscreen render target with this and scales
-    /// the result to the physical surface, so the UI is DPI-independent.
+    /// A window shell rasterizes at an integer multiple of this and scales the
+    /// result to the physical surface, so the UI is DPI-independent.
     pub fn logical_size(&self) -> (u32, u32) {
         self.logical_size
     }
+}
+
+/// Wraps a guest failure with the engine message the guest recorded for it.
+fn guest_error(guest: &RquickjsGuest, context: &'static str, error: RuntimeError) -> PocketError {
+    let detail = guest
+        .last_error()
+        .map_or_else(|| format!("{error:?}"), str::to_owned);
+    PocketError::host(context, detail)
+}
+
+/// Wraps a `pocket-runtime` failure, which carries no message of its own.
+fn runtime_error(context: &'static str, error: RuntimeError) -> PocketError {
+    PocketError::host(context, format!("{error:?}"))
 }
 
 fn parse_logical_dimension(name: &'static str, value: Option<&str>) -> Result<u32> {
@@ -313,17 +380,6 @@ fn parse_logical_dimension(name: &'static str, value: Option<&str>) -> Result<u3
         )));
     }
     Ok(dimension)
-}
-
-fn publish_host_contract(guest: &Guest, config: &PocketConfig) -> Result<()> {
-    guest
-        .with(|ctx| -> pocket_mod::qjs::Result<()> {
-            let ui: Object = ctx.globals().get("ui")?;
-            ui.set("__host", config.host_target.as_str())?;
-            ui.set("__hostAbi", config.host_abi)?;
-            Ok(())
-        })
-        .map_err(|error| PocketError::host("publishing PocketJS host contract", error.to_string()))
 }
 
 #[cfg(test)]
@@ -361,15 +417,11 @@ mod tests {
 
         called_rx.recv_timeout(Duration::from_secs(2)).unwrap();
         assert_eq!(app.pump_bridge().unwrap(), 1);
-        app.eval(
-            "assert-response",
-            r#"if (answer?.ok !== true) throw new Error("missing bridge response");"#,
-        )
-        .unwrap();
-        app.eval(
-            "assert-contract",
-            r#"if (ui.__host !== "desktop" || ui.__hostAbi !== 1) throw new Error("bad host contract");"#,
-        )
+        app.eval(r#"if (answer?.ok !== true) throw new Error("missing bridge response");"#)
+            .unwrap();
+        app.eval(&format!(
+            r#"if (ui.__host !== "desktop" || ui.__hostAbi !== {BINDING_GENERATION}) throw new Error("bad host contract");"#
+        ))
         .unwrap();
     }
 

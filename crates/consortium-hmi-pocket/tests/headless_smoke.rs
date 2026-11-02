@@ -14,14 +14,13 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-//! Exercises the PocketJS host -> retained UI -> headless wgpu render path on a
-//! built bundle. Requires the bundle and a working GPU adapter (Metal on macOS,
-//! Vulkan/GL elsewhere).
+//! Exercises the PocketJS host -> retained UI -> CPU raster path on a
+//! built bundle. Requires the bundle; no GPU or display is involved.
 
 use std::path::PathBuf;
 
 use consortium_hmi::Bridge;
-use consortium_hmi_pocket::{HeadlessRenderer, PocketApp, PocketConfig};
+use consortium_hmi_pocket::{FrameRenderer, PocketApp, PocketConfig};
 
 /// Full pipeline: a `bun tools/build.ts <app>` bundle+pak loaded from disk,
 /// driven for a few frames, then rendered to real pixels. Skipped unless the
@@ -64,8 +63,9 @@ fn renders_a_built_bundle_to_pixels() {
         app.frame_buttons(0).expect("advance guest frame");
     }
 
-    let (w, h) = PocketConfig::default().logical_size;
-    let mut renderer = HeadlessRenderer::new(w, h).expect("create headless GPU renderer");
+    let mut renderer = FrameRenderer::new(2).expect("create 2x frame renderer");
+    let (w, h) = renderer.size(&app);
+    assert_eq!((w, h), (960, 544));
     let rgba = renderer.render_rgba(&app).expect("render retained UI");
 
     assert_eq!(rgba.len(), (w * h * 4) as usize);
@@ -73,7 +73,7 @@ fn renders_a_built_bundle_to_pixels() {
     // the clear color, or nothing from the bundle actually reached the pixels.
     let first = &rgba[0..4];
     assert!(
-        rgba.chunks_exact(4).any(|px| px != first),
+        rgba.as_chunks::<4>().0.iter().any(|px| px[..] != *first),
         "rendered frame is a single flat color; bundle/pak content did not render"
     );
 }

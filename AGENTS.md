@@ -737,9 +737,10 @@ contract. It contains no Cog, GLib, WebKit, PocketJS, or Tokio runtime state.
 in debug builds it can load `CONSORTIUM_HMI_DEBUG_URL`, otherwise it serves the compiled
 dist path from `CONSORTIUM_HMI_DIST`. `consortium-hmi-pocket` is the native prototype:
 it hosts a PocketJS JS/pak pair, mounts the bridge into QuickJS, delivers responses at
-frame boundaries, and exposes headless wgpu rendering. Its optional `shell` feature adds
-a thin `winit` window host (`run`/`ShellConfig`, Wayland/X11 on Linux and Cocoa on macOS)
-that drives `PocketApp::frame` and blits the logical-size UI to the surface; the `kiosk`
+frame boundaries, and rasterizes on the CPU through `FrameRenderer` (`pocket-raster`,
+RGBA8 or XRGB8888, no GPU). Its optional `shell` feature adds a thin `winit` window
+host (`run`/`ShellConfig`, Wayland/X11 on Linux and Cocoa on macOS) that drives
+`PocketApp::frame_pad` and presents the same raster through `softbuffer`; the `kiosk`
 example runs a built `<app>-main.{js,pak}` in it, and `PocketApp::from_env` loads the
 pair from the builder-injected env vars. The `csti build` pipeline supports
 `engine = "pocket"` end to end (bun build, `<app>.js`/`.pak` verification, `dist/hmi/`
@@ -876,12 +877,12 @@ touching a manifest:
   **Dev-dependencies are deliberately path-only**: cargo strips those from the
   published manifest, which keeps test-only edges (such as `consortium-cfg` →
   `consortium-runtime-app`) out of the publish graph. Do not add versions to them.
-- `consortium-hmi-pocket` is `publish = false`. Its `pocket-mod`, `pocket-ui-wgpu`,
-  and `pocket3d` deps come from an upstream **git `rev`**, not from
-  `submodules/pocketjs`, because PocketJS is not on crates.io yet and cargo refuses
-  to publish a package with a git dependency. The `rev` is the commit the submodule
-  is checked out at; bump both together. The submodule is still needed for the
-  bun/JS side. `melt-pot-shared` is `publish = false` as an example crate.
+- `consortium-hmi-pocket` depends on the crates.io PocketJS crates
+  (`pocketjs-core`, `pocket-runtime`, `pocket-guest-rquickjs`, `pocket-raster`) at the
+  version `submodules/pocketjs` is checked out at; bump both together, since the
+  guest rejects a bundle of another binding generation. The submodule is still
+  needed for the bun/JS side. It declares its own `rust-version = "1.93"` because
+  those crates require it. `melt-pot-shared` is `publish = false` as an example crate.
 - MSRV is `rust-version = "1.87"` in `[workspace.package]`, enforced by clippy's
   `incompatible_msrv` on every `just lint`. Raise it rather than `#[allow]`-ing.
 - `cogcore-sys` and `consortium-runtime-sys` redistribute vendor material and carry

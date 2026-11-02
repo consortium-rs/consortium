@@ -77,7 +77,6 @@ fn input_source_reaches_the_pocketjs_frame_contract() {
         .expect("deliver released input frame");
 
     app.eval(
-        "assert-input-frames",
         r#"
           if (inputFrames.length !== 3) {
             throw new Error(`expected 3 input frames, got ${inputFrames.length}`);
@@ -155,7 +154,6 @@ fn a_mouse_reaches_the_guest_as_a_contact_and_a_press() {
     app.frame_pad().expect("release frame");
 
     app.eval(
-        "assert-pointer-frames",
         r#"
           const [hover, press, drag, release] = frames;
           if (frames.length !== 4) {
@@ -219,7 +217,6 @@ fn a_wide_viewport_packs_coordinates_the_guest_still_decodes() {
     app.frame_pad().expect("wide press frame");
 
     app.eval(
-        "assert-wide",
         r#"
           const c = frames[0].touches[0];
           if (!c || c.x !== 900 || c.y !== 890) {
@@ -261,7 +258,6 @@ fn a_click_that_opens_and_closes_inside_one_frame_still_reaches_the_guest() {
     app.frame_pad().expect("settle frame");
 
     app.eval(
-        "assert-fast-click",
         r#"
           const pressed = frames.find(f => f.buttons === 0x2000);
           if (!pressed) throw new Error("a click inside one frame never reached the guest");

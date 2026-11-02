@@ -5,12 +5,11 @@ published, what is deliberately not, and the constraints that are easy to trip o
 
 ## What ships
 
-46 of the 48 workspace packages publish. Two do not:
+44 of the 45 workspace packages publish. One does not:
 
-| Package                 | Why it is `publish = false`                                    |
-| ----------------------- | -------------------------------------------------------------- |
-| `consortium-hmi-pocket` | Depends on PocketJS via git; cargo refuses to publish git deps |
-| `melt-pot-shared`       | Example support crate                                          |
+| Package           | Why it is `publish = false` |
+| ----------------- | --------------------------- |
+| `melt-pot-shared` | Example support crate       |
 
 ## Name mapping
 
@@ -31,19 +30,18 @@ for d in crates/*/; do n=$(basename "$d"); curl -sf "https://crates.io/api/v1/cr
 
 ## PocketJS
 
-`consortium-hmi-pocket` depends on `pocket-mod`, `pocket-ui-wgpu`, and `pocket3d`,
-none of which are on crates.io. They are pinned by `rev` to an upstream GitHub
-commit rather than to the local `submodules/pocketjs` checkout, so the build is
-reproducible off a plain `git clone` with no submodule init.
+`consortium-hmi-pocket` depends on `pocketjs-core`, `pocket-runtime`,
+`pocket-guest-rquickjs`, and `pocket-raster` from crates.io. Their version is the
+release `submodules/pocketjs` is checked out at, so the Rust host and the
+bun-built bundle share one binding generation; the guest rejects a bundle whose
+`ui.__hostAbi` differs. When you move the submodule to a newer release tag, bump
+the four versions to match.
 
 The submodule is still required for the JS side — `bun tools/build.ts` produces
 the `<app>.js`/`.pak` pair the builder stages — so it does not go away.
 
-The `rev` is the same commit the submodule is checked out at, so the Rust
-crates and the bun-built bundle agree. When you move the submodule, bump the
-`rev` in the manifest to match. When PocketJS reaches crates.io, replace the
-three `git`/`rev` entries with version requirements and drop the
-`publish = false`.
+The crate declares `rust-version = "1.93"` instead of inheriting the workspace
+MSRV, because the PocketJS crates require 1.93.
 
 ## Ordering
 

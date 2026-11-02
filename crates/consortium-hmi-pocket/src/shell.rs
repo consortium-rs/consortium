@@ -16,24 +16,22 @@
 
 //! Windowed [`winit`] shell for [`PocketApp`].
 //!
-//! This is the desktop-oriented counterpart to [`HeadlessRenderer`]: it opens a
+//! This is the desktop-oriented counterpart to a DRM/KMS presenter: it opens a
 //! native window (Wayland or X11 on Linux, Cocoa on macOS — winit selects the
-//! backend at runtime), drives the guest once per redraw, renders the retained
-//! UI into an offscreen target at the app's logical size, and blits that to the
-//! swapchain with letterboxing so the result is DPI- and resolution-independent.
+//! backend at runtime), drives the guest once per 60 Hz tick, rasterizes the
+//! retained UI with [`FrameRenderer`] at the largest integer scale that fits,
+//! and copies it into a [`softbuffer`] surface with letterboxing, so the result
+//! is DPI- and resolution-independent and pixel-identical to the headless path.
 //!
 //! It is deliberately a thin bring-up shell, not the production kiosk: there is
 //! no DRM/KMS leasing, seat/`libinput` routing, or config-driven surface setup
 //! yet. Those build on the same [`PocketApp::frame`] contract this drives.
-//!
-//! [`HeadlessRenderer`]: crate::HeadlessRenderer
 
+use std::num::NonZeroU32;
 use std::sync::Arc;
+use std::time::{Duration, Instant};
 
 use consortium_hmi_input::{ButtonCode, InputEvent, PointerButton, TouchPhase};
-use pocket_ui_wgpu::{Blit, UiRenderer};
-use pocket3d::gpu::{Gpu, OFFSCREEN_FORMAT, OffscreenTarget};
-use pocket3d::wgpu;
 use winit::application::ApplicationHandler;
 use winit::dpi::{LogicalSize, PhysicalPosition};
 use winit::event::{
@@ -43,10 +41,14 @@ use winit::event_loop::{ActiveEventLoop, ControlFlow, EventLoop};
 use winit::keyboard::{KeyCode, PhysicalKey};
 use winit::window::{Window, WindowId};
 
-use crate::PocketApp;
 use crate::error::{PocketError, Result};
+use crate::{FrameRenderer, PocketApp, TICK_HZ};
 
-/// Window and presentation options for [`run`].
+/// Time between guest frames. softbuffer exposes no vsync, so the shell paces
+/// itself at the core's tick rate.
+const FRAME_INTERVAL: Duration = Duration::from_nanos(1_000_000_000 / TICK_HZ as u64);
+
+/// Window options for [`run`].
 #[derive(Clone, Debug)]
 pub struct ShellConfig {
     /// Window title.
@@ -58,10 +60,6 @@ pub struct ShellConfig {
     pub resizable: bool,
     /// Draw window chrome (title bar, borders).
     pub decorations: bool,
-    /// Cap presentation to the display refresh rate.
-    pub vsync: bool,
-    /// Smooth the UI upscale (`true`) instead of nearest-neighbor (`false`).
-    pub smooth_scaling: bool,
 }
 
 impl Default for ShellConfig {
@@ -71,8 +69,6 @@ impl Default for ShellConfig {
             size: (960, 544),
             resizable: true,
             decorations: true,
-            vsync: true,
-            smooth_scaling: true,
         }
     }
 }
@@ -91,6 +87,7 @@ pub fn run(app: PocketApp, config: ShellConfig) -> Result<()> {
         app,
         config,
         render: None,
+        next_frame: Instant::now(),
         error: None,
     };
     event_loop
@@ -102,22 +99,23 @@ pub fn run(app: PocketApp, config: ShellConfig) -> Result<()> {
     }
 }
 
-/// GPU resources bound to the live window surface.
+/// Presentation resources bound to the live window.
 struct RenderState {
     window: Arc<Window>,
-    surface: wgpu::Surface<'static>,
-    config: wgpu::SurfaceConfiguration,
-    gpu: Gpu,
-    ui: UiRenderer,
-    offscreen: OffscreenTarget,
-    blit: Blit,
+    surface: softbuffer::Surface<Arc<Window>, Arc<Window>>,
+    /// Physical surface size.
+    size: (u32, u32),
     logical: (u32, u32),
+    renderer: FrameRenderer,
+    /// The rasterized UI at `renderer`'s scale, XRGB8888.
+    frame: Vec<u8>,
 }
 
 struct Shell {
     app: PocketApp,
     config: ShellConfig,
     render: Option<RenderState>,
+    next_frame: Instant,
     error: Option<PocketError>,
 }
 
@@ -133,7 +131,7 @@ impl Shell {
     fn to_logical(&self, position: PhysicalPosition<f64>) -> Option<(i16, i16)> {
         let state = self.render.as_ref()?;
         Some(physical_to_logical(
-            (state.config.width, state.config.height),
+            state.size,
             state.logical,
             position.x as f32,
             position.y as f32,
@@ -151,53 +149,25 @@ impl Shell {
                 .create_window(attrs)
                 .map_err(|e| PocketError::host("creating window", e))?,
         );
-
-        let instance = Gpu::new_instance();
-        let surface = instance
-            .create_surface(window.clone())
-            .map_err(|e| PocketError::host("creating window surface", e))?;
-        let gpu = Gpu::from_instance_for_surface(instance, &surface)
-            .map_err(|e| PocketError::host("acquiring GPU for surface", e))?;
-
-        let px = window.inner_size();
-        let mut config = surface
-            .get_default_config(&gpu.adapter, px.width.max(1), px.height.max(1))
-            .ok_or_else(|| {
-                PocketError::host(
-                    "configuring window surface",
-                    "adapter does not support this surface",
-                )
-            })?;
-        config.present_mode = if self.config.vsync {
-            wgpu::PresentMode::AutoVsync
-        } else {
-            wgpu::PresentMode::AutoNoVsync
-        };
-        surface.configure(&gpu.device, &config);
+        let context = softbuffer::Context::new(window.clone()).map_err(|e| {
+            PocketError::host("connecting softbuffer to the display", e.to_string())
+        })?;
+        let surface = softbuffer::Surface::new(&context, window.clone())
+            .map_err(|e| PocketError::host("creating window surface", e.to_string()))?;
 
         let logical = self.app.logical_size();
-        let ui = UiRenderer::new(&gpu, OFFSCREEN_FORMAT);
-        let offscreen = OffscreenTarget::new(&gpu, logical.0, logical.1);
-        let filter = if self.config.smooth_scaling {
-            wgpu::FilterMode::Linear
-        } else {
-            wgpu::FilterMode::Nearest
-        };
-        // Opaque copy: the offscreen frame already carries the UI's own
-        // background, so no alpha blending against the swapchain is needed.
-        let blit = Blit::new(&gpu, &offscreen.view, config.format, filter, false);
-
-        window.request_redraw();
-        Ok(RenderState {
+        let mut state = RenderState {
             window,
             surface,
-            config,
-            gpu,
-            ui,
-            offscreen,
-            blit,
+            size: (0, 0),
             logical,
-        })
+            renderer: FrameRenderer::new(1)?,
+            frame: Vec::new(),
+        };
+        let px = state.window.inner_size();
+        state.resize((px.width, px.height))?;
+        state.window.request_redraw();
+        Ok(state)
     }
 
     fn draw(&mut self) -> Result<()> {
@@ -209,70 +179,47 @@ impl Shell {
         // with the held input state, and ticks the retained UI core.
         self.app.frame_pad()?;
 
-        let mut encoder =
-            state
-                .gpu
-                .device
-                .create_command_encoder(&wgpu::CommandEncoderDescriptor {
-                    label: Some("consortium-pocket-shell"),
-                });
-
-        // Pass 1: render the retained UI into the logical-size offscreen target.
-        self.app
-            .ui()
-            .with_ui(|ui| {
-                state.ui.render(
-                    &state.gpu,
-                    ui,
-                    &mut encoder,
-                    &state.offscreen.view,
-                    state.offscreen.size,
-                    wgpu::LoadOp::Clear(wgpu::Color::BLACK),
-                )
-            })
-            .map_err(|e| PocketError::host("rendering retained PocketJS UI", e))?;
-
-        // Pass 2: blit the offscreen frame onto the swapchain, letterboxed.
-        let frame = match state.surface.get_current_texture() {
-            Ok(frame) => frame,
-            Err(wgpu::SurfaceError::Lost | wgpu::SurfaceError::Outdated) => {
-                state.surface.configure(&state.gpu.device, &state.config);
-                state.window.request_redraw();
-                return Ok(());
-            }
-            Err(other) => {
-                return Err(PocketError::host(
-                    "acquiring swapchain frame",
-                    other.to_string(),
-                ));
-            }
-        };
-        let view = frame
-            .texture
-            .create_view(&wgpu::TextureViewDescriptor::default());
-        {
-            let mut pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
-                label: Some("consortium-pocket-blit"),
-                color_attachments: &[Some(wgpu::RenderPassColorAttachment {
-                    view: &view,
-                    resolve_target: None,
-                    ops: wgpu::Operations {
-                        load: wgpu::LoadOp::Clear(wgpu::Color::BLACK),
-                        store: wgpu::StoreOp::Store,
-                    },
-                })],
-                depth_stencil_attachment: None,
-                timestamp_writes: None,
-                occlusion_query_set: None,
-            });
-            let (x, y, w, h) = letterbox((state.config.width, state.config.height), state.logical);
-            pass.set_viewport(x, y, w, h, 0.0, 1.0);
-            state.blit.draw(&mut pass);
-        }
-
-        state.gpu.queue.submit([encoder.finish()]);
+        state
+            .renderer
+            .render_xrgb_into(&self.app, &mut state.frame)?;
+        let frame_size = state.renderer.size(&self.app);
+        let mut buffer = state
+            .surface
+            .buffer_mut()
+            .map_err(|e| PocketError::host("acquiring window buffer", e.to_string()))?;
+        blit(
+            &state.frame,
+            frame_size,
+            &mut buffer,
+            state.size,
+            letterbox(state.size, state.logical),
+        );
         state.window.pre_present_notify();
-        frame.present();
+        buffer
+            .present()
+            .map_err(|e| PocketError::host("presenting window buffer", e.to_string()))
+    }
+}
+
+impl RenderState {
+    /// Resizes the surface and picks the largest integer raster scale whose
+    /// frame fits it, so text stays sharp and only the final copy scales.
+    fn resize(&mut self, size: (u32, u32)) -> Result<()> {
+        let width = NonZeroU32::new(size.0).unwrap_or(NonZeroU32::MIN);
+        let height = NonZeroU32::new(size.1).unwrap_or(NonZeroU32::MIN);
+        let size = (width.get(), height.get());
+        self.surface
+            .resize(width, height)
+            .map_err(|e| PocketError::host("resizing window surface", e.to_string()))?;
+        self.size = size;
+
+        let fit = (size.0 / self.logical.0).min(size.1 / self.logical.1);
+        let scale = fit.clamp(1, pocket_raster::MAX_RENDER_SCALE);
+        if scale != self.renderer.scale() || self.frame.is_empty() {
+            self.renderer = FrameRenderer::new(scale)?;
+            let pixels = (self.logical.0 * scale) as usize * (self.logical.1 * scale) as usize;
+            self.frame = vec![0; pixels * 4];
+        }
         Ok(())
     }
 }
@@ -298,9 +245,10 @@ impl ApplicationHandler for Shell {
             WindowEvent::CloseRequested => event_loop.exit(),
             WindowEvent::Resized(size) => {
                 if let Some(state) = self.render.as_mut() {
-                    state.config.width = size.width.max(1);
-                    state.config.height = size.height.max(1);
-                    state.surface.configure(&state.gpu.device, &state.config);
+                    if let Err(error) = state.resize((size.width, size.height)) {
+                        self.fail(event_loop, error);
+                        return;
+                    }
                     state.window.request_redraw();
                 }
             }
@@ -360,15 +308,23 @@ impl ApplicationHandler for Shell {
             WindowEvent::RedrawRequested => {
                 if let Err(error) = self.draw() {
                     self.fail(event_loop, error);
-                    return;
-                }
-                // Drive continuous animation; present pacing bounds the rate.
-                if let Some(state) = self.render.as_ref() {
-                    state.window.request_redraw();
                 }
             }
             _ => {}
         }
+    }
+
+    fn about_to_wait(&mut self, event_loop: &ActiveEventLoop) {
+        let Some(state) = self.render.as_ref() else {
+            return;
+        };
+        // Drive continuous animation at the tick rate.
+        let now = Instant::now();
+        if now >= self.next_frame {
+            state.window.request_redraw();
+            self.next_frame = (self.next_frame + FRAME_INTERVAL).max(now);
+        }
+        event_loop.set_control_flow(ControlFlow::WaitUntil(self.next_frame));
     }
 }
 
@@ -379,6 +335,36 @@ fn letterbox(surface: (u32, u32), logical: (u32, u32)) -> (f32, f32, f32, f32) {
     let scale = (sw / lw).min(sh / lh);
     let (w, h) = (lw * scale, lh * scale);
     ((sw - w) * 0.5, (sh - h) * 0.5, w, h)
+}
+
+/// Copies `src` (XRGB8888 bytes, `src_size` pixels) into the `dst` surface,
+/// nearest-neighbor scaled into `viewport` and black outside it. softbuffer
+/// wants the top byte of each word zero, so the alpha byte is masked off.
+fn blit(
+    src: &[u8],
+    src_size: (u32, u32),
+    dst: &mut [u32],
+    dst_size: (u32, u32),
+    viewport: (f32, f32, f32, f32),
+) {
+    dst.fill(0);
+    let (x0, y0, w, h) = viewport;
+    let (dw, dh) = (dst_size.0 as usize, dst_size.1 as usize);
+    let (sw, sh) = (src_size.0 as usize, src_size.1 as usize);
+    let columns = (x0.round().max(0.0) as usize)..((x0 + w).round() as usize).min(dw);
+    let rows = (y0.round().max(0.0) as usize)..((y0 + h).round() as usize).min(dh);
+    let source_column =
+        |dx: usize| ((((dx as f32 + 0.5 - x0) / w) * sw as f32) as usize).min(sw - 1);
+    let map: Vec<usize> = columns.clone().map(source_column).collect();
+    for dy in rows {
+        let sy = ((((dy as f32 + 0.5 - y0) / h) * sh as f32) as usize).min(sh - 1);
+        let src_row = &src[sy * sw * 4..(sy + 1) * sw * 4];
+        let dst_row = &mut dst[dy * dw + columns.start..dy * dw + columns.end];
+        for (pixel, &sx) in dst_row.iter_mut().zip(&map) {
+            let bytes = [src_row[sx * 4], src_row[sx * 4 + 1], src_row[sx * 4 + 2], 0];
+            *pixel = u32::from_le_bytes(bytes);
+        }
+    }
 }
 
 /// Inverts [`letterbox`]: maps a physical surface point to logical UI
@@ -443,6 +429,16 @@ mod tests {
         let (x, y, w, h) = letterbox((800, 200), (480, 240));
         assert_eq!((w, h), (400.0, 200.0));
         assert_eq!((x, y), (200.0, 0.0));
+    }
+
+    #[test]
+    fn blit_scales_into_the_letterbox_and_clears_the_bars() {
+        // One red and one blue logical pixel (B, G, R, A bytes) into a 4x1
+        // surface whose viewport covers columns 1..3.
+        let src = [0, 0, 255, 255, 255, 0, 0, 255];
+        let mut dst = [0xdead_beef; 4];
+        blit(&src, (2, 1), &mut dst, (4, 1), (1.0, 0.0, 2.0, 1.0));
+        assert_eq!(dst, [0, 0x00ff_0000, 0x0000_00ff, 0]);
     }
 
     #[test]
