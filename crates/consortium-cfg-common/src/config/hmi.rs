@@ -32,9 +32,11 @@ pub struct Hmi {
     /// application serves in release builds (manifest-relative), e.g.
     /// `website/dist`.
     pub build: String,
-    /// PocketJS entry/app name to build (the mounted `-main` entry that installs
-    /// the frame contract), e.g. `hero-main`. Required for [`HmiEngine::Pocket`]
-    /// and ignored by other engines; it names the `<app>.js`/`<app>.pak` pair.
+    /// PocketJS entry/app name to build (a mounted entry that installs the frame
+    /// contract). The build uses `<source>/<app>.tsx` (or `.ts`) when it exists,
+    /// otherwise a demo shipped in `@pocketjs/framework`, e.g. `hero-main`.
+    /// Required for [`HmiEngine::Pocket`] and ignored by other engines; it names
+    /// the `<app>.js`/`<app>.pak` pair.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub app: Option<String>,
     /// Logical UI viewport configured by Consortium and passed to the HMI
@@ -149,7 +151,7 @@ mod tests {
             engine: HmiEngine::Pocket,
             backend,
             debug: None,
-            source: "submodules/pocketjs".to_string(),
+            source: "examples/pocket-hmi".to_string(),
             build: "dist".to_string(),
             app: app.map(str::to_string),
             logical: HmiLogical::default(),

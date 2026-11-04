@@ -345,7 +345,7 @@ mod tests {
             engine: HmiEngine::Pocket,
             backend: HmiBackend::Wayland,
             debug: None,
-            source: "submodules/pocketjs".to_string(),
+            source: "examples/pocket-hmi".to_string(),
             build: "dist".to_string(),
             app: Some("hero-main".to_string()),
             logical: consortium_cfg_common::config::HmiLogical {

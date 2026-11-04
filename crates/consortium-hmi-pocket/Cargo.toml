@@ -36,9 +36,9 @@ default = []
 # through softbuffer.
 shell = ["dep:softbuffer", "dep:winit"]
 
-# The PocketJS crates are pinned to the release `submodules/pocketjs` is checked
-# out at (`v0.16.0`), so the Rust crates and the bun-built `<app>.js`/`.pak`
-# share one binding generation; bump both together.
+# The PocketJS crates are pinned to the `@pocketjs/framework` release that
+# `examples/pocket-hmi/package.json` installs (`0.16.0`), so the Rust crates and
+# the bun-built `<app>.js`/`.pak` share one binding generation; bump both together.
 [dependencies]
 consortium-hmi        = { path = "../consortium-hmi", version = "0.5.0" }
 consortium-hmi-input  = { path = "../consortium-hmi-input", version = "0.5.0" }

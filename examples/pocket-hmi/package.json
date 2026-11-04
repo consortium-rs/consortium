@@ -1,0 +1,13 @@
+{
+  "name": "consortium-pocket-hmi",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "bun node_modules/@pocketjs/framework/tools/build.ts ./status-main.tsx --outdir=dist",
+    "build:hero": "bun node_modules/@pocketjs/framework/tools/build.ts hero-main --outdir=dist"
+  },
+  "dependencies": {
+    "@pocketjs/framework": "0.16.0",
+    "solid-js": "1.9.14"
+  }
+}

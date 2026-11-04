@@ -24,9 +24,9 @@
 //! repository root:
 //!
 //! ```console
-//! $ (cd submodules/pocketjs && bun tools/build.ts hero-main)
+//! $ (cd examples/pocket-hmi && bun install && bun run build)
 //! $ cargo run -p consortium-hmi-pocket --features shell --example kiosk -- \
-//!     submodules/pocketjs/dist/hero-main.js submodules/pocketjs/dist/hero-main.pak
+//!     examples/pocket-hmi/dist/status-main.js examples/pocket-hmi/dist/status-main.pak
 //! ```
 //!
 //! Keys: arrows/WASD = d-pad, X = Circle, Z = Cross, C = Square, V = Triangle,

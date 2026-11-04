@@ -1,0 +1,19 @@
+{
+  "pocket": 2,
+  "id": "rs.consortium.status",
+  "title": "Consortium status",
+  "version": "0.1.0",
+  "engine": {
+    "capabilities": {
+      "requires": ["text.glyphs.baked", "input.buttons"]
+    }
+  },
+  "app": {
+    "entry": "status-main.tsx",
+    "output": "status-main",
+    "framework": "solid",
+    "viewport": {
+      "fixed": { "logical": [480, 272], "presentation": "integer-fit" }
+    }
+  }
+}

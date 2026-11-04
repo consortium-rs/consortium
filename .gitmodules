@@ -10,6 +10,3 @@
 [submodule "embassy"]
 	path = submodules/embassy
 	url = https://github.com/embassy-rs/embassy.git
-[submodule "pocketjs"]
-	path = submodules/pocketjs
-	url = https://github.com/pocket-stack/pocketjs.git
