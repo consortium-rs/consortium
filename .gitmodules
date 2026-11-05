@@ -13,3 +13,6 @@
 [submodule "pocketjs"]
 	path = submodules/pocketjs
 	url = https://github.com/pocket-stack/pocketjs.git
+[submodule "submodules/STM32_open_pin_data"]
+	path = submodules/STM32_open_pin_data
+	url = https://github.com/STMicroelectronics/STM32_open_pin_data.git

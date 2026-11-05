@@ -1,6 +1,7 @@
 # CMSIS Header Parsers
 
-Python scripts to parse CMSIS C headers into chiptool IR YAML and chip descriptor JSON files.
+Python scripts to parse CMSIS C headers into chiptool IR YAML and chip descriptor JSON
+files, and vendor pin-mux and DMA-request tables into per-family signal databases.
 
 ## Reproducible regeneration
 
@@ -12,9 +13,11 @@ submodules, and `just pac-verify` fails when it is not. The pipeline, in order:
 2. Rewrite `crates/consortium-data/database/{chip,peri}/` from scratch with
    `parse_stm32.py --all` and `parse_nxp.py --all`.
 3. Apply IR corrections (`patches/ir/*.diff`), before anything reads the chip dumps.
-4. `gen_interrupts.py` and `gen_peripherals.py` write the PAC interrupt tables and the
+4. Rewrite `crates/consortium-data/database/signal/` with `parse_signals_stm32.py --all`
+   and `parse_signals_nxp.py --all`, which match signals against the corrected dumps.
+5. `gen_interrupts.py` and `gen_peripherals.py` write the PAC interrupt tables and the
    HAL singleton maps; `gen_blocks.py` runs the pinned chiptool over the `BLOCKS` map.
-5. Format the Rust (`rustfmt`), apply corrections to it (`patches/generated/*.diff`),
+6. Format the Rust (`rustfmt`), apply corrections to it (`patches/generated/*.diff`),
    and format the IR with `vp fmt`.
 
 Correct the parsers where you can. Where you cannot — a register the header omits, an
@@ -90,6 +93,28 @@ python scripts/parse_nxp.py --all                  # Parse all families
 4. Extract base addresses and instance mappings
 5. Link chip includes to peripherals
 6. Emit YAML and JSON outputs
+
+### `parse_signals_stm32.py` and `parse_signals_nxp.py`
+
+Read each vendor's pin-mux and DMA-request tables and write one
+`crates/consortium-data/database/signal/<family>.json` per die family (`stm32mp21`,
+`stm32mp23`, `stm32mp25`, `mimx93`, `mimx95`). The two parsers differ only in what they
+read; both emit the schema documented in `signal_db.py`, which also holds the shared
+peripheral matching and the deterministic writer.
+
+| Data         | STM32MP2                                                 | i.MX 9                                                           |
+| ------------ | -------------------------------------------------------- | ---------------------------------------------------------------- |
+| Pad → signal | `STM32_open_pin_data` MCU files (`STM32MP2*.xml`)        | `fsl_iomuxc.h`                                                   |
+| Mux          | `GPIO-<version>_Modes.xml` (AF number)                   | `fsl_iomuxc.h` (mux, daisy, and pad-config registers)            |
+| Packages     | MCU files (`Package=`; pads per package)                 | not in the source; `packages` is `null`                          |
+| DMA requests | `stm32mp2xx_hal_dma.h`, `#if defined (LPDMA)` per family | `PERI_DMA.h`/`PERI_DMA4.h` (i.MX 93), `fsl_edma_soc.h` (i.MX 95) |
+
+`function` is always the vendor's name; `peripheral`/`signal` are filled only when the
+function belongs to a peripheral in that family's chip dumps, so A-core-only blocks
+(i.MX `ENET1`, ST `FMC`) keep `null`. A duplicated request number is an error: fix it
+with a vendor patch (see `patches/STM32CubeMP2/0002-*` and
+`patches/mcux-devices-imx/0002-*`). `STM32_open_pin_data` is ST's BSD-3-Clause export of
+the CubeMX pin database, pinned to the `STM32CubeMX-DB.*` tag it was cut from.
 
 ### `gen_blocks.py`
 

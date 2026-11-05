@@ -631,9 +631,13 @@ license:
 # `crates/consortium-data/database/` (`chip/`, `peri/`). Requires
 # chiptool (see `just setup-chiptool`).
 
+# Vendor sources the PAC pipeline reads: CMSIS/MCUX headers for registers and
+# interrupts, and ST's CubeMX pin database (BSD-3-Clause) for pin muxing.
+pac_submodules := "submodules/imx-sm submodules/mcux-devices-imx submodules/STM32CubeMP2 submodules/STM32_open_pin_data"
+
 # Initialize the PAC vendor submodules and apply local patches
 pac-init:
-    git submodule update --init submodules/imx-sm submodules/mcux-devices-imx submodules/STM32CubeMP2
+    git submodule update --init {{ pac_submodules }}
     just pac-patch
 
 # Initialize source submodules used directly by workspace crates
@@ -703,7 +707,7 @@ pac-reset:
     echo "Resetting all PAC submodules to upstream HEAD..."
     git submodule foreach --recursive 'git am --abort 2>/dev/null || true'
     git submodule foreach --recursive 'git rebase --abort 2>/dev/null || true'
-    git submodule update --init --force submodules/imx-sm submodules/mcux-devices-imx submodules/STM32CubeMP2
+    git submodule update --init --force {{ pac_submodules }}
     just pac-patch
 
 # Reset a specific PAC submodule and re-apply its patches
@@ -742,7 +746,7 @@ pac-check:
 
 # Show PAC submodule status
 pac-status:
-    git submodule status submodules/imx-sm submodules/mcux-devices-imx submodules/STM32CubeMP2
+    git submodule status {{ pac_submodules }}
 
 # Stage vendor CMSIS headers into ./data for the parsers
 pac-prepare:
@@ -755,6 +759,11 @@ pac-parse-stm32:
 # Parse NXP MCUX CMSIS headers into chiptool IR
 pac-parse-nxp:
     uv run --with pyyaml python scripts/pac/parse_nxp.py --all
+
+# Parse pin-mux and DMA-request data into database/signal (needs the chip dumps)
+pac-parse-signals:
+    uv run --with pyyaml python scripts/pac/parse_signals_stm32.py --all
+    uv run --with pyyaml python scripts/pac/parse_signals_nxp.py --all
 
 # Generate svd2rust-style interrupt tables from the chip databases
 pac-gen-interrupts:
@@ -779,10 +788,11 @@ pac-unpatch:
     done
 
 # Every file the PAC pipeline owns; `pac-regen` rewrites exactly these.
-pac_outputs := "crates/consortium-data/database/chip crates/consortium-data/database/peri crates/consortium-pac-stm32mp2/src/interrupts crates/consortium-pac-stm32mp2/src/peripherals crates/consortium-pac-imx9/src/interrupts crates/consortium-pac-imx9/src/peripherals crates/consortium-hal-stm32mp2/src/peripherals crates/consortium-hal-imx9/src/peripherals"
+pac_outputs := "crates/consortium-data/database/chip crates/consortium-data/database/peri crates/consortium-data/database/signal crates/consortium-pac-stm32mp2/src/interrupts crates/consortium-pac-stm32mp2/src/peripherals crates/consortium-pac-imx9/src/interrupts crates/consortium-pac-imx9/src/peripherals crates/consortium-hal-stm32mp2/src/peripherals crates/consortium-hal-imx9/src/peripherals"
 
 # Stages, in order: vendor-header patches (scripts/pac/patches/<submodule>/),
-# header staging, IR parsing, IR corrections (scripts/pac/patches/ir/), interrupt
+# header staging, IR parsing, IR corrections (scripts/pac/patches/ir/), the
+# pin-mux/DMA signal databases (matched against the corrected chip dumps), interrupt
 # tables, HAL singletons, chiptool blocks, then corrections to the generated Rust
 # (scripts/pac/patches/generated/). Each patch carries a header saying why.
 #
@@ -796,13 +806,16 @@ pac-regen:
     just pac-unpatch
     # The IR is rewritten from scratch so a peripheral dropped upstream does not
     # linger as a stale file.
-    rm -rf crates/consortium-data/database/peri crates/consortium-data/database/chip
+    rm -rf crates/consortium-data/database/peri crates/consortium-data/database/chip \
+        crates/consortium-data/database/signal
     py="uv run --with pyyaml python"
     $py scripts/pac/parse_stm32.py --all > /dev/null
     $py scripts/pac/parse_nxp.py --all > /dev/null
     for patch in scripts/pac/patches/ir/*.diff; do
         git apply --whitespace=nowarn "$patch"
     done
+    $py scripts/pac/parse_signals_stm32.py --all > /dev/null
+    $py scripts/pac/parse_signals_nxp.py --all > /dev/null
     $py scripts/pac/gen_interrupts.py
     $py scripts/pac/gen_peripherals.py
     $py scripts/pac/gen_blocks.py > /dev/null
