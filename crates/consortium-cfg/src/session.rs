@@ -124,6 +124,86 @@ impl Session {
             }
         }
 
+        self.validate_pins()
+    }
+
+    /// Checks every `[peripheral.<name>] pin.<signal> = "<pad>"` against the
+    /// chip's signal map: the pad must be able to carry `<NAME>_<SIGNAL>`, must
+    /// be bonded out in the chip's package when `[profile] chip` names one, and
+    /// may be assigned only once across the manifest.
+    ///
+    /// Peripherals are checked in name order, so the first error reported is
+    /// stable. A chip with no bundled signal map is left unchecked.
+    fn validate_pins(&self) -> Result<(), CfgError> {
+        let chip = &self.config.profile.chip;
+        if self.config.peripheral.values().all(|p| p.pin.is_empty()) {
+            return Ok(());
+        }
+        let map = match crate::signal::load(chip) {
+            Ok(map) => map,
+            Err(DataError::SignalMapUnavailable(_)) => {
+                consortium_log::trace!("no signal map bundled for '{}'; pins unchecked", chip);
+                return Ok(());
+            }
+            Err(err) => return Err(err.into()),
+        };
+        let package = map.package_of(chip);
+
+        let mut names: Vec<&String> = self.config.peripheral.keys().collect();
+        names.sort();
+        let mut taken: HashMap<String, String> = HashMap::new();
+        for name in names {
+            let mut pins: Vec<(&String, &String)> =
+                self.config.peripheral[name].pin.iter().collect();
+            pins.sort();
+            for (signal, pad) in pins {
+                let function = format!("{name}_{signal}").to_ascii_uppercase();
+                let routes = map.signal_routes(name, signal);
+                if routes.is_empty() {
+                    return Err(CfgError::PinSignalUnknown {
+                        peripheral: name.clone(),
+                        signal: signal.clone(),
+                        function,
+                        chip: chip.clone(),
+                    });
+                }
+                if !routes.iter().any(|r| r.pad.eq_ignore_ascii_case(pad)) {
+                    let mut allowed: Vec<&str> = routes.iter().map(|r| r.pad.as_str()).collect();
+                    allowed.sort_unstable();
+                    allowed.dedup();
+                    return Err(CfgError::PinCannotCarry {
+                        peripheral: name.clone(),
+                        signal: signal.clone(),
+                        pad: pad.clone(),
+                        function,
+                        allowed: allowed.join(", "),
+                    });
+                }
+                if let Some(package) = package {
+                    let bonded = map
+                        .pad(pad)
+                        .and_then(|p| p.packages.as_ref())
+                        .is_none_or(|packages| packages.contains(&package.name));
+                    if !bonded {
+                        return Err(CfgError::PinNotInPackage {
+                            peripheral: name.clone(),
+                            signal: signal.clone(),
+                            pad: pad.clone(),
+                            package: package.name.clone(),
+                            chip: chip.clone(),
+                        });
+                    }
+                }
+                let owner = format!("{name}.{signal}");
+                if let Some(first) = taken.insert(pad.to_ascii_uppercase(), owner.clone()) {
+                    return Err(CfgError::PinConflict {
+                        pad: pad.clone(),
+                        first,
+                        second: owner,
+                    });
+                }
+            }
+        }
         Ok(())
     }
 
@@ -676,7 +756,7 @@ mod tests {
 
         let i2c1 = &session.config.peripheral["i2c1"];
         assert_eq!(i2c1.owner, VisibleCore::Ap);
-        assert_eq!(i2c1.pin["sda"], "PB0");
+        assert_eq!(i2c1.pin["sda"], "PA2");
 
         let spi1 = &session.config.peripheral["spi1"];
         assert_eq!(spi1.owner, "cm33".parse().unwrap());
@@ -1209,5 +1289,96 @@ mod tests {
     fn mp235_rejects_an_lpsram_window() {
         let manifest = mp235_manifest("ipcc1", "cm33", 0x000C_4000, "");
         assert!(Session::from_toml(&manifest).is_err());
+    }
+
+    /// A manifest with only `[profile]` and the given peripheral tables.
+    fn pins_manifest(chip: &str, peripherals: &str) -> String {
+        format!(
+            r#"
+            [profile]
+            chip = "{chip}"
+            shared = "./shared"
+            deploy_root = "/opt/consortium"
+
+            {peripherals}
+            "#
+        )
+    }
+
+    /// STM32MP257FAK is the VFBGA424 part (the DK board's). I2C1_SDA reaches
+    /// PA2 (AF10), PI1, and PJ10 (AF9), and PJ10 is bonded out only on TFBGA436.
+    #[test]
+    fn accepts_pins_the_pad_can_carry() {
+        let manifest = pins_manifest(
+            "stm32mp257fak3",
+            "[peripheral.i2c1]\nowner = \"ap\"\npin.sda = \"PA2\"\npin.scl = \"pa3\"",
+        );
+        assert!(Session::from_toml(&manifest).is_ok());
+    }
+
+    #[test]
+    fn rejects_a_pad_that_cannot_carry_the_signal() {
+        let manifest = pins_manifest(
+            "stm32mp257fak3",
+            "[peripheral.i2c1]\nowner = \"ap\"\npin.sda = \"PB0\"",
+        );
+        match Session::from_toml(&manifest) {
+            Err(CfgError::PinCannotCarry { pad, allowed, .. }) => {
+                assert_eq!(pad, "PB0");
+                assert_eq!(allowed, "PA2, PI1, PJ10");
+            }
+            other => panic!("expected PinCannotCarry, got {other:?}"),
+        }
+    }
+
+    /// Pin keys are the vendor's signal names: NXP LPSPI has `sin`/`sout`,
+    /// not `miso`/`mosi`.
+    #[test]
+    fn rejects_a_signal_the_peripheral_does_not_have() {
+        let manifest = pins_manifest(
+            "mimx9596xvt",
+            "[peripheral.lpspi2]\nowner = \"ap\"\npin.miso = \"UART1_RXD\"",
+        );
+        assert!(matches!(
+            Session::from_toml(&manifest),
+            Err(CfgError::PinSignalUnknown { function, .. }) if function == "LPSPI2_MISO"
+        ));
+        let manifest = pins_manifest(
+            "mimx9596xvt",
+            "[peripheral.lpspi2]\nowner = \"ap\"\npin.sin = \"UART1_RXD\"",
+        );
+        assert!(Session::from_toml(&manifest).is_ok());
+    }
+
+    /// The package comes from `[profile] chip`; a chip name too short to pick
+    /// one leaves the package check off.
+    #[test]
+    fn rejects_a_pad_the_package_does_not_bond_out() {
+        let peripheral = "[peripheral.i2c1]\nowner = \"ap\"\npin.sda = \"PJ10\"";
+        match Session::from_toml(&pins_manifest("stm32mp257fak3", peripheral)) {
+            Err(CfgError::PinNotInPackage { package, .. }) => assert_eq!(package, "VFBGA424"),
+            other => panic!("expected PinNotInPackage, got {other:?}"),
+        }
+        assert!(Session::from_toml(&pins_manifest("stm32mp257fai3", peripheral)).is_ok());
+        assert!(Session::from_toml(&pins_manifest("stm32mp257", peripheral)).is_ok());
+    }
+
+    /// One pad, two signals: PE4 carries both SPI1_MOSI and FDCAN1_TX.
+    #[test]
+    fn rejects_a_pad_assigned_twice() {
+        let manifest = pins_manifest(
+            "stm32mp257fak3",
+            "[peripheral.spi1]\nowner = \"ap\"\npin.mosi = \"PE4\"\n\n\
+             [peripheral.fdcan1]\nowner = \"ap\"\npin.tx = \"PE4\"",
+        );
+        match Session::from_toml(&manifest) {
+            Err(CfgError::PinConflict { first, second, .. }) => {
+                assert_eq!(
+                    (first.as_str(), second.as_str()),
+                    ("fdcan1.tx", "spi1.mosi")
+                );
+            }
+            other => panic!("expected PinConflict, got {other:?}"),
+        }
     }
 }

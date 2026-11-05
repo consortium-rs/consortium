@@ -83,12 +83,12 @@ build   = "website/dist"
 [peripheral.i2c1]
 owner   = "ap"
 secure  = false
-pin.sda = "PB0"
-pin.scl = "PB1"
+pin.sda = "PA2"
+pin.scl = "PA3"
 
 [peripheral.spi1]
 owner    = "cm33"
 secure   = false
-pin.miso = "PA6"
-pin.mosi = "PA7"
-pin.sck  = "PA5"
+pin.miso = "PD1"
+pin.mosi = "PD9"
+pin.sck  = "PD11"

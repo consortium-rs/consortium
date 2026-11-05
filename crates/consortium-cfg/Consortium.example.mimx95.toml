@@ -49,15 +49,15 @@ debug   = "http://127.0.0.1:5173/"
 source  = "website"
 build   = "website/dist"
 
-[peripheral.i2c1]
+[peripheral.lpi2c2]
 owner   = "ap"
 secure  = false
-pin.sda = "PB0"
-pin.scl = "PB1"
+pin.sda = "I2C2_SDA"
+pin.scl = "I2C2_SCL"
 
-[peripheral.spi1]
+[peripheral.lpspi2]
 owner    = "cm33"
 secure   = false
-pin.miso = "PA6"
-pin.mosi = "PA7"
-pin.sck  = "PA5"
+pin.sin  = "UART1_RXD"
+pin.sout = "UART2_RXD"
+pin.sck  = "UART2_TXD"
