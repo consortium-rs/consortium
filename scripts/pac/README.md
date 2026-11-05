@@ -116,6 +116,26 @@ with a vendor patch (see `patches/STM32CubeMP2/0002-*` and
 `patches/mcux-devices-imx/0002-*`). `STM32_open_pin_data` is ST's BSD-3-Clause export of
 the CubeMX pin database, pinned to the `STM32CubeMX-DB.*` tag it was cut from.
 
+### `test_output.py`
+
+Checks every generated file (`just pac-test`, and CI's PAC job). For the signal
+databases it enforces the schema `signal_db.py` declares, the same way for both
+vendors: exact keys per record and per `mux` kind, unique packages/parts/pads,
+every signal on a declared pad and listed once, AF and mux mode in range, register
+addresses well-formed, the input-select pair set together, pad packages declared (or
+`null` when the family lists none), one request number per DMA controller, and every
+non-null `peripheral`/`signal` an exact split of `function` against that family's chip
+dumps. Functions no dump names are reported per family, not failed.
+
+### `check_cubemx.py`
+
+Local cross-check, never in CI (`just pac-check-cubemx`). Re-reads each STM32 family's
+packages, pads, and pad signals from an installed STM32CubeMX database with the
+pipeline's own `collect_pins`, and diffs them against the committed signal databases.
+It prints both database releases, so a newer CubeMX than the pinned
+`STM32CubeMX-DB.*` tag can be told apart from a parser bug. Nothing from CubeMX is
+copied into the repository. Set `CUBEMX_DB` or pass `--db` for a non-default install.
+
 ### `gen_blocks.py`
 
 Generates each PAC register-block module with chiptool from the IR file named in its

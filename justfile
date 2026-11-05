@@ -847,6 +847,11 @@ pac-parse-all: pac-parse-stm32 pac-parse-nxp
 pac-test:
     uv run --with pyyaml python scripts/pac/test_output.py
 
+# Cross-check the STM32 signal databases against a local STM32CubeMX install
+# (local only; set CUBEMX_DB if CubeMX is not in /Applications)
+pac-check-cubemx:
+    uv run --with pyyaml python scripts/pac/check_cubemx.py
+
 # Validate PAC output with chiptool
 pac-validate:
     uv run --with pyyaml python scripts/pac/validate_with_chiptool.py

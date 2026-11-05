@@ -44,6 +44,26 @@ DATA_DIR = ROOT / "data" / "signal"
 CHIP_DIR = ROOT / "crates" / "consortium-data" / "database" / "chip"
 OUTPUT_DIR = ROOT / "crates" / "consortium-data" / "database" / "signal"
 
+#: The schema, as `test_output.py` enforces it: each record's exact keys, and
+#: for each `mux` kind the exact keys besides `kind`.
+TOP_KEYS = ("family", "sources", "packages", "pads", "signals", "dma")
+PACKAGE_KEYS = ("name", "parts")
+PAD_KEYS = ("name", "packages")
+SIGNAL_KEYS = ("pad", "function", "peripheral", "signal", "mux")
+DMA_KEYS = ("controller", "request", "function", "peripheral", "signal")
+MUX_KINDS: dict[str, tuple[str, ...]] = {
+    "af": ("af",),
+    "additional": (),
+    "analog": (),
+    "iomuxc": (
+        "mux_register",
+        "mux_mode",
+        "input_register",
+        "input_daisy",
+        "config_register",
+    ),
+}
+
 
 def natural_key(text: str) -> list[Any]:
     """Sort `PA10` after `PA9`, and `GPIO_IO10` after `GPIO_IO9`."""

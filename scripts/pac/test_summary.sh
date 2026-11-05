@@ -7,7 +7,7 @@ echo "=========================================="
 echo ""
 
 echo "1. Running custom validation checks..."
-python scripts/pac/test_output.py 2>&1 | grep -E "^(Register|Chip|Total|✓ All)" | tail -4
+python scripts/pac/test_output.py 2>&1 | grep -E "^(Register|Chip|Signal|Total|✓ All)" | tail -5
 
 echo ""
 echo "2. Running chiptool validation..."
@@ -17,5 +17,6 @@ echo ""
 echo "3. File statistics..."
 echo "   YAML files generated: $(find crates/consortium-data/database/peri -name '*.yaml' | wc -l)"
 echo "   Chip JSON files:      $(find crates/consortium-data/database/chip -name '*.json' | wc -l)"
+echo "   Signal JSON files:    $(find crates/consortium-data/database/signal -name '*.json' | wc -l)"
 echo ""
 echo "=========================================="
