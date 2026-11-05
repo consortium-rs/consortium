@@ -119,9 +119,17 @@ instance.
 - [ ] **P2.4 Typed pins.** Generate `TxPin<T>`, `SckPin<T>`, etc. with AF (MP2) or IOMUXC
       mux + input-select (i.MX 9), and make constructors take pins. Reference: Embassy's
       `pin_trait_impl!` and `embassy-nxp`'s `generate_iomuxc`.
+      _Progress (2026-11-05):_ the pin and mux data is generated
+      (`database/signal/<family>.json`, `consortium_data::signal`), and manifest pin
+      assignments are validated for every owner. Whether constructors take pins is open:
+      see [Pin Assignment](pin-assignment.md), which weighs Embassy's driver-applied mux
+      against keeping the manifest the one place pins are assigned.
 - [ ] **P2.5 Typed DMA requests.** Generate `TxDma<T>`/`RxDma<T>` per peripheral signal, and
       replace the hand tables in both `dma.rs` (MP2 has no USART/SPI/I2C/I3C/SAI entries;
       i.MX 9 has only LPTMR/TPM/ADC). Removes the raw `tx_request: u8` from MP2 I2C DMA.
+      _Progress (2026-11-05):_ request numbers are generated into
+      `database/signal/<family>.json`, and match all 42 hand-written i.MX 9 entries. The
+      traits are not generated yet; see [Pin Assignment](pin-assignment.md#dma-requests-are-independent-of-this-choice).
 - [ ] **P2.6 Typed interrupts.** Adopt `embassy_hal_internal::interrupt_mod!` and
       `bind_interrupts!` so async constructors require a `Binding` proof and unpend/enable
       their own NVIC line. Today a missing forwarder makes `.await` hang silently.
