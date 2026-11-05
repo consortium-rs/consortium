@@ -13,7 +13,8 @@ export default defineConfig({
     ignorePatterns: ['submodules/**', '**/*.toml', '*.toml'],
   },
   lint: {
-    ignorePatterns: ['submodules/**'],
+    // Bun-managed project outside the pnpm workspace: its deps are not installed here.
+    ignorePatterns: ['submodules/**', 'examples/pocket-hmi/**'],
     jsPlugins: [{ name: 'vite-plus', specifier: 'vite-plus/oxlint-plugin' }],
     rules: { 'vite-plus/prefer-vite-plus-imports': 'error' },
     options: { typeAware: true, typeCheck: true },

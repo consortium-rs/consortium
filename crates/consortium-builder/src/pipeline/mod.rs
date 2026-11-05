@@ -381,7 +381,7 @@ pub fn derive_hmi_configuration(
         HmiEngine::Pocket => {
             // `validate` guaranteed `app` is present and non-empty.
             let app = hmi.app.as_deref().unwrap_or_default();
-            crate::compile::utils::resolve_pocket_build_command(app, &dist_dir)
+            crate::compile::utils::resolve_pocket_build_command(app, &project_dir, &dist_dir)
                 .map_err(PipelineError::Codegen)?
         }
     };

@@ -642,7 +642,7 @@ pac-init:
 
 # Initialize source submodules used directly by workspace crates
 init:
-    git submodule update --init submodules/embassy submodules/pocketjs
+    git submodule update --init submodules/embassy
 
 # Compatibility alias for the previous recipe name
 ref-init: init
