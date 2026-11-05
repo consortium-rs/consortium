@@ -25,6 +25,7 @@ from __future__ import annotations
 import argparse
 import re
 from collections import defaultdict
+from dataclasses import dataclass
 from pathlib import Path
 
 from signal_db import (
@@ -128,13 +129,28 @@ def parse_dma(path: Path, symbols: set[str]) -> list[tuple[str, str, int]]:
     return requests
 
 
-def parse_family(family: str) -> Path:
-    src = DATA_DIR / family
-    peripherals = family_peripherals(family)
+@dataclass
+class Pins:
+    """The pin half of one family's database, as `collect_pins` reads it."""
 
-    parts = sorted(src.glob(f"{family.upper()}*.xml"))
+    parts: list[Path]
+    modes: Path
+    packages: list[dict]
+    pads: list[dict]
+    signals: list[dict]
+
+
+def collect_pins(
+    family: str, mcu_dir: Path, ip_dir: Path, peripherals: set[str]
+) -> Pins:
+    """Read a family's MCU files from `mcu_dir` and its AF table from `ip_dir`.
+
+    The two are one directory once `prepare.sh` has staged them; CubeMX's own
+    database keeps the AF tables under `mcu/IP/`, which `check_cubemx.py` reads.
+    """
+    parts = sorted(mcu_dir.glob(f"{family.upper()}*.xml"))
     if not parts:
-        raise SystemExit(f"no MCU files for {family} under {src}; run prepare.sh")
+        raise SystemExit(f"no MCU files for {family} under {mcu_dir}; run prepare.sh")
 
     package_parts: dict[str, list[str]] = defaultdict(list)
     pad_packages: dict[str, set[str]] = defaultdict(set)
@@ -160,7 +176,7 @@ def parse_family(family: str) -> Path:
 
     if len(gpio_versions) != 1:
         raise SystemExit(f"{family}: parts disagree on GPIO version: {gpio_versions}")
-    modes = src / f"GPIO-{gpio_versions.pop()}_Modes.xml"
+    modes = ip_dir / f"GPIO-{gpio_versions.pop()}_Modes.xml"
     af_table = parse_af_table(modes)
     for pad, function in af_table:
         if pad in pad_packages:
@@ -186,6 +202,20 @@ def parse_family(family: str) -> Path:
                 }
             )
 
+    return Pins(
+        parts=parts,
+        modes=modes,
+        packages=[{"name": k, "parts": v} for k, v in package_parts.items()],
+        pads=[{"name": k, "packages": sorted(v)} for k, v in pad_packages.items()],
+        signals=signals,
+    )
+
+
+def parse_family(family: str) -> Path:
+    src = DATA_DIR / family
+    peripherals = family_peripherals(family)
+    pins = collect_pins(family, src, src, peripherals)
+
     dma_header = src / "stm32mp2xx_hal_dma.h"
     dma = []
     seen: set[tuple[str, int]] = set()
@@ -207,13 +237,13 @@ def parse_family(family: str) -> Path:
     return write_signal_db(
         family,
         sources=[
-            *(f"STM32_open_pin_data/mcu/{p.name}" for p in parts),
-            f"STM32_open_pin_data/mcu/IP/{modes.name}",
+            *(f"STM32_open_pin_data/mcu/{p.name}" for p in pins.parts),
+            f"STM32_open_pin_data/mcu/IP/{pins.modes.name}",
             "STM32CubeMP2/Drivers/STM32MP2xx_HAL_Driver/Inc/stm32mp2xx_hal_dma.h",
         ],
-        packages=[{"name": k, "parts": v} for k, v in package_parts.items()],
-        pads=[{"name": k, "packages": sorted(v)} for k, v in pad_packages.items()],
-        signals=signals,
+        packages=pins.packages,
+        pads=pins.pads,
+        signals=pins.signals,
         dma=dma,
     )
 
