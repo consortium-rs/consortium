@@ -22,23 +22,23 @@ use std::path::PathBuf;
 use consortium_hmi::Bridge;
 use consortium_hmi_pocket::{FrameRenderer, PocketApp, PocketConfig};
 
-/// Full pipeline: a `bun tools/build.ts <app>` bundle+pak loaded from disk,
-/// driven for a few frames, then rendered to real pixels. Skipped unless the
-/// PocketJS `dist/` artifacts exist (they are produced by the JS toolchain, not
-/// committed), so host CI without bun stays green.
+/// Full pipeline: the `examples/pocket-hmi` bundle+pak loaded from disk, driven
+/// for a few frames, then rendered to real pixels. Skipped unless its `dist/`
+/// artifacts exist (`bun install && bun run build` there; they are produced by
+/// the JS toolchain, not committed), so host CI without bun stays green.
 #[test]
 fn renders_a_built_bundle_to_pixels() {
     let dist = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-        .join("../../submodules/pocketjs/dist")
+        .join("../../examples/pocket-hmi/dist")
         .canonicalize()
         .unwrap_or_else(|_| PathBuf::from("/nonexistent"));
-    // The `-main` entry is the mounted one: its `render()`/`mount()` call
-    // installs `globalThis.frame`. The bare `hero` build is only the component.
-    let bundle = dist.join("hero-main.js");
-    let pak = dist.join("hero-main.pak");
+    // The entry must be a mounted one: its `mount()` call installs
+    // `globalThis.frame`.
+    let bundle = dist.join("status-main.js");
+    let pak = dist.join("status-main.pak");
     if !bundle.exists() || !pak.exists() {
         eprintln!(
-            "skipping: {} not built (run `bun tools/build.ts hero-main`)",
+            "skipping: {} not built (run `bun install && bun run build` in examples/pocket-hmi)",
             bundle.display()
         );
         return;

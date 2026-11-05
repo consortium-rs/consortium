@@ -593,8 +593,13 @@ crates has no single `CSTI_MCU_PATH` and falls back to absolute paths.
 (on-target `{deploy_root}/hmi/<app>.{js,pak}`), plus
 `CONSORTIUM_HMI_LOGICAL_WIDTH` and `CONSORTIUM_HMI_LOGICAL_HEIGHT`, via
 `PocketApp::from_env`; its build
-runs `bun tools/build.ts <app> --outdir=<build>` (override with
-`CONSORTIUM_HMI_BUILD_CMD`), and the builder stages the bundle+pak into `dist/hmi/`.
+runs `bun node_modules/@pocketjs/framework/tools/build.ts <entry> --outdir=<build>` from
+`[hmi] source`, where `<entry>` is `./<app>.tsx`/`.ts` if that file exists there and the
+bare `<app>` otherwise (a demo shipped in the npm package, such as `hero-main`); override
+with `CONSORTIUM_HMI_BUILD_CMD`. `csti fetch` installs the package with `bun install`.
+The builder stages the bundle+pak into `dist/hmi/`. `examples/pocket-hmi` is the
+in-repo PocketJS project (`status-main`), used by the headless test and the `kiosk`
+example.
 
 The build pipeline writes `src/consortium.gen.rs` into generated endpoint crates. The
 example app/MCU crates use `include!("consortium.gen.rs")`; do not expect plain cargo
@@ -881,9 +886,9 @@ touching a manifest:
   `consortium-runtime-app`) out of the publish graph. Do not add versions to them.
 - `consortium-hmi-pocket` depends on the crates.io PocketJS crates
   (`pocketjs-core`, `pocket-runtime`, `pocket-guest-rquickjs`, `pocket-raster`) at the
-  version `submodules/pocketjs` is checked out at; bump both together, since the
-  guest rejects a bundle of another binding generation. The submodule is still
-  needed for the bun/JS side. It declares its own `rust-version = "1.93"` because
+  version of the npm `@pocketjs/framework` pinned in `examples/pocket-hmi/package.json`;
+  bump both together, since the guest rejects a bundle of another binding
+  generation. It declares its own `rust-version = "1.93"` because
   those crates require it. `melt-pot-shared` is `publish = false` as an example crate.
 - MSRV is `rust-version = "1.87"` in `[workspace.package]`, enforced by clippy's
   `incompatible_msrv` on every `just lint`. Raise it rather than `#[allow]`-ing.

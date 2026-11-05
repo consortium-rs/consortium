@@ -122,8 +122,9 @@ Pass a kernel source checkout to `csti build --linux <DIR>`. The build reads the
 selected BSP DTS/DTSI files, their quoted includes, and `dt-bindings` from that
 checkout. Consortium does not bundle Linux device-tree sources.
 
-Cog HMI builds use `vp build` when available, then `npm run build`. Pocket builds use
-`bun tools/build.ts`. `CONSORTIUM_HMI_BUILD_CMD` overrides either command for custom or
+Cog HMI builds use `vp build` when available, then `npm run build`. Pocket builds run the
+`tools/build.ts` of the `@pocketjs/framework` npm package installed in `[hmi] source`
+(`csti fetch` runs `bun install` there). `CONSORTIUM_HMI_BUILD_CMD` overrides either command for custom or
 split-host workflows.
 
 ## BitBake hand-off

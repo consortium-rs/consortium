@@ -32,13 +32,10 @@ for d in crates/*/; do n=$(basename "$d"); curl -sf "https://crates.io/api/v1/cr
 
 `consortium-hmi-pocket` depends on `pocketjs-core`, `pocket-runtime`,
 `pocket-guest-rquickjs`, and `pocket-raster` from crates.io. Their version is the
-release `submodules/pocketjs` is checked out at, so the Rust host and the
-bun-built bundle share one binding generation; the guest rejects a bundle whose
-`ui.__hostAbi` differs. When you move the submodule to a newer release tag, bump
-the four versions to match.
-
-The submodule is still required for the JS side — `bun tools/build.ts` produces
-the `<app>.js`/`.pak` pair the builder stages — so it does not go away.
+`@pocketjs/framework` release that `examples/pocket-hmi/package.json` pins, so
+the Rust host and the bun-built bundle share one binding generation; the guest
+rejects a bundle whose `ui.__hostAbi` differs. When you move to a newer PocketJS
+release, bump the npm pin (and `bun.lock`) and the four crate versions together.
 
 The crate declares `rust-version = "1.93"` instead of inheriting the workspace
 MSRV, because the PocketJS crates require 1.93.

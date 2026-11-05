@@ -12,12 +12,12 @@ DrawList), `pocket-runtime` (op dispatch, asset admission), `pocket-guest-rquick
 (QuickJS realm and the generated `ui.*` bindings), and `pocket-raster` (software
 DrawList rasterizer). No GPU stack and no `pocket3d` are involved.
 
-> **Versions move together.** The PocketJS crate versions match the release that
-> `submodules/pocketjs` is checked out at (`v0.16.0`), so the Rust host and the bun-built
-> bundle share one binding generation; the guest refuses a bundle whose
-> `ui.__hostAbi` differs. Bump the two together. The submodule is still needed for the
-> bun/JS side. **MSRV is 1.93**, above the workspace's, because the PocketJS crates
-> require it.
+> **Versions move together.** The PocketJS crate versions match the npm
+> `@pocketjs/framework` release that `examples/pocket-hmi/package.json` pins (`0.16.0`),
+> so the Rust host and the bun-built bundle share one binding generation; the guest
+> refuses a bundle whose `ui.__hostAbi` differs. Bump the two together, and pin the same
+> version in your own HMI project. **MSRV is 1.93**, above the workspace's, because the
+> PocketJS crates require it.
 
 ## Usage
 
@@ -151,8 +151,11 @@ Three consequences worth knowing:
 ## Pipeline support
 
 `csti build` supports `engine = "pocket"` end to end: bun build, `<app>.js`/`.pak`
-verification, `dist/hmi/` staging, and env injection. `[hmi] app` names the mounted
-`-main` entry (e.g. `hero-main`) and is required for this engine. `[hmi.logical]` sets the
+verification, `dist/hmi/` staging, and env injection. `[hmi] source` is a bun project
+that depends on the npm `@pocketjs/framework` (`csti fetch` runs `bun install` there);
+[`examples/pocket-hmi`](../../examples/pocket-hmi) is a minimal one. `[hmi] app` names
+the mounted entry: `<source>/<app>.tsx` (or `.ts`) when it exists, otherwise a demo
+shipped in the package (e.g. `hero-main`). It is required for this engine. `[hmi.logical]` sets the
 logical viewport, defaulting to 480 × 272.
 
 ## Features

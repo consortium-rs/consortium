@@ -29,8 +29,8 @@
 //! **Tool resolution** finds the right binary for a cross build: `resolve_cross_tool`
 //! locates a prefixed toolchain binary, `clean_path` strips host directories that would
 //! otherwise shadow SDK tools, and the HMI resolvers pick a frontend build command —
-//! `CONSORTIUM_HMI_BUILD_CMD` if set, then `vp`, then `npm` for Cog; `bun tools/build.ts`
-//! for Pocket. The override exists because the frontend sometimes has to be built
+//! `CONSORTIUM_HMI_BUILD_CMD` if set, then `vp`, then `npm` for Cog; `bun` running the
+//! installed `@pocketjs/framework`'s `tools/build.ts` for Pocket. The override exists because the frontend sometimes has to be built
 //! elsewhere: inside a Linux container the host's `node_modules/` is already populated,
 //! so pointing the command at `/bin/true` lets the pipeline consume the existing dist.
 //!
@@ -201,26 +201,43 @@ fn resolve_hmi_build_command_from(
     )
 }
 
-/// Resolves the PocketJS frontend build command for `app`, writing artifacts to
-/// `outdir` (the manifest's resolved `[hmi].build`).
+/// Path of the PocketJS build driver inside an installed `@pocketjs/framework`,
+/// relative to the HMI project directory the command runs in.
+pub const POCKET_BUILD_SCRIPT: &str = "node_modules/@pocketjs/framework/tools/build.ts";
+
+/// Resolves the PocketJS frontend build command for `app`, run from the HMI
+/// project directory `project_dir` and writing artifacts to `outdir` (the
+/// manifest's resolved `[hmi].build`).
 ///
 /// A `CONSORTIUM_HMI_BUILD_CMD` override wins verbatim; otherwise this runs
-/// `bun tools/build.ts <app> --outdir=<outdir>` from the project directory.
-pub fn resolve_pocket_build_command(app: &str, outdir: &Path) -> Result<HmiBuildCommand, String> {
+/// `bun node_modules/@pocketjs/framework/tools/build.ts <entry> --outdir=<outdir>`,
+/// using the `@pocketjs/framework` that `csti fetch` (`bun install`) put in the
+/// project. `<entry>` is `./<app>.tsx` (or `.ts`) when the project contains that
+/// file, and the bare `app` otherwise, which `build.ts` resolves against the demo
+/// apps shipped in the package (`hero-main`). Either way the outputs are
+/// `<app>.js` and `<app>.pak`, because `build.ts` names them after the entry.
+pub fn resolve_pocket_build_command(
+    app: &str,
+    project_dir: &Path,
+    outdir: &Path,
+) -> Result<HmiBuildCommand, String> {
     resolve_pocket_build_command_from(
         std::env::var("CONSORTIUM_HMI_BUILD_CMD").ok(),
         app,
         outdir,
+        |file| project_dir.join(file).is_file(),
         |tool| resolve_cross_tool(tool).ok(),
     )
 }
 
 /// Testable core of [`resolve_pocket_build_command`]; see
 /// [`resolve_hmi_build_command_from`] for why resolution is injected.
+/// `has_file` answers whether the project directory contains a relative path.
 fn resolve_pocket_build_command_from(
     env_cmd: Option<String>,
     app: &str,
     outdir: &Path,
+    has_file: impl Fn(&str) -> bool,
     resolve_tool: impl Fn(&str) -> Option<String>,
 ) -> Result<HmiBuildCommand, String> {
     if let Some(cmd) = env_cmd {
@@ -235,11 +252,16 @@ fn resolve_pocket_build_command_from(
          CONSORTIUM_HMI_BUILD_CMD"
             .to_string()
     })?;
+    let entry = ["tsx", "ts"]
+        .iter()
+        .map(|ext| format!("{app}.{ext}"))
+        .find(|file| has_file(file))
+        .map_or_else(|| app.to_string(), |file| format!("./{file}"));
     Ok(HmiBuildCommand::Resolved {
         program,
         args: vec![
-            "tools/build.ts".to_string(),
-            app.to_string(),
+            POCKET_BUILD_SCRIPT.to_string(),
+            entry,
             format!("--outdir={}", outdir.display()),
         ],
     })
@@ -619,19 +641,49 @@ mod tests {
         assert!(err.contains("empty"));
     }
 
+    fn bun(tool: &str) -> Option<String> {
+        (tool == "bun").then(|| "/tools/bun".to_string())
+    }
+
     #[test]
-    fn pocket_command_runs_bun_build_with_outdir() {
-        let cmd =
-            resolve_pocket_build_command_from(None, "hero-main", Path::new("/proj/dist"), |tool| {
-                (tool == "bun").then(|| "/tools/bun".to_string())
-            })
-            .expect("bun resolves");
+    fn pocket_command_builds_a_project_entry() {
+        let cmd = resolve_pocket_build_command_from(
+            None,
+            "status-main",
+            Path::new("/proj/dist"),
+            |file| file == "status-main.tsx",
+            bun,
+        )
+        .expect("bun resolves");
         assert_eq!(
             cmd,
             HmiBuildCommand::Resolved {
                 program: "/tools/bun".to_string(),
                 args: vec![
-                    "tools/build.ts".to_string(),
+                    POCKET_BUILD_SCRIPT.to_string(),
+                    "./status-main.tsx".to_string(),
+                    "--outdir=/proj/dist".to_string(),
+                ],
+            }
+        );
+    }
+
+    #[test]
+    fn pocket_command_falls_back_to_a_packaged_demo() {
+        let cmd = resolve_pocket_build_command_from(
+            None,
+            "hero-main",
+            Path::new("/proj/dist"),
+            |_| false,
+            bun,
+        )
+        .expect("bun resolves");
+        assert_eq!(
+            cmd,
+            HmiBuildCommand::Resolved {
+                program: "/tools/bun".to_string(),
+                args: vec![
+                    POCKET_BUILD_SCRIPT.to_string(),
                     "hero-main".to_string(),
                     "--outdir=/proj/dist".to_string(),
                 ],
@@ -645,6 +697,7 @@ mod tests {
             Some("just pocket hero-main".to_string()),
             "hero-main",
             Path::new("/proj/dist"),
+            |_| true,
             |_| Some("/tools/ignored".to_string()),
         )
         .expect("override resolves");
@@ -660,9 +713,14 @@ mod tests {
 
     #[test]
     fn pocket_command_errors_without_bun() {
-        let err =
-            resolve_pocket_build_command_from(None, "hero-main", Path::new("/proj/dist"), |_| None)
-                .expect_err("missing bun is an error");
+        let err = resolve_pocket_build_command_from(
+            None,
+            "hero-main",
+            Path::new("/proj/dist"),
+            |_| false,
+            |_| None,
+        )
+        .expect_err("missing bun is an error");
         assert!(err.contains("bun"));
     }
 
