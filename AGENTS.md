@@ -401,7 +401,9 @@ drives (i.MX93 CM33 `MU1_B`/`MU2_B`; i.MX95 CM7 `MU5_A`/`MU7_B`/`MU8_B`).
 `consortium-pac-imx9` and `consortium-pac-stm32mp2` are generated `no_std` PAC crates.
 Their chip features are `mimx93`/`mimx95` (default `mimx95`) and `stm32mp21`/`stm32mp257`
 (default `stm32mp257`), respectively. `just pac-regen` regenerates every PAC output end to
-end — chip dumps and IR under `crates/consortium-data/database/{chip,peri}/`, the PACs'
+end — chip dumps and IR under `crates/consortium-data/database/{chip,peri}/`, the
+per-family pin-mux/DMA-request databases under `database/signal/` (from
+`STM32_open_pin_data` and MCUX's `fsl_iomuxc.h`/eDMA headers), the PACs'
 `interrupts/` and `peripherals/`, and the HALs' `src/peripherals/<chip>.rs` — from the
 vendor submodules, with the pinned chiptool (`just setup-chiptool`). `just pac-verify`
 fails if the committed files differ from a fresh run. Corrections the parsers cannot

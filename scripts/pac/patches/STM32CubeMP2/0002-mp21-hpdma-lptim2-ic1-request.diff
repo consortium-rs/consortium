@@ -1,0 +1,24 @@
+Fix a duplicated HPDMA request number in ST's STM32MP2 HAL DMA header
+(STM32CubeMP2 v1.3.2), in the STM32MP21 branch (`#else` of `#if defined (LPDMA)`):
+
+- HPDMA_REQUEST_LPTIM2_IC1 and HPDMA_REQUEST_LPTIM2_IC2 are both 115, and 114 is
+  unused. LPTIM1 directly above is IC1/IC2/UE = 111/112/113 and LPTIM2_UE is 116,
+  so LPTIM2_IC1 is taken to be 114. Inferred from the numbering, not yet checked
+  against the RM0506 HPDMA request table; `stm32mp2xx_ll_dma.h` carries the same
+  duplicate and is not read by the pipeline.
+
+Without this `parse_signals_stm32.py` rejects stm32mp21 for a duplicate request.
+
+diff --git a/Drivers/STM32MP2xx_HAL_Driver/Inc/stm32mp2xx_hal_dma.h b/Drivers/STM32MP2xx_HAL_Driver/Inc/stm32mp2xx_hal_dma.h
+index c47686b2..d3b870a7 100644
+--- a/Drivers/STM32MP2xx_HAL_Driver/Inc/stm32mp2xx_hal_dma.h
++++ b/Drivers/STM32MP2xx_HAL_Driver/Inc/stm32mp2xx_hal_dma.h
+@@ -578,7 +578,7 @@ typedef struct __DMA_HandleTypeDef
+ #define HPDMA_REQUEST_LPTIM1_IC1 (111U) /*!< HPDMA HW request is LPTIM1_IC1    */
+ #define HPDMA_REQUEST_LPTIM1_IC2 (112U) /*!< HPDMA HW request is LPTIM1_IC2    */
+ #define HPDMA_REQUEST_LPTIM1_UE  (113U) /*!< HPDMA HW request is LPTIM1_UE     */
+-#define HPDMA_REQUEST_LPTIM2_IC1 (115U) /*!< HPDMA HW request is LPTIM2_IC1    */
++#define HPDMA_REQUEST_LPTIM2_IC1 (114U) /*!< HPDMA HW request is LPTIM2_IC1    */
+ #define HPDMA_REQUEST_LPTIM2_IC2 (115U) /*!< HPDMA HW request is LPTIM2_IC2    */
+ #define HPDMA_REQUEST_LPTIM2_UE  (116U) /*!< HPDMA HW request is LPTIM2_UE     */
+ #define HPDMA_REQUEST_TIM2_TRIG  (117U) /*!< HPDMA HW request is TIM2_TRIG     */

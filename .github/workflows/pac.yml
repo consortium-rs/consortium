@@ -59,6 +59,8 @@ jobs:
         run: |
           python scripts/pac/parse_stm32.py --all
           python scripts/pac/parse_nxp.py --all
+          python scripts/pac/parse_signals_stm32.py --all
+          python scripts/pac/parse_signals_nxp.py --all
           python scripts/pac/test_output.py
 
       - name: Validate with chiptool
