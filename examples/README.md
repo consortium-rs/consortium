@@ -5,6 +5,12 @@
 - [`utils/defmt-host`](utils/defmt-host/) maps a CDBG UIO ring, drains all defmt
   messages currently available, and exits without polling.
 
+## pocket-hmi
+
+[`pocket-hmi`](pocket-hmi/) is a minimal PocketJS project for the `pocket` HMI
+engine, built against the npm `@pocketjs/framework`. The `consortium-hmi-pocket`
+headless test and `kiosk` example load its `dist/` output.
+
 ## melt-pot
 
 A full-stack demo: a real-time coprocessor streams simulated temperature
