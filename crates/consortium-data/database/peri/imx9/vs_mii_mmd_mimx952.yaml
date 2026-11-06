@@ -1,0 +1,1324 @@
+block/VS_MII_MMD:
+  description: ''
+  items:
+    - name: SR_MII_CTRL
+      byte_offset: 0
+      fieldset: VS_MII_MMD_SR_MII_CTRL
+    - name: SR_MII_DEV_ID1
+      byte_offset: 4
+    - name: SR_MII_AN_ADV
+      byte_offset: 8
+      fieldset: VS_MII_MMD_SR_MII_AN_ADV
+    - name: SR_MII_AN_EXPN
+      byte_offset: 12
+    - name: SR_MII_EXT_STS
+      byte_offset: 30
+    - name: SR_MII_TIME_SYNC_ABL
+      byte_offset: 3600
+      fieldset: VS_MII_MMD_SR_MII_TIME_SYNC_ABL
+    - name: SR_MII_TIME_SYNC_TX_MAX_DLY_UPR
+      byte_offset: 3604
+    - name: SR_MII_TIME_SYNC_TX_MIN_DLY_UPR
+      byte_offset: 3608
+    - name: SR_MII_TIME_SYNC_RX_MAX_DLY_UPR
+      byte_offset: 3612
+    - name: SR_MII_TIME_SYNC_RX_MIN_DLY_UPR
+      byte_offset: 3616
+    - name: VR_MII_DIG_CTRL1
+      byte_offset: 65536
+      fieldset: VS_MII_MMD_VR_MII_DIG_CTRL1
+    - name: VR_MII_AN_INTR_STS
+      byte_offset: 65540
+    - name: VR_MII_DBG_CTRL
+      byte_offset: 65546
+    - name: VR_MII_EEE_TXTIMER
+      byte_offset: 65552
+    - name: VR_MII_LINK_TIMER_CTRL
+      byte_offset: 65556
+    - name: VR_MII_DIG_STS
+      byte_offset: 65568
+    - name: VR_MII_MISC_STS
+      byte_offset: 65584
+    - name: VR_MII_RX_LSTS
+      byte_offset: 65600
+    - name: VR_MII_MP_12G_16G_25G_TX_GENCTRL0
+      byte_offset: 65632
+    - name: VR_MII_MP_12G_16G_TX_GENCTRL2
+      byte_offset: 65636
+    - name: VR_MII_MP_12G_16G_25G_TX_RATE_CTRL
+      byte_offset: 65640
+    - name: VR_MII_MP_12G_16G_25G_TX_EQ_CTRL0
+      byte_offset: 65644
+    - name: VR_MII_CONSUMER_10G_TX_TERM_CTRL
+      byte_offset: 65656
+    - name: VR_MII_MP_12G_16G_25G_TX_STS
+      byte_offset: 65664
+    - name: VR_MII_MP_12G_16G_25G_RX_GENCTRL0
+      byte_offset: 65696
+    - name: VR_MII_MP_12G_16G_RX_GENCTRL2
+      byte_offset: 65700
+    - name: VR_MII_MP_12G_16G_25G_RX_RATE_CTRL
+      byte_offset: 65704
+    - name: VR_MII_MP_12G_16G_25G_RX_CDR_CTRL
+      byte_offset: 65708
+    - name: VR_MII_MP_12G_RX_EQ_CTRL0
+      byte_offset: 65712
+    - name: VR_MII_MP_12G_16G_25G_RX_EQ_CTRL4
+      byte_offset: 65720
+    - name: VR_MII_MP_12G_16G_25G_DFE_TAP_CTRL0
+      byte_offset: 65724
+    - name: VR_MII_MP_12G_16G_25G_RX_STS
+      byte_offset: 65728
+    - name: VR_MII_CONSUMER_10G_RX_TERM_CTRL
+      byte_offset: 65736
+    - name: VR_MII_CONSUMER_10G_RX_IQ_CTRL0
+      byte_offset: 65750
+    - name: VR_MII_MP_12G_16G_25G_MPLL_CMN_CTRL
+      byte_offset: 65760
+    - name: VR_MII_MP_12G_MPLLA_CTRL1
+      byte_offset: 65764
+    - name: VR_MII_MP_12G_16G_MPLLB_CTRL0
+      byte_offset: 65768
+    - name: VR_MII_MP_12G_16G_MPLLB_CTRL2
+      byte_offset: 65772
+    - name: VR_MII_MP_12G_MPLLB_CTRL3
+      byte_offset: 65776
+    - name: VR_MII_MP_12G_16G_25G_MISC_CTRL0
+      byte_offset: 65824
+    - name: VR_MII_MP_12G_16G_25G_VCO_CAL_LD0
+      byte_offset: 65828
+    - name: VR_MII_MP_12G_VCO_CAL_REF0
+      byte_offset: 65836
+    - name: VR_MII_MP_12G_16G_25G_MISC_STS
+      byte_offset: 65840
+      fieldset: VS_MII_MMD_VR_MII_MP_12G_16G_25G_MISC_STS
+    - name: VR_MII_MP_12G_16G_25G_SRAM
+      byte_offset: 65846
+    - name: VR_MII_SNPS_CR_CTRL
+      byte_offset: 65856
+    - name: VR_MII_SNPS_CR_DATA
+      byte_offset: 65860
+      fieldset: VS_MII_MMD_VR_MII_SNPS_CR_DATA
+    - name: VR_MII_DIG_CTRL2
+      byte_offset: 65986
+fieldset/VS_MII_MMD_SR_MII_CTRL:
+  description: ''
+  fields:
+    - name: SS5
+      bit_offset: 5
+      bit_size: 1
+      description: Reserved
+    - name: SS6
+      bit_offset: 6
+      bit_size: 1
+      description: Reserved
+    - name: LPM
+      bit_offset: 11
+      bit_size: 1
+    - name: SS13
+      bit_offset: 13
+      bit_size: 1
+      description: Speed Selection (LSB)
+    - name: LBE
+      bit_offset: 14
+      bit_size: 1
+      description: Speed Selection (LSB)
+    - name: RST
+      bit_offset: 15
+      bit_size: 1
+      description: Soft Reset (RW,SC Type)
+fieldset/VS_MII_MMD_SR_MII_CTRL_DUPLEX:
+  description: ''
+  fields:
+    - name: MODE
+      bit_offset: 8
+      bit_size: 1
+      description: Speed Selection
+fieldset/VS_MII_MMD_SR_MII_CTRL_RESTART:
+  description: ''
+  fields:
+    - name: AN
+      bit_offset: 9
+      bit_size: 1
+fieldset/VS_MII_MMD_SR_MII_CTRL_AN:
+  description: ''
+  fields:
+    - name: ENABLE
+      bit_offset: 12
+      bit_size: 1
+      description: Enable Auto-Negotiation
+fieldset/VS_MII_MMD_SR_MII_STS_EXT_REG:
+  description: ''
+  fields:
+    - name: CAP
+      bit_offset: 0
+      bit_size: 1
+fieldset/VS_MII_MMD_SR_MII_STS_LINK:
+  description: ''
+  fields:
+    - name: STS
+      bit_offset: 2
+      bit_size: 1
+fieldset/VS_MII_MMD_SR_MII_STS_AN:
+  description: ''
+  fields:
+    - name: ABL
+      bit_offset: 3
+      bit_size: 1
+    - name: CMPL
+      bit_offset: 5
+      bit_size: 1
+fieldset/VS_MII_MMD_SR_MII_STS:
+  description: ''
+  fields:
+    - name: RF
+      bit_offset: 4
+      bit_size: 1
+    - name: HD100T
+      bit_offset: 9
+      bit_size: 1
+    - name: FD100T
+      bit_offset: 10
+      bit_size: 1
+    - name: HD10ABL
+      bit_offset: 11
+      bit_size: 1
+      description: 10 Mbps Half-Duplex Ability
+    - name: FD10ABL
+      bit_offset: 12
+      bit_size: 1
+      description: 10 Mbps Full-Duplex Ability
+    - name: HD100ABL
+      bit_offset: 13
+      bit_size: 1
+    - name: FD100ABL
+      bit_offset: 14
+      bit_size: 1
+    - name: ABL100T4
+      bit_offset: 15
+      bit_size: 1
+      description: 100BASE-T4 Ability
+fieldset/VS_MII_MMD_SR_MII_STS_MF_PRE:
+  description: ''
+  fields:
+    - name: SUP
+      bit_offset: 6
+      bit_size: 1
+fieldset/VS_MII_MMD_SR_MII_STS_UN_DIR:
+  description: ''
+  fields:
+    - name: ABL
+      bit_offset: 7
+      bit_size: 1
+fieldset/VS_MII_MMD_SR_MII_STS_EXT_STS:
+  description: ''
+  fields:
+    - name: ABL
+      bit_offset: 8
+      bit_size: 1
+fieldset/VS_MII_MMD_SR_MII_AN_ADV:
+  description: ''
+  fields:
+    - name: FD
+      bit_offset: 5
+      bit_size: 1
+      description: Full Duplex
+    - name: HD
+      bit_offset: 6
+      bit_size: 1
+      description: Full Duplex
+    - name: PAUSE
+      bit_offset: 7
+      bit_size: 2
+      description: Half Duplex
+    - name: RF
+      bit_offset: 12
+      bit_size: 2
+    - name: NP
+      bit_offset: 15
+      bit_size: 1
+      description: Next Page
+fieldset/VS_MII_MMD_SR_MII_LP_BABL_LP:
+  description: ''
+  fields:
+    - name: FD
+      bit_offset: 5
+      bit_size: 1
+      description: Full Duplex
+    - name: HD
+      bit_offset: 6
+      bit_size: 1
+      description: Full Duplex
+    - name: PAUSE
+      bit_offset: 7
+      bit_size: 2
+      description: Half Duplex
+    - name: RF
+      bit_offset: 12
+      bit_size: 2
+    - name: ACK
+      bit_offset: 14
+      bit_size: 1
+    - name: NP
+      bit_offset: 15
+      bit_size: 1
+      description: Next Page
+fieldset/VS_MII_MMD_SR_MII_AN_EXPN_PG:
+  description: ''
+  fields:
+    - name: RCVD
+      bit_offset: 1
+      bit_size: 1
+fieldset/VS_MII_MMD_SR_MII_AN_EXPN_LD_NP:
+  description: ''
+  fields:
+    - name: ABL
+      bit_offset: 2
+      bit_size: 1
+fieldset/VS_MII_MMD_SR_MII_EXT_STS_CAP_1G_T:
+  description: ''
+  fields:
+    - name: HD
+      bit_offset: 12
+      bit_size: 1
+    - name: FD
+      bit_offset: 13
+      bit_size: 1
+fieldset/VS_MII_MMD_SR_MII_EXT_STS_CAP_1G_X:
+  description: ''
+  fields:
+    - name: HD
+      bit_offset: 14
+      bit_size: 1
+    - name: FD
+      bit_offset: 15
+      bit_size: 1
+fieldset/VS_MII_MMD_SR_MII_TIME_SYNC_ABL_MII_RX_DLY:
+  description: ''
+  fields:
+    - name: ABL
+      bit_offset: 0
+      bit_size: 1
+fieldset/VS_MII_MMD_SR_MII_TIME_SYNC_ABL_MII_TX_DLY:
+  description: ''
+  fields:
+    - name: ABL
+      bit_offset: 1
+      bit_size: 1
+fieldset/VS_MII_MMD_SR_MII_TIME_SYNC_ABL_FINE_RX:
+  description: ''
+  fields:
+    - name: DLY
+      bit_offset: 2
+      bit_size: 1
+fieldset/VS_MII_MMD_SR_MII_TIME_SYNC_ABL_FINE_TX:
+  description: ''
+  fields:
+    - name: DLY
+      bit_offset: 3
+      bit_size: 1
+fieldset/VS_MII_MMD_SR_MII_TIME_SYNC_ABL_TXRX:
+  description: ''
+  fields:
+    - name: NUC
+      bit_offset: 10
+      bit_size: 1
+fieldset/VS_MII_MMD_SR_MII_TIME_SYNC_ABL:
+  description: ''
+  fields:
+    - name: MLS
+      bit_offset: 11
+      bit_size: 1
+fieldset/VS_MII_MMD_SR_MII_TIME_SYNC_ABL_TREF:
+  description: ''
+  fields:
+    - name: FS
+      bit_offset: 12
+      bit_size: 1
+    - name: SFD
+      bit_offset: 13
+      bit_size: 1
+fieldset/VS_MII_MMD_SR_MII_TIME_SYNC_TX_MAX_DLY_LWR_MII_TX_MAX_DLY:
+  description: ''
+  fields:
+    - name: LWR
+      bit_offset: 0
+      bit_size: 16
+fieldset/VS_MII_MMD_SR_MII_TIME_SYNC_TX_MAX_DLY_UPR_MII_TX_MAX_DLY:
+  description: ''
+  fields:
+    - name: UPR
+      bit_offset: 0
+      bit_size: 16
+fieldset/VS_MII_MMD_SR_MII_TIME_SYNC_TX_MIN_DLY_LWR_MII_TX_MIN_DLY:
+  description: ''
+  fields:
+    - name: LWR
+      bit_offset: 0
+      bit_size: 16
+fieldset/VS_MII_MMD_SR_MII_TIME_SYNC_TX_MIN_DLY_UPR_MII_TX_MIN_DLY:
+  description: ''
+  fields:
+    - name: UPR
+      bit_offset: 0
+      bit_size: 16
+fieldset/VS_MII_MMD_SR_MII_TIME_SYNC_RX_MAX_DLY_LWR_MII_RX_MAX_DLY:
+  description: ''
+  fields:
+    - name: LWR
+      bit_offset: 0
+      bit_size: 16
+fieldset/VS_MII_MMD_SR_MII_TIME_SYNC_RX_MAX_DLY_UPR_MII_RX_MAX_DLY:
+  description: ''
+  fields:
+    - name: UPR
+      bit_offset: 0
+      bit_size: 16
+fieldset/VS_MII_MMD_SR_MII_TIME_SYNC_RX_MIN_DLY_LWR_MII_RX_MIN_DLY:
+  description: ''
+  fields:
+    - name: LWR
+      bit_offset: 0
+      bit_size: 16
+fieldset/VS_MII_MMD_SR_MII_TIME_SYNC_RX_MIN_DLY_UPR_MII_RX_MIN_DLY:
+  description: ''
+  fields:
+    - name: UPR
+      bit_offset: 0
+      bit_size: 16
+fieldset/VS_MII_MMD_VR_MII_DIG_CTRL1_PHY_MODE:
+  description: ''
+  fields:
+    - name: CTRL
+      bit_offset: 0
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_DIG_CTRL1_BYP:
+  description: ''
+  fields:
+    - name: PWRUP
+      bit_offset: 1
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_DIG_CTRL1_EN_2_5G:
+  description: ''
+  fields:
+    - name: MODE
+      bit_offset: 2
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_DIG_CTRL1_CL37_TMR_OVR:
+  description: ''
+  fields:
+    - name: RIDE
+      bit_offset: 3
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_DIG_CTRL1_PRE:
+  description: ''
+  fields:
+    - name: EMP
+      bit_offset: 6
+      bit_size: 1
+      description: Preemption Packet Enable
+fieldset/VS_MII_MMD_VR_MII_DIG_CTRL1_MSK_RD:
+  description: ''
+  fields:
+    - name: ERR
+      bit_offset: 7
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_DIG_CTRL1:
+  description: ''
+  fields:
+    - name: INIT
+      bit_offset: 8
+      bit_size: 1
+      description: Datapath Initialization Control
+    - name: PWRSV
+      bit_offset: 11
+      bit_size: 1
+    - name: R2TLBE
+      bit_offset: 14
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_DIG_CTRL1_MAC_AUTO:
+  description: ''
+  fields:
+    - name: SW
+      bit_offset: 9
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_DIG_CTRL1_CS:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 10
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_DIG_CTRL1_CL37:
+  description: ''
+  fields:
+    - name: BP
+      bit_offset: 12
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_DIG_CTRL1_EN:
+  description: ''
+  fields:
+    - name: VSMMD1
+      bit_offset: 13
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_DIG_CTRL1_VR:
+  description: ''
+  fields:
+    - name: RST
+      bit_offset: 15
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_AN_CTRL_MII_AN_INTR:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_AN_CTRL_PCS:
+  description: ''
+  fields:
+    - name: MODE
+      bit_offset: 1
+      bit_size: 2
+fieldset/VS_MII_MMD_VR_MII_AN_CTRL_TX:
+  description: ''
+  fields:
+    - name: CONFIG
+      bit_offset: 3
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_AN_CTRL_SGMII_LINK:
+  description: ''
+  fields:
+    - name: STS
+      bit_offset: 4
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_AN_CTRL_MII:
+  description: ''
+  fields:
+    - name: CTRL
+      bit_offset: 8
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_AN_CTRL_IND_TX:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 9
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_AN_INTR_STS_CL37_ANCMPLT:
+  description: ''
+  fields:
+    - name: INTR
+      bit_offset: 0
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_AN_INTR_STS_CL37_ANSGM:
+  description: ''
+  fields:
+    - name: STS
+      bit_offset: 1
+      bit_size: 4
+fieldset/VS_MII_MMD_VR_MII_AN_INTR_STS_LP_EEE:
+  description: ''
+  fields:
+    - name: CAP
+      bit_offset: 5
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_AN_INTR_STS_LP_CK:
+  description: ''
+  fields:
+    - name: STP
+      bit_offset: 6
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_AN_INTR_STS_USXG_AN:
+  description: ''
+  fields:
+    - name: STS
+      bit_offset: 8
+      bit_size: 7
+      description: Reserved
+fieldset/VS_MII_MMD_VR_MII_TC:
+  description: ''
+  fields:
+    - name: TP
+      bit_offset: 0
+      bit_size: 2
+      description: Test Pattern Select
+    - name: TPE
+      bit_offset: 2
+      bit_size: 1
+      description: Test Pattern Select
+fieldset/VS_MII_MMD_VR_MII_DBG_CTRL_SUPRESS_LOS:
+  description: ''
+  fields:
+    - name: DET
+      bit_offset: 4
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_DBG_CTRL_SUPRESS_EEE_LOS:
+  description: ''
+  fields:
+    - name: DET
+      bit_offset: 5
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_DBG_CTRL_RX_DT_EN:
+  description: ''
+  fields:
+    - name: CTL
+      bit_offset: 6
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_DBG_CTRL_RX_SYNC:
+  description: ''
+  fields:
+    - name: CTL
+      bit_offset: 7
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_DBG_CTRL_TX_PMBL:
+  description: ''
+  fields:
+    - name: CTL
+      bit_offset: 8
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_DBG_CTRL_RX_PMBL:
+  description: ''
+  fields:
+    - name: CTL
+      bit_offset: 9
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_DBG_CTRL_SS_CORE:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 10
+      bit_size: 1
+      description: Reserved
+fieldset/VS_MII_MMD_VR_MII_DBG_CTRL_LOS:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 13
+      bit_size: 1
+      description: Loss-of-Signal Selection
+fieldset/VS_MII_MMD_VR_MII_EEE_MCTRL0_LTX:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+      description: LPI Tx Enable
+fieldset/VS_MII_MMD_VR_MII_EEE_MCTRL0_LRX:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 1
+      bit_size: 1
+      description: LPI Tx Enable
+fieldset/VS_MII_MMD_VR_MII_EEE_MCTRL0_TX_QUIET:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 2
+      bit_size: 1
+      description: LPI Rx Enable
+fieldset/VS_MII_MMD_VR_MII_EEE_MCTRL0_RX_QUIET:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 3
+      bit_size: 1
+      description: Rx Quiet Enable
+fieldset/VS_MII_MMD_VR_MII_EEE_MCTRL0_TX_EN:
+  description: ''
+  fields:
+    - name: CTRL
+      bit_offset: 4
+      bit_size: 1
+      description: Tx Control Enable
+fieldset/VS_MII_MMD_VR_MII_EEE_MCTRL0_SIGN:
+  description: ''
+  fields:
+    - name: BIT
+      bit_offset: 6
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_EEE_MCTRL0_RX_EN:
+  description: ''
+  fields:
+    - name: CTRL
+      bit_offset: 7
+      bit_size: 1
+      description: Rx Control Enable
+fieldset/VS_MII_MMD_VR_MII_EEE_MCTRL0_MULT_FACT:
+  description: ''
+  fields:
+    - name: 100NS
+      bit_offset: 8
+      bit_size: 4
+fieldset/VS_MII_MMD_VR_MII_EEE_MCTRL0:
+  description: ''
+  fields:
+    - name: CLKSTOP
+      bit_offset: 12
+      bit_size: 4
+      description: Clock Stop
+fieldset/VS_MII_MMD_VR_MII_EEE_TXTIMER_TSL:
+  description: ''
+  fields:
+    - name: RES
+      bit_offset: 0
+      bit_size: 6
+      description: TSL Resolution
+fieldset/VS_MII_MMD_VR_MII_EEE_RXTIMER_RES:
+  description: ''
+  fields:
+    - name: 100U
+      bit_offset: 0
+      bit_size: 8
+      description: 100 Us Resolution
+fieldset/VS_MII_MMD_VR_MII_EEE_RXTIMER_TWR:
+  description: ''
+  fields:
+    - name: RES
+      bit_offset: 8
+      bit_size: 6
+      description: TWR Resolution
+fieldset/VS_MII_MMD_VR_MII_LINK_TIMER_CTRL_CL37_LINK:
+  description: ''
+  fields:
+    - name: TIME
+      bit_offset: 0
+      bit_size: 16
+fieldset/VS_MII_MMD_VR_MII_EEE_MCTRL1_TRN:
+  description: ''
+  fields:
+    - name: LPI
+      bit_offset: 0
+      bit_size: 1
+    - name: RXLPI
+      bit_offset: 8
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_EEE_MCTRL1_TXEN_EA:
+  description: ''
+  fields:
+    - name: TMR
+      bit_offset: 1
+      bit_size: 6
+fieldset/VS_MII_MMD_VR_MII_DIG_STS_LB:
+  description: ''
+  fields:
+    - name: ACTIVE
+      bit_offset: 1
+      bit_size: 1
+      description: Reserved
+fieldset/VS_MII_MMD_VR_MII_DIG_STS_PSEQ:
+  description: ''
+  fields:
+    - name: STATE
+      bit_offset: 2
+      bit_size: 3
+      description: Reserved
+fieldset/VS_MII_MMD_VR_MII_DIG_STS_RXFIFO:
+  description: ''
+  fields:
+    - name: UNDF
+      bit_offset: 5
+      bit_size: 1
+    - name: OVF
+      bit_offset: 6
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_DIG_STS_LRX:
+  description: ''
+  fields:
+    - name: STATE
+      bit_offset: 10
+      bit_size: 3
+fieldset/VS_MII_MMD_VR_MII_DIG_STS_LTX:
+  description: ''
+  fields:
+    - name: STATE
+      bit_offset: 13
+      bit_size: 3
+fieldset/VS_MII_MMD_VR_MII_ICG_ERRCNT1:
+  description: ''
+  fields:
+    - name: EC0
+      bit_offset: 0
+      bit_size: 8
+fieldset/VS_MII_MMD_VR_MII_MISC_STS_BIT:
+  description: ''
+  fields:
+    - name: SFT
+      bit_offset: 0
+      bit_size: 4
+      description: Bit Shift
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_25G_TX_GENCTRL1_VBOOST:
+  description: ''
+  fields:
+    - name: LVL
+      bit_offset: 8
+      bit_size: 3
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_TX_GENCTRL2_TX0:
+  description: ''
+  fields:
+    - name: WIDTH
+      bit_offset: 8
+      bit_size: 2
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_TX_GENCTRL2_TX1:
+  description: ''
+  fields:
+    - name: WIDTH
+      bit_offset: 10
+      bit_size: 2
+      description: Reserved
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_TX_GENCTRL2_TX2:
+  description: ''
+  fields:
+    - name: WIDTH
+      bit_offset: 12
+      bit_size: 2
+      description: Reserved
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_TX_GENCTRL2_TX3:
+  description: ''
+  fields:
+    - name: WIDTH
+      bit_offset: 14
+      bit_size: 2
+      description: Reserved
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_25G_TX_BOOST_CTRL_TX0:
+  description: ''
+  fields:
+    - name: IBOOST
+      bit_offset: 0
+      bit_size: 4
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_25G_TX_RATE_CTRL_TX0:
+  description: ''
+  fields:
+    - name: RATE
+      bit_offset: 0
+      bit_size: 3
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_25G_TX_POWER_STATE_CTRL_TX0:
+  description: ''
+  fields:
+    - name: PSTATE
+      bit_offset: 0
+      bit_size: 2
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_25G_TX_POWER_STATE_CTRL_TX1:
+  description: ''
+  fields:
+    - name: PSTATE
+      bit_offset: 2
+      bit_size: 2
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_25G_TX_POWER_STATE_CTRL_TX2:
+  description: ''
+  fields:
+    - name: PSTATE
+      bit_offset: 4
+      bit_size: 2
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_25G_TX_POWER_STATE_CTRL_TX3:
+  description: ''
+  fields:
+    - name: PSTATE
+      bit_offset: 6
+      bit_size: 2
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_25G_TX_EQ_CTRL0_TX_EQ:
+  description: ''
+  fields:
+    - name: PRE
+      bit_offset: 0
+      bit_size: 6
+    - name: MAIN
+      bit_offset: 8
+      bit_size: 6
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_25G_TX_EQ_CTRL1_TX_EQ:
+  description: ''
+  fields:
+    - name: POST
+      bit_offset: 0
+      bit_size: 6
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_25G_TX_EQ_CTRL1_TX_EQ_OVR:
+  description: ''
+  fields:
+    - name: RIDE
+      bit_offset: 6
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_25G_TX_EQ_CTRL1_TX_EQ_DEF:
+  description: ''
+  fields:
+    - name: CTRL
+      bit_offset: 7
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_25G_TX_EQ_CTRL1_CA_TX:
+  description: ''
+  fields:
+    - name: EQ
+      bit_offset: 8
+      bit_size: 1
+      description: Reserved
+fieldset/VS_MII_MMD_VR_MII_CONSUMER_10G_TX_TERM_CTRL_TX0:
+  description: ''
+  fields:
+    - name: TERM
+      bit_offset: 0
+      bit_size: 3
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_RX_GENCTRL2_RX0:
+  description: ''
+  fields:
+    - name: WIDTH
+      bit_offset: 8
+      bit_size: 2
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_RX_GENCTRL2_RX1:
+  description: ''
+  fields:
+    - name: WIDTH
+      bit_offset: 10
+      bit_size: 2
+      description: Reserved
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_RX_GENCTRL2_RX2:
+  description: ''
+  fields:
+    - name: WIDTH
+      bit_offset: 12
+      bit_size: 2
+      description: Reserved
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_RX_GENCTRL2_RX3:
+  description: ''
+  fields:
+    - name: WIDTH
+      bit_offset: 14
+      bit_size: 2
+      description: Reserved
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_25G_RX_RATE_CTRL_RX0:
+  description: ''
+  fields:
+    - name: RATE
+      bit_offset: 0
+      bit_size: 2
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_25G_RX_POWER_STATE_CTRL_RX0:
+  description: ''
+  fields:
+    - name: PSTATE
+      bit_offset: 0
+      bit_size: 2
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_25G_RX_POWER_STATE_CTRL_RX1:
+  description: ''
+  fields:
+    - name: PSTATE
+      bit_offset: 2
+      bit_size: 2
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_25G_RX_POWER_STATE_CTRL_RX2:
+  description: ''
+  fields:
+    - name: PSTATE
+      bit_offset: 4
+      bit_size: 2
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_25G_RX_POWER_STATE_CTRL_RX3:
+  description: ''
+  fields:
+    - name: PSTATE
+      bit_offset: 6
+      bit_size: 2
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_25G_RX_POWER_STATE_CTRL_EEE_OVR:
+  description: ''
+  fields:
+    - name: RIDE
+      bit_offset: 12
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_25G_RX_ATTN_CTRL_RX0_EQ_ATT:
+  description: ''
+  fields:
+    - name: LVL
+      bit_offset: 0
+      bit_size: 3
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_25G_RX_EQ_CTRL4_RX_AD:
+  description: ''
+  fields:
+    - name: REQ
+      bit_offset: 12
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_CONSUMER_10G_RX_TERM_CTRL_RX0:
+  description: ''
+  fields:
+    - name: TERM
+      bit_offset: 0
+      bit_size: 3
+fieldset/VS_MII_MMD_VR_MII_CONSUMER_10G_RX_IQ_CTRL0_RX0_DELTA:
+  description: ''
+  fields:
+    - name: IQ
+      bit_offset: 8
+      bit_size: 4
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_MPLLA_CTRL0_MPLLA:
+  description: ''
+  fields:
+    - name: MULTIPLIER
+      bit_offset: 0
+      bit_size: 8
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_MPLLA_CTRL0_MPLLA_SSC_CLK:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 8
+      bit_size: 3
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_MPLLA_CTRL0_FRAC:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 12
+      bit_size: 1
+      description: Reserved
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_MPLLA_CTRL0_FR_CFG_UP:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 13
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_MPLLA_CTRL0_PMIX:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 14
+      bit_size: 1
+      description: Reserved
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_MPLLA_CTRL0_MPLLA_CAL:
+  description: ''
+  fields:
+    - name: DISABLE
+      bit_offset: 15
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_MP_12G_MPLLA_CTRL1_MPLLA_SSC:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+    - name: RANGE
+      bit_offset: 1
+      bit_size: 3
+fieldset/VS_MII_MMD_VR_MII_MP_12G_MPLLA_CTRL1_MPLLA_SSC_CLK:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 4
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_MP_12G_MPLLA_CTRL1_MPLLA_FRACN:
+  description: ''
+  fields:
+    - name: CTRL
+      bit_offset: 5
+      bit_size: 11
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_MPLLA_CTRL2_MPLLA_DIV:
+  description: ''
+  fields:
+    - name: MULT
+      bit_offset: 0
+      bit_size: 8
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_MPLLA_CTRL2_MPLLA_DIV8_CLK:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 8
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_MPLLA_CTRL2_MPLLA_DIV10_CLK:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 9
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_MPLLA_CTRL2_MPLLA_DIV_CLK:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 10
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_MPLLA_CTRL2_MPLLA_TX_CLK:
+  description: ''
+  fields:
+    - name: DIV
+      bit_offset: 11
+      bit_size: 3
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_MPLLA_CTRL2_MPLLA_DIV16P5_CLK:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 14
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_MPLLA_CTRL2_MPLLA_WRD_DIV2:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 15
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_MPLLB_CTRL0_MPLLB:
+  description: ''
+  fields:
+    - name: MULTIPLIER
+      bit_offset: 0
+      bit_size: 8
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_MPLLB_CTRL0_MPLLB_SSC_CLK:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 8
+      bit_size: 3
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_MPLLB_CTRL0_FRAC:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 12
+      bit_size: 1
+      description: Reserved
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_MPLLB_CTRL0_FR_CFG_UP:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 13
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_MPLLB_CTRL0_PMIX:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 14
+      bit_size: 1
+      description: Reserved
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_MPLLB_CTRL0_MPLLB_CAL:
+  description: ''
+  fields:
+    - name: DISABLE
+      bit_offset: 15
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_MP_12G_MPLLB_CTRL1_MPLLB_SSC:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+    - name: RANGE
+      bit_offset: 1
+      bit_size: 3
+fieldset/VS_MII_MMD_VR_MII_MP_12G_MPLLB_CTRL1_MPLLB_FRACN:
+  description: ''
+  fields:
+    - name: CTRL
+      bit_offset: 5
+      bit_size: 11
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_MPLLB_CTRL2_MPLLB_DIV:
+  description: ''
+  fields:
+    - name: MULT
+      bit_offset: 0
+      bit_size: 8
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_MPLLB_CTRL2_MPLLB_DIV8_CLK:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 8
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_MPLLB_CTRL2_MPLLB_DIV10_CLK:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 9
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_MPLLB_CTRL2_MPLLB_DIV_CLK:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 10
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_MPLLB_CTRL2_MPLLB_TX_CLK:
+  description: ''
+  fields:
+    - name: DIV
+      bit_offset: 11
+      bit_size: 3
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_MPLLB_CTRL2_MPLLB_RECAL_BANK:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 14
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_MPLLB_CTRL2_MPLLB_WRD_DIV2:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 15
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_MP_12G_MPLLA_CTRL3_MPLLA:
+  description: ''
+  fields:
+    - name: BANDWIDTH
+      bit_offset: 0
+      bit_size: 16
+fieldset/VS_MII_MMD_VR_MII_MP_12G_MPLLB_CTRL3_MPLLB:
+  description: ''
+  fields:
+    - name: BANDWIDTH
+      bit_offset: 0
+      bit_size: 16
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_25G_MISC_CTRL0_RX_VREF:
+  description: ''
+  fields:
+    - name: CTRL
+      bit_offset: 8
+      bit_size: 5
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_25G_MISC_CTRL0_RTUNE:
+  description: ''
+  fields:
+    - name: REQ
+      bit_offset: 13
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_25G_MISC_CTRL0_CR_PARA:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 14
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_25G_MISC_CTRL0_PLL:
+  description: ''
+  fields:
+    - name: CTRL
+      bit_offset: 15
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_25G_REF_CLK_CTRL_REF_CLK:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+    - name: DIV2
+      bit_offset: 2
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_25G_REF_CLK_CTRL_REF_USE:
+  description: ''
+  fields:
+    - name: PAD
+      bit_offset: 1
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_25G_REF_CLK_CTRL_REF:
+  description: ''
+  fields:
+    - name: RANGE
+      bit_offset: 3
+      bit_size: 3
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_25G_REF_CLK_CTRL_REF_MPLLA:
+  description: ''
+  fields:
+    - name: DIV2
+      bit_offset: 6
+      bit_size: 1
+    - name: DIV
+      bit_offset: 10
+      bit_size: 3
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_25G_REF_CLK_CTRL_REF_MPLLB:
+  description: ''
+  fields:
+    - name: DIV2
+      bit_offset: 7
+      bit_size: 1
+    - name: DIV
+      bit_offset: 13
+      bit_size: 3
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_25G_REF_CLK_CTRL_REF_RPT_CLK:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 8
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_25G_REF_CLK_CTRL_ALT_LP_CLK:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 9
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_25G_MISC_STS:
+  description: ''
+  fields:
+    - name: FOM
+      bit_offset: 0
+      bit_size: 8
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_25G_MISC_STS_RTUNE:
+  description: ''
+  fields:
+    - name: ACK
+      bit_offset: 8
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_25G_MISC_STS_MPLLA:
+  description: ''
+  fields:
+    - name: STS
+      bit_offset: 9
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_25G_MISC_STS_MPLLB:
+  description: ''
+  fields:
+    - name: STS
+      bit_offset: 10
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_25G_MISC_STS_REF_CLKDET:
+  description: ''
+  fields:
+    - name: RESULT
+      bit_offset: 11
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_25G_MISC_STS_RX_ADPT:
+  description: ''
+  fields:
+    - name: ACK
+      bit_offset: 12
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_25G_MISC_CTRL1_RX_LNK_UP:
+  description: ''
+  fields:
+    - name: TIME
+      bit_offset: 0
+      bit_size: 16
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_25G_SRAM_INIT:
+  description: ''
+  fields:
+    - name: DN
+      bit_offset: 0
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_25G_SRAM_EXT_LD:
+  description: ''
+  fields:
+    - name: DN
+      bit_offset: 1
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_MP_12G_16G_25G_SRAM_BTLD:
+  description: ''
+  fields:
+    - name: BYP
+      bit_offset: 2
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_SNPS_CR_CTRL_START:
+  description: ''
+  fields:
+    - name: BUSY
+      bit_offset: 0
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_SNPS_CR_CTRL_WR:
+  description: ''
+  fields:
+    - name: RDN
+      bit_offset: 1
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_SNPS_CR_ADDR:
+  description: ''
+  fields:
+    - name: ADDRESS
+      bit_offset: 0
+      bit_size: 16
+      description: CR Port Address
+fieldset/VS_MII_MMD_VR_MII_SNPS_CR_DATA:
+  description: ''
+  fields:
+    - name: DATA
+      bit_offset: 0
+      bit_size: 16
+      description: CR Port Data
+fieldset/VS_MII_MMD_VR_MII_DIG_ERRCNT_SEL:
+  description: ''
+  fields:
+    - name: COR
+      bit_offset: 0
+      bit_size: 1
+fieldset/VS_MII_MMD_VR_MII_DIG_ERRCNT_SEL_INV_EC:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 4
+      bit_size: 1

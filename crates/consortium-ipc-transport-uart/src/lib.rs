@@ -174,7 +174,7 @@
 //!   (and forward `defmt` to a selected chip HAL).
 //! - `unix` — implies `std`; adds the `unix` module (`open`, `pty_pair`) over
 //!   `tokio-serial`.
-//! - `mimx93` / `mimx95` — re-export `consortium_hal_imx9::uart` as `imx9`.
+//! - `mimx93` / `mimx95` / `mimx952` — re-export `consortium_hal_imx9::uart` as `imx9`.
 //! - `stm32mp21x` / `stm32mp23x` / `stm32mp25x` — re-export
 //!   `consortium_hal_stm32mp2::uart` as `stm32mp2`.
 //!
@@ -210,7 +210,7 @@ pub use {
 };
 
 /// i.MX9 LPUART driver, including the interrupt-buffered `BufferedUart`.
-#[cfg(any(feature = "mimx93", feature = "mimx95"))]
+#[cfg(any(feature = "mimx93", feature = "mimx95", feature = "mimx952"))]
 pub mod imx9 {
     pub use consortium_hal_imx9::uart::*;
 }

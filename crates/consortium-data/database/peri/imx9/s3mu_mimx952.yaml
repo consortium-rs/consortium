@@ -1,0 +1,159 @@
+block/S3MU:
+  description: ''
+  items:
+    - name: VER
+      byte_offset: 0
+      fieldset: S3MU_VER
+    - name: PAR
+      byte_offset: 4
+    - name: SR
+      byte_offset: 12
+      fieldset: S3MU_SR
+    - name: FCR
+      byte_offset: 256
+      fieldset: S3MU_FCR
+    - name: FSR
+      byte_offset: 260
+      fieldset: S3MU_FSR
+    - name: GIER
+      byte_offset: 272
+      fieldset: S3MU_GIER
+    - name: GCR
+      byte_offset: 276
+      fieldset: S3MU_GCR
+    - name: GSR
+      byte_offset: 280
+      fieldset: S3MU_GSR
+    - name: TCR
+      byte_offset: 288
+      fieldset: S3MU_TCR
+    - name: TSR
+      byte_offset: 292
+      fieldset: S3MU_TSR
+    - name: RCR
+      byte_offset: 296
+      fieldset: S3MU_RCR
+    - name: RSR
+      byte_offset: 300
+      fieldset: S3MU_RSR
+    - name: TR
+      byte_offset: 512
+      array:
+        len: 8
+        stride: 4
+    - name: RR
+      byte_offset: 640
+      array:
+        len: 8
+        stride: 4
+fieldset/S3MU_VER:
+  description: ''
+  fields:
+    - name: FEATURE
+      bit_offset: 0
+      bit_size: 16
+    - name: MINOR
+      bit_offset: 16
+      bit_size: 8
+      description: Minor Version Number
+    - name: MAJOR
+      bit_offset: 24
+      bit_size: 8
+      description: Minor Version Number
+fieldset/S3MU_PAR_TR:
+  description: ''
+  fields:
+    - name: NUM
+      bit_offset: 0
+      bit_size: 8
+      description: Number of TRn registers
+fieldset/S3MU_PAR_RR:
+  description: ''
+  fields:
+    - name: NUM
+      bit_offset: 8
+      bit_size: 8
+      description: Number of TRn registers
+fieldset/S3MU_SR:
+  description: ''
+  fields:
+    - name: TEP
+      bit_offset: 5
+      bit_size: 1
+      description: Transmit Empty Pending
+    - name: RFP
+      bit_offset: 6
+      bit_size: 1
+      description: Transmit Empty Pending
+fieldset/S3MU_FCR:
+  description: ''
+  fields:
+    - name: Fn
+      bit_offset: 0
+      bit_size: 32
+      description: SENTMUA to SENTMUB Flag n
+fieldset/S3MU_FSR:
+  description: ''
+  fields:
+    - name: Fn
+      bit_offset: 0
+      bit_size: 32
+      description: SENTMUB to SENTMUA Side Flag n
+fieldset/S3MU_GIER:
+  description: ''
+  fields:
+    - name: GIEn
+      bit_offset: 0
+      bit_size: 32
+fieldset/S3MU_GCR:
+  description: ''
+  fields:
+    - name: GIRn
+      bit_offset: 0
+      bit_size: 32
+fieldset/S3MU_GSR:
+  description: ''
+  fields:
+    - name: GIPn
+      bit_offset: 0
+      bit_size: 32
+fieldset/S3MU_TCR:
+  description: ''
+  fields:
+    - name: TEIEn
+      bit_offset: 0
+      bit_size: 8
+fieldset/S3MU_TSR:
+  description: ''
+  fields:
+    - name: TEn
+      bit_offset: 0
+      bit_size: 8
+      description: Transmit Register n Empty
+fieldset/S3MU_RCR:
+  description: ''
+  fields:
+    - name: RFIEn
+      bit_offset: 0
+      bit_size: 8
+fieldset/S3MU_RSR:
+  description: ''
+  fields:
+    - name: RFn
+      bit_offset: 0
+      bit_size: 8
+      description: Receive Register n Full
+fieldset/S3MU_TR_TR:
+  description: ''
+  fields:
+    - name: DATA
+      bit_offset: 0
+      bit_size: 32
+      description: Transmit Data
+fieldset/S3MU_RR_RR:
+  description: ''
+  fields:
+    - name: DATA
+      bit_offset: 0
+      bit_size: 32
+      description: Receive Data

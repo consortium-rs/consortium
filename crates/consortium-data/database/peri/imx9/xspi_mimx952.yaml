@@ -1,0 +1,5340 @@
+block/XSPI:
+  description: ''
+  items:
+    - name: MCR
+      byte_offset: 0
+      fieldset: XSPI_MCR
+    - name: IPCR
+      byte_offset: 8
+      fieldset: XSPI_IPCR
+    - name: FLSHCR
+      byte_offset: 12
+      fieldset: XSPI_FLSHCR
+    - name: BUFCR
+      byte_offset: 16
+      array:
+        len: 4
+        stride: 4
+      fieldset: XSPI_BUFCR
+    - name: BFGENCR
+      byte_offset: 32
+      fieldset: XSPI_BFGENCR
+    - name: SOCCR
+      byte_offset: 36
+      fieldset: XSPI_SOCCR
+    - name: BUFIND
+      byte_offset: 48
+      array:
+        len: 3
+        stride: 4
+      fieldset: XSPI_BUFIND
+    - name: PRW_RDSR
+      byte_offset: 76
+      fieldset: XSPI_PRW_RDSR
+    - name: AWRCR
+      byte_offset: 80
+      fieldset: XSPI_AWRCR
+    - name: ARDCR
+      byte_offset: 84
+      fieldset: XSPI_ARDCR
+    - name: AWITO
+      byte_offset: 88
+      fieldset: XSPI_AWITO
+    - name: FSR_ADDR
+      byte_offset: 92
+      fieldset: XSPI_FSR_ADDR
+    - name: DLLCR
+      byte_offset: 96
+      array:
+        len: 1
+        stride: 4
+      fieldset: XSPI_DLLCR
+    - name: PARITYCR
+      byte_offset: 108
+    - name: SFAR
+      byte_offset: 256
+      fieldset: XSPI_SFAR
+    - name: SFACR
+      byte_offset: 260
+      fieldset: XSPI_SFACR
+    - name: SMPR
+      byte_offset: 264
+      fieldset: XSPI_SMPR
+    - name: RBSR
+      byte_offset: 268
+      fieldset: XSPI_RBSR
+    - name: RBCT
+      byte_offset: 272
+      fieldset: XSPI_RBCT
+    - name: AWRSR
+      byte_offset: 288
+      fieldset: XSPI_AWRSR
+    - name: DLLSR
+      byte_offset: 300
+    - name: DLCR
+      byte_offset: 304
+    - name: DLSR_F
+      byte_offset: 308
+      array:
+        len: 1
+        stride: 4
+      fieldset: XSPI_DLSR_F
+    - name: TBSR
+      byte_offset: 336
+      fieldset: XSPI_TBSR
+    - name: TBDR
+      byte_offset: 340
+      fieldset: XSPI_TBDR
+    - name: TBCT
+      byte_offset: 344
+      fieldset: XSPI_TBCT
+    - name: SR
+      byte_offset: 348
+      fieldset: XSPI_SR
+    - name: FR
+      byte_offset: 352
+      fieldset: XSPI_FR
+    - name: RSER
+      byte_offset: 356
+      fieldset: XSPI_RSER
+    - name: SPNDST
+      byte_offset: 360
+      fieldset: XSPI_SPNDST
+    - name: SPTRCLR
+      byte_offset: 364
+      fieldset: XSPI_SPTRCLR
+    - name: TGSR_IPED
+      byte_offset: 368
+    - name: DLPR
+      byte_offset: 400
+      fieldset: XSPI_DLPR
+    - name: FAIL_ADDR
+      byte_offset: 404
+      array:
+        len: 1
+        stride: 4
+      fieldset: XSPI_FAIL_ADDR
+    - name: RBDR
+      byte_offset: 512
+      array:
+        len: 64
+        stride: 4
+      fieldset: XSPI_RBDR
+    - name: LUTKEY
+      byte_offset: 768
+      fieldset: XSPI_LUTKEY
+    - name: LCKCR
+      byte_offset: 772
+      fieldset: XSPI_LCKCR
+    - name: LUT
+      byte_offset: 784
+      array:
+        len: 80
+        stride: 4
+      fieldset: XSPI_LUT
+    - name: AHB_BUF_STATUS
+      byte_offset: 1216
+    - name: AHB_PERF_CTRL
+      byte_offset: 1220
+      fieldset: XSPI_AHB_PERF_CTRL
+    - name: AHB_PERF_TIME_CNT
+      byte_offset: 1224
+    - name: AHB_PERF_BUF
+      byte_offset: 1228
+      array:
+        len: 4
+        stride: 4
+    - name: AHRDYTO
+      byte_offset: 1244
+      fieldset: XSPI_AHRDYTO
+    - name: AHB_ERR_PAYLOAD_HI
+      byte_offset: 1248
+    - name: AHB_ERR_PAYLOAD_LO
+      byte_offset: 1252
+    - name: AHB_RD_ERR_ADDR
+      byte_offset: 1256
+      fieldset: XSPI_AHB_RD_ERR_ADDR
+    - name: AHB_RD_ERR_MID
+      byte_offset: 1260
+      fieldset: XSPI_AHB_RD_ERR_MID
+    - name: SPNDST_ADDR
+      byte_offset: 1264
+      fieldset: XSPI_SPNDST_ADDR
+    - name: PPWF_TCNT
+      byte_offset: 1268
+      fieldset: XSPI_PPWF_TCNT
+    - name: PPW_RDSR
+      byte_offset: 1272
+      fieldset: XSPI_PPW_RDSR
+    - name: MCR_EXT
+      byte_offset: 1276
+    - name: RSER_SUB
+      byte_offset: 1280
+      array:
+        len: 4
+        stride: 4
+      fieldset: XSPI_RSER_SUB
+    - name: IPEDCTXXIV_IPEDCTXIV
+      byte_offset: 1312
+      array:
+        len: 16
+        stride: 32
+    - name: IPEDCTRL
+      byte_offset: 1824
+      fieldset: XSPI_IPEDCTRL
+    - name: IPEDCTXCTRL
+      byte_offset: 1832
+      array:
+        len: 2
+        stride: 4
+    - name: ARSWRST_ADDR
+      byte_offset: 2008
+      fieldset: XSPI_ARSWRST_ADDR
+    - name: ARSWRST_MID
+      byte_offset: 2012
+      fieldset: XSPI_ARSWRST_MID
+    - name: AWSWRST_ADDR
+      byte_offset: 2016
+      fieldset: XSPI_AWSWRST_ADDR
+    - name: FRAD0_WORD0
+      byte_offset: 2048
+      fieldset: XSPI_FRAD0_WORD0
+    - name: FRAD0_WORD1
+      byte_offset: 2052
+      fieldset: XSPI_FRAD0_WORD1
+    - name: FRAD0_WORD2
+      byte_offset: 2056
+      fieldset: XSPI_FRAD0_WORD2
+    - name: FRAD0_WORD3
+      byte_offset: 2060
+      fieldset: XSPI_FRAD0_WORD3
+    - name: FRAD0_WORD4
+      byte_offset: 2064
+    - name: FRAD0_WORD5
+      byte_offset: 2068
+      fieldset: XSPI_FRAD0_WORD5
+    - name: FRAD1_WORD0
+      byte_offset: 2080
+      fieldset: XSPI_FRAD1_WORD0
+    - name: FRAD1_WORD1
+      byte_offset: 2084
+      fieldset: XSPI_FRAD1_WORD1
+    - name: FRAD1_WORD2
+      byte_offset: 2088
+      fieldset: XSPI_FRAD1_WORD2
+    - name: FRAD1_WORD3
+      byte_offset: 2092
+      fieldset: XSPI_FRAD1_WORD3
+    - name: FRAD1_WORD4
+      byte_offset: 2096
+    - name: FRAD1_WORD5
+      byte_offset: 2100
+      fieldset: XSPI_FRAD1_WORD5
+    - name: FRAD2_WORD0
+      byte_offset: 2112
+      fieldset: XSPI_FRAD2_WORD0
+    - name: FRAD2_WORD1
+      byte_offset: 2116
+      fieldset: XSPI_FRAD2_WORD1
+    - name: FRAD2_WORD2
+      byte_offset: 2120
+      fieldset: XSPI_FRAD2_WORD2
+    - name: FRAD2_WORD3
+      byte_offset: 2124
+      fieldset: XSPI_FRAD2_WORD3
+    - name: FRAD2_WORD4
+      byte_offset: 2128
+    - name: FRAD2_WORD5
+      byte_offset: 2132
+      fieldset: XSPI_FRAD2_WORD5
+    - name: FRAD3_WORD0
+      byte_offset: 2144
+      fieldset: XSPI_FRAD3_WORD0
+    - name: FRAD3_WORD1
+      byte_offset: 2148
+      fieldset: XSPI_FRAD3_WORD1
+    - name: FRAD3_WORD2
+      byte_offset: 2152
+      fieldset: XSPI_FRAD3_WORD2
+    - name: FRAD3_WORD3
+      byte_offset: 2156
+      fieldset: XSPI_FRAD3_WORD3
+    - name: FRAD3_WORD4
+      byte_offset: 2160
+    - name: FRAD3_WORD5
+      byte_offset: 2164
+      fieldset: XSPI_FRAD3_WORD5
+    - name: FRAD4_WORD0
+      byte_offset: 2176
+      fieldset: XSPI_FRAD4_WORD0
+    - name: FRAD4_WORD1
+      byte_offset: 2180
+      fieldset: XSPI_FRAD4_WORD1
+    - name: FRAD4_WORD2
+      byte_offset: 2184
+      fieldset: XSPI_FRAD4_WORD2
+    - name: FRAD4_WORD3
+      byte_offset: 2188
+      fieldset: XSPI_FRAD4_WORD3
+    - name: FRAD4_WORD4
+      byte_offset: 2192
+    - name: FRAD4_WORD5
+      byte_offset: 2196
+      fieldset: XSPI_FRAD4_WORD5
+    - name: FRAD5_WORD0
+      byte_offset: 2208
+      fieldset: XSPI_FRAD5_WORD0
+    - name: FRAD5_WORD1
+      byte_offset: 2212
+      fieldset: XSPI_FRAD5_WORD1
+    - name: FRAD5_WORD2
+      byte_offset: 2216
+      fieldset: XSPI_FRAD5_WORD2
+    - name: FRAD5_WORD3
+      byte_offset: 2220
+      fieldset: XSPI_FRAD5_WORD3
+    - name: FRAD5_WORD4
+      byte_offset: 2224
+    - name: FRAD5_WORD5
+      byte_offset: 2228
+      fieldset: XSPI_FRAD5_WORD5
+    - name: FRAD6_WORD0
+      byte_offset: 2240
+      fieldset: XSPI_FRAD6_WORD0
+    - name: FRAD6_WORD1
+      byte_offset: 2244
+      fieldset: XSPI_FRAD6_WORD1
+    - name: FRAD6_WORD2
+      byte_offset: 2248
+      fieldset: XSPI_FRAD6_WORD2
+    - name: FRAD6_WORD3
+      byte_offset: 2252
+      fieldset: XSPI_FRAD6_WORD3
+    - name: FRAD6_WORD4
+      byte_offset: 2256
+    - name: FRAD6_WORD5
+      byte_offset: 2260
+      fieldset: XSPI_FRAD6_WORD5
+    - name: FRAD7_WORD0
+      byte_offset: 2272
+      fieldset: XSPI_FRAD7_WORD0
+    - name: FRAD7_WORD1
+      byte_offset: 2276
+      fieldset: XSPI_FRAD7_WORD1
+    - name: FRAD7_WORD2
+      byte_offset: 2280
+      fieldset: XSPI_FRAD7_WORD2
+    - name: FRAD7_WORD3
+      byte_offset: 2284
+      fieldset: XSPI_FRAD7_WORD3
+    - name: FRAD7_WORD4
+      byte_offset: 2288
+    - name: FRAD7_WORD5
+      byte_offset: 2292
+      fieldset: XSPI_FRAD7_WORD5
+    - name: SFP_ARB_TIMEOUT
+      byte_offset: 2300
+    - name: TG0MDAD
+      byte_offset: 2304
+      fieldset: XSPI_TG0MDAD
+    - name: TGSFAR
+      byte_offset: 2308
+      fieldset: XSPI_TGSFAR
+    - name: TGSFARS
+      byte_offset: 2312
+      fieldset: XSPI_TGSFARS
+    - name: TGIPCRS
+      byte_offset: 2316
+      fieldset: XSPI_TGIPCRS
+    - name: TG1MDAD
+      byte_offset: 2320
+      fieldset: XSPI_TG1MDAD
+    - name: MGC
+      byte_offset: 2336
+      fieldset: XSPI_MGC
+    - name: MRC
+      byte_offset: 2340
+      fieldset: XSPI_MRC
+    - name: MTO
+      byte_offset: 2344
+    - name: FLSEQREQ
+      byte_offset: 2348
+      fieldset: XSPI_FLSEQREQ
+    - name: FSMSTAT
+      byte_offset: 2352
+      fieldset: XSPI_FSMSTAT
+    - name: IPSERROR
+      byte_offset: 2356
+      fieldset: XSPI_IPSERROR
+    - name: ERRSTAT
+      byte_offset: 2360
+      fieldset: XSPI_ERRSTAT
+    - name: INT_EN
+      byte_offset: 2364
+      fieldset: XSPI_INT_EN
+    - name: TGMDAD_EXT
+      byte_offset: 2368
+      array:
+        len: 3
+        stride: 4
+      fieldset: XSPI_TGMDAD_EXT
+    - name: SFP_TG_IPCR
+      byte_offset: 2392
+      fieldset: XSPI_SFP_TG_IPCR
+    - name: SFP_TG_SFAR
+      byte_offset: 2396
+      fieldset: XSPI_SFP_TG_SFAR
+    - name: SFP_LUT_EN
+      byte_offset: 2400
+      array:
+        len: 5
+        stride: 4
+      fieldset: XSPI_SFP_LUT_EN
+    - name: FRAD8_WORD0
+      byte_offset: 2432
+      fieldset: XSPI_FRAD8_WORD0
+    - name: FRAD8_WORD1
+      byte_offset: 2436
+      fieldset: XSPI_FRAD8_WORD1
+    - name: FRAD8_WORD2
+      byte_offset: 2440
+      fieldset: XSPI_FRAD8_WORD2
+    - name: FRAD8_WORD3
+      byte_offset: 2444
+      fieldset: XSPI_FRAD8_WORD3
+    - name: FRAD8_WORD4
+      byte_offset: 2448
+    - name: FRAD8_WORD5
+      byte_offset: 2452
+      fieldset: XSPI_FRAD8_WORD5
+    - name: FRAD9_WORD0
+      byte_offset: 2464
+      fieldset: XSPI_FRAD9_WORD0
+    - name: FRAD9_WORD1
+      byte_offset: 2468
+      fieldset: XSPI_FRAD9_WORD1
+    - name: FRAD9_WORD2
+      byte_offset: 2472
+      fieldset: XSPI_FRAD9_WORD2
+    - name: FRAD9_WORD3
+      byte_offset: 2476
+      fieldset: XSPI_FRAD9_WORD3
+    - name: FRAD9_WORD4
+      byte_offset: 2480
+    - name: FRAD9_WORD5
+      byte_offset: 2484
+      fieldset: XSPI_FRAD9_WORD5
+    - name: FRAD10_WORD0
+      byte_offset: 2496
+      fieldset: XSPI_FRAD10_WORD0
+    - name: FRAD10_WORD1
+      byte_offset: 2500
+      fieldset: XSPI_FRAD10_WORD1
+    - name: FRAD10_WORD2
+      byte_offset: 2504
+      fieldset: XSPI_FRAD10_WORD2
+    - name: FRAD10_WORD3
+      byte_offset: 2508
+      fieldset: XSPI_FRAD10_WORD3
+    - name: FRAD10_WORD4
+      byte_offset: 2512
+    - name: FRAD10_WORD5
+      byte_offset: 2516
+      fieldset: XSPI_FRAD10_WORD5
+    - name: FRAD11_WORD0
+      byte_offset: 2528
+      fieldset: XSPI_FRAD11_WORD0
+    - name: FRAD11_WORD1
+      byte_offset: 2532
+      fieldset: XSPI_FRAD11_WORD1
+    - name: FRAD11_WORD2
+      byte_offset: 2536
+      fieldset: XSPI_FRAD11_WORD2
+    - name: FRAD11_WORD3
+      byte_offset: 2540
+      fieldset: XSPI_FRAD11_WORD3
+    - name: FRAD11_WORD4
+      byte_offset: 2544
+    - name: FRAD11_WORD5
+      byte_offset: 2548
+      fieldset: XSPI_FRAD11_WORD5
+    - name: FRAD12_WORD0
+      byte_offset: 2560
+      fieldset: XSPI_FRAD12_WORD0
+    - name: FRAD12_WORD1
+      byte_offset: 2564
+      fieldset: XSPI_FRAD12_WORD1
+    - name: FRAD12_WORD2
+      byte_offset: 2568
+      fieldset: XSPI_FRAD12_WORD2
+    - name: FRAD12_WORD3
+      byte_offset: 2572
+      fieldset: XSPI_FRAD12_WORD3
+    - name: FRAD12_WORD4
+      byte_offset: 2576
+    - name: FRAD12_WORD5
+      byte_offset: 2580
+      fieldset: XSPI_FRAD12_WORD5
+    - name: FRAD13_WORD0
+      byte_offset: 2592
+      fieldset: XSPI_FRAD13_WORD0
+    - name: FRAD13_WORD1
+      byte_offset: 2596
+      fieldset: XSPI_FRAD13_WORD1
+    - name: FRAD13_WORD2
+      byte_offset: 2600
+      fieldset: XSPI_FRAD13_WORD2
+    - name: FRAD13_WORD3
+      byte_offset: 2604
+      fieldset: XSPI_FRAD13_WORD3
+    - name: FRAD13_WORD4
+      byte_offset: 2608
+    - name: FRAD13_WORD5
+      byte_offset: 2612
+      fieldset: XSPI_FRAD13_WORD5
+    - name: FRAD14_WORD0
+      byte_offset: 2624
+      fieldset: XSPI_FRAD14_WORD0
+    - name: FRAD14_WORD1
+      byte_offset: 2628
+      fieldset: XSPI_FRAD14_WORD1
+    - name: FRAD14_WORD2
+      byte_offset: 2632
+      fieldset: XSPI_FRAD14_WORD2
+    - name: FRAD14_WORD3
+      byte_offset: 2636
+      fieldset: XSPI_FRAD14_WORD3
+    - name: FRAD14_WORD4
+      byte_offset: 2640
+    - name: FRAD14_WORD5
+      byte_offset: 2644
+      fieldset: XSPI_FRAD14_WORD5
+    - name: FRAD15_WORD0
+      byte_offset: 2656
+      fieldset: XSPI_FRAD15_WORD0
+    - name: FRAD15_WORD1
+      byte_offset: 2660
+      fieldset: XSPI_FRAD15_WORD1
+    - name: FRAD15_WORD2
+      byte_offset: 2664
+      fieldset: XSPI_FRAD15_WORD2
+    - name: FRAD15_WORD3
+      byte_offset: 2668
+      fieldset: XSPI_FRAD15_WORD3
+    - name: FRAD15_WORD4
+      byte_offset: 2672
+    - name: FRAD15_WORD5
+      byte_offset: 2676
+      fieldset: XSPI_FRAD15_WORD5
+    - name: SFP_LOCK_ERR_ADDR
+      byte_offset: 2684
+      fieldset: XSPI_SFP_LOCK_ERR_ADDR
+    - name: SFP_INT_EN_SUB
+      byte_offset: 2816
+      array:
+        len: 4
+        stride: 4
+      fieldset: XSPI_SFP_INT_EN_SUB
+    - name: SUB_REG_ARRAY_MCR_SUB
+      byte_offset: 65536
+      array:
+        len: 4
+        stride: 65536
+fieldset/XSPI_MCR:
+  description: ''
+  fields:
+    - name: SWRSTSD
+      bit_offset: 0
+      bit_size: 1
+    - name: SWRSTHD
+      bit_offset: 1
+      bit_size: 1
+    - name: DLPEN
+      bit_offset: 12
+      bit_size: 1
+    - name: MDIS
+      bit_offset: 14
+      bit_size: 1
+    - name: ISD2FA
+      bit_offset: 16
+      bit_size: 1
+    - name: ISD3FA
+      bit_offset: 17
+      bit_size: 1
+fieldset/XSPI_MCR_DQS_LAT:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 5
+      bit_size: 1
+fieldset/XSPI_MCR_DQS:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 6
+      bit_size: 1
+fieldset/XSPI_MCR_DDR:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 7
+      bit_size: 1
+fieldset/XSPI_MCR_VAR_LAT:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 8
+      bit_size: 1
+fieldset/XSPI_MCR_IPS_TG:
+  description: ''
+  fields:
+    - name: RST
+      bit_offset: 9
+      bit_size: 1
+fieldset/XSPI_MCR_CLR:
+  description: ''
+  fields:
+    - name: RXF
+      bit_offset: 10
+      bit_size: 1
+    - name: TXF
+      bit_offset: 11
+      bit_size: 1
+fieldset/XSPI_MCR_DQS_FA:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 24
+      bit_size: 2
+fieldset/XSPI_MCR_CKN_FA:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 26
+      bit_size: 1
+fieldset/XSPI_IPCR:
+  description: ''
+  fields:
+    - name: IDATSZ
+      bit_offset: 0
+      bit_size: 16
+      description: IP Data Transfer Size
+    - name: SEQID
+      bit_offset: 24
+      bit_size: 4
+      description: IP Data Transfer Size
+fieldset/XSPI_FLSHCR:
+  description: ''
+  fields:
+    - name: TCSS
+      bit_offset: 0
+      bit_size: 4
+    - name: TCSH
+      bit_offset: 8
+      bit_size: 4
+      description: Serial Flash Memory CS Setup Time
+    - name: TDH
+      bit_offset: 16
+      bit_size: 2
+      description: Serial Flash Memory CS Hold Time
+fieldset/XSPI_BUFCR:
+  description: ''
+  fields:
+    - name: MSTRID
+      bit_offset: 0
+      bit_size: 4
+      description: Initiator ID
+    - name: ADATSZ
+      bit_offset: 8
+      bit_size: 10
+      description: Initiator ID
+    - name: ALLMST
+      bit_offset: 31
+      bit_size: 1
+fieldset/XSPI_BUFCR_SUBBUF0:
+  description: ''
+  fields:
+    - name: DIV
+      bit_offset: 21
+      bit_size: 3
+      description: AHB Data Transfer Size
+fieldset/XSPI_BUFCR_SUBBUF1:
+  description: ''
+  fields:
+    - name: DIV
+      bit_offset: 24
+      bit_size: 3
+fieldset/XSPI_BUFCR_SUBBUF2:
+  description: ''
+  fields:
+    - name: DIV
+      bit_offset: 27
+      bit_size: 3
+fieldset/XSPI_BUFCR_SUB_DIV:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 30
+      bit_size: 1
+fieldset/XSPI_BUFCR_HP:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 31
+      bit_size: 1
+fieldset/XSPI_BFGENCR_SEQID:
+  description: ''
+  fields:
+    - name: RDSR
+      bit_offset: 0
+      bit_size: 4
+    - name: WR
+      bit_offset: 28
+      bit_size: 4
+      description: Write Sequence ID
+fieldset/XSPI_BFGENCR_WRTER:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 4
+      bit_size: 1
+fieldset/XSPI_BFGENCR:
+  description: ''
+  fields:
+    - name: SPLITEN
+      bit_offset: 8
+      bit_size: 1
+    - name: AHBSSIZE
+      bit_offset: 9
+      bit_size: 2
+    - name: FLSHINTP
+      bit_offset: 11
+      bit_size: 1
+    - name: SEQID
+      bit_offset: 12
+      bit_size: 4
+      description: LUT Sequence Pointer
+    - name: ALIGN
+      bit_offset: 22
+      bit_size: 3
+fieldset/XSPI_BFGENCR_SEQID_WR:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 17
+      bit_size: 1
+      description: LUT Sequence Pointer
+fieldset/XSPI_BFGENCR_PPWF:
+  description: ''
+  fields:
+    - name: CLR
+      bit_offset: 20
+      bit_size: 1
+fieldset/XSPI_BFGENCR_WR_FLUSH:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 21
+      bit_size: 1
+fieldset/XSPI_SOCCR:
+  description: ''
+  fields:
+    - name: SOCCFG
+      bit_offset: 0
+      bit_size: 24
+      description: SOC Configuration
+fieldset/XSPI_SOCCR_MASK:
+  description: ''
+  fields:
+    - name: ECC
+      bit_offset: 25
+      bit_size: 1
+      description: SOC Configuration
+fieldset/XSPI_SOCCR_OBE_MASK:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 26
+      bit_size: 1
+fieldset/XSPI_SOCCR_HRESP_ERR:
+  description: ''
+  fields:
+    - name: MASK
+      bit_offset: 27
+      bit_size: 1
+fieldset/XSPI_SOCCR_ENA:
+  description: ''
+  fields:
+    - name: DLLABRT
+      bit_offset: 28
+      bit_size: 1
+fieldset/XSPI_BUFIND:
+  description: ''
+  fields:
+    - name: TPINDX
+      bit_offset: 3
+      bit_size: 10
+      description: Top Index Buffer
+fieldset/XSPI_PRW_RDSR:
+  description: ''
+  fields:
+    - name: RDSR
+      bit_offset: 0
+      bit_size: 16
+      description: Flash Status Register Read
+    - name: RDSRWSEL
+      bit_offset: 21
+      bit_size: 1
+      description: Flash Status Register Read
+    - name: RDSRVCHK
+      bit_offset: 22
+      bit_size: 1
+    - name: LOC
+      bit_offset: 24
+      bit_size: 4
+      description: Location of RDSR
+    - name: VALID
+      bit_offset: 31
+      bit_size: 1
+      description: Location of RDSR
+fieldset/XSPI_PRW_RDSR_RDSR:
+  description: ''
+  fields:
+    - name: HWS
+      bit_offset: 23
+      bit_size: 1
+fieldset/XSPI_AWRCR_PPW_RD:
+  description: ''
+  fields:
+    - name: DIS
+      bit_offset: 14
+      bit_size: 1
+fieldset/XSPI_AWRCR_PPW_WR:
+  description: ''
+  fields:
+    - name: DIS
+      bit_offset: 15
+      bit_size: 1
+fieldset/XSPI_AWRCR:
+  description: ''
+  fields:
+    - name: L2WSEQID
+      bit_offset: 20
+      bit_size: 4
+fieldset/XSPI_ARDCR_SNAND:
+  description: ''
+  fields:
+    - name: RD
+      bit_offset: 0
+      bit_size: 2
+fieldset/XSPI_ARDCR:
+  description: ''
+  fields:
+    - name: SNANDEXT
+      bit_offset: 2
+      bit_size: 1
+    - name: SNANDRAS
+      bit_offset: 17
+      bit_size: 5
+      description: SNAND Row Address Select
+fieldset/XSPI_ARDCR_L2:
+  description: ''
+  fields:
+    - name: SEQID
+      bit_offset: 4
+      bit_size: 4
+fieldset/XSPI_ARDCR_RDSR:
+  description: ''
+  fields:
+    - name: ID
+      bit_offset: 12
+      bit_size: 4
+      description: Level-2 Read LUT Sequence ID
+fieldset/XSPI_ARDCR_CLR:
+  description: ''
+  fields:
+    - name: ARDB
+      bit_offset: 16
+      bit_size: 1
+      description: Read Status Register Sequence ID
+fieldset/XSPI_AWITO:
+  description: ''
+  fields:
+    - name: AWITOVAL
+      bit_offset: 0
+      bit_size: 31
+    - name: AWICNTEN
+      bit_offset: 31
+      bit_size: 1
+      description: AHB Write Idle Timeout Value
+fieldset/XSPI_FSR_ADDR:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 16
+      description: Flash Status Register Address
+fieldset/XSPI_DLLCR_SLV:
+  description: ''
+  fields:
+    - name: UPD
+      bit_offset: 0
+      bit_size: 1
+    - name: EN
+      bit_offset: 2
+      bit_size: 1
+fieldset/XSPI_DLLCR_SLV_DLL:
+  description: ''
+  fields:
+    - name: BYPASS
+      bit_offset: 1
+      bit_size: 1
+fieldset/XSPI_DLLCR_SLAVE_AUTO:
+  description: ''
+  fields:
+    - name: UPDT
+      bit_offset: 3
+      bit_size: 1
+fieldset/XSPI_DLLCR_DLL:
+  description: ''
+  fields:
+    - name: CDL8
+      bit_offset: 4
+      bit_size: 1
+    - name: REFCNTR
+      bit_offset: 24
+      bit_size: 4
+      description: DLL Resolution
+fieldset/XSPI_DLLCR_SLV_DLY:
+  description: ''
+  fields:
+    - name: FINE
+      bit_offset: 5
+      bit_size: 3
+    - name: COARSE
+      bit_offset: 8
+      bit_size: 4
+      description: Fine Adjustment Delay Elements
+    - name: OFFSET
+      bit_offset: 12
+      bit_size: 3
+fieldset/XSPI_DLLCR_SLV_FINE:
+  description: ''
+  fields:
+    - name: OFFSET
+      bit_offset: 16
+      bit_size: 4
+fieldset/XSPI_DLLCR:
+  description: ''
+  fields:
+    - name: DLLRES
+      bit_offset: 20
+      bit_size: 4
+      description: DLL Resolution
+    - name: FREQEN
+      bit_offset: 30
+      bit_size: 1
+      description: DLL Reference Counter
+    - name: DLLEN
+      bit_offset: 31
+      bit_size: 1
+fieldset/XSPI_PARITYCR_CRCBIN:
+  description: ''
+  fields:
+    - name: FA
+      bit_offset: 5
+      bit_size: 1
+fieldset/XSPI_PARITYCR_CRCBEN:
+  description: ''
+  fields:
+    - name: FA
+      bit_offset: 6
+      bit_size: 1
+fieldset/XSPI_PARITYCR_CRCEN:
+  description: ''
+  fields:
+    - name: FA
+      bit_offset: 7
+      bit_size: 1
+fieldset/XSPI_PARITYCR_BYTE_SIZE:
+  description: ''
+  fields:
+    - name: FA
+      bit_offset: 8
+      bit_size: 1
+fieldset/XSPI_PARITYCR_CHUNKSIZE:
+  description: ''
+  fields:
+    - name: FA
+      bit_offset: 9
+      bit_size: 6
+fieldset/XSPI_PARITYCR_CRC_WNDW:
+  description: ''
+  fields:
+    - name: FA
+      bit_offset: 15
+      bit_size: 1
+fieldset/XSPI_SFAR:
+  description: ''
+  fields:
+    - name: SFADR
+      bit_offset: 0
+      bit_size: 32
+      description: Serial Flash Memory Address
+fieldset/XSPI_SFACR:
+  description: ''
+  fields:
+    - name: CAS
+      bit_offset: 0
+      bit_size: 4
+      description: Column Address Space
+    - name: PRWB
+      bit_offset: 4
+      bit_size: 4
+      description: Column Address Space
+    - name: PPWB
+      bit_offset: 8
+      bit_size: 5
+      description: Page Read Boundary
+    - name: SIOCMDEN
+      bit_offset: 14
+      bit_size: 1
+      description: Page Program Boundary
+    - name: WA
+      bit_offset: 16
+      bit_size: 1
+    - name: TBDRGTEN
+      bit_offset: 19
+      bit_size: 1
+fieldset/XSPI_SFACR_RD_PB:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 15
+      bit_size: 1
+fieldset/XSPI_SFACR_BYTE:
+  description: ''
+  fields:
+    - name: SWAP
+      bit_offset: 17
+      bit_size: 1
+fieldset/XSPI_SFACR_RX_BP:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 18
+      bit_size: 1
+fieldset/XSPI_SFACR_CAS:
+  description: ''
+  fields:
+    - name: INTRLVD
+      bit_offset: 20
+      bit_size: 1
+fieldset/XSPI_SFACR_WA_4B:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 21
+      bit_size: 1
+fieldset/XSPI_SFACR_FORCE:
+  description: ''
+  fields:
+    - name: A10
+      bit_offset: 22
+      bit_size: 1
+fieldset/XSPI_SFACR_TX:
+  description: ''
+  fields:
+    - name: FLUSH
+      bit_offset: 23
+      bit_size: 1
+fieldset/XSPI_SMPR:
+  description: ''
+  fields:
+    - name: FSPHS
+      bit_offset: 5
+      bit_size: 1
+    - name: FSDLY
+      bit_offset: 6
+      bit_size: 1
+    - name: DLLFSMPFA
+      bit_offset: 24
+      bit_size: 3
+fieldset/XSPI_RBSR:
+  description: ''
+  fields:
+    - name: RDBFL
+      bit_offset: 0
+      bit_size: 8
+      description: RX Buffer Fill Level
+    - name: RDCTR
+      bit_offset: 16
+      bit_size: 16
+      description: RX Buffer Fill Level
+fieldset/XSPI_RBCT:
+  description: ''
+  fields:
+    - name: WMRK
+      bit_offset: 0
+      bit_size: 7
+      description: RX Buffer Watermark for TG0
+fieldset/XSPI_AWRSR:
+  description: ''
+  fields:
+    - name: SEQAUJOIN
+      bit_offset: 2
+      bit_size: 1
+fieldset/XSPI_DLLSR_DLLA_SLV_COARSE:
+  description: ''
+  fields:
+    - name: VAL
+      bit_offset: 0
+      bit_size: 4
+fieldset/XSPI_DLLSR_DLLA_SLV_FINE:
+  description: ''
+  fields:
+    - name: VAL
+      bit_offset: 4
+      bit_size: 4
+fieldset/XSPI_DLLSR_DLLA_FINE:
+  description: ''
+  fields:
+    - name: UNDERFLOW
+      bit_offset: 12
+      bit_size: 1
+fieldset/XSPI_DLLSR_DLLA_RANGE:
+  description: ''
+  fields:
+    - name: ERR
+      bit_offset: 13
+      bit_size: 1
+fieldset/XSPI_DLLSR_SLVA:
+  description: ''
+  fields:
+    - name: LOCK
+      bit_offset: 14
+      bit_size: 1
+fieldset/XSPI_DLLSR_DLLA:
+  description: ''
+  fields:
+    - name: LOCK
+      bit_offset: 15
+      bit_size: 1
+fieldset/XSPI_DLCR_DLP_SEL:
+  description: ''
+  fields:
+    - name: FA
+      bit_offset: 14
+      bit_size: 2
+fieldset/XSPI_DLCR_DL_NONDLP:
+  description: ''
+  fields:
+    - name: FLSH
+      bit_offset: 24
+      bit_size: 1
+fieldset/XSPI_DLSR_F_NEG:
+  description: ''
+  fields:
+    - name: EDGE
+      bit_offset: 0
+      bit_size: 8
+      description: DLP Negative Edge Match
+fieldset/XSPI_DLSR_F_POS:
+  description: ''
+  fields:
+    - name: EDGE
+      bit_offset: 8
+      bit_size: 8
+      description: DLP Negative Edge Match
+fieldset/XSPI_DLSR_F:
+  description: ''
+  fields:
+    - name: DLPFF
+      bit_offset: 31
+      bit_size: 1
+      description: DLP Positive Edge Match
+fieldset/XSPI_TBSR:
+  description: ''
+  fields:
+    - name: TRBFL
+      bit_offset: 0
+      bit_size: 9
+      description: TX Buffer Fill Level
+    - name: TRCTR
+      bit_offset: 16
+      bit_size: 16
+      description: TX Buffer Fill Level
+fieldset/XSPI_TBDR:
+  description: ''
+  fields:
+    - name: TXDATA
+      bit_offset: 0
+      bit_size: 32
+      description: TX Data
+fieldset/XSPI_TBCT:
+  description: ''
+  fields:
+    - name: WMRK
+      bit_offset: 0
+      bit_size: 8
+      description: TX Buffer TG0 Watermark
+fieldset/XSPI_SR:
+  description: ''
+  fields:
+    - name: BUSY
+      bit_offset: 0
+      bit_size: 1
+    - name: AWRACC
+      bit_offset: 4
+      bit_size: 1
+    - name: AHBTRN
+      bit_offset: 6
+      bit_size: 1
+    - name: AHB0NE
+      bit_offset: 7
+      bit_size: 1
+    - name: AHB1NE
+      bit_offset: 8
+      bit_size: 1
+    - name: AHB2NE
+      bit_offset: 9
+      bit_size: 1
+    - name: AHB3NE
+      bit_offset: 10
+      bit_size: 1
+    - name: AHB0FUL
+      bit_offset: 11
+      bit_size: 1
+    - name: AHB1FUL
+      bit_offset: 12
+      bit_size: 1
+    - name: AHB2FUL
+      bit_offset: 13
+      bit_size: 1
+    - name: AHB3FUL
+      bit_offset: 14
+      bit_size: 1
+    - name: RXWE
+      bit_offset: 16
+      bit_size: 1
+    - name: RXFULL
+      bit_offset: 19
+      bit_size: 1
+      description: ARDB RX Buffer Not Empty
+    - name: RXDMA
+      bit_offset: 23
+      bit_size: 1
+    - name: TXNE
+      bit_offset: 24
+      bit_size: 1
+    - name: TXWA
+      bit_offset: 25
+      bit_size: 1
+    - name: TXDMA
+      bit_offset: 26
+      bit_size: 1
+    - name: TXFULL
+      bit_offset: 27
+      bit_size: 1
+fieldset/XSPI_SR_IP:
+  description: ''
+  fields:
+    - name: ACC
+      bit_offset: 1
+      bit_size: 1
+fieldset/XSPI_SR_AHB:
+  description: ''
+  fields:
+    - name: ACC
+      bit_offset: 2
+      bit_size: 1
+fieldset/XSPI_SR_ARB:
+  description: ''
+  fields:
+    - name: LCK
+      bit_offset: 15
+      bit_size: 1
+    - name: STATE
+      bit_offset: 20
+      bit_size: 3
+fieldset/XSPI_SR_ARDB:
+  description: ''
+  fields:
+    - name: NE
+      bit_offset: 17
+      bit_size: 1
+      description: ARDB RX Buffer Not Empty
+fieldset/XSPI_SR_AR:
+  description: ''
+  fields:
+    - name: SWRST
+      bit_offset: 28
+      bit_size: 1
+fieldset/XSPI_SR_AW:
+  description: ''
+  fields:
+    - name: SWRST
+      bit_offset: 29
+      bit_size: 1
+fieldset/XSPI_FR:
+  description: ''
+  fields:
+    - name: TFF
+      bit_offset: 0
+      bit_size: 1
+    - name: RDADDR
+      bit_offset: 1
+      bit_size: 1
+    - name: PERFOVF
+      bit_offset: 2
+      bit_size: 1
+    - name: IPEDERR
+      bit_offset: 5
+      bit_size: 1
+    - name: IPIEF
+      bit_offset: 6
+      bit_size: 1
+    - name: PPWF
+      bit_offset: 8
+      bit_size: 1
+    - name: CRCAEF
+      bit_offset: 10
+      bit_size: 1
+    - name: ABOF
+      bit_offset: 12
+      bit_size: 1
+    - name: AIBSEF
+      bit_offset: 13
+      bit_size: 1
+    - name: AITEF
+      bit_offset: 14
+      bit_size: 1
+    - name: AAEF
+      bit_offset: 15
+      bit_size: 1
+    - name: RBDF
+      bit_offset: 16
+      bit_size: 1
+    - name: RBOF
+      bit_offset: 17
+      bit_size: 1
+    - name: PECMDF
+      bit_offset: 21
+      bit_size: 1
+    - name: ILLACC
+      bit_offset: 22
+      bit_size: 1
+    - name: ILLINE
+      bit_offset: 23
+      bit_size: 1
+    - name: DLLUNLCK
+      bit_offset: 24
+      bit_size: 1
+    - name: PRWF
+      bit_offset: 25
+      bit_size: 1
+    - name: TBUF
+      bit_offset: 26
+      bit_size: 1
+    - name: TBFF
+      bit_offset: 27
+      bit_size: 1
+    - name: DLLABRT
+      bit_offset: 28
+      bit_size: 1
+    - name: DLPFF
+      bit_offset: 31
+      bit_size: 1
+fieldset/XSPI_FR_ARDB:
+  description: ''
+  fields:
+    - name: TO
+      bit_offset: 3
+      bit_size: 1
+fieldset/XSPI_RSER:
+  description: ''
+  fields:
+    - name: TFIE
+      bit_offset: 0
+      bit_size: 1
+    - name: RDADDRIE
+      bit_offset: 1
+      bit_size: 1
+    - name: PERFOVIE
+      bit_offset: 2
+      bit_size: 1
+    - name: ARDBIE
+      bit_offset: 3
+      bit_size: 1
+    - name: IPEDIE
+      bit_offset: 5
+      bit_size: 1
+    - name: IPIEIE
+      bit_offset: 6
+      bit_size: 1
+    - name: PPWIE
+      bit_offset: 8
+      bit_size: 1
+    - name: CRCAIE
+      bit_offset: 10
+      bit_size: 1
+    - name: ABOIE
+      bit_offset: 12
+      bit_size: 1
+    - name: AIBSIE
+      bit_offset: 13
+      bit_size: 1
+    - name: AITIE
+      bit_offset: 14
+      bit_size: 1
+    - name: AAIE
+      bit_offset: 15
+      bit_size: 1
+    - name: RBDIE
+      bit_offset: 16
+      bit_size: 1
+    - name: RBOIE
+      bit_offset: 17
+      bit_size: 1
+    - name: PRWFIE
+      bit_offset: 18
+      bit_size: 1
+    - name: ILLACCIE
+      bit_offset: 19
+      bit_size: 1
+    - name: RBDDE
+      bit_offset: 21
+      bit_size: 1
+    - name: ILLINIE
+      bit_offset: 23
+      bit_size: 1
+    - name: DLLULIE
+      bit_offset: 24
+      bit_size: 1
+    - name: TBFDE
+      bit_offset: 25
+      bit_size: 1
+    - name: TBUIE
+      bit_offset: 26
+      bit_size: 1
+    - name: TBFIE
+      bit_offset: 27
+      bit_size: 1
+    - name: DLPFIE
+      bit_offset: 31
+      bit_size: 1
+fieldset/XSPI_SPNDST:
+  description: ''
+  fields:
+    - name: STATE
+      bit_offset: 0
+      bit_size: 2
+    - name: SPDSBUF
+      bit_offset: 4
+      bit_size: 2
+      description: Suspended Sub-Buffer
+    - name: SPDBUF
+      bit_offset: 6
+      bit_size: 2
+      description: Suspended Sub-Buffer
+    - name: DATLFT
+      bit_offset: 9
+      bit_size: 9
+      description: Suspended Buffer
+fieldset/XSPI_SPTRCLR:
+  description: ''
+  fields:
+    - name: BFPTRC
+      bit_offset: 0
+      bit_size: 1
+    - name: IPPTRC
+      bit_offset: 8
+      bit_size: 1
+fieldset/XSPI_SPTRCLR_ABRT:
+  description: ''
+  fields:
+    - name: CLR
+      bit_offset: 16
+      bit_size: 1
+fieldset/XSPI_SPTRCLR_PREFETCH:
+  description: ''
+  fields:
+    - name: DIS
+      bit_offset: 17
+      bit_size: 1
+fieldset/XSPI_SPTRCLR_STREAM:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 18
+      bit_size: 1
+fieldset/XSPI_TGSR_IPED_TG_IPS:
+  description: ''
+  fields:
+    - name: GCM
+      bit_offset: 0
+      bit_size: 1
+fieldset/XSPI_SFAD:
+  description: ''
+  fields:
+    - name: TPAD
+      bit_offset: 10
+      bit_size: 22
+      description: Top Address
+fieldset/XSPI_DLPR:
+  description: ''
+  fields:
+    - name: DLPV
+      bit_offset: 0
+      bit_size: 32
+      description: Data Learning Pattern
+fieldset/XSPI_FAIL_ADDR:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Failing Address
+fieldset/XSPI_RBDR:
+  description: ''
+  fields:
+    - name: RXDATA
+      bit_offset: 0
+      bit_size: 32
+      description: RX Data
+fieldset/XSPI_LUTKEY:
+  description: ''
+  fields:
+    - name: KEY
+      bit_offset: 0
+      bit_size: 32
+      description: Key
+fieldset/XSPI_LCKCR:
+  description: ''
+  fields:
+    - name: LOCK
+      bit_offset: 0
+      bit_size: 1
+    - name: UNLOCK
+      bit_offset: 1
+      bit_size: 1
+fieldset/XSPI_LUT:
+  description: ''
+  fields:
+    - name: OPRND0
+      bit_offset: 0
+      bit_size: 8
+      description: Operand for INSTR0
+    - name: PAD0
+      bit_offset: 8
+      bit_size: 2
+      description: Operand for INSTR0
+    - name: INSTR0
+      bit_offset: 10
+      bit_size: 6
+      description: Instruction 0
+    - name: OPRND1
+      bit_offset: 16
+      bit_size: 8
+      description: Instruction 0
+    - name: PAD1
+      bit_offset: 24
+      bit_size: 2
+      description: Operand for INSTR1
+    - name: INSTR1
+      bit_offset: 26
+      bit_size: 6
+      description: Instruction 1
+fieldset/XSPI_BUF_ADDR_RANGE:
+  description: ''
+  fields:
+    - name: STARTADR
+      bit_offset: 0
+      bit_size: 16
+      description: Start Address
+    - name: ENDADR
+      bit_offset: 16
+      bit_size: 16
+      description: Start Address
+fieldset/XSPI_AHB_PERF_CTRL_BUF0:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+fieldset/XSPI_AHB_PERF_CTRL_BUF1:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 1
+      bit_size: 1
+fieldset/XSPI_AHB_PERF_CTRL_BUF2:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 2
+      bit_size: 1
+fieldset/XSPI_AHB_PERF_CTRL_BUF3:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 3
+      bit_size: 1
+fieldset/XSPI_AHB_PERF_CTRL:
+  description: ''
+  fields:
+    - name: CNTSTP
+      bit_offset: 4
+      bit_size: 1
+    - name: CNTSTART
+      bit_offset: 5
+      bit_size: 1
+    - name: TCNTO
+      bit_offset: 20
+      bit_size: 1
+fieldset/XSPI_AHB_PERF_CTRL_BUF0_MISS:
+  description: ''
+  fields:
+    - name: OVF
+      bit_offset: 12
+      bit_size: 1
+fieldset/XSPI_AHB_PERF_CTRL_BUF1_MISS:
+  description: ''
+  fields:
+    - name: OVF
+      bit_offset: 13
+      bit_size: 1
+fieldset/XSPI_AHB_PERF_CTRL_BUF2_MISS:
+  description: ''
+  fields:
+    - name: OVF
+      bit_offset: 14
+      bit_size: 1
+fieldset/XSPI_AHB_PERF_CTRL_BUF3_MISS:
+  description: ''
+  fields:
+    - name: OVF
+      bit_offset: 15
+      bit_size: 1
+fieldset/XSPI_AHB_PERF_CTRL_BUF0_HIT:
+  description: ''
+  fields:
+    - name: OVF
+      bit_offset: 16
+      bit_size: 1
+fieldset/XSPI_AHB_PERF_CTRL_BUF1_HIT:
+  description: ''
+  fields:
+    - name: OVF
+      bit_offset: 17
+      bit_size: 1
+fieldset/XSPI_AHB_PERF_CTRL_BUF2_HIT:
+  description: ''
+  fields:
+    - name: OVF
+      bit_offset: 18
+      bit_size: 1
+fieldset/XSPI_AHB_PERF_CTRL_BUF3_HIT:
+  description: ''
+  fields:
+    - name: OVF
+      bit_offset: 19
+      bit_size: 1
+fieldset/XSPI_AHB_PERF_CTRL_SUB_BUF:
+  description: ''
+  fields:
+    - name: SEL0
+      bit_offset: 24
+      bit_size: 2
+    - name: SEL1
+      bit_offset: 26
+      bit_size: 2
+    - name: SEL2
+      bit_offset: 28
+      bit_size: 2
+    - name: SEL3
+      bit_offset: 30
+      bit_size: 2
+fieldset/XSPI_AHB_PERF_TIME_CNT_PERF_TIME:
+  description: ''
+  fields:
+    - name: COUNT
+      bit_offset: 0
+      bit_size: 32
+      description: Time Count
+fieldset/XSPI_AHB_PERF_BUF_PERF_MISS:
+  description: ''
+  fields:
+    - name: CNT
+      bit_offset: 0
+      bit_size: 16
+      description: Performance Miss Count
+fieldset/XSPI_AHB_PERF_BUF_PERF_HIT:
+  description: ''
+  fields:
+    - name: CNT
+      bit_offset: 16
+      bit_size: 16
+      description: Performance Hit Count
+fieldset/XSPI_AHRDYTO_HREADY:
+  description: ''
+  fields:
+    - name: TO
+      bit_offset: 0
+      bit_size: 16
+fieldset/XSPI_AHRDYTO:
+  description: ''
+  fields:
+    - name: ARDBTOPD
+      bit_offset: 16
+      bit_size: 16
+      description: AHB HREADY Low Timeout Counter Value
+fieldset/XSPI_AHB_ERR_PAYLOAD_HI_ERR_PAYLOAD:
+  description: ''
+  fields:
+    - name: H
+      bit_offset: 0
+      bit_size: 32
+      description: Error Payload High
+fieldset/XSPI_AHB_ERR_PAYLOAD_LO_ERR_PAYLOAD:
+  description: ''
+  fields:
+    - name: L
+      bit_offset: 0
+      bit_size: 32
+      description: Error Payload Low
+fieldset/XSPI_AHB_RD_ERR_ADDR:
+  description: ''
+  fields:
+    - name: READDR
+      bit_offset: 0
+      bit_size: 32
+      description: Read Error Address
+fieldset/XSPI_AHB_RD_ERR_MID:
+  description: ''
+  fields:
+    - name: REMID
+      bit_offset: 0
+      bit_size: 4
+      description: Read Error Initiator ID
+fieldset/XSPI_SPNDST_ADDR:
+  description: ''
+  fields:
+    - name: ASAHBR
+      bit_offset: 3
+      bit_size: 29
+fieldset/XSPI_PPWF_TCNT:
+  description: ''
+  fields:
+    - name: PPWTC
+      bit_offset: 0
+      bit_size: 32
+fieldset/XSPI_PPW_RDSR:
+  description: ''
+  fields:
+    - name: RDSR
+      bit_offset: 0
+      bit_size: 16
+    - name: RDSRWSEL
+      bit_offset: 21
+      bit_size: 1
+      description: Value of Flash Status Register Read
+    - name: LOC
+      bit_offset: 24
+      bit_size: 4
+      description: Location of RDSR
+    - name: VALID
+      bit_offset: 31
+      bit_size: 1
+      description: Location of RDSR
+fieldset/XSPI_PPW_RDSR_RDSR_VAL:
+  description: ''
+  fields:
+    - name: CHK
+      bit_offset: 22
+      bit_size: 1
+fieldset/XSPI_PPW_RDSR_RDSR_HWORD:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 23
+      bit_size: 1
+fieldset/XSPI_MCR_EXT_IPS_TG:
+  description: ''
+  fields:
+    - name: RST1
+      bit_offset: 0
+      bit_size: 1
+    - name: RST2
+      bit_offset: 1
+      bit_size: 1
+    - name: RST3
+      bit_offset: 2
+      bit_size: 1
+    - name: RST4
+      bit_offset: 3
+      bit_size: 1
+fieldset/XSPI_RSER_SUB:
+  description: ''
+  fields:
+    - name: TFIE
+      bit_offset: 0
+      bit_size: 1
+    - name: RDADDRIE
+      bit_offset: 1
+      bit_size: 1
+    - name: PERFOVIE
+      bit_offset: 2
+      bit_size: 1
+    - name: ARDBIE
+      bit_offset: 3
+      bit_size: 1
+    - name: IPEDIE
+      bit_offset: 5
+      bit_size: 1
+    - name: IPIEIE
+      bit_offset: 6
+      bit_size: 1
+    - name: PPWIE
+      bit_offset: 8
+      bit_size: 1
+    - name: CRCAIE
+      bit_offset: 10
+      bit_size: 1
+    - name: ABOIE
+      bit_offset: 12
+      bit_size: 1
+    - name: AIBSIE
+      bit_offset: 13
+      bit_size: 1
+    - name: AITIE
+      bit_offset: 14
+      bit_size: 1
+    - name: AAIE
+      bit_offset: 15
+      bit_size: 1
+    - name: RBDIE
+      bit_offset: 16
+      bit_size: 1
+    - name: RBOIE
+      bit_offset: 17
+      bit_size: 1
+    - name: PRWFIE
+      bit_offset: 18
+      bit_size: 1
+    - name: ILLINIE
+      bit_offset: 23
+      bit_size: 1
+    - name: TBUIE
+      bit_offset: 26
+      bit_size: 1
+    - name: TBFIE
+      bit_offset: 27
+      bit_size: 1
+    - name: DLPFIE
+      bit_offset: 31
+      bit_size: 1
+fieldset/XSPI_IPEDCTXIV_CTX:
+  description: ''
+  fields:
+    - name: IV
+      bit_offset: 0
+      bit_size: 32
+fieldset/XSPI_IPEDCTXSTART:
+  description: ''
+  fields:
+    - name: GCM
+      bit_offset: 0
+      bit_size: 1
+    - name: SADD
+      bit_offset: 8
+      bit_size: 24
+      description: Start Address
+fieldset/XSPI_IPEDCTXEND_END:
+  description: ''
+  fields:
+    - name: ADDRESS
+      bit_offset: 8
+      bit_size: 24
+      description: End Address
+fieldset/XSPI_IPEDCTXAAD_CTX:
+  description: ''
+  fields:
+    - name: AAD
+      bit_offset: 0
+      bit_size: 32
+fieldset/XSPI_IPEDCTRL:
+  description: ''
+  fields:
+    - name: CONFIG
+      bit_offset: 0
+      bit_size: 1
+    - name: IPGCMWR
+      bit_offset: 6
+      bit_size: 1
+    - name: AHGCMWR
+      bit_offset: 7
+      bit_size: 1
+    - name: AHBGCMRD
+      bit_offset: 8
+      bit_size: 1
+fieldset/XSPI_IPEDCTRL_IPED:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 1
+      bit_size: 1
+    - name: PROTECT
+      bit_offset: 9
+      bit_size: 1
+    - name: SWRESET
+      bit_offset: 10
+      bit_size: 1
+fieldset/XSPI_IPEDCTRL_IPWR:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 2
+      bit_size: 1
+fieldset/XSPI_IPEDCTRL_AHBWR:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 3
+      bit_size: 1
+fieldset/XSPI_IPEDCTRL_AHBRD:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 4
+      bit_size: 1
+fieldset/XSPI_IPEDCTRL_IPS:
+  description: ''
+  fields:
+    - name: GCM
+      bit_offset: 16
+      bit_size: 1
+fieldset/XSPI_IPEDCTXCTRL_CTX0:
+  description: ''
+  fields:
+    - name: FREEZE
+      bit_offset: 0
+      bit_size: 2
+      description: CTX Freeze
+fieldset/XSPI_IPEDCTXCTRL_CTX1:
+  description: ''
+  fields:
+    - name: FREEZE
+      bit_offset: 2
+      bit_size: 2
+      description: CTX Freeze
+fieldset/XSPI_IPEDCTXCTRL_CTX2:
+  description: ''
+  fields:
+    - name: FREEZE
+      bit_offset: 4
+      bit_size: 2
+      description: CTX Freeze
+fieldset/XSPI_IPEDCTXCTRL_CTX3:
+  description: ''
+  fields:
+    - name: FREEZE
+      bit_offset: 6
+      bit_size: 2
+      description: CTX Freeze
+fieldset/XSPI_IPEDCTXCTRL_CTX4:
+  description: ''
+  fields:
+    - name: FREEZE
+      bit_offset: 8
+      bit_size: 2
+      description: CTX Freeze
+fieldset/XSPI_IPEDCTXCTRL_CTX5:
+  description: ''
+  fields:
+    - name: FREEZE
+      bit_offset: 10
+      bit_size: 2
+      description: CTX Freeze
+fieldset/XSPI_IPEDCTXCTRL_CTX6:
+  description: ''
+  fields:
+    - name: FREEZE
+      bit_offset: 12
+      bit_size: 2
+      description: CTX Freeze
+fieldset/XSPI_IPEDCTXCTRL_CTX7:
+  description: ''
+  fields:
+    - name: FREEZE
+      bit_offset: 14
+      bit_size: 2
+      description: CTX Freeze
+fieldset/XSPI_IPEDCTXCTRL_CTX8:
+  description: ''
+  fields:
+    - name: FREEZE
+      bit_offset: 16
+      bit_size: 2
+      description: CTX Freeze
+fieldset/XSPI_IPEDCTXCTRL_CTX9:
+  description: ''
+  fields:
+    - name: FREEZE
+      bit_offset: 18
+      bit_size: 2
+      description: CTX Freeze
+fieldset/XSPI_IPEDCTXCTRL_CTX10:
+  description: ''
+  fields:
+    - name: FREEZE
+      bit_offset: 20
+      bit_size: 2
+      description: CTX Freeze
+fieldset/XSPI_IPEDCTXCTRL_CTX11:
+  description: ''
+  fields:
+    - name: FREEZE
+      bit_offset: 22
+      bit_size: 2
+      description: CTX Freeze
+fieldset/XSPI_IPEDCTXCTRL_CTX12:
+  description: ''
+  fields:
+    - name: FREEZE
+      bit_offset: 24
+      bit_size: 2
+      description: CTX Freeze
+fieldset/XSPI_IPEDCTXCTRL_CTX13:
+  description: ''
+  fields:
+    - name: FREEZE
+      bit_offset: 26
+      bit_size: 2
+      description: CTX Freeze
+fieldset/XSPI_IPEDCTXCTRL_CTX14:
+  description: ''
+  fields:
+    - name: FREEZE
+      bit_offset: 28
+      bit_size: 2
+      description: CTX Freeze
+fieldset/XSPI_IPEDCTXCTRL_CTX15:
+  description: ''
+  fields:
+    - name: FREEZE
+      bit_offset: 30
+      bit_size: 2
+      description: CTX Freeze
+fieldset/XSPI_ARSWRST_ADDR:
+  description: ''
+  fields:
+    - name: ARSWRSTA
+      bit_offset: 0
+      bit_size: 32
+fieldset/XSPI_ARSWRST_MID:
+  description: ''
+  fields:
+    - name: ARSWRSTM
+      bit_offset: 0
+      bit_size: 6
+fieldset/XSPI_AWSWRST_ADDR:
+  description: ''
+  fields:
+    - name: AWSWRSTA
+      bit_offset: 0
+      bit_size: 32
+fieldset/XSPI_FRAD0_WORD0:
+  description: ''
+  fields:
+    - name: STARTADR
+      bit_offset: 16
+      bit_size: 16
+      description: Start Address
+fieldset/XSPI_FRAD0_WORD1:
+  description: ''
+  fields:
+    - name: ENDADR
+      bit_offset: 16
+      bit_size: 16
+      description: End Address
+fieldset/XSPI_FRAD0_WORD2:
+  description: ''
+  fields:
+    - name: MD0ACP
+      bit_offset: 0
+      bit_size: 3
+    - name: MD1ACP
+      bit_offset: 3
+      bit_size: 3
+    - name: MD2ACP
+      bit_offset: 6
+      bit_size: 3
+    - name: MD3ACP
+      bit_offset: 9
+      bit_size: 3
+    - name: MD4ACP
+      bit_offset: 12
+      bit_size: 3
+    - name: EALO
+      bit_offset: 24
+      bit_size: 6
+      description: Exclusive Access Lock Owner
+fieldset/XSPI_FRAD0_WORD3:
+  description: ''
+  fields:
+    - name: EAL
+      bit_offset: 24
+      bit_size: 2
+    - name: LOCK
+      bit_offset: 29
+      bit_size: 2
+    - name: VLD
+      bit_offset: 31
+      bit_size: 1
+fieldset/XSPI_FRAD0_WORD4_CMP:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Capture Address
+fieldset/XSPI_FRAD0_WORD5_CMP:
+  description: ''
+  fields:
+    - name: MDID
+      bit_offset: 0
+      bit_size: 6
+      description: Captured Domain Value
+    - name: SA
+      bit_offset: 6
+      bit_size: 1
+      description: Captured Domain Value
+    - name: PA
+      bit_offset: 7
+      bit_size: 1
+    - name: ERR
+      bit_offset: 29
+      bit_size: 1
+fieldset/XSPI_FRAD0_WORD5:
+  description: ''
+  fields:
+    - name: CMPVALID
+      bit_offset: 30
+      bit_size: 1
+fieldset/XSPI_FRAD1_WORD0:
+  description: ''
+  fields:
+    - name: STARTADR
+      bit_offset: 16
+      bit_size: 16
+      description: Start Address
+fieldset/XSPI_FRAD1_WORD1:
+  description: ''
+  fields:
+    - name: ENDADR
+      bit_offset: 16
+      bit_size: 16
+      description: End Address
+fieldset/XSPI_FRAD1_WORD2:
+  description: ''
+  fields:
+    - name: MD0ACP
+      bit_offset: 0
+      bit_size: 3
+    - name: MD1ACP
+      bit_offset: 3
+      bit_size: 3
+    - name: MD2ACP
+      bit_offset: 6
+      bit_size: 3
+    - name: MD3ACP
+      bit_offset: 9
+      bit_size: 3
+    - name: MD4ACP
+      bit_offset: 12
+      bit_size: 3
+    - name: EALO
+      bit_offset: 24
+      bit_size: 6
+      description: Exclusive Access Lock Owner
+fieldset/XSPI_FRAD1_WORD3:
+  description: ''
+  fields:
+    - name: EAL
+      bit_offset: 24
+      bit_size: 2
+    - name: LOCK
+      bit_offset: 29
+      bit_size: 2
+    - name: VLD
+      bit_offset: 31
+      bit_size: 1
+fieldset/XSPI_FRAD1_WORD4_CMP:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Capture Address
+fieldset/XSPI_FRAD1_WORD5_CMP:
+  description: ''
+  fields:
+    - name: MDID
+      bit_offset: 0
+      bit_size: 6
+      description: Captured Domain Value
+    - name: SA
+      bit_offset: 6
+      bit_size: 1
+      description: Captured Domain Value
+    - name: PA
+      bit_offset: 7
+      bit_size: 1
+    - name: ERR
+      bit_offset: 29
+      bit_size: 1
+fieldset/XSPI_FRAD1_WORD5:
+  description: ''
+  fields:
+    - name: CMPVALID
+      bit_offset: 30
+      bit_size: 1
+fieldset/XSPI_FRAD2_WORD0:
+  description: ''
+  fields:
+    - name: STARTADR
+      bit_offset: 16
+      bit_size: 16
+      description: Start Address
+fieldset/XSPI_FRAD2_WORD1:
+  description: ''
+  fields:
+    - name: ENDADR
+      bit_offset: 16
+      bit_size: 16
+      description: End Address
+fieldset/XSPI_FRAD2_WORD2:
+  description: ''
+  fields:
+    - name: MD0ACP
+      bit_offset: 0
+      bit_size: 3
+    - name: MD1ACP
+      bit_offset: 3
+      bit_size: 3
+    - name: MD2ACP
+      bit_offset: 6
+      bit_size: 3
+    - name: MD3ACP
+      bit_offset: 9
+      bit_size: 3
+    - name: MD4ACP
+      bit_offset: 12
+      bit_size: 3
+    - name: EALO
+      bit_offset: 24
+      bit_size: 6
+      description: Exclusive Access Lock Owner
+fieldset/XSPI_FRAD2_WORD3:
+  description: ''
+  fields:
+    - name: EAL
+      bit_offset: 24
+      bit_size: 2
+    - name: LOCK
+      bit_offset: 29
+      bit_size: 2
+    - name: VLD
+      bit_offset: 31
+      bit_size: 1
+fieldset/XSPI_FRAD2_WORD4_CMP:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Capture Address
+fieldset/XSPI_FRAD2_WORD5_CMP:
+  description: ''
+  fields:
+    - name: MDID
+      bit_offset: 0
+      bit_size: 6
+      description: Captured Domain Value
+    - name: SA
+      bit_offset: 6
+      bit_size: 1
+      description: Captured Domain Value
+    - name: PA
+      bit_offset: 7
+      bit_size: 1
+    - name: ERR
+      bit_offset: 29
+      bit_size: 1
+fieldset/XSPI_FRAD2_WORD5:
+  description: ''
+  fields:
+    - name: CMPVALID
+      bit_offset: 30
+      bit_size: 1
+fieldset/XSPI_FRAD3_WORD0:
+  description: ''
+  fields:
+    - name: STARTADR
+      bit_offset: 16
+      bit_size: 16
+      description: Start Address
+fieldset/XSPI_FRAD3_WORD1:
+  description: ''
+  fields:
+    - name: ENDADR
+      bit_offset: 16
+      bit_size: 16
+      description: End Address
+fieldset/XSPI_FRAD3_WORD2:
+  description: ''
+  fields:
+    - name: MD0ACP
+      bit_offset: 0
+      bit_size: 3
+    - name: MD1ACP
+      bit_offset: 3
+      bit_size: 3
+    - name: MD2ACP
+      bit_offset: 6
+      bit_size: 3
+    - name: MD3ACP
+      bit_offset: 9
+      bit_size: 3
+    - name: MD4ACP
+      bit_offset: 12
+      bit_size: 3
+    - name: EALO
+      bit_offset: 24
+      bit_size: 6
+      description: Exclusive Access Lock Owner
+fieldset/XSPI_FRAD3_WORD3:
+  description: ''
+  fields:
+    - name: EAL
+      bit_offset: 24
+      bit_size: 2
+    - name: LOCK
+      bit_offset: 29
+      bit_size: 2
+    - name: VLD
+      bit_offset: 31
+      bit_size: 1
+fieldset/XSPI_FRAD3_WORD4_CMP:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Capture Address
+fieldset/XSPI_FRAD3_WORD5_CMP:
+  description: ''
+  fields:
+    - name: MDID
+      bit_offset: 0
+      bit_size: 6
+      description: Captured Domain Value
+    - name: SA
+      bit_offset: 6
+      bit_size: 1
+      description: Captured Domain Value
+    - name: PA
+      bit_offset: 7
+      bit_size: 1
+    - name: ERR
+      bit_offset: 29
+      bit_size: 1
+fieldset/XSPI_FRAD3_WORD5:
+  description: ''
+  fields:
+    - name: CMPVALID
+      bit_offset: 30
+      bit_size: 1
+fieldset/XSPI_FRAD4_WORD0:
+  description: ''
+  fields:
+    - name: STARTADR
+      bit_offset: 16
+      bit_size: 16
+      description: Start Address
+fieldset/XSPI_FRAD4_WORD1:
+  description: ''
+  fields:
+    - name: ENDADR
+      bit_offset: 16
+      bit_size: 16
+      description: End Address
+fieldset/XSPI_FRAD4_WORD2:
+  description: ''
+  fields:
+    - name: MD0ACP
+      bit_offset: 0
+      bit_size: 3
+    - name: MD1ACP
+      bit_offset: 3
+      bit_size: 3
+    - name: MD2ACP
+      bit_offset: 6
+      bit_size: 3
+    - name: MD3ACP
+      bit_offset: 9
+      bit_size: 3
+    - name: MD4ACP
+      bit_offset: 12
+      bit_size: 3
+    - name: EALO
+      bit_offset: 24
+      bit_size: 6
+      description: Exclusive Access Lock Owner
+fieldset/XSPI_FRAD4_WORD3:
+  description: ''
+  fields:
+    - name: EAL
+      bit_offset: 24
+      bit_size: 2
+    - name: LOCK
+      bit_offset: 29
+      bit_size: 2
+    - name: VLD
+      bit_offset: 31
+      bit_size: 1
+fieldset/XSPI_FRAD4_WORD4_CMP:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Capture Address
+fieldset/XSPI_FRAD4_WORD5_CMP:
+  description: ''
+  fields:
+    - name: MDID
+      bit_offset: 0
+      bit_size: 6
+      description: Captured Domain Value
+    - name: SA
+      bit_offset: 6
+      bit_size: 1
+      description: Captured Domain Value
+    - name: PA
+      bit_offset: 7
+      bit_size: 1
+    - name: ERR
+      bit_offset: 29
+      bit_size: 1
+fieldset/XSPI_FRAD4_WORD5:
+  description: ''
+  fields:
+    - name: CMPVALID
+      bit_offset: 30
+      bit_size: 1
+fieldset/XSPI_FRAD5_WORD0:
+  description: ''
+  fields:
+    - name: STARTADR
+      bit_offset: 16
+      bit_size: 16
+      description: Start Address
+fieldset/XSPI_FRAD5_WORD1:
+  description: ''
+  fields:
+    - name: ENDADR
+      bit_offset: 16
+      bit_size: 16
+      description: End Address
+fieldset/XSPI_FRAD5_WORD2:
+  description: ''
+  fields:
+    - name: MD0ACP
+      bit_offset: 0
+      bit_size: 3
+    - name: MD1ACP
+      bit_offset: 3
+      bit_size: 3
+    - name: MD2ACP
+      bit_offset: 6
+      bit_size: 3
+    - name: MD3ACP
+      bit_offset: 9
+      bit_size: 3
+    - name: MD4ACP
+      bit_offset: 12
+      bit_size: 3
+    - name: EALO
+      bit_offset: 24
+      bit_size: 6
+      description: Exclusive Access Lock Owner
+fieldset/XSPI_FRAD5_WORD3:
+  description: ''
+  fields:
+    - name: EAL
+      bit_offset: 24
+      bit_size: 2
+    - name: LOCK
+      bit_offset: 29
+      bit_size: 2
+    - name: VLD
+      bit_offset: 31
+      bit_size: 1
+fieldset/XSPI_FRAD5_WORD4_CMP:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Capture Address
+fieldset/XSPI_FRAD5_WORD5_CMP:
+  description: ''
+  fields:
+    - name: MDID
+      bit_offset: 0
+      bit_size: 6
+      description: Captured Domain Value
+    - name: SA
+      bit_offset: 6
+      bit_size: 1
+      description: Captured Domain Value
+    - name: PA
+      bit_offset: 7
+      bit_size: 1
+    - name: ERR
+      bit_offset: 29
+      bit_size: 1
+fieldset/XSPI_FRAD5_WORD5:
+  description: ''
+  fields:
+    - name: CMPVALID
+      bit_offset: 30
+      bit_size: 1
+fieldset/XSPI_FRAD6_WORD0:
+  description: ''
+  fields:
+    - name: STARTADR
+      bit_offset: 16
+      bit_size: 16
+      description: Start Address
+fieldset/XSPI_FRAD6_WORD1:
+  description: ''
+  fields:
+    - name: ENDADR
+      bit_offset: 16
+      bit_size: 16
+      description: End Address
+fieldset/XSPI_FRAD6_WORD2:
+  description: ''
+  fields:
+    - name: MD0ACP
+      bit_offset: 0
+      bit_size: 3
+    - name: MD1ACP
+      bit_offset: 3
+      bit_size: 3
+    - name: MD2ACP
+      bit_offset: 6
+      bit_size: 3
+    - name: MD3ACP
+      bit_offset: 9
+      bit_size: 3
+    - name: MD4ACP
+      bit_offset: 12
+      bit_size: 3
+    - name: EALO
+      bit_offset: 24
+      bit_size: 6
+      description: Exclusive Access Lock Owner
+fieldset/XSPI_FRAD6_WORD3:
+  description: ''
+  fields:
+    - name: EAL
+      bit_offset: 24
+      bit_size: 2
+    - name: LOCK
+      bit_offset: 29
+      bit_size: 2
+    - name: VLD
+      bit_offset: 31
+      bit_size: 1
+fieldset/XSPI_FRAD6_WORD4_CMP:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Capture Address
+fieldset/XSPI_FRAD6_WORD5_CMP:
+  description: ''
+  fields:
+    - name: MDID
+      bit_offset: 0
+      bit_size: 6
+      description: Captured Domain Value
+    - name: SA
+      bit_offset: 6
+      bit_size: 1
+      description: Captured Domain Value
+    - name: PA
+      bit_offset: 7
+      bit_size: 1
+    - name: ERR
+      bit_offset: 29
+      bit_size: 1
+fieldset/XSPI_FRAD6_WORD5:
+  description: ''
+  fields:
+    - name: CMPVALID
+      bit_offset: 30
+      bit_size: 1
+fieldset/XSPI_FRAD7_WORD0:
+  description: ''
+  fields:
+    - name: STARTADR
+      bit_offset: 16
+      bit_size: 16
+      description: Start Address
+fieldset/XSPI_FRAD7_WORD1:
+  description: ''
+  fields:
+    - name: ENDADR
+      bit_offset: 16
+      bit_size: 16
+      description: End Address
+fieldset/XSPI_FRAD7_WORD2:
+  description: ''
+  fields:
+    - name: MD0ACP
+      bit_offset: 0
+      bit_size: 3
+    - name: MD1ACP
+      bit_offset: 3
+      bit_size: 3
+    - name: MD2ACP
+      bit_offset: 6
+      bit_size: 3
+    - name: MD3ACP
+      bit_offset: 9
+      bit_size: 3
+    - name: MD4ACP
+      bit_offset: 12
+      bit_size: 3
+    - name: EALO
+      bit_offset: 24
+      bit_size: 6
+      description: Exclusive Access Lock Owner
+fieldset/XSPI_FRAD7_WORD3:
+  description: ''
+  fields:
+    - name: EAL
+      bit_offset: 24
+      bit_size: 2
+    - name: LOCK
+      bit_offset: 29
+      bit_size: 2
+    - name: VLD
+      bit_offset: 31
+      bit_size: 1
+fieldset/XSPI_FRAD7_WORD4_CMP:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Capture Address
+fieldset/XSPI_FRAD7_WORD5_CMP:
+  description: ''
+  fields:
+    - name: MDID
+      bit_offset: 0
+      bit_size: 6
+      description: Captured Domain Value
+    - name: SA
+      bit_offset: 6
+      bit_size: 1
+      description: Captured Domain Value
+    - name: PA
+      bit_offset: 7
+      bit_size: 1
+    - name: ERR
+      bit_offset: 29
+      bit_size: 1
+fieldset/XSPI_FRAD7_WORD5:
+  description: ''
+  fields:
+    - name: CMPVALID
+      bit_offset: 30
+      bit_size: 1
+fieldset/XSPI_SFP_ARB_TIMEOUT_SFP_ARB:
+  description: ''
+  fields:
+    - name: TOC
+      bit_offset: 0
+      bit_size: 32
+fieldset/XSPI_TG0MDAD:
+  description: ''
+  fields:
+    - name: MIDMATCH
+      bit_offset: 0
+      bit_size: 6
+      description: Domain ID Reference
+    - name: MASK
+      bit_offset: 6
+      bit_size: 6
+      description: Domain ID Reference
+    - name: MASKTYPE
+      bit_offset: 12
+      bit_size: 1
+      description: Mask
+    - name: SA
+      bit_offset: 14
+      bit_size: 2
+    - name: LCK
+      bit_offset: 29
+      bit_size: 1
+    - name: VLD
+      bit_offset: 31
+      bit_size: 1
+fieldset/XSPI_TGSFAR:
+  description: ''
+  fields:
+    - name: SFARADDR
+      bit_offset: 0
+      bit_size: 32
+      description: SFAR Address
+fieldset/XSPI_TGSFARS_TG:
+  description: ''
+  fields:
+    - name: MID
+      bit_offset: 0
+      bit_size: 6
+      description: Transaction Domain ID
+fieldset/XSPI_TGSFARS:
+  description: ''
+  fields:
+    - name: SA
+      bit_offset: 10
+      bit_size: 1
+      description: Transaction Domain ID
+    - name: PA
+      bit_offset: 12
+      bit_size: 1
+    - name: CLR
+      bit_offset: 29
+      bit_size: 1
+    - name: ERR
+      bit_offset: 30
+      bit_size: 1
+    - name: VLD
+      bit_offset: 31
+      bit_size: 1
+fieldset/XSPI_TGIPCRS:
+  description: ''
+  fields:
+    - name: IDATSZ
+      bit_offset: 0
+      bit_size: 16
+      description: IP Data Transfer Size
+    - name: SEQID
+      bit_offset: 16
+      bit_size: 4
+      description: IP Data Transfer Size
+    - name: ADDRTRDS
+      bit_offset: 24
+      bit_size: 1
+    - name: CLR
+      bit_offset: 28
+      bit_size: 1
+    - name: ERR
+      bit_offset: 29
+      bit_size: 2
+    - name: VLD
+      bit_offset: 31
+      bit_size: 1
+fieldset/XSPI_TGIPCRS_ARB:
+  description: ''
+  fields:
+    - name: LOCK
+      bit_offset: 21
+      bit_size: 1
+      description: SEQID Value
+    - name: UNLOCK
+      bit_offset: 22
+      bit_size: 1
+fieldset/XSPI_TG1MDAD:
+  description: ''
+  fields:
+    - name: MIDMATCH
+      bit_offset: 0
+      bit_size: 6
+      description: Domain ID Reference
+    - name: MASK
+      bit_offset: 6
+      bit_size: 6
+      description: Domain ID Reference
+    - name: MASKTYPE
+      bit_offset: 12
+      bit_size: 1
+      description: Mask
+    - name: SA
+      bit_offset: 14
+      bit_size: 2
+    - name: LCK
+      bit_offset: 29
+      bit_size: 1
+    - name: VLD
+      bit_offset: 31
+      bit_size: 1
+fieldset/XSPI_MGC:
+  description: ''
+  fields:
+    - name: GCLCKMID
+      bit_offset: 0
+      bit_size: 6
+    - name: GCLCK
+      bit_offset: 10
+      bit_size: 2
+      description: Global Configuration Lock Owner
+    - name: GVLDFRAD
+      bit_offset: 27
+      bit_size: 1
+    - name: GVLDMDAD
+      bit_offset: 29
+      bit_size: 1
+    - name: GVLD
+      bit_offset: 31
+      bit_size: 1
+fieldset/XSPI_MGC_TG1_FIX:
+  description: ''
+  fields:
+    - name: PRIO
+      bit_offset: 16
+      bit_size: 1
+fieldset/XSPI_MRC_READ:
+  description: ''
+  fields:
+    - name: CMD0
+      bit_offset: 0
+      bit_size: 6
+      description: Read Command 0
+    - name: CMD1
+      bit_offset: 8
+      bit_size: 6
+      description: Read Command 0
+    - name: CMD2
+      bit_offset: 16
+      bit_size: 6
+      description: Read Command 1
+    - name: CMD3
+      bit_offset: 24
+      bit_size: 6
+      description: Read Command 3
+fieldset/XSPI_MRC:
+  description: ''
+  fields:
+    - name: VLDCMD02
+      bit_offset: 22
+      bit_size: 1
+      description: Read Command 2
+    - name: VLDCMD03
+      bit_offset: 30
+      bit_size: 1
+      description: Read Command 3
+fieldset/XSPI_MTO_SFP_ACC:
+  description: ''
+  fields:
+    - name: TO
+      bit_offset: 0
+      bit_size: 32
+      description: SFP Access Timeout
+fieldset/XSPI_FLSEQREQ_REQ:
+  description: ''
+  fields:
+    - name: MID
+      bit_offset: 0
+      bit_size: 6
+    - name: TG
+      bit_offset: 6
+      bit_size: 2
+      description: Flash Sequence Request Domain ID
+fieldset/XSPI_FLSEQREQ:
+  description: ''
+  fields:
+    - name: SA
+      bit_offset: 8
+      bit_size: 1
+    - name: PA
+      bit_offset: 9
+      bit_size: 1
+    - name: FRAD
+      bit_offset: 12
+      bit_size: 4
+      description: Flash Region Descriptor Number
+    - name: SEQID
+      bit_offset: 16
+      bit_size: 4
+      description: Flash Region Descriptor Number
+    - name: CMD
+      bit_offset: 22
+      bit_size: 1
+      description: Sequence ID
+    - name: TIMEOUT
+      bit_offset: 27
+      bit_size: 1
+    - name: VLD
+      bit_offset: 31
+      bit_size: 1
+fieldset/XSPI_FLSEQREQ_ARB:
+  description: ''
+  fields:
+    - name: LOCK
+      bit_offset: 10
+      bit_size: 1
+fieldset/XSPI_FLSEQREQ_REQ_TG:
+  description: ''
+  fields:
+    - name: EXT
+      bit_offset: 23
+      bit_size: 1
+fieldset/XSPI_FSMSTAT:
+  description: ''
+  fields:
+    - name: STATE
+      bit_offset: 0
+      bit_size: 2
+    - name: MID
+      bit_offset: 8
+      bit_size: 6
+      description: Domain ID
+    - name: CMD
+      bit_offset: 16
+      bit_size: 1
+      description: Domain ID
+    - name: VLD
+      bit_offset: 31
+      bit_size: 1
+fieldset/XSPI_FSMSTAT_ARB:
+  description: ''
+  fields:
+    - name: LOCK
+      bit_offset: 17
+      bit_size: 1
+fieldset/XSPI_IPSERROR:
+  description: ''
+  fields:
+    - name: MID
+      bit_offset: 0
+      bit_size: 6
+      description: IPS Domain ID
+    - name: TG0LCK
+      bit_offset: 8
+      bit_size: 1
+      description: IPS Domain ID
+    - name: TG0SEC
+      bit_offset: 9
+      bit_size: 1
+    - name: TG0MID
+      bit_offset: 10
+      bit_size: 1
+    - name: MDADPROG
+      bit_offset: 11
+      bit_size: 1
+    - name: FRADPROG
+      bit_offset: 12
+      bit_size: 1
+    - name: CLR
+      bit_offset: 29
+      bit_size: 1
+fieldset/XSPI_ERRSTAT:
+  description: ''
+  fields:
+    - name: FRADMTCH
+      bit_offset: 0
+      bit_size: 1
+    - name: FRAD0ACC
+      bit_offset: 1
+      bit_size: 1
+    - name: FRAD1ACC
+      bit_offset: 2
+      bit_size: 1
+    - name: FRAD2ACC
+      bit_offset: 3
+      bit_size: 1
+    - name: FRAD3ACC
+      bit_offset: 4
+      bit_size: 1
+    - name: FRAD4ACC
+      bit_offset: 5
+      bit_size: 1
+    - name: FRAD5ACC
+      bit_offset: 6
+      bit_size: 1
+    - name: FRAD6ACC
+      bit_offset: 7
+      bit_size: 1
+    - name: FRAD7ACC
+      bit_offset: 8
+      bit_size: 1
+    - name: TG0SFAR
+      bit_offset: 10
+      bit_size: 1
+    - name: TG0IPCR
+      bit_offset: 11
+      bit_size: 1
+    - name: FRAD8ACC
+      bit_offset: 16
+      bit_size: 1
+    - name: FRAD9ACC
+      bit_offset: 17
+      bit_size: 1
+    - name: FRAD10ACC
+      bit_offset: 18
+      bit_size: 1
+    - name: FRAD11ACC
+      bit_offset: 19
+      bit_size: 1
+    - name: FRAD12ACC
+      bit_offset: 20
+      bit_size: 1
+    - name: FRAD13ACC
+      bit_offset: 21
+      bit_size: 1
+    - name: FRAD14ACC
+      bit_offset: 22
+      bit_size: 1
+    - name: FRAD15ACC
+      bit_offset: 23
+      bit_size: 1
+fieldset/XSPI_ERRSTAT_IPS:
+  description: ''
+  fields:
+    - name: ERR
+      bit_offset: 9
+      bit_size: 1
+fieldset/XSPI_ERRSTAT_TO:
+  description: ''
+  fields:
+    - name: ERR
+      bit_offset: 14
+      bit_size: 1
+fieldset/XSPI_ERRSTAT_ARB:
+  description: ''
+  fields:
+    - name: WIN
+      bit_offset: 28
+      bit_size: 1
+fieldset/XSPI_ERRSTAT_ARB_LOCK:
+  description: ''
+  fields:
+    - name: TO
+      bit_offset: 29
+      bit_size: 1
+fieldset/XSPI_ERRSTAT_LOCK:
+  description: ''
+  fields:
+    - name: ERR
+      bit_offset: 30
+      bit_size: 1
+fieldset/XSPI_INT_EN:
+  description: ''
+  fields:
+    - name: FRADMTCH
+      bit_offset: 0
+      bit_size: 1
+    - name: FRAD0ACC
+      bit_offset: 1
+      bit_size: 1
+    - name: FRAD1ACC
+      bit_offset: 2
+      bit_size: 1
+    - name: FRAD2ACC
+      bit_offset: 3
+      bit_size: 1
+    - name: FRAD3ACC
+      bit_offset: 4
+      bit_size: 1
+    - name: FRAD4ACC
+      bit_offset: 5
+      bit_size: 1
+    - name: FRAD5ACC
+      bit_offset: 6
+      bit_size: 1
+    - name: FRAD6ACC
+      bit_offset: 7
+      bit_size: 1
+    - name: FRAD7ACC
+      bit_offset: 8
+      bit_size: 1
+    - name: TG0SFAR
+      bit_offset: 10
+      bit_size: 1
+    - name: TG0IPCR
+      bit_offset: 11
+      bit_size: 1
+    - name: FRAD8ACC
+      bit_offset: 16
+      bit_size: 1
+    - name: FRAD9ACC
+      bit_offset: 17
+      bit_size: 1
+    - name: FRAD10ACC
+      bit_offset: 18
+      bit_size: 1
+    - name: FRAD11ACC
+      bit_offset: 19
+      bit_size: 1
+    - name: FRAD12ACC
+      bit_offset: 20
+      bit_size: 1
+    - name: FRAD13ACC
+      bit_offset: 21
+      bit_size: 1
+    - name: FRAD14ACC
+      bit_offset: 22
+      bit_size: 1
+    - name: FRAD15ACC
+      bit_offset: 23
+      bit_size: 1
+    - name: LCK
+      bit_offset: 31
+      bit_size: 1
+fieldset/XSPI_INT_EN_IPS:
+  description: ''
+  fields:
+    - name: ERR
+      bit_offset: 9
+      bit_size: 1
+fieldset/XSPI_INT_EN_TO:
+  description: ''
+  fields:
+    - name: ERR
+      bit_offset: 14
+      bit_size: 1
+fieldset/XSPI_INT_EN_ARB_WIN:
+  description: ''
+  fields:
+    - name: IE
+      bit_offset: 28
+      bit_size: 1
+fieldset/XSPI_INT_EN_ARB_TO:
+  description: ''
+  fields:
+    - name: IE
+      bit_offset: 29
+      bit_size: 1
+fieldset/XSPI_INT_EN_LCK_ERR:
+  description: ''
+  fields:
+    - name: IE
+      bit_offset: 30
+      bit_size: 1
+fieldset/XSPI_TGMDAD_EXT:
+  description: ''
+  fields:
+    - name: MIDMATCH
+      bit_offset: 0
+      bit_size: 6
+      description: Domain ID Reference
+    - name: MASK
+      bit_offset: 6
+      bit_size: 6
+      description: Domain ID Reference
+    - name: MASKTYPE
+      bit_offset: 12
+      bit_size: 1
+      description: Mask
+    - name: SA
+      bit_offset: 14
+      bit_size: 2
+    - name: LCK
+      bit_offset: 29
+      bit_size: 1
+    - name: VLD
+      bit_offset: 31
+      bit_size: 1
+fieldset/XSPI_SFP_TG_IPCR:
+  description: ''
+  fields:
+    - name: IDATSZ
+      bit_offset: 0
+      bit_size: 16
+      description: IP Data Transfer Size
+    - name: ADDRTRD
+      bit_offset: 18
+      bit_size: 1
+    - name: SEQID
+      bit_offset: 24
+      bit_size: 4
+      description: Sequence ID
+fieldset/XSPI_SFP_TG_IPCR_ARDB:
+  description: ''
+  fields:
+    - name: CMD
+      bit_offset: 17
+      bit_size: 1
+      description: IP Data Transfer Size
+fieldset/XSPI_SFP_TG_IPCR_ARB:
+  description: ''
+  fields:
+    - name: LOCK
+      bit_offset: 22
+      bit_size: 1
+    - name: UNLOCK
+      bit_offset: 23
+      bit_size: 1
+fieldset/XSPI_SFP_TG_SFAR:
+  description: ''
+  fields:
+    - name: SFADR
+      bit_offset: 0
+      bit_size: 32
+      description: Serial Flash Memory Address
+fieldset/XSPI_SFP_LUT_EN_LUT_SEQ0:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+fieldset/XSPI_SFP_LUT_EN_LUT_SEQ1:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 1
+      bit_size: 1
+fieldset/XSPI_SFP_LUT_EN_LUT_SEQ2:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 2
+      bit_size: 1
+fieldset/XSPI_SFP_LUT_EN_LUT_SEQ3:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 3
+      bit_size: 1
+fieldset/XSPI_SFP_LUT_EN_LUT_SEQ4:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 4
+      bit_size: 1
+fieldset/XSPI_SFP_LUT_EN_LUT_SEQ5:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 5
+      bit_size: 1
+fieldset/XSPI_SFP_LUT_EN_LUT_SEQ6:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 6
+      bit_size: 1
+fieldset/XSPI_SFP_LUT_EN_LUT_SEQ7:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 7
+      bit_size: 1
+fieldset/XSPI_SFP_LUT_EN_LUT_SEQ8:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 8
+      bit_size: 1
+fieldset/XSPI_SFP_LUT_EN_LUT_SEQ9:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 9
+      bit_size: 1
+fieldset/XSPI_SFP_LUT_EN_LUT_SEQ10:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 10
+      bit_size: 1
+fieldset/XSPI_SFP_LUT_EN_LUT_SEQ11:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 11
+      bit_size: 1
+fieldset/XSPI_SFP_LUT_EN_LUT_SEQ12:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 12
+      bit_size: 1
+fieldset/XSPI_SFP_LUT_EN_LUT_SEQ13:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 13
+      bit_size: 1
+fieldset/XSPI_SFP_LUT_EN_LUT_SEQ14:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 14
+      bit_size: 1
+fieldset/XSPI_SFP_LUT_EN_LUT_SEQ15:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 15
+      bit_size: 1
+fieldset/XSPI_SFP_LUT_EN:
+  description: ''
+  fields:
+    - name: LOCK
+      bit_offset: 31
+      bit_size: 1
+fieldset/XSPI_FRAD8_WORD0:
+  description: ''
+  fields:
+    - name: STARTADR
+      bit_offset: 16
+      bit_size: 16
+      description: Start Address
+fieldset/XSPI_FRAD8_WORD1:
+  description: ''
+  fields:
+    - name: ENDADR
+      bit_offset: 16
+      bit_size: 16
+      description: End Address
+fieldset/XSPI_FRAD8_WORD2:
+  description: ''
+  fields:
+    - name: MD0ACP
+      bit_offset: 0
+      bit_size: 3
+    - name: MD1ACP
+      bit_offset: 3
+      bit_size: 3
+    - name: MD2ACP
+      bit_offset: 6
+      bit_size: 3
+    - name: MD3ACP
+      bit_offset: 9
+      bit_size: 3
+    - name: MD4ACP
+      bit_offset: 12
+      bit_size: 3
+    - name: EALO
+      bit_offset: 24
+      bit_size: 6
+      description: Exclusive Access Lock Owner
+fieldset/XSPI_FRAD8_WORD3:
+  description: ''
+  fields:
+    - name: EAL
+      bit_offset: 24
+      bit_size: 2
+    - name: LOCK
+      bit_offset: 29
+      bit_size: 2
+    - name: VLD
+      bit_offset: 31
+      bit_size: 1
+fieldset/XSPI_FRAD8_WORD4_CMP:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Capture Address
+fieldset/XSPI_FRAD8_WORD5_CMP:
+  description: ''
+  fields:
+    - name: MDID
+      bit_offset: 0
+      bit_size: 6
+      description: Captured Domain Value
+    - name: SA
+      bit_offset: 6
+      bit_size: 1
+      description: Captured Domain Value
+    - name: PA
+      bit_offset: 7
+      bit_size: 1
+    - name: ERR
+      bit_offset: 29
+      bit_size: 1
+fieldset/XSPI_FRAD8_WORD5:
+  description: ''
+  fields:
+    - name: CMPVALID
+      bit_offset: 30
+      bit_size: 1
+fieldset/XSPI_FRAD9_WORD0:
+  description: ''
+  fields:
+    - name: STARTADR
+      bit_offset: 16
+      bit_size: 16
+      description: Start Address
+fieldset/XSPI_FRAD9_WORD1:
+  description: ''
+  fields:
+    - name: ENDADR
+      bit_offset: 16
+      bit_size: 16
+      description: End Address
+fieldset/XSPI_FRAD9_WORD2:
+  description: ''
+  fields:
+    - name: MD0ACP
+      bit_offset: 0
+      bit_size: 3
+    - name: MD1ACP
+      bit_offset: 3
+      bit_size: 3
+    - name: MD2ACP
+      bit_offset: 6
+      bit_size: 3
+    - name: MD3ACP
+      bit_offset: 9
+      bit_size: 3
+    - name: MD4ACP
+      bit_offset: 12
+      bit_size: 3
+    - name: EALO
+      bit_offset: 24
+      bit_size: 6
+      description: Exclusive Access Lock Owner
+fieldset/XSPI_FRAD9_WORD3:
+  description: ''
+  fields:
+    - name: EAL
+      bit_offset: 24
+      bit_size: 2
+    - name: LOCK
+      bit_offset: 29
+      bit_size: 2
+    - name: VLD
+      bit_offset: 31
+      bit_size: 1
+fieldset/XSPI_FRAD9_WORD4_CMP:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Capture Address
+fieldset/XSPI_FRAD9_WORD5_CMP:
+  description: ''
+  fields:
+    - name: MDID
+      bit_offset: 0
+      bit_size: 6
+      description: Captured Domain Value
+    - name: SA
+      bit_offset: 6
+      bit_size: 1
+      description: Captured Domain Value
+    - name: PA
+      bit_offset: 7
+      bit_size: 1
+    - name: ERR
+      bit_offset: 29
+      bit_size: 1
+fieldset/XSPI_FRAD9_WORD5:
+  description: ''
+  fields:
+    - name: CMPVALID
+      bit_offset: 30
+      bit_size: 1
+fieldset/XSPI_FRAD10_WORD0:
+  description: ''
+  fields:
+    - name: STARTADR
+      bit_offset: 16
+      bit_size: 16
+      description: Start Address
+fieldset/XSPI_FRAD10_WORD1:
+  description: ''
+  fields:
+    - name: ENDADR
+      bit_offset: 16
+      bit_size: 16
+      description: End Address
+fieldset/XSPI_FRAD10_WORD2:
+  description: ''
+  fields:
+    - name: MD0ACP
+      bit_offset: 0
+      bit_size: 3
+    - name: MD1ACP
+      bit_offset: 3
+      bit_size: 3
+    - name: MD2ACP
+      bit_offset: 6
+      bit_size: 3
+    - name: MD3ACP
+      bit_offset: 9
+      bit_size: 3
+    - name: MD4ACP
+      bit_offset: 12
+      bit_size: 3
+    - name: EALO
+      bit_offset: 24
+      bit_size: 6
+      description: Exclusive Access Lock Owner
+fieldset/XSPI_FRAD10_WORD3:
+  description: ''
+  fields:
+    - name: EAL
+      bit_offset: 24
+      bit_size: 2
+    - name: LOCK
+      bit_offset: 29
+      bit_size: 2
+    - name: VLD
+      bit_offset: 31
+      bit_size: 1
+fieldset/XSPI_FRAD10_WORD4_CMP:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Capture Address
+fieldset/XSPI_FRAD10_WORD5_CMP:
+  description: ''
+  fields:
+    - name: MDID
+      bit_offset: 0
+      bit_size: 6
+      description: Captured Domain Value
+    - name: SA
+      bit_offset: 6
+      bit_size: 1
+      description: Captured Domain Value
+    - name: PA
+      bit_offset: 7
+      bit_size: 1
+    - name: ERR
+      bit_offset: 29
+      bit_size: 1
+fieldset/XSPI_FRAD10_WORD5:
+  description: ''
+  fields:
+    - name: CMPVALID
+      bit_offset: 30
+      bit_size: 1
+fieldset/XSPI_FRAD11_WORD0:
+  description: ''
+  fields:
+    - name: STARTADR
+      bit_offset: 16
+      bit_size: 16
+      description: Start Address
+fieldset/XSPI_FRAD11_WORD1:
+  description: ''
+  fields:
+    - name: ENDADR
+      bit_offset: 16
+      bit_size: 16
+      description: End Address
+fieldset/XSPI_FRAD11_WORD2:
+  description: ''
+  fields:
+    - name: MD0ACP
+      bit_offset: 0
+      bit_size: 3
+    - name: MD1ACP
+      bit_offset: 3
+      bit_size: 3
+    - name: MD2ACP
+      bit_offset: 6
+      bit_size: 3
+    - name: MD3ACP
+      bit_offset: 9
+      bit_size: 3
+    - name: MD4ACP
+      bit_offset: 12
+      bit_size: 3
+    - name: EALO
+      bit_offset: 24
+      bit_size: 6
+      description: Exclusive Access Lock Owner
+fieldset/XSPI_FRAD11_WORD3:
+  description: ''
+  fields:
+    - name: EAL
+      bit_offset: 24
+      bit_size: 2
+    - name: LOCK
+      bit_offset: 29
+      bit_size: 2
+    - name: VLD
+      bit_offset: 31
+      bit_size: 1
+fieldset/XSPI_FRAD11_WORD4_CMP:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Capture Address
+fieldset/XSPI_FRAD11_WORD5_CMP:
+  description: ''
+  fields:
+    - name: MDID
+      bit_offset: 0
+      bit_size: 6
+      description: Captured Domain Value
+    - name: SA
+      bit_offset: 6
+      bit_size: 1
+      description: Captured Domain Value
+    - name: PA
+      bit_offset: 7
+      bit_size: 1
+    - name: ERR
+      bit_offset: 29
+      bit_size: 1
+fieldset/XSPI_FRAD11_WORD5:
+  description: ''
+  fields:
+    - name: CMPVALID
+      bit_offset: 30
+      bit_size: 1
+fieldset/XSPI_FRAD12_WORD0:
+  description: ''
+  fields:
+    - name: STARTADR
+      bit_offset: 16
+      bit_size: 16
+      description: Start Address
+fieldset/XSPI_FRAD12_WORD1:
+  description: ''
+  fields:
+    - name: ENDADR
+      bit_offset: 16
+      bit_size: 16
+      description: End Address
+fieldset/XSPI_FRAD12_WORD2:
+  description: ''
+  fields:
+    - name: MD0ACP
+      bit_offset: 0
+      bit_size: 3
+    - name: MD1ACP
+      bit_offset: 3
+      bit_size: 3
+    - name: MD2ACP
+      bit_offset: 6
+      bit_size: 3
+    - name: MD3ACP
+      bit_offset: 9
+      bit_size: 3
+    - name: MD4ACP
+      bit_offset: 12
+      bit_size: 3
+    - name: EALO
+      bit_offset: 24
+      bit_size: 6
+      description: Exclusive Access Lock Owner
+fieldset/XSPI_FRAD12_WORD3:
+  description: ''
+  fields:
+    - name: EAL
+      bit_offset: 24
+      bit_size: 2
+    - name: LOCK
+      bit_offset: 29
+      bit_size: 2
+    - name: VLD
+      bit_offset: 31
+      bit_size: 1
+fieldset/XSPI_FRAD12_WORD4_CMP:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Capture Address
+fieldset/XSPI_FRAD12_WORD5_CMP:
+  description: ''
+  fields:
+    - name: MDID
+      bit_offset: 0
+      bit_size: 6
+      description: Captured Domain Value
+    - name: SA
+      bit_offset: 6
+      bit_size: 1
+      description: Captured Domain Value
+    - name: PA
+      bit_offset: 7
+      bit_size: 1
+    - name: ERR
+      bit_offset: 29
+      bit_size: 1
+fieldset/XSPI_FRAD12_WORD5:
+  description: ''
+  fields:
+    - name: CMPVALID
+      bit_offset: 30
+      bit_size: 1
+fieldset/XSPI_FRAD13_WORD0:
+  description: ''
+  fields:
+    - name: STARTADR
+      bit_offset: 16
+      bit_size: 16
+      description: Start Address
+fieldset/XSPI_FRAD13_WORD1:
+  description: ''
+  fields:
+    - name: ENDADR
+      bit_offset: 16
+      bit_size: 16
+      description: End Address
+fieldset/XSPI_FRAD13_WORD2:
+  description: ''
+  fields:
+    - name: MD0ACP
+      bit_offset: 0
+      bit_size: 3
+    - name: MD1ACP
+      bit_offset: 3
+      bit_size: 3
+    - name: MD2ACP
+      bit_offset: 6
+      bit_size: 3
+    - name: MD3ACP
+      bit_offset: 9
+      bit_size: 3
+    - name: MD4ACP
+      bit_offset: 12
+      bit_size: 3
+    - name: EALO
+      bit_offset: 24
+      bit_size: 6
+      description: Exclusive Access Lock Owner
+fieldset/XSPI_FRAD13_WORD3:
+  description: ''
+  fields:
+    - name: EAL
+      bit_offset: 24
+      bit_size: 2
+    - name: LOCK
+      bit_offset: 29
+      bit_size: 2
+    - name: VLD
+      bit_offset: 31
+      bit_size: 1
+fieldset/XSPI_FRAD13_WORD4_CMP:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Capture Address
+fieldset/XSPI_FRAD13_WORD5_CMP:
+  description: ''
+  fields:
+    - name: MDID
+      bit_offset: 0
+      bit_size: 6
+      description: Captured Domain Value
+    - name: SA
+      bit_offset: 6
+      bit_size: 1
+      description: Captured Domain Value
+    - name: PA
+      bit_offset: 7
+      bit_size: 1
+    - name: ERR
+      bit_offset: 29
+      bit_size: 1
+fieldset/XSPI_FRAD13_WORD5:
+  description: ''
+  fields:
+    - name: CMPVALID
+      bit_offset: 30
+      bit_size: 1
+fieldset/XSPI_FRAD14_WORD0:
+  description: ''
+  fields:
+    - name: STARTADR
+      bit_offset: 16
+      bit_size: 16
+      description: Start Address
+fieldset/XSPI_FRAD14_WORD1:
+  description: ''
+  fields:
+    - name: ENDADR
+      bit_offset: 16
+      bit_size: 16
+      description: End Address
+fieldset/XSPI_FRAD14_WORD2:
+  description: ''
+  fields:
+    - name: MD0ACP
+      bit_offset: 0
+      bit_size: 3
+    - name: MD1ACP
+      bit_offset: 3
+      bit_size: 3
+    - name: MD2ACP
+      bit_offset: 6
+      bit_size: 3
+    - name: MD3ACP
+      bit_offset: 9
+      bit_size: 3
+    - name: MD4ACP
+      bit_offset: 12
+      bit_size: 3
+    - name: EALO
+      bit_offset: 24
+      bit_size: 6
+      description: Exclusive Access Lock Owner
+fieldset/XSPI_FRAD14_WORD3:
+  description: ''
+  fields:
+    - name: EAL
+      bit_offset: 24
+      bit_size: 2
+    - name: LOCK
+      bit_offset: 29
+      bit_size: 2
+    - name: VLD
+      bit_offset: 31
+      bit_size: 1
+fieldset/XSPI_FRAD14_WORD4_CMP:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Capture Address
+fieldset/XSPI_FRAD14_WORD5_CMP:
+  description: ''
+  fields:
+    - name: MDID
+      bit_offset: 0
+      bit_size: 6
+      description: Captured Domain Value
+    - name: SA
+      bit_offset: 6
+      bit_size: 1
+      description: Captured Domain Value
+    - name: PA
+      bit_offset: 7
+      bit_size: 1
+    - name: ERR
+      bit_offset: 29
+      bit_size: 1
+fieldset/XSPI_FRAD14_WORD5:
+  description: ''
+  fields:
+    - name: CMPVALID
+      bit_offset: 30
+      bit_size: 1
+fieldset/XSPI_FRAD15_WORD0:
+  description: ''
+  fields:
+    - name: STARTADR
+      bit_offset: 16
+      bit_size: 16
+      description: Start Address
+fieldset/XSPI_FRAD15_WORD1:
+  description: ''
+  fields:
+    - name: ENDADR
+      bit_offset: 16
+      bit_size: 16
+      description: End Address
+fieldset/XSPI_FRAD15_WORD2:
+  description: ''
+  fields:
+    - name: MD0ACP
+      bit_offset: 0
+      bit_size: 3
+    - name: MD1ACP
+      bit_offset: 3
+      bit_size: 3
+    - name: MD2ACP
+      bit_offset: 6
+      bit_size: 3
+    - name: MD3ACP
+      bit_offset: 9
+      bit_size: 3
+    - name: MD4ACP
+      bit_offset: 12
+      bit_size: 3
+    - name: EALO
+      bit_offset: 24
+      bit_size: 6
+      description: Exclusive Access Lock Owner
+fieldset/XSPI_FRAD15_WORD3:
+  description: ''
+  fields:
+    - name: EAL
+      bit_offset: 24
+      bit_size: 2
+    - name: LOCK
+      bit_offset: 29
+      bit_size: 2
+    - name: VLD
+      bit_offset: 31
+      bit_size: 1
+fieldset/XSPI_FRAD15_WORD4_CMP:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Capture Address
+fieldset/XSPI_FRAD15_WORD5_CMP:
+  description: ''
+  fields:
+    - name: MDID
+      bit_offset: 0
+      bit_size: 6
+      description: Captured Domain Value
+    - name: SA
+      bit_offset: 6
+      bit_size: 1
+      description: Captured Domain Value
+    - name: PA
+      bit_offset: 7
+      bit_size: 1
+    - name: ERR
+      bit_offset: 29
+      bit_size: 1
+fieldset/XSPI_FRAD15_WORD5:
+  description: ''
+  fields:
+    - name: CMPVALID
+      bit_offset: 30
+      bit_size: 1
+fieldset/XSPI_SFP_LOCK_ERR_ADDR:
+  description: ''
+  fields:
+    - name: ADDRW
+      bit_offset: 0
+      bit_size: 19
+      description: Address
+fieldset/XSPI_SFP_INT_EN_SUB:
+  description: ''
+  fields:
+    - name: FRADMTCH
+      bit_offset: 0
+      bit_size: 1
+    - name: FRAD0ACC
+      bit_offset: 1
+      bit_size: 1
+    - name: FRAD1ACC
+      bit_offset: 2
+      bit_size: 1
+    - name: FRAD2ACC
+      bit_offset: 3
+      bit_size: 1
+    - name: FRAD3ACC
+      bit_offset: 4
+      bit_size: 1
+    - name: FRAD4ACC
+      bit_offset: 5
+      bit_size: 1
+    - name: FRAD5ACC
+      bit_offset: 6
+      bit_size: 1
+    - name: FRAD6ACC
+      bit_offset: 7
+      bit_size: 1
+    - name: FRAD7ACC
+      bit_offset: 8
+      bit_size: 1
+    - name: TGnSFAR
+      bit_offset: 10
+      bit_size: 1
+    - name: TGnIPCR
+      bit_offset: 11
+      bit_size: 1
+    - name: FRAD8ACC
+      bit_offset: 16
+      bit_size: 1
+    - name: FRAD9ACC
+      bit_offset: 17
+      bit_size: 1
+    - name: FRAD10ACC
+      bit_offset: 18
+      bit_size: 1
+    - name: FRAD11ACC
+      bit_offset: 19
+      bit_size: 1
+    - name: FRAD12ACC
+      bit_offset: 20
+      bit_size: 1
+    - name: FRAD13ACC
+      bit_offset: 21
+      bit_size: 1
+    - name: FRAD14ACC
+      bit_offset: 22
+      bit_size: 1
+    - name: FRAD15ACC
+      bit_offset: 23
+      bit_size: 1
+    - name: LCK
+      bit_offset: 31
+      bit_size: 1
+fieldset/XSPI_SFP_INT_EN_SUB_IPS:
+  description: ''
+  fields:
+    - name: ERR
+      bit_offset: 9
+      bit_size: 1
+fieldset/XSPI_SFP_INT_EN_SUB_TO:
+  description: ''
+  fields:
+    - name: ERR
+      bit_offset: 14
+      bit_size: 1
+fieldset/XSPI_SFP_INT_EN_SUB_ARB_WIN:
+  description: ''
+  fields:
+    - name: IE
+      bit_offset: 28
+      bit_size: 1
+fieldset/XSPI_SFP_INT_EN_SUB_ARB_TO:
+  description: ''
+  fields:
+    - name: IE
+      bit_offset: 29
+      bit_size: 1
+fieldset/XSPI_MCR_SUB_IPS_TG:
+  description: ''
+  fields:
+    - name: RST
+      bit_offset: 9
+      bit_size: 1
+fieldset/XSPI_MCR_SUB_CLR:
+  description: ''
+  fields:
+    - name: RXF
+      bit_offset: 10
+      bit_size: 1
+    - name: TXF
+      bit_offset: 11
+      bit_size: 1
+fieldset/XSPI_PRW_RDSR_SUB:
+  description: ''
+  fields:
+    - name: RDSR
+      bit_offset: 0
+      bit_size: 16
+    - name: RDSRWSEL
+      bit_offset: 21
+      bit_size: 1
+      description: Value of Flash Status Register Read
+    - name: RDSRVCHK
+      bit_offset: 22
+      bit_size: 1
+    - name: LOC
+      bit_offset: 24
+      bit_size: 4
+      description: Location of RDSR
+    - name: VALID
+      bit_offset: 31
+      bit_size: 1
+      description: Location of RDSR
+fieldset/XSPI_PRW_RDSR_SUB_RDSR:
+  description: ''
+  fields:
+    - name: HWS
+      bit_offset: 23
+      bit_size: 1
+fieldset/XSPI_RBSR_SUB:
+  description: ''
+  fields:
+    - name: RDBFL
+      bit_offset: 0
+      bit_size: 8
+      description: RX Buffer Fill Level
+    - name: RDCTR
+      bit_offset: 16
+      bit_size: 16
+      description: RX Buffer Fill Level
+fieldset/XSPI_RBCT_SUB:
+  description: ''
+  fields:
+    - name: WMRK
+      bit_offset: 0
+      bit_size: 7
+      description: RX buffer watermarkfor TGn
+fieldset/XSPI_DLLSR_SUB_DLLA_SLV_COARSE:
+  description: ''
+  fields:
+    - name: VAL
+      bit_offset: 0
+      bit_size: 4
+fieldset/XSPI_DLLSR_SUB_DLLA_SLV_FINE:
+  description: ''
+  fields:
+    - name: VAL
+      bit_offset: 4
+      bit_size: 4
+fieldset/XSPI_DLLSR_SUB_DLLA_FINE:
+  description: ''
+  fields:
+    - name: UNDERFLOW
+      bit_offset: 12
+      bit_size: 1
+fieldset/XSPI_DLLSR_SUB_DLLA_RANGE:
+  description: ''
+  fields:
+    - name: ERR
+      bit_offset: 13
+      bit_size: 1
+fieldset/XSPI_DLLSR_SUB_SLVA:
+  description: ''
+  fields:
+    - name: LOCK
+      bit_offset: 14
+      bit_size: 1
+fieldset/XSPI_DLLSR_SUB_DLLA:
+  description: ''
+  fields:
+    - name: LOCK
+      bit_offset: 15
+      bit_size: 1
+fieldset/XSPI_DLSR_FA_SUB_NEG:
+  description: ''
+  fields:
+    - name: EDGE
+      bit_offset: 0
+      bit_size: 8
+      description: DLP Negative Edge Match
+fieldset/XSPI_DLSR_FA_SUB_POS:
+  description: ''
+  fields:
+    - name: EDGE
+      bit_offset: 8
+      bit_size: 8
+      description: DLP Negative Edge Match
+fieldset/XSPI_DLSR_FA_SUB:
+  description: ''
+  fields:
+    - name: DLPFF
+      bit_offset: 31
+      bit_size: 1
+      description: DLP Positive Edge Match
+fieldset/XSPI_TBSR_SUB:
+  description: ''
+  fields:
+    - name: TRBFL
+      bit_offset: 0
+      bit_size: 9
+      description: TX Buffer Fill Level
+    - name: TRCTR
+      bit_offset: 16
+      bit_size: 16
+      description: TX Buffer Fill Level
+fieldset/XSPI_TBDR_SUB:
+  description: ''
+  fields:
+    - name: TXDATA
+      bit_offset: 0
+      bit_size: 32
+      description: TX Data
+fieldset/XSPI_TBCT_SUB:
+  description: ''
+  fields:
+    - name: WMRK
+      bit_offset: 0
+      bit_size: 8
+      description: TX Buffer TG0 Watermark
+fieldset/XSPI_SR_SUB:
+  description: ''
+  fields:
+    - name: BUSY
+      bit_offset: 0
+      bit_size: 1
+    - name: AWRACC
+      bit_offset: 4
+      bit_size: 1
+    - name: AHBTRN
+      bit_offset: 6
+      bit_size: 1
+    - name: AHB0NE
+      bit_offset: 7
+      bit_size: 1
+    - name: AHB1NE
+      bit_offset: 8
+      bit_size: 1
+    - name: AHB2NE
+      bit_offset: 9
+      bit_size: 1
+    - name: AHB3NE
+      bit_offset: 10
+      bit_size: 1
+    - name: AHB0FUL
+      bit_offset: 11
+      bit_size: 1
+    - name: AHB1FUL
+      bit_offset: 12
+      bit_size: 1
+    - name: AHB2FUL
+      bit_offset: 13
+      bit_size: 1
+    - name: AHB3FUL
+      bit_offset: 14
+      bit_size: 1
+    - name: RXWE
+      bit_offset: 16
+      bit_size: 1
+    - name: RXFULL
+      bit_offset: 19
+      bit_size: 1
+    - name: RXDMA
+      bit_offset: 23
+      bit_size: 1
+    - name: TXNE
+      bit_offset: 24
+      bit_size: 1
+    - name: TXWA
+      bit_offset: 25
+      bit_size: 1
+    - name: TXDMA
+      bit_offset: 26
+      bit_size: 1
+    - name: TXFULL
+      bit_offset: 27
+      bit_size: 1
+fieldset/XSPI_SR_SUB_IP:
+  description: ''
+  fields:
+    - name: ACC
+      bit_offset: 1
+      bit_size: 1
+fieldset/XSPI_SR_SUB_AHB:
+  description: ''
+  fields:
+    - name: ACC
+      bit_offset: 2
+      bit_size: 1
+fieldset/XSPI_SR_SUB_ARB:
+  description: ''
+  fields:
+    - name: LCK
+      bit_offset: 15
+      bit_size: 1
+    - name: STATE
+      bit_offset: 20
+      bit_size: 3
+fieldset/XSPI_SR_SUB_AR:
+  description: ''
+  fields:
+    - name: SWRST
+      bit_offset: 28
+      bit_size: 1
+fieldset/XSPI_SR_SUB_AW:
+  description: ''
+  fields:
+    - name: SWRST
+      bit_offset: 29
+      bit_size: 1
+fieldset/XSPI_FR_SUB:
+  description: ''
+  fields:
+    - name: TFF
+      bit_offset: 0
+      bit_size: 1
+    - name: RDADDR
+      bit_offset: 1
+      bit_size: 1
+    - name: PERFOVF
+      bit_offset: 2
+      bit_size: 1
+    - name: IPEDERR
+      bit_offset: 5
+      bit_size: 1
+    - name: IPIEF
+      bit_offset: 6
+      bit_size: 1
+    - name: PPWF
+      bit_offset: 8
+      bit_size: 1
+    - name: CRCAEF
+      bit_offset: 10
+      bit_size: 1
+    - name: ABOF
+      bit_offset: 12
+      bit_size: 1
+    - name: AIBSEF
+      bit_offset: 13
+      bit_size: 1
+    - name: AITEF
+      bit_offset: 14
+      bit_size: 1
+    - name: AAEF
+      bit_offset: 15
+      bit_size: 1
+    - name: RBDF
+      bit_offset: 16
+      bit_size: 1
+    - name: RBOF
+      bit_offset: 17
+      bit_size: 1
+    - name: PECMDF
+      bit_offset: 21
+      bit_size: 1
+    - name: ILLACC
+      bit_offset: 22
+      bit_size: 1
+    - name: ILLINE
+      bit_offset: 23
+      bit_size: 1
+    - name: PRWF
+      bit_offset: 25
+      bit_size: 1
+    - name: TBUF
+      bit_offset: 26
+      bit_size: 1
+    - name: TBFF
+      bit_offset: 27
+      bit_size: 1
+    - name: DLLABRT
+      bit_offset: 28
+      bit_size: 1
+    - name: DLPFF
+      bit_offset: 31
+      bit_size: 1
+fieldset/XSPI_FR_SUB_ARDB:
+  description: ''
+  fields:
+    - name: TO
+      bit_offset: 3
+      bit_size: 1
+fieldset/XSPI_TGSR_IPED_SUB_TG_IPS:
+  description: ''
+  fields:
+    - name: GCM
+      bit_offset: 0
+      bit_size: 1
+fieldset/XSPI_FAIL_ADDR_SUB:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Failing Address
+fieldset/XSPI_RBDR_SUB_:
+  description: ''
+  fields:
+    - name: RXDATA
+      bit_offset: 0
+      bit_size: 32
+      description: RX data
+fieldset/XSPI_AHB_RD_ERR_ADDR_SUB:
+  description: ''
+  fields:
+    - name: READDR
+      bit_offset: 0
+      bit_size: 32
+      description: Read Error Address
+fieldset/XSPI_AHB_RD_ERR_MID_SUB:
+  description: ''
+  fields:
+    - name: REMID
+      bit_offset: 0
+      bit_size: 4
+      description: Read Error Initiator ID
+fieldset/XSPI_PPW_RDSR_SUB:
+  description: ''
+  fields:
+    - name: RDSR
+      bit_offset: 0
+      bit_size: 16
+    - name: LOC
+      bit_offset: 24
+      bit_size: 4
+      description: Location of RDSR
+    - name: VALID
+      bit_offset: 31
+      bit_size: 1
+      description: Location of RDSR
+fieldset/XSPI_PPW_RDSR_SUB_RDSR_HWORD:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 23
+      bit_size: 1
+      description: Value of Flash Status Register Read
+fieldset/XSPI_FRAD0_WORD2_SUB:
+  description: ''
+  fields:
+    - name: EALO
+      bit_offset: 24
+      bit_size: 6
+      description: Exclusive Access Lock Owner
+fieldset/XSPI_FRAD0_WORD3_SUB:
+  description: ''
+  fields:
+    - name: EAL
+      bit_offset: 24
+      bit_size: 2
+fieldset/XSPI_FRAD0_WORD4_SUB_CMP:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Capture Address
+fieldset/XSPI_FRAD0_WORD5_SUB_CMP:
+  description: ''
+  fields:
+    - name: MDID
+      bit_offset: 0
+      bit_size: 6
+      description: Capture domain Value
+    - name: SA
+      bit_offset: 6
+      bit_size: 1
+      description: Capture domain Value
+    - name: PA
+      bit_offset: 7
+      bit_size: 1
+    - name: ERR
+      bit_offset: 29
+      bit_size: 1
+fieldset/XSPI_FRAD0_WORD5_SUB:
+  description: ''
+  fields:
+    - name: CMPVALID
+      bit_offset: 30
+      bit_size: 1
+fieldset/XSPI_FRAD1_WORD2_SUB:
+  description: ''
+  fields:
+    - name: EALO
+      bit_offset: 24
+      bit_size: 6
+      description: Exclusive Access Lock Owner
+fieldset/XSPI_FRAD1_WORD3_SUB:
+  description: ''
+  fields:
+    - name: EAL
+      bit_offset: 24
+      bit_size: 2
+fieldset/XSPI_FRAD1_WORD4_SUB_CMP:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Capture Address
+fieldset/XSPI_FRAD1_WORD5_SUB_CMP:
+  description: ''
+  fields:
+    - name: MDID
+      bit_offset: 0
+      bit_size: 6
+      description: Capture domain Value
+    - name: SA
+      bit_offset: 6
+      bit_size: 1
+      description: Capture domain Value
+    - name: PA
+      bit_offset: 7
+      bit_size: 1
+    - name: ERR
+      bit_offset: 29
+      bit_size: 1
+fieldset/XSPI_FRAD1_WORD5_SUB:
+  description: ''
+  fields:
+    - name: CMPVALID
+      bit_offset: 30
+      bit_size: 1
+fieldset/XSPI_FRAD2_WORD2_SUB:
+  description: ''
+  fields:
+    - name: EALO
+      bit_offset: 24
+      bit_size: 6
+      description: Exclusive Access Lock Owner
+fieldset/XSPI_FRAD2_WORD3_SUB:
+  description: ''
+  fields:
+    - name: EAL
+      bit_offset: 24
+      bit_size: 2
+fieldset/XSPI_FRAD2_WORD4_SUB_CMP:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Capture Address
+fieldset/XSPI_FRAD2_WORD5_SUB_CMP:
+  description: ''
+  fields:
+    - name: MDID
+      bit_offset: 0
+      bit_size: 6
+      description: Capture domain Value
+    - name: SA
+      bit_offset: 6
+      bit_size: 1
+      description: Capture domain Value
+    - name: PA
+      bit_offset: 7
+      bit_size: 1
+    - name: ERR
+      bit_offset: 29
+      bit_size: 1
+fieldset/XSPI_FRAD2_WORD5_SUB:
+  description: ''
+  fields:
+    - name: CMPVALID
+      bit_offset: 30
+      bit_size: 1
+fieldset/XSPI_FRAD3_WORD2_SUB:
+  description: ''
+  fields:
+    - name: EALO
+      bit_offset: 24
+      bit_size: 6
+      description: Exclusive Access Lock Owner
+fieldset/XSPI_FRAD3_WORD3_SUB:
+  description: ''
+  fields:
+    - name: EAL
+      bit_offset: 24
+      bit_size: 2
+fieldset/XSPI_FRAD3_WORD4_SUB_CMP:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Capture Address
+fieldset/XSPI_FRAD3_WORD5_SUB_CMP:
+  description: ''
+  fields:
+    - name: MDID
+      bit_offset: 0
+      bit_size: 6
+      description: Capture domain Value
+    - name: SA
+      bit_offset: 6
+      bit_size: 1
+      description: Capture domain Value
+    - name: PA
+      bit_offset: 7
+      bit_size: 1
+    - name: ERR
+      bit_offset: 29
+      bit_size: 1
+fieldset/XSPI_FRAD3_WORD5_SUB:
+  description: ''
+  fields:
+    - name: CMPVALID
+      bit_offset: 30
+      bit_size: 1
+fieldset/XSPI_FRAD4_WORD2_SUB:
+  description: ''
+  fields:
+    - name: EALO
+      bit_offset: 24
+      bit_size: 6
+      description: Exclusive Access Lock Owner
+fieldset/XSPI_FRAD4_WORD3_SUB:
+  description: ''
+  fields:
+    - name: EAL
+      bit_offset: 24
+      bit_size: 2
+fieldset/XSPI_FRAD4_WORD4_SUB_CMP:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Capture Address
+fieldset/XSPI_FRAD4_WORD5_SUB_CMP:
+  description: ''
+  fields:
+    - name: MDID
+      bit_offset: 0
+      bit_size: 6
+      description: Capture domain Value
+    - name: SA
+      bit_offset: 6
+      bit_size: 1
+      description: Capture domain Value
+    - name: PA
+      bit_offset: 7
+      bit_size: 1
+    - name: ERR
+      bit_offset: 29
+      bit_size: 1
+fieldset/XSPI_FRAD4_WORD5_SUB:
+  description: ''
+  fields:
+    - name: CMPVALID
+      bit_offset: 30
+      bit_size: 1
+fieldset/XSPI_FRAD5_WORD2_SUB:
+  description: ''
+  fields:
+    - name: EALO
+      bit_offset: 24
+      bit_size: 6
+      description: Exclusive Access Lock Owner
+fieldset/XSPI_FRAD5_WORD3_SUB:
+  description: ''
+  fields:
+    - name: EAL
+      bit_offset: 24
+      bit_size: 2
+fieldset/XSPI_FRAD5_WORD4_SUB_CMP:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Capture Address
+fieldset/XSPI_FRAD5_WORD5_SUB_CMP:
+  description: ''
+  fields:
+    - name: MDID
+      bit_offset: 0
+      bit_size: 6
+      description: Capture domain Value
+    - name: SA
+      bit_offset: 6
+      bit_size: 1
+      description: Capture domain Value
+    - name: PA
+      bit_offset: 7
+      bit_size: 1
+    - name: ERR
+      bit_offset: 29
+      bit_size: 1
+fieldset/XSPI_FRAD5_WORD5_SUB:
+  description: ''
+  fields:
+    - name: CMPVALID
+      bit_offset: 30
+      bit_size: 1
+fieldset/XSPI_FRAD6_WORD2_SUB:
+  description: ''
+  fields:
+    - name: EALO
+      bit_offset: 24
+      bit_size: 6
+      description: Exclusive Access Lock Owner
+fieldset/XSPI_FRAD6_WORD3_SUB:
+  description: ''
+  fields:
+    - name: EAL
+      bit_offset: 24
+      bit_size: 2
+fieldset/XSPI_FRAD6_WORD4_SUB_CMP:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Capture Address
+fieldset/XSPI_FRAD6_WORD5_SUB_CMP:
+  description: ''
+  fields:
+    - name: MDID
+      bit_offset: 0
+      bit_size: 6
+      description: Capture domain Value
+    - name: SA
+      bit_offset: 6
+      bit_size: 1
+      description: Capture domain Value
+    - name: PA
+      bit_offset: 7
+      bit_size: 1
+    - name: ERR
+      bit_offset: 29
+      bit_size: 1
+fieldset/XSPI_FRAD6_WORD5_SUB:
+  description: ''
+  fields:
+    - name: CMPVALID
+      bit_offset: 30
+      bit_size: 1
+fieldset/XSPI_FRAD7_WORD2_SUB:
+  description: ''
+  fields:
+    - name: EALO
+      bit_offset: 24
+      bit_size: 6
+      description: Exclusive Access Lock Owner
+fieldset/XSPI_FRAD7_WORD3_SUB:
+  description: ''
+  fields:
+    - name: EAL
+      bit_offset: 24
+      bit_size: 2
+fieldset/XSPI_FRAD7_WORD4_SUB_CMP:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Capture Address
+fieldset/XSPI_FRAD7_WORD5_SUB_CMP:
+  description: ''
+  fields:
+    - name: MDID
+      bit_offset: 0
+      bit_size: 6
+      description: Capture domain Value
+    - name: SA
+      bit_offset: 6
+      bit_size: 1
+      description: Capture domain Value
+    - name: PA
+      bit_offset: 7
+      bit_size: 1
+    - name: ERR
+      bit_offset: 29
+      bit_size: 1
+fieldset/XSPI_FRAD7_WORD5_SUB:
+  description: ''
+  fields:
+    - name: CMPVALID
+      bit_offset: 30
+      bit_size: 1
+fieldset/XSPI_TGSFAR_SUB:
+  description: ''
+  fields:
+    - name: SFARADDR
+      bit_offset: 0
+      bit_size: 32
+      description: SFAR Address
+fieldset/XSPI_TGSFARS_SUB_TG:
+  description: ''
+  fields:
+    - name: MID
+      bit_offset: 0
+      bit_size: 6
+      description: Transaction Initiator ID
+fieldset/XSPI_TGSFARS_SUB:
+  description: ''
+  fields:
+    - name: SA
+      bit_offset: 10
+      bit_size: 1
+      description: Transaction Initiator ID
+    - name: PA
+      bit_offset: 12
+      bit_size: 1
+    - name: CLR
+      bit_offset: 29
+      bit_size: 1
+    - name: ERR
+      bit_offset: 30
+      bit_size: 1
+    - name: VLD
+      bit_offset: 31
+      bit_size: 1
+fieldset/XSPI_TGIPCRS_SUB:
+  description: ''
+  fields:
+    - name: IDATSZ
+      bit_offset: 0
+      bit_size: 16
+      description: IP Data Transfer Size
+    - name: SEQID
+      bit_offset: 16
+      bit_size: 4
+      description: IP Data Transfer Size
+    - name: ADDRTRDS
+      bit_offset: 24
+      bit_size: 1
+    - name: CLR
+      bit_offset: 28
+      bit_size: 1
+    - name: ERR
+      bit_offset: 29
+      bit_size: 2
+    - name: VLD
+      bit_offset: 31
+      bit_size: 1
+fieldset/XSPI_TGIPCRS_SUB_ARB:
+  description: ''
+  fields:
+    - name: LOCK
+      bit_offset: 21
+      bit_size: 1
+      description: SEQID Value
+    - name: UNLOCK
+      bit_offset: 22
+      bit_size: 1
+fieldset/XSPI_FLSEQREQ_SUB_REQ:
+  description: ''
+  fields:
+    - name: MID
+      bit_offset: 0
+      bit_size: 6
+      description: FlashSeq Request Domain ID
+    - name: TG
+      bit_offset: 6
+      bit_size: 2
+      description: FlashSeq Request Domain ID
+fieldset/XSPI_FLSEQREQ_SUB:
+  description: ''
+  fields:
+    - name: SA
+      bit_offset: 8
+      bit_size: 1
+    - name: PA
+      bit_offset: 9
+      bit_size: 1
+    - name: FRAD
+      bit_offset: 12
+      bit_size: 4
+      description: Flash Region Descriptor Number
+    - name: SEQID
+      bit_offset: 16
+      bit_size: 4
+      description: Flash Region Descriptor Number
+    - name: CMD
+      bit_offset: 22
+      bit_size: 1
+      description: Sequence ID
+    - name: TIMEOUT
+      bit_offset: 27
+      bit_size: 1
+    - name: VLD
+      bit_offset: 31
+      bit_size: 1
+fieldset/XSPI_FLSEQREQ_SUB_ARB:
+  description: ''
+  fields:
+    - name: LOCK
+      bit_offset: 10
+      bit_size: 1
+fieldset/XSPI_FLSEQREQ_SUB_REQ_TG:
+  description: ''
+  fields:
+    - name: EXT
+      bit_offset: 23
+      bit_size: 1
+fieldset/XSPI_FSMSTAT_SUB:
+  description: ''
+  fields:
+    - name: STATE
+      bit_offset: 0
+      bit_size: 2
+    - name: MID
+      bit_offset: 8
+      bit_size: 6
+      description: Domain ID
+    - name: CMD
+      bit_offset: 16
+      bit_size: 1
+      description: Domain ID
+    - name: VLD
+      bit_offset: 31
+      bit_size: 1
+fieldset/XSPI_FSMSTAT_SUB_ARB:
+  description: ''
+  fields:
+    - name: LOCK
+      bit_offset: 17
+      bit_size: 1
+fieldset/XSPI_IPSERROR_SUB:
+  description: ''
+  fields:
+    - name: MID
+      bit_offset: 0
+      bit_size: 6
+      description: IPS DID Domain ID
+    - name: TGLCK
+      bit_offset: 8
+      bit_size: 1
+      description: IPS DID Domain ID
+    - name: TGSEC
+      bit_offset: 9
+      bit_size: 1
+    - name: TGMID
+      bit_offset: 10
+      bit_size: 1
+    - name: MDADPROG
+      bit_offset: 11
+      bit_size: 1
+    - name: FRADPROG
+      bit_offset: 12
+      bit_size: 1
+    - name: CLR
+      bit_offset: 29
+      bit_size: 1
+fieldset/XSPI_ERRSTAT_SUB:
+  description: ''
+  fields:
+    - name: FRADMTCH
+      bit_offset: 0
+      bit_size: 1
+    - name: FRAD0ACC
+      bit_offset: 1
+      bit_size: 1
+    - name: FRAD1ACC
+      bit_offset: 2
+      bit_size: 1
+    - name: FRAD2ACC
+      bit_offset: 3
+      bit_size: 1
+    - name: FRAD3ACC
+      bit_offset: 4
+      bit_size: 1
+    - name: FRAD4ACC
+      bit_offset: 5
+      bit_size: 1
+    - name: FRAD5ACC
+      bit_offset: 6
+      bit_size: 1
+    - name: FRAD6ACC
+      bit_offset: 7
+      bit_size: 1
+    - name: FRAD7ACC
+      bit_offset: 8
+      bit_size: 1
+    - name: TGnSFAR
+      bit_offset: 10
+      bit_size: 1
+    - name: TGnIPCR
+      bit_offset: 11
+      bit_size: 1
+    - name: FRAD8ACC
+      bit_offset: 16
+      bit_size: 1
+    - name: FRAD9ACC
+      bit_offset: 17
+      bit_size: 1
+    - name: FRAD10ACC
+      bit_offset: 18
+      bit_size: 1
+    - name: FRAD11ACC
+      bit_offset: 19
+      bit_size: 1
+    - name: FRAD12ACC
+      bit_offset: 20
+      bit_size: 1
+    - name: FRAD13ACC
+      bit_offset: 21
+      bit_size: 1
+    - name: FRAD14ACC
+      bit_offset: 22
+      bit_size: 1
+    - name: FRAD15ACC
+      bit_offset: 23
+      bit_size: 1
+fieldset/XSPI_ERRSTAT_SUB_IPS:
+  description: ''
+  fields:
+    - name: ERR
+      bit_offset: 9
+      bit_size: 1
+fieldset/XSPI_ERRSTAT_SUB_TO:
+  description: ''
+  fields:
+    - name: ERR
+      bit_offset: 14
+      bit_size: 1
+fieldset/XSPI_ERRSTAT_SUB_ARB:
+  description: ''
+  fields:
+    - name: WIN
+      bit_offset: 28
+      bit_size: 1
+fieldset/XSPI_ERRSTAT_SUB_ARB_LOCK:
+  description: ''
+  fields:
+    - name: TO
+      bit_offset: 29
+      bit_size: 1
+fieldset/XSPI_SFP_TG_SUB_IPCR:
+  description: ''
+  fields:
+    - name: IDATSZ
+      bit_offset: 0
+      bit_size: 16
+      description: IP Data Transfer Size
+    - name: ADDRTRD
+      bit_offset: 18
+      bit_size: 1
+      description: IP Data Transfer Size
+    - name: SEQID
+      bit_offset: 24
+      bit_size: 4
+fieldset/XSPI_SFP_TG_SUB_IPCR_ARB:
+  description: ''
+  fields:
+    - name: LOCK
+      bit_offset: 22
+      bit_size: 1
+    - name: UNLOCK
+      bit_offset: 23
+      bit_size: 1
+fieldset/XSPI_SFP_TG_SUB_SFAR:
+  description: ''
+  fields:
+    - name: SFADR
+      bit_offset: 0
+      bit_size: 32
+      description: Serial flash memory address
+fieldset/XSPI_FRAD8_WORD2_SUB:
+  description: ''
+  fields:
+    - name: EALO
+      bit_offset: 24
+      bit_size: 6
+      description: Exclusive Access Lock Owner
+fieldset/XSPI_FRAD8_WORD3_SUB:
+  description: ''
+  fields:
+    - name: EAL
+      bit_offset: 24
+      bit_size: 2
+fieldset/XSPI_FRAD8_WORD4_SUB_CMP:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Capture Address
+fieldset/XSPI_FRAD8_WORD5_SUB_CMP:
+  description: ''
+  fields:
+    - name: MDID
+      bit_offset: 0
+      bit_size: 6
+      description: Capture domain Value
+    - name: SA
+      bit_offset: 6
+      bit_size: 1
+      description: Capture domain Value
+    - name: PA
+      bit_offset: 7
+      bit_size: 1
+    - name: ERR
+      bit_offset: 29
+      bit_size: 1
+fieldset/XSPI_FRAD8_WORD5_SUB:
+  description: ''
+  fields:
+    - name: CMPVALID
+      bit_offset: 30
+      bit_size: 1
+fieldset/XSPI_FRAD9_WORD2_SUB:
+  description: ''
+  fields:
+    - name: EALO
+      bit_offset: 24
+      bit_size: 6
+      description: Exclusive Access Lock Owner
+fieldset/XSPI_FRAD9_WORD3_SUB:
+  description: ''
+  fields:
+    - name: EAL
+      bit_offset: 24
+      bit_size: 2
+fieldset/XSPI_FRAD9_WORD4_SUB_CMP:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Capture Address
+fieldset/XSPI_FRAD9_WORD5_SUB_CMP:
+  description: ''
+  fields:
+    - name: MDID
+      bit_offset: 0
+      bit_size: 6
+      description: Capture domain Value
+    - name: SA
+      bit_offset: 6
+      bit_size: 1
+      description: Capture domain Value
+    - name: PA
+      bit_offset: 7
+      bit_size: 1
+    - name: ERR
+      bit_offset: 29
+      bit_size: 1
+fieldset/XSPI_FRAD9_WORD5_SUB:
+  description: ''
+  fields:
+    - name: CMPVALID
+      bit_offset: 30
+      bit_size: 1
+fieldset/XSPI_FRAD10_WORD2_SUB:
+  description: ''
+  fields:
+    - name: EALO
+      bit_offset: 24
+      bit_size: 6
+      description: Exclusive Access Lock Owner
+fieldset/XSPI_FRAD10_WORD3_SUB:
+  description: ''
+  fields:
+    - name: EAL
+      bit_offset: 24
+      bit_size: 2
+fieldset/XSPI_FRAD10_WORD4_SUB_CMP:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Capture Address
+fieldset/XSPI_FRAD10_WORD5_SUB_CMP:
+  description: ''
+  fields:
+    - name: MDID
+      bit_offset: 0
+      bit_size: 6
+      description: Capture domain Value
+    - name: SA
+      bit_offset: 6
+      bit_size: 1
+      description: Capture domain Value
+    - name: PA
+      bit_offset: 7
+      bit_size: 1
+    - name: ERR
+      bit_offset: 29
+      bit_size: 1
+fieldset/XSPI_FRAD10_WORD5_SUB:
+  description: ''
+  fields:
+    - name: CMPVALID
+      bit_offset: 30
+      bit_size: 1
+fieldset/XSPI_FRAD11_WORD2_SUB:
+  description: ''
+  fields:
+    - name: EALO
+      bit_offset: 24
+      bit_size: 6
+      description: Exclusive Access Lock Owner
+fieldset/XSPI_FRAD11_WORD3_SUB:
+  description: ''
+  fields:
+    - name: EAL
+      bit_offset: 24
+      bit_size: 2
+fieldset/XSPI_FRAD11_WORD4_SUB_CMP:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Capture Address
+fieldset/XSPI_FRAD11_WORD5_SUB_CMP:
+  description: ''
+  fields:
+    - name: MDID
+      bit_offset: 0
+      bit_size: 6
+      description: Capture domain Value
+    - name: SA
+      bit_offset: 6
+      bit_size: 1
+      description: Capture domain Value
+    - name: PA
+      bit_offset: 7
+      bit_size: 1
+    - name: ERR
+      bit_offset: 29
+      bit_size: 1
+fieldset/XSPI_FRAD11_WORD5_SUB:
+  description: ''
+  fields:
+    - name: CMPVALID
+      bit_offset: 30
+      bit_size: 1
+fieldset/XSPI_FRAD12_WORD2_SUB:
+  description: ''
+  fields:
+    - name: EALO
+      bit_offset: 24
+      bit_size: 6
+      description: Exclusive Access Lock Owner
+fieldset/XSPI_FRAD12_WORD3_SUB:
+  description: ''
+  fields:
+    - name: EAL
+      bit_offset: 24
+      bit_size: 2
+fieldset/XSPI_FRAD12_WORD4_SUB_CMP:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Capture Address
+fieldset/XSPI_FRAD12_WORD5_SUB_CMP:
+  description: ''
+  fields:
+    - name: MDID
+      bit_offset: 0
+      bit_size: 6
+      description: Capture domain Value
+    - name: SA
+      bit_offset: 6
+      bit_size: 1
+      description: Capture domain Value
+    - name: PA
+      bit_offset: 7
+      bit_size: 1
+    - name: ERR
+      bit_offset: 29
+      bit_size: 1
+fieldset/XSPI_FRAD12_WORD5_SUB:
+  description: ''
+  fields:
+    - name: CMPVALID
+      bit_offset: 30
+      bit_size: 1
+fieldset/XSPI_FRAD13_WORD2_SUB:
+  description: ''
+  fields:
+    - name: EALO
+      bit_offset: 24
+      bit_size: 6
+      description: Exclusive Access Lock Owner
+fieldset/XSPI_FRAD13_WORD3_SUB:
+  description: ''
+  fields:
+    - name: EAL
+      bit_offset: 24
+      bit_size: 2
+fieldset/XSPI_FRAD13_WORD4_SUB_CMP:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Capture Address
+fieldset/XSPI_FRAD13_WORD5_SUB_CMP:
+  description: ''
+  fields:
+    - name: MDID
+      bit_offset: 0
+      bit_size: 6
+      description: Capture domain Value
+    - name: SA
+      bit_offset: 6
+      bit_size: 1
+      description: Capture domain Value
+    - name: PA
+      bit_offset: 7
+      bit_size: 1
+    - name: ERR
+      bit_offset: 29
+      bit_size: 1
+fieldset/XSPI_FRAD13_WORD5_SUB:
+  description: ''
+  fields:
+    - name: CMPVALID
+      bit_offset: 30
+      bit_size: 1
+fieldset/XSPI_FRAD14_WORD2_SUB:
+  description: ''
+  fields:
+    - name: EALO
+      bit_offset: 24
+      bit_size: 6
+      description: Exclusive Access Lock Owner
+fieldset/XSPI_FRAD14_WORD3_SUB:
+  description: ''
+  fields:
+    - name: EAL
+      bit_offset: 24
+      bit_size: 2
+fieldset/XSPI_FRAD14_WORD4_SUB_CMP:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Capture Address
+fieldset/XSPI_FRAD14_WORD5_SUB_CMP:
+  description: ''
+  fields:
+    - name: MDID
+      bit_offset: 0
+      bit_size: 6
+      description: Capture domain Value
+    - name: SA
+      bit_offset: 6
+      bit_size: 1
+      description: Capture domain Value
+    - name: PA
+      bit_offset: 7
+      bit_size: 1
+    - name: ERR
+      bit_offset: 29
+      bit_size: 1
+fieldset/XSPI_FRAD14_WORD5_SUB:
+  description: ''
+  fields:
+    - name: CMPVALID
+      bit_offset: 30
+      bit_size: 1
+fieldset/XSPI_FRAD15_WORD2_SUB:
+  description: ''
+  fields:
+    - name: EALO
+      bit_offset: 24
+      bit_size: 6
+      description: Exclusive Access Lock Owner
+fieldset/XSPI_FRAD15_WORD3_SUB:
+  description: ''
+  fields:
+    - name: EAL
+      bit_offset: 24
+      bit_size: 2
+fieldset/XSPI_FRAD15_WORD4_SUB_CMP:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+      description: Capture Address
+fieldset/XSPI_FRAD15_WORD5_SUB_CMP:
+  description: ''
+  fields:
+    - name: MDID
+      bit_offset: 0
+      bit_size: 6
+      description: Capture domain Value
+    - name: SA
+      bit_offset: 6
+      bit_size: 1
+      description: Capture domain Value
+    - name: PA
+      bit_offset: 7
+      bit_size: 1
+    - name: ERR
+      bit_offset: 29
+      bit_size: 1
+fieldset/XSPI_FRAD15_WORD5_SUB:
+  description: ''
+  fields:
+    - name: CMPVALID
+      bit_offset: 30
+      bit_size: 1

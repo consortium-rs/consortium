@@ -1,0 +1,230 @@
+block/DOMAINB:
+  description: ''
+  items:
+    - name: LU
+      byte_offset: 0
+      fieldset: DOMAINB_LU
+    - name: LOCKS
+      byte_offset: 4
+      fieldset: DOMAINB_LOCKS
+    - name: STATCON
+      byte_offset: 8
+      fieldset: DOMAINB_STATCON
+    - name: CONTRIG
+      byte_offset: 12
+      fieldset: DOMAINB_CONTRIG
+    - name: MODECONT
+      byte_offset: 16
+      fieldset: DOMAINB_MODECONT
+    - name: ALPHACO
+      byte_offset: 20
+      fieldset: DOMAINB_ALPHACO
+    - name: BLENDCON
+      byte_offset: 24
+      fieldset: DOMAINB_BLENDCON
+    - name: TIMEOFBK
+      byte_offset: 28
+      fieldset: DOMAINB_TIMEOFBK
+    - name: LC
+      byte_offset: 32
+      fieldset: DOMAINB_LC
+    - name: DELCEN
+      byte_offset: 36
+      fieldset: DOMAINB_DELCEN
+    - name: DELCPRIM
+      byte_offset: 40
+      fieldset: DOMAINB_DELCPRIM
+    - name: DELCSEC
+      byte_offset: 44
+      fieldset: DOMAINB_DELCSEC
+    - name: ERCOPRIM
+      byte_offset: 48
+      fieldset: DOMAINB_ERCOPRIM
+    - name: ERCOSEC
+      byte_offset: 52
+      fieldset: DOMAINB_ERCOSEC
+    - name: SOURS
+      byte_offset: 56
+      fieldset: DOMAINB_SOURS
+    - name: SOURSC
+      byte_offset: 60
+      fieldset: DOMAINB_SOURSC
+    - name: PRIMCOWO
+      byte_offset: 64
+      fieldset: DOMAINB_PRIMCOWO
+    - name: SECCONTW
+      byte_offset: 68
+      fieldset: DOMAINB_SECCONTW
+fieldset/DOMAINB_LU:
+  description: ''
+  fields:
+    - name: LkUn
+      bit_offset: 0
+      bit_size: 32
+fieldset/DOMAINB_LOCKS:
+  description: ''
+  fields:
+    - name: LkSus
+      bit_offset: 0
+      bit_size: 1
+      description: LockStatus
+    - name: PriSt
+      bit_offset: 4
+      bit_size: 1
+      description: LockStatus
+    - name: FreezeS
+      bit_offset: 8
+      bit_size: 1
+      description: PrivilegeStatus
+fieldset/DOMAINB_STATCON:
+  description: ''
+  fields:
+    - name: ShdEn
+      bit_offset: 0
+      bit_size: 1
+      description: ShdEn
+    - name: SdLdSel
+      bit_offset: 1
+      bit_size: 3
+      description: ShdEn
+    - name: SdTokSel
+      bit_offset: 4
+      bit_size: 3
+fieldset/DOMAINB_CONTRIG:
+  description: ''
+  fields:
+    - name: SdTokGen
+      bit_offset: 0
+      bit_size: 1
+      description: ShdTokGen
+fieldset/DOMAINB_MODECONT:
+  description: ''
+  fields:
+    - name: MODE2
+      bit_offset: 0
+      bit_size: 2
+fieldset/DOMAINB_ALPHACO:
+  description: ''
+  fields:
+    - name: AlpMaE
+      bit_offset: 0
+      bit_size: 1
+    - name: AlpMMode
+      bit_offset: 1
+      bit_size: 3
+fieldset/DOMAINB_BLENDCON:
+  description: ''
+  fields:
+    - name: PRICBLDF
+      bit_offset: 0
+      bit_size: 3
+    - name: SECCBLDF
+      bit_offset: 4
+      bit_size: 3
+    - name: PRIABLDF
+      bit_offset: 8
+      bit_size: 3
+    - name: SECABLDF
+      bit_offset: 12
+      bit_size: 3
+    - name: BlendAlp
+      bit_offset: 16
+      bit_size: 8
+      description: BlendAlpha
+fieldset/DOMAINB_TIMEOFBK:
+  description: ''
+  fields:
+    - name: PrimWait
+      bit_offset: 0
+      bit_size: 1
+      description: PrimWait
+    - name: ScWait
+      bit_offset: 1
+      bit_size: 1
+      description: PrimWait
+fieldset/DOMAINB_LC:
+  description: ''
+  fields:
+    - name: LkupC
+      bit_offset: 0
+      bit_size: 1
+      description: LockupClear
+fieldset/DOMAINB_DELCEN:
+  description: ''
+  fields:
+    - name: DelCEn
+      bit_offset: 0
+      bit_size: 1
+      description: DelayCountEn
+fieldset/DOMAINB_DELCPRIM:
+  description: ''
+  fields:
+    - name: DelCPrim
+      bit_offset: 0
+      bit_size: 28
+      description: DelayCountPrim
+fieldset/DOMAINB_DELCSEC:
+  description: ''
+  fields:
+    - name: DelCSec
+      bit_offset: 0
+      bit_size: 28
+      description: DelayCountSec
+fieldset/DOMAINB_ERCOPRIM:
+  description: ''
+  fields:
+    - name: ErrCoPr
+      bit_offset: 0
+      bit_size: 28
+      description: ErrCountPrim
+fieldset/DOMAINB_ERCOSEC:
+  description: ''
+  fields:
+    - name: ErrCoSe
+      bit_offset: 0
+      bit_size: 28
+      description: ErrCountSec
+fieldset/DOMAINB_SOURS:
+  description: ''
+  fields:
+    - name: WrgCoWo
+      bit_offset: 0
+      bit_size: 1
+      description: WrongCommandWord
+    - name: WrgPxlDa
+      bit_offset: 1
+      bit_size: 1
+      description: WrongCommandWord
+    - name: WrgInput
+      bit_offset: 2
+      bit_size: 1
+      description: WrongPixelData
+fieldset/DOMAINB_SOURSC:
+  description: ''
+  fields:
+    - name: ClearWCW
+      bit_offset: 0
+      bit_size: 1
+      description: ClearWrongCommandWord
+    - name: ClearWPD
+      bit_offset: 1
+      bit_size: 1
+      description: ClearWrongCommandWord
+    - name: ClearWI
+      bit_offset: 2
+      bit_size: 1
+      description: ClearWrongPixelData
+fieldset/DOMAINB_PRIMCOWO:
+  description: ''
+  fields:
+    - name: PVAL
+      bit_offset: 0
+      bit_size: 32
+      description: P_VAL
+fieldset/DOMAINB_SECCONTW:
+  description: ''
+  fields:
+    - name: SVAL
+      bit_offset: 0
+      bit_size: 32
+      description: S_VAL

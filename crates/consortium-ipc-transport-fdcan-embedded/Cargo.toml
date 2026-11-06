@@ -40,6 +40,7 @@ defmt = [
 # match the target. Choose exactly one; the HAL rejects several at once.
 mimx93 = ["consortium-hal-imx9/can", "consortium-hal-imx9/mimx93", "dep:consortium-hal-imx9"]
 mimx95 = ["consortium-hal-imx9/can", "consortium-hal-imx9/mimx95", "dep:consortium-hal-imx9"]
+mimx952 = ["consortium-hal-imx9/can", "consortium-hal-imx9/mimx952", "dep:consortium-hal-imx9"]
 stm32mp21x = [
   "consortium-hal-stm32mp2/can",
   "consortium-hal-stm32mp2/stm32mp21x",

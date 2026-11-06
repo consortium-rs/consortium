@@ -1,0 +1,280 @@
+block/FLEXSPI_SLV:
+  description: ''
+  items:
+    - name: MODULE_CONTROL
+      byte_offset: 0
+      fieldset: FLEXSPI_SLV_MODULE_CONTROL
+    - name: READ_COMMAND_CONTROL
+      byte_offset: 4
+      fieldset: FLEXSPI_SLV_READ_COMMAND_CONTROL
+    - name: READ_REGISTER_COMMAND0
+      byte_offset: 8
+      fieldset: FLEXSPI_SLV_READ_REGISTER_COMMAND0
+    - name: READ_COMMAND
+      byte_offset: 12
+      array:
+        len: 2
+        stride: 4
+      fieldset: FLEXSPI_SLV_READ_COMMAND
+    - name: WRITE_COMMAND_CONTROL
+      byte_offset: 20
+      fieldset: FLEXSPI_SLV_WRITE_COMMAND_CONTROL
+    - name: WRITE_REGISTER_COMMAND0
+      byte_offset: 24
+      fieldset: FLEXSPI_SLV_WRITE_REGISTER_COMMAND0
+    - name: WRITE_COMMAND
+      byte_offset: 28
+      array:
+        len: 2
+        stride: 4
+      fieldset: FLEXSPI_SLV_WRITE_COMMAND
+    - name: RW_COMMAND_BASE
+      byte_offset: 36
+      fieldset: FLEXSPI_SLV_RW_COMMAND_BASE
+    - name: CMD_RANGE
+      byte_offset: 40
+      array:
+        len: 2
+        stride: 4
+      fieldset: FLEXSPI_SLV_CMD_RANGE
+    - name: MODULE_STATUS
+      byte_offset: 48
+      fieldset: FLEXSPI_SLV_MODULE_STATUS
+    - name: MODULE_INT
+      byte_offset: 52
+      fieldset: FLEXSPI_SLV_MODULE_INT
+    - name: MODULE_INTEN
+      byte_offset: 56
+      fieldset: FLEXSPI_SLV_MODULE_INTEN
+    - name: SPI_MAIL_CTRL
+      byte_offset: 60
+      fieldset: FLEXSPI_SLV_SPI_MAIL_CTRL
+    - name: SPIMAIL
+      byte_offset: 64
+      array:
+        len: 9
+        stride: 4
+      fieldset: FLEXSPI_SLV_SPIMAIL
+fieldset/FLEXSPI_SLV_MODULE_CONTROL:
+  description: ''
+  fields:
+    - name: SWRESET
+      bit_offset: 0
+      bit_size: 1
+    - name: IOMODE
+      bit_offset: 1
+      bit_size: 2
+    - name: DQSSTOP
+      bit_offset: 3
+      bit_size: 1
+    - name: CSMASK
+      bit_offset: 4
+      bit_size: 1
+    - name: BLKREAD
+      bit_offset: 5
+      bit_size: 1
+    - name: BLKWRITE
+      bit_offset: 6
+      bit_size: 1
+    - name: BLKNXTWR
+      bit_offset: 7
+      bit_size: 1
+    - name: BLKNXTRD
+      bit_offset: 8
+      bit_size: 1
+    - name: ALLOWONEWR
+      bit_offset: 9
+      bit_size: 1
+    - name: ALLOWONERD
+      bit_offset: 10
+      bit_size: 1
+    - name: CMDRANGEBASEUPDATE
+      bit_offset: 11
+      bit_size: 1
+fieldset/FLEXSPI_SLV_READ_COMMAND_CONTROL:
+  description: ''
+  fields:
+    - name: RDFETCHSIZE
+      bit_offset: 0
+      bit_size: 2
+    - name: RDWM
+      bit_offset: 2
+      bit_size: 6
+      description: Read Watermark Level
+    - name: RDOT
+      bit_offset: 8
+      bit_size: 1
+    - name: WMEN
+      bit_offset: 9
+      bit_size: 1
+fieldset/FLEXSPI_SLV_READ_REGISTER_COMMAND0:
+  description: ''
+  fields:
+    - name: DUMMYCYCLES
+      bit_offset: 0
+      bit_size: 16
+    - name: COMMANDSET
+      bit_offset: 16
+      bit_size: 16
+fieldset/FLEXSPI_SLV_READ_COMMAND:
+  description: ''
+  fields:
+    - name: DUMMYCYCLES
+      bit_offset: 0
+      bit_size: 16
+    - name: COMMANDSET
+      bit_offset: 16
+      bit_size: 16
+      description: Read Command 2 Setting
+fieldset/FLEXSPI_SLV_WRITE_COMMAND_CONTROL:
+  description: ''
+  fields:
+    - name: WRWM
+      bit_offset: 0
+      bit_size: 2
+fieldset/FLEXSPI_SLV_WRITE_REGISTER_COMMAND0:
+  description: ''
+  fields:
+    - name: COMMANDSET
+      bit_offset: 16
+      bit_size: 16
+fieldset/FLEXSPI_SLV_WRITE_COMMAND:
+  description: ''
+  fields:
+    - name: COMMANDSET
+      bit_offset: 16
+      bit_size: 16
+fieldset/FLEXSPI_SLV_RW_COMMAND_BASE:
+  description: ''
+  fields:
+    - name: ADDRBASE1
+      bit_offset: 0
+      bit_size: 16
+      description: Address Base 1
+    - name: ADDRBASE2
+      bit_offset: 16
+      bit_size: 16
+      description: Address Base 2
+fieldset/FLEXSPI_SLV_CMD_RANGE:
+  description: ''
+  fields:
+    - name: RANGE
+      bit_offset: 10
+      bit_size: 22
+      description: Memory Range
+fieldset/FLEXSPI_SLV_MODULE_STATUS:
+  description: ''
+  fields:
+    - name: WIP
+      bit_offset: 0
+      bit_size: 1
+    - name: AXIREADIDLE
+      bit_offset: 1
+      bit_size: 1
+    - name: REGRWIDLE
+      bit_offset: 2
+      bit_size: 1
+    - name: SEQIDLE
+      bit_offset: 3
+      bit_size: 1
+    - name: RDOFR
+      bit_offset: 4
+      bit_size: 4
+      description: Read Out-of-Range Counter
+    - name: WROFR
+      bit_offset: 8
+      bit_size: 4
+      description: Write Out-of-Range Counter
+    - name: ALLOWAXIRD
+      bit_offset: 12
+      bit_size: 1
+    - name: ALLOWAXIWR
+      bit_offset: 13
+      bit_size: 1
+fieldset/FLEXSPI_SLV_MODULE_INT:
+  description: ''
+  fields:
+    - name: WOF
+      bit_offset: 0
+      bit_size: 1
+    - name: RUF
+      bit_offset: 1
+      bit_size: 1
+    - name: ERRCMD
+      bit_offset: 2
+      bit_size: 1
+fieldset/FLEXSPI_SLV_MODULE_INT_RADDR:
+  description: ''
+  fields:
+    - name: OFR
+      bit_offset: 3
+      bit_size: 1
+fieldset/FLEXSPI_SLV_MODULE_INT_WADDR:
+  description: ''
+  fields:
+    - name: OFR
+      bit_offset: 4
+      bit_size: 1
+fieldset/FLEXSPI_SLV_MODULE_INT_RD:
+  description: ''
+  fields:
+    - name: DONE
+      bit_offset: 5
+      bit_size: 1
+fieldset/FLEXSPI_SLV_MODULE_INT_WR:
+  description: ''
+  fields:
+    - name: DONE
+      bit_offset: 6
+      bit_size: 1
+fieldset/FLEXSPI_SLV_MODULE_INTEN:
+  description: ''
+  fields:
+    - name: WOFEN
+      bit_offset: 0
+      bit_size: 1
+    - name: RUFEN
+      bit_offset: 1
+      bit_size: 1
+    - name: ERRCMDEN
+      bit_offset: 2
+      bit_size: 1
+fieldset/FLEXSPI_SLV_MODULE_INTEN_RADDR:
+  description: ''
+  fields:
+    - name: OFREN
+      bit_offset: 3
+      bit_size: 1
+fieldset/FLEXSPI_SLV_MODULE_INTEN_WADDR:
+  description: ''
+  fields:
+    - name: OFREN
+      bit_offset: 4
+      bit_size: 1
+fieldset/FLEXSPI_SLV_MODULE_INTEN_RD:
+  description: ''
+  fields:
+    - name: DONEEN
+      bit_offset: 5
+      bit_size: 1
+fieldset/FLEXSPI_SLV_MODULE_INTEN_WR:
+  description: ''
+  fields:
+    - name: DONEEN
+      bit_offset: 6
+      bit_size: 1
+fieldset/FLEXSPI_SLV_SPI_MAIL_CTRL:
+  description: ''
+  fields:
+    - name: CLRINT
+      bit_offset: 0
+      bit_size: 1
+    - name: SPIINTEN
+      bit_offset: 1
+      bit_size: 1
+fieldset/FLEXSPI_SLV_SPIMAIL:
+  description: ''
+  fields:
+    - name: MAIL
+      bit_offset: 0
+      bit_size: 32

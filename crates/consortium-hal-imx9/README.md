@@ -58,16 +58,22 @@ Each behind a feature, all on by default:
 
 ## Chip selection
 
-`mimx93` or `mimx95` — **exactly one**. The feature selects which generated singleton
-map is mounted and is forwarded to the PAC so its register and interrupt definitions
-match the target. Enabling both is a duplicate-definition error.
+`mimx93`, `mimx95`, or `mimx952` — **exactly one**. The feature selects which
+generated singleton map is mounted and is forwarded to the PAC so its register and
+interrupt definitions match the target. Enabling two is a duplicate-definition error.
 
-| Chip     | MU instances |
-| -------- | ------------ |
-| `mimx93` | 2            |
-| `mimx95` | 8            |
+| Chip      | MU instances | Status                                    |
+| --------- | ------------ | ----------------------------------------- |
+| `mimx93`  | 2            | Hardware-validated                        |
+| `mimx95`  | 8            | Hardware-validated                        |
+| `mimx952` | 8            | Compile-only; no MU doorbell until the RM |
 
-Default is `mimx95`. **A dependent selecting `mimx93` must set
+`mimx952` is a separate die from i.MX 95, not a variant: its WAKEUP-domain instances
+(LPUART3–8, CAN2/3, LPI2C3–8, TPM3–6, LPIT2) sit at other addresses, and it has no
+CAN4/5. It shares i.MX 95's System Manager clock model, eDMA request numbers, and
+LPIT1 rate, so the drivers take the i.MX 95 paths there.
+
+Default is `mimx95`. **A dependent selecting `mimx93` or `mimx952` must set
 `default-features = false`** — otherwise `mimx95` comes along too and the PAC's
 `Interrupt` enum becomes ambiguous. Every doorbell and transport crate in this
 workspace that depends on a chip HAL does this.

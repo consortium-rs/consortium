@@ -479,7 +479,7 @@ mod tests {
 
     #[cfg(feature = "mimx93")]
     const ADC_DMA_CHANNEL: usize = 30;
-    #[cfg(feature = "mimx95")]
+    #[cfg(any(feature = "mimx95", feature = "mimx952"))]
     const ADC_DMA_CHANNEL: usize = 7;
 
     #[test]

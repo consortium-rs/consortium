@@ -74,13 +74,13 @@
 //! | Feature | Effect |
 //! | ------- | ------ |
 //! | none (default) | Chip-agnostic; bring your own [`CanTx`]/[`CanRx`]. |
-//! | `mimx93`, `mimx95` | i.MX9 FlexCAN via [`imx9`]. |
+//! | `mimx93`, `mimx95`, `mimx952` | i.MX9 FlexCAN via [`imx9`]. |
 //! | `stm32mp21x`, `stm32mp23x`, `stm32mp25x` | STM32MP2 FDCAN via [`stm32mp2`]. |
 //! | `defmt` | Routes the transport's logging to `defmt`. |
 //!
 //! Choose exactly one chip feature; the HAL rejects several at once.
 
-#[cfg(any(feature = "mimx93", feature = "mimx95"))]
+#[cfg(any(feature = "mimx93", feature = "mimx95", feature = "mimx952"))]
 pub mod imx9;
 
 #[cfg(any(feature = "stm32mp21x", feature = "stm32mp23x", feature = "stm32mp25x"))]

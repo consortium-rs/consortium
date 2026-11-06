@@ -410,6 +410,12 @@ check-ipc-m7:
     cargo check -p consortium-runtime-mcu --target {{ m7_target }} --no-default-features --features ipc-fdcan
     cargo check -p consortium-ipc-transport-memory --target {{ m7_target }} --no-default-features --features stm32mp25x
     cargo check -p consortium-ipc-transport-memory --target {{ m7_target }} --no-default-features --features mimx95
+    # i.MX 952 (compile-level): the chip-glue transports, plus every HAL driver,
+    # since no transport pulls in the ADC/DMA/timer/watchdog modules. There is no
+    # `transport-memory` line until its MU doorbell lands with the reference manual.
+    cargo check -p consortium-ipc-transport-fdcan-embedded --target {{ m7_target }} --no-default-features --features mimx952
+    cargo check -p consortium-ipc-transport-uart --target {{ m7_target }} --no-default-features --features mimx952
+    cargo check -p consortium-hal-imx9 --target {{ m7_target }} --no-default-features --features mimx952,rt,adc,can,dma,gpio,i2c,i3c,spi,time-driver-lpit,timer,uart,watchdog
 
 build-ipc-m7:
     cargo build -p consortium-ipc --release --target {{ m7_target }}
@@ -421,6 +427,8 @@ build-ipc-m7:
     cargo build -p consortium-runtime-mcu --release --target {{ m7_target }}
     cargo build -p consortium-ipc-transport-memory --release --target {{ m7_target }} --no-default-features --features stm32mp25x
     cargo build -p consortium-ipc-transport-memory --release --target {{ m7_target }} --no-default-features --features mimx95
+    cargo build -p consortium-ipc-transport-fdcan-embedded --release --target {{ m7_target }} --no-default-features --features mimx952
+    cargo build -p consortium-ipc-transport-uart --release --target {{ m7_target }} --no-default-features --features mimx952
 
 # Compile M-core IPC crates for thumbv7. Unit tests are not runnable on the host.
 test-ipc-m7: check-ipc-m7

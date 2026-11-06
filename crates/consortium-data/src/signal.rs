@@ -60,6 +60,10 @@ const FAMILIES: &[Embedded] = &[
         json: include_str!("../database/signal/stm32mp21.json"),
     },
     Embedded {
+        family: "mimx952",
+        json: include_str!("../database/signal/mimx952.json"),
+    },
+    Embedded {
         family: "mimx95",
         json: include_str!("../database/signal/mimx95.json"),
     },
@@ -376,6 +380,7 @@ mod tests {
             "stm32mp235fak3",
             "stm32mp215fan3",
             "mimx9596xvt",
+            "mimx9529avzxn",
             "mimx9352",
         ] {
             let map = load(chip).unwrap_or_else(|err| panic!("{chip}: {err}"));
@@ -386,7 +391,7 @@ mod tests {
 
     #[test]
     fn rejects_other_dies_sharing_an_imx_prefix() {
-        for chip in ["mimx9529avzxn", "mimx9375"] {
+        for chip in ["mimx9375", "mimx9371xxvtx"] {
             assert!(
                 matches!(load(chip), Err(DataError::SignalMapUnavailable(_))),
                 "{chip} should not resolve"

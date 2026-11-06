@@ -39,6 +39,7 @@ from signal_db import (
 FAMILIES = {
     "mimx93": ("i.MX93/MIMX9352", ("PERI_DMA.h", "PERI_DMA4.h")),
     "mimx95": ("i.MX95/MIMX9596", ("fsl_edma_soc.h",)),
+    "mimx952": ("i.MX952/MIMX9529", ("fsl_edma_soc.h",)),
 }
 
 HEX = r"(0x[0-9a-fA-F]+)U?"

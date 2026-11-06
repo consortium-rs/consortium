@@ -14,6 +14,8 @@ fn main() {
     // Chip features are mutually exclusive; pick the first that is enabled.
     let device_x = if env::var_os("CARGO_FEATURE_MIMX95").is_some() {
         include_str!("src/interrupts/imx95.x")
+    } else if env::var_os("CARGO_FEATURE_MIMX952").is_some() {
+        include_str!("src/interrupts/imx952.x")
     } else if env::var_os("CARGO_FEATURE_MIMX93").is_some() {
         include_str!("src/interrupts/imx93.x")
     } else {
@@ -24,5 +26,6 @@ fn main() {
     fs::write(out.join("device.x"), device_x).unwrap();
     println!("cargo:rustc-link-search={}", out.display());
     println!("cargo:rerun-if-changed=src/interrupts/imx95.x");
+    println!("cargo:rerun-if-changed=src/interrupts/imx952.x");
     println!("cargo:rerun-if-changed=src/interrupts/imx93.x");
 }

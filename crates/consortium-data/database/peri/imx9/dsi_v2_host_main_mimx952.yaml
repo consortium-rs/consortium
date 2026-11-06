@@ -1,0 +1,297 @@
+block/DSI_V2_HOST_MAIN:
+  description: ''
+  items:
+    - name: CORE_ID
+      byte_offset: 0
+    - name: VERSION
+      byte_offset: 4
+    - name: PWR_UP
+      byte_offset: 12
+    - name: SOFT_RESET
+      byte_offset: 16
+    - name: MODE_CTRL
+      byte_offset: 24
+    - name: MODE_STATUS
+      byte_offset: 28
+    - name: CORE_STATUS
+      byte_offset: 32
+    - name: MANUAL_MODE_CFG
+      byte_offset: 36
+    - name: OBS_FSM_SEL
+      byte_offset: 40
+    - name: OBS_FSM_STATUS
+      byte_offset: 44
+      fieldset: DSI_V2_HOST_MAIN_OBS_FSM_STATUS
+    - name: OBS_FSM_CTRL
+      byte_offset: 48
+    - name: OBS_FIFO_SEL
+      byte_offset: 52
+    - name: OBS_FIFO_STATUS
+      byte_offset: 56
+      fieldset: DSI_V2_HOST_MAIN_OBS_FIFO_STATUS
+    - name: OBS_FIFO_CTRL
+      byte_offset: 60
+    - name: TO_HSTX_CFG
+      byte_offset: 72
+    - name: TO_HSTXRDY_CFG
+      byte_offset: 76
+    - name: TO_LPRX_CFG
+      byte_offset: 80
+    - name: TO_LPTXRDY_CFG
+      byte_offset: 84
+    - name: TO_LPTXTRIG_CFG
+      byte_offset: 88
+    - name: TO_LPTXULPS_CFG
+      byte_offset: 92
+    - name: TO_BTA_CFG
+      byte_offset: 96
+fieldset/DSI_V2_HOST_MAIN_CORE_ID_CORE:
+  description: ''
+  fields:
+    - name: ID
+      bit_offset: 0
+      bit_size: 32
+fieldset/DSI_V2_HOST_MAIN_VERSION_VER:
+  description: ''
+  fields:
+    - name: NUMBER
+      bit_offset: 0
+      bit_size: 16
+fieldset/DSI_V2_HOST_MAIN_VERSION_TYPE:
+  description: ''
+  fields:
+    - name: NUM
+      bit_offset: 16
+      bit_size: 8
+    - name: ENUM
+      bit_offset: 28
+      bit_size: 4
+fieldset/DSI_V2_HOST_MAIN_VERSION_PKG:
+  description: ''
+  fields:
+    - name: NUM
+      bit_offset: 24
+      bit_size: 4
+fieldset/DSI_V2_HOST_MAIN_PWR_UP_PWR:
+  description: ''
+  fields:
+    - name: UP
+      bit_offset: 0
+      bit_size: 1
+fieldset/DSI_V2_HOST_MAIN_SOFT_RESET_IPI:
+  description: ''
+  fields:
+    - name: RSTN
+      bit_offset: 0
+      bit_size: 1
+fieldset/DSI_V2_HOST_MAIN_SOFT_RESET_PHY:
+  description: ''
+  fields:
+    - name: RSTN
+      bit_offset: 1
+      bit_size: 1
+fieldset/DSI_V2_HOST_MAIN_SOFT_RESET_SYS:
+  description: ''
+  fields:
+    - name: RSTN
+      bit_offset: 2
+      bit_size: 1
+fieldset/DSI_V2_HOST_MAIN_MODE_CTRL_MODE:
+  description: ''
+  fields:
+    - name: CTRL
+      bit_offset: 0
+      bit_size: 3
+fieldset/DSI_V2_HOST_MAIN_MODE_STATUS_MODE:
+  description: ''
+  fields:
+    - name: STATUS
+      bit_offset: 0
+      bit_size: 3
+fieldset/DSI_V2_HOST_MAIN_CORE_STATUS_CORE:
+  description: ''
+  fields:
+    - name: BUSY
+      bit_offset: 0
+      bit_size: 1
+fieldset/DSI_V2_HOST_MAIN_CORE_STATUS_CORE_FIFOS_NOT:
+  description: ''
+  fields:
+    - name: EMPTY
+      bit_offset: 1
+      bit_size: 1
+fieldset/DSI_V2_HOST_MAIN_CORE_STATUS_IPI:
+  description: ''
+  fields:
+    - name: BUSY
+      bit_offset: 8
+      bit_size: 1
+fieldset/DSI_V2_HOST_MAIN_CORE_STATUS_IPI_FIFOS_NOT:
+  description: ''
+  fields:
+    - name: EMPTY
+      bit_offset: 9
+      bit_size: 1
+fieldset/DSI_V2_HOST_MAIN_CORE_STATUS_CRI:
+  description: ''
+  fields:
+    - name: BUSY
+      bit_offset: 16
+      bit_size: 1
+fieldset/DSI_V2_HOST_MAIN_CORE_STATUS_CRI_WR_FIFOS_NOT:
+  description: ''
+  fields:
+    - name: EMPTY
+      bit_offset: 17
+      bit_size: 1
+fieldset/DSI_V2_HOST_MAIN_CORE_STATUS_CRI_RD_DATA:
+  description: ''
+  fields:
+    - name: AVAIL
+      bit_offset: 18
+      bit_size: 1
+fieldset/DSI_V2_HOST_MAIN_CORE_STATUS_PRI:
+  description: ''
+  fields:
+    - name: BUSY
+      bit_offset: 24
+      bit_size: 1
+fieldset/DSI_V2_HOST_MAIN_CORE_STATUS_PRI_TX_FIFOS_NOT:
+  description: ''
+  fields:
+    - name: EMPTY
+      bit_offset: 25
+      bit_size: 1
+fieldset/DSI_V2_HOST_MAIN_CORE_STATUS_PRI_RX_DATA:
+  description: ''
+  fields:
+    - name: AVAIL
+      bit_offset: 26
+      bit_size: 1
+fieldset/DSI_V2_HOST_MAIN_MANUAL_MODE_CFG_MANUAL_MODE:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+fieldset/DSI_V2_HOST_MAIN_OBS_FSM_SEL_FSM:
+  description: ''
+  fields:
+    - name: SELECTOR
+      bit_offset: 0
+      bit_size: 4
+      description: FSM Selector
+fieldset/DSI_V2_HOST_MAIN_OBS_FSM_STATUS_CURRENT:
+  description: ''
+  fields:
+    - name: STATE
+      bit_offset: 0
+      bit_size: 5
+fieldset/DSI_V2_HOST_MAIN_OBS_FSM_STATUS:
+  description: ''
+  fields:
+    - name: STUCK
+      bit_offset: 5
+      bit_size: 1
+fieldset/DSI_V2_HOST_MAIN_OBS_FSM_STATUS_PREVIOUS:
+  description: ''
+  fields:
+    - name: STATE
+      bit_offset: 8
+      bit_size: 5
+fieldset/DSI_V2_HOST_MAIN_OBS_FSM_STATUS_CURRENT_STATE:
+  description: ''
+  fields:
+    - name: CNT
+      bit_offset: 16
+      bit_size: 16
+fieldset/DSI_V2_HOST_MAIN_OBS_FSM_CTRL_FSM_MANUAL:
+  description: ''
+  fields:
+    - name: INIT
+      bit_offset: 0
+      bit_size: 1
+fieldset/DSI_V2_HOST_MAIN_OBS_FIFO_SEL_FIFO:
+  description: ''
+  fields:
+    - name: SELECTOR
+      bit_offset: 0
+      bit_size: 4
+fieldset/DSI_V2_HOST_MAIN_OBS_FIFO_STATUS:
+  description: ''
+  fields:
+    - name: EMPTY
+      bit_offset: 0
+      bit_size: 1
+    - name: FULL
+      bit_offset: 4
+      bit_size: 1
+fieldset/DSI_V2_HOST_MAIN_OBS_FIFO_STATUS_ALMOST:
+  description: ''
+  fields:
+    - name: EMPTY
+      bit_offset: 1
+      bit_size: 1
+    - name: FULL
+      bit_offset: 3
+      bit_size: 1
+fieldset/DSI_V2_HOST_MAIN_OBS_FIFO_STATUS_HALF:
+  description: ''
+  fields:
+    - name: FULL
+      bit_offset: 2
+      bit_size: 1
+fieldset/DSI_V2_HOST_MAIN_OBS_FIFO_STATUS_CURRENT_WORD:
+  description: ''
+  fields:
+    - name: COUNT
+      bit_offset: 16
+      bit_size: 16
+fieldset/DSI_V2_HOST_MAIN_OBS_FIFO_CTRL_FIFO_MANUAL:
+  description: ''
+  fields:
+    - name: INIT
+      bit_offset: 0
+      bit_size: 1
+fieldset/DSI_V2_HOST_MAIN_TO_HSTX_CFG_TO_HSTX:
+  description: ''
+  fields:
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 16
+fieldset/DSI_V2_HOST_MAIN_TO_HSTXRDY_CFG_TO_HSTXRDY:
+  description: ''
+  fields:
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 16
+fieldset/DSI_V2_HOST_MAIN_TO_LPRX_CFG_TO_LPRX:
+  description: ''
+  fields:
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 16
+fieldset/DSI_V2_HOST_MAIN_TO_LPTXRDY_CFG_TO_LPTXRDY:
+  description: ''
+  fields:
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 16
+fieldset/DSI_V2_HOST_MAIN_TO_LPTXTRIG_CFG_TO_LPTXTRIG:
+  description: ''
+  fields:
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 16
+fieldset/DSI_V2_HOST_MAIN_TO_LPTXULPS_CFG_TO_LPTXULPS:
+  description: ''
+  fields:
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 16
+fieldset/DSI_V2_HOST_MAIN_TO_BTA_CFG_TO_BTA:
+  description: ''
+  fields:
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 16

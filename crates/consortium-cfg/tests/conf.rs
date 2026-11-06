@@ -56,8 +56,9 @@ fn ty_crate() -> syn::Path {
     syn::parse_str("::shared").unwrap()
 }
 
-/// Every distinct core that participates in any transceiver, ordered with the
-/// AP first and controller cores sorted by name for stable snapshots.
+/// Every distinct core that participates in any transceiver or owns a peripheral,
+/// ordered with the AP first and controller cores sorted by name for stable
+/// snapshots.
 fn cores(ir: &LoweredIr) -> Vec<VisibleCore> {
     let mut seen: BTreeMap<String, VisibleCore> = BTreeMap::new();
     let mut has_ap = false;
@@ -68,6 +69,15 @@ fn cores(ir: &LoweredIr) -> Vec<VisibleCore> {
             } else {
                 seen.insert(core.to_string(), *core);
             }
+        }
+    }
+
+    // A controller core that owns a `[peripheral.*]` but sits on no channel
+    // still gets generated bring-up (time driver, peripheral singletons), so
+    // render it too: a peripheral-only manifest would otherwise snapshot nothing.
+    for instance in &ir.peripherals.instances {
+        if instance.owner != VisibleCore::Ap {
+            seen.insert(instance.owner.to_string(), instance.owner);
         }
     }
 

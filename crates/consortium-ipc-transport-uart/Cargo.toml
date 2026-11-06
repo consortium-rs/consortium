@@ -54,6 +54,7 @@ unix = ["dep:tokio-serial", "std"]
 # at most one; the HAL rejects several at once.
 mimx93 = ["consortium-hal-imx9/mimx93", "consortium-hal-imx9/uart", "dep:consortium-hal-imx9"]
 mimx95 = ["consortium-hal-imx9/mimx95", "consortium-hal-imx9/uart", "dep:consortium-hal-imx9"]
+mimx952 = ["consortium-hal-imx9/mimx952", "consortium-hal-imx9/uart", "dep:consortium-hal-imx9"]
 stm32mp21x = [
   "consortium-hal-stm32mp2/stm32mp21x",
   "consortium-hal-stm32mp2/uart",

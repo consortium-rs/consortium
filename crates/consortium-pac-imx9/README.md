@@ -32,17 +32,24 @@ IRQSTEER, LPI2C, LPIT, LPSPI, LPTMR, LPUART, MU, RGPIO, TPM, WDOG.
 
 ## Features
 
-| Feature  | Effect                                                                  |
-| -------- | ----------------------------------------------------------------------- |
-| `mimx95` | Chip selection (default). Eight MU instances.                           |
-| `mimx93` | Chip selection. Two MU instances.                                       |
-| `rt`     | `cortex-m-rt` integration: the `#[interrupt]` macro and `__INTERRUPTS`. |
-| `defmt`  | Derive `defmt::Format` on generated types where applicable.             |
+| Feature   | Effect                                                                  |
+| --------- | ----------------------------------------------------------------------- |
+| `mimx95`  | Chip selection (default). Eight MU instances.                           |
+| `mimx93`  | Chip selection. Two MU instances.                                       |
+| `mimx952` | Chip selection. A separate die from i.MX 95; see below.                 |
+| `rt`      | `cortex-m-rt` integration: the `#[interrupt]` macro and `__INTERRUPTS`. |
+| `defmt`   | Derive `defmt::Format` on generated types where applicable.             |
 
 Choose **exactly one** chip: the feature selects which generated interrupt and
-peripheral map is mounted, and enabling both is a duplicate-definition error. **A
-dependent selecting `mimx93` must set `default-features = false`** so `mimx95` is not
-also pulled in — two chips mean an ambiguous `Interrupt` enum.
+peripheral map is mounted, and enabling two is a duplicate-definition error. **A
+dependent selecting `mimx93` or `mimx952` must set `default-features = false`** so
+`mimx95` is not also pulled in — two chips mean an ambiguous `Interrupt` enum.
+
+i.MX 952 is not an i.MX 95 variant: its WAKEUP-domain instances sit at other
+addresses, and eight register blocks (ADC, CAN, CCM, GPC, GPC_GLOBAL, IOMUXC,
+IOMUXC_GPR, IRQSTEER) have a different layout. Those are generated from their own
+i.MX 952 IR and mounted under the same module names when `mimx952` is selected;
+every other block is shared. `flexspi` is absent on `mimx952` (the die has xSPI).
 
 `rt` should be enabled by the **application**, since it is what owns the vector table.
 The generated `.x` linker fragment adds weak `DefaultHandler` fallbacks so an

@@ -1,0 +1,162 @@
+block/GPT:
+  description: ''
+  items:
+    - name: CR
+      byte_offset: 0
+      fieldset: GPT_CR
+    - name: PR
+      byte_offset: 4
+      fieldset: GPT_PR
+    - name: SR
+      byte_offset: 8
+      fieldset: GPT_SR
+    - name: IR
+      byte_offset: 12
+      fieldset: GPT_IR
+    - name: OCR
+      byte_offset: 16
+      array:
+        len: 3
+        stride: 4
+      fieldset: GPT_OCR
+    - name: ICR
+      byte_offset: 28
+      array:
+        len: 2
+        stride: 4
+      fieldset: GPT_ICR
+    - name: CNT
+      byte_offset: 36
+      fieldset: GPT_CNT
+fieldset/GPT_CR:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+    - name: ENMOD
+      bit_offset: 1
+      bit_size: 1
+    - name: DBGEN
+      bit_offset: 2
+      bit_size: 1
+    - name: WAITEN
+      bit_offset: 3
+      bit_size: 1
+    - name: DOZEEN
+      bit_offset: 4
+      bit_size: 1
+    - name: STOPEN
+      bit_offset: 5
+      bit_size: 1
+    - name: CLKSRC
+      bit_offset: 6
+      bit_size: 3
+    - name: FRR
+      bit_offset: 9
+      bit_size: 1
+    - name: SWR
+      bit_offset: 15
+      bit_size: 1
+    - name: IM1
+      bit_offset: 16
+      bit_size: 2
+    - name: IM2
+      bit_offset: 18
+      bit_size: 2
+    - name: OM1
+      bit_offset: 20
+      bit_size: 3
+    - name: OM2
+      bit_offset: 23
+      bit_size: 3
+    - name: OM3
+      bit_offset: 26
+      bit_size: 3
+    - name: FO1
+      bit_offset: 29
+      bit_size: 1
+    - name: FO2
+      bit_offset: 30
+      bit_size: 1
+    - name: FO3
+      bit_offset: 31
+      bit_size: 1
+fieldset/GPT_CR_EN:
+  description: ''
+  fields:
+    - name: 24M
+      bit_offset: 10
+      bit_size: 1
+fieldset/GPT_PR:
+  description: ''
+  fields:
+    - name: PRESCALER
+      bit_offset: 0
+      bit_size: 12
+    - name: PRESCALER24M
+      bit_offset: 12
+      bit_size: 4
+fieldset/GPT_SR:
+  description: ''
+  fields:
+    - name: OF1
+      bit_offset: 0
+      bit_size: 1
+    - name: OF2
+      bit_offset: 1
+      bit_size: 1
+    - name: OF3
+      bit_offset: 2
+      bit_size: 1
+    - name: IF1
+      bit_offset: 3
+      bit_size: 1
+    - name: IF2
+      bit_offset: 4
+      bit_size: 1
+    - name: ROV
+      bit_offset: 5
+      bit_size: 1
+fieldset/GPT_IR:
+  description: ''
+  fields:
+    - name: OF1IE
+      bit_offset: 0
+      bit_size: 1
+    - name: OF2IE
+      bit_offset: 1
+      bit_size: 1
+    - name: OF3IE
+      bit_offset: 2
+      bit_size: 1
+    - name: IF1IE
+      bit_offset: 3
+      bit_size: 1
+    - name: IF2IE
+      bit_offset: 4
+      bit_size: 1
+    - name: ROVIE
+      bit_offset: 5
+      bit_size: 1
+fieldset/GPT_OCR:
+  description: ''
+  fields:
+    - name: COMP
+      bit_offset: 0
+      bit_size: 32
+      description: Compare Value
+fieldset/GPT_ICR:
+  description: ''
+  fields:
+    - name: CAPT
+      bit_offset: 0
+      bit_size: 32
+      description: Capture Value
+fieldset/GPT_CNT:
+  description: ''
+  fields:
+    - name: COUNT
+      bit_offset: 0
+      bit_size: 32
+      description: Capture Value

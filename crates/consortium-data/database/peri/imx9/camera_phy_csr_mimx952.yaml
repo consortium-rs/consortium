@@ -1,0 +1,119 @@
+block/CAMERA_PHY_CSR:
+  description: ''
+  items:
+    - name: PRIMARY_PHY_MODE_CONTROL
+      byte_offset: 0
+    - name: PRIMARY_PHY_FREQ_CONTROL
+      byte_offset: 4
+    - name: PRIMARY_PHY_TEST_MODE_CONTROL
+      byte_offset: 8
+    - name: PRIMARY_PHY_TEST_MODE_STATUS
+      byte_offset: 12
+      fieldset: CAMERA_PHY_CSR_PRIMARY_PHY_TEST_MODE_STATUS
+    - name: SECONDARY_PHY_MODE_CONTROL
+      byte_offset: 256
+    - name: SECONDARY_PHY_FREQ_CONTROL
+      byte_offset: 260
+    - name: SECONDARY_PHY_TEST_MODE_CONTROL
+      byte_offset: 264
+    - name: SECONDARY_PHY_TEST_MODE_STATUS
+      byte_offset: 268
+      fieldset: CAMERA_PHY_CSR_SECONDARY_PHY_TEST_MODE_STATUS
+    - name: LP_LOOPBACK_STATUS0
+      byte_offset: 272
+    - name: LP_LOOPBACK_STATUS1
+      byte_offset: 276
+    - name: PHY_TEST_IO_CONT
+      byte_offset: 512
+    - name: CSI2_4L_2L_AGGR_COMPLEX_MODE_CONTROL
+      byte_offset: 768
+fieldset/CAMERA_PHY_CSR_PRIMARY_PHY_MODE_CONTROL_PHY_ENABLE:
+  description: ''
+  fields:
+    - name: EXT
+      bit_offset: 4
+      bit_size: 2
+fieldset/CAMERA_PHY_CSR_PRIMARY_PHY_FREQ_CONTROL_Phy:
+  description: ''
+  fields:
+    - name: cfgclkfreqrange
+      bit_offset: 0
+      bit_size: 6
+    - name: hsfreqrange
+      bit_offset: 16
+      bit_size: 7
+fieldset/CAMERA_PHY_CSR_PRIMARY_PHY_TEST_MODE_CONTROL_enableclk:
+  description: ''
+  fields:
+    - name: ext
+      bit_offset: 12
+      bit_size: 1
+fieldset/CAMERA_PHY_CSR_PRIMARY_PHY_TEST_MODE_CONTROL_phy_enable:
+  description: ''
+  fields:
+    - name: byp
+      bit_offset: 14
+      bit_size: 1
+fieldset/CAMERA_PHY_CSR_PRIMARY_PHY_TEST_MODE_STATUS:
+  description: ''
+  fields:
+    - name: ulpsactivenotclk
+      bit_offset: 9
+      bit_size: 1
+fieldset/CAMERA_PHY_CSR_SECONDARY_PHY_MODE_CONTROL_PHY_ENABLE:
+  description: ''
+  fields:
+    - name: EXT
+      bit_offset: 4
+      bit_size: 2
+fieldset/CAMERA_PHY_CSR_SECONDARY_PHY_FREQ_CONTROL_Phy:
+  description: ''
+  fields:
+    - name: cfgclkfreqrange
+      bit_offset: 0
+      bit_size: 6
+    - name: hsfreqrange
+      bit_offset: 16
+      bit_size: 7
+fieldset/CAMERA_PHY_CSR_SECONDARY_PHY_TEST_MODE_CONTROL_enableclk:
+  description: ''
+  fields:
+    - name: ext
+      bit_offset: 12
+      bit_size: 1
+fieldset/CAMERA_PHY_CSR_SECONDARY_PHY_TEST_MODE_CONTROL_phy_enable:
+  description: ''
+  fields:
+    - name: byp
+      bit_offset: 14
+      bit_size: 1
+fieldset/CAMERA_PHY_CSR_SECONDARY_PHY_TEST_MODE_STATUS:
+  description: ''
+  fields:
+    - name: ulpsactivenotclk
+      bit_offset: 9
+      bit_size: 1
+fieldset/CAMERA_PHY_CSR_PHY_TEST_IO_CONT_Primary_phy_cont:
+  description: ''
+  fields:
+    - name: en
+      bit_offset: 0
+      bit_size: 1
+    - name: data
+      bit_offset: 16
+      bit_size: 7
+fieldset/CAMERA_PHY_CSR_PHY_TEST_IO_CONT_Secondary_phy_cont:
+  description: ''
+  fields:
+    - name: en
+      bit_offset: 1
+      bit_size: 1
+    - name: data
+      bit_offset: 23
+      bit_size: 7
+fieldset/CAMERA_PHY_CSR_CSI2_4L_2L_AGGR_COMPLEX_MODE_CONTROL_Aggr:
+  description: ''
+  fields:
+    - name: mode
+      bit_offset: 0
+      bit_size: 1

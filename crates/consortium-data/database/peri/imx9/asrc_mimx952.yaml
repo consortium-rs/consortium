@@ -1,0 +1,683 @@
+block/ASRC:
+  description: ''
+  items:
+    - name: ASRCTR
+      byte_offset: 0
+      fieldset: ASRC_ASRCTR
+    - name: ASRIER
+      byte_offset: 4
+      fieldset: ASRC_ASRIER
+    - name: ASRCNCR
+      byte_offset: 12
+      fieldset: ASRC_ASRCNCR
+    - name: ASRCFG
+      byte_offset: 16
+      fieldset: ASRC_ASRCFG
+    - name: ASRCSR
+      byte_offset: 20
+      fieldset: ASRC_ASRCSR
+    - name: ASRCDR1
+      byte_offset: 24
+      fieldset: ASRC_ASRCDR1
+    - name: ASRCDR2
+      byte_offset: 28
+      fieldset: ASRC_ASRCDR2
+    - name: ASRSTR
+      byte_offset: 32
+      fieldset: ASRC_ASRSTR
+    - name: ASRPM
+      byte_offset: 64
+      array:
+        len: 5
+        stride: 4
+    - name: ASRTFR1
+      byte_offset: 84
+    - name: ASRCCR
+      byte_offset: 92
+      fieldset: ASRC_ASRCCR
+    - name: ASRDIA
+      byte_offset: 96
+      fieldset: ASRC_ASRDIA
+    - name: ASRDOA
+      byte_offset: 100
+      fieldset: ASRC_ASRDOA
+    - name: ASRDIB
+      byte_offset: 104
+      fieldset: ASRC_ASRDIB
+    - name: ASRDOB
+      byte_offset: 108
+      fieldset: ASRC_ASRDOB
+    - name: ASRDIC
+      byte_offset: 112
+      fieldset: ASRC_ASRDIC
+    - name: ASRDOC
+      byte_offset: 116
+      fieldset: ASRC_ASRDOC
+    - name: ASRIDRHA
+      byte_offset: 128
+    - name: ASRIDRLA
+      byte_offset: 132
+    - name: ASRIDRHB
+      byte_offset: 136
+    - name: ASRIDRLB
+      byte_offset: 140
+    - name: ASRIDRHC
+      byte_offset: 144
+    - name: ASRIDRLC
+      byte_offset: 148
+    - name: ASR76K
+      byte_offset: 152
+      fieldset: ASRC_ASR76K
+    - name: ASR56K
+      byte_offset: 156
+      fieldset: ASRC_ASR56K
+    - name: ASRMCRA
+      byte_offset: 160
+      fieldset: ASRC_ASRMCRA
+    - name: ASRFSTA
+      byte_offset: 164
+      fieldset: ASRC_ASRFSTA
+    - name: ASRMCRB
+      byte_offset: 168
+      fieldset: ASRC_ASRMCRB
+    - name: ASRFSTB
+      byte_offset: 172
+      fieldset: ASRC_ASRFSTB
+    - name: ASRMCRC
+      byte_offset: 176
+      fieldset: ASRC_ASRMCRC
+    - name: ASRFSTC
+      byte_offset: 180
+      fieldset: ASRC_ASRFSTC
+    - name: ASRMCR1
+      byte_offset: 192
+      array:
+        len: 3
+        stride: 4
+      fieldset: ASRC_ASRMCR1
+fieldset/ASRC_ASRCTR:
+  description: ''
+  fields:
+    - name: ASRCEN
+      bit_offset: 0
+      bit_size: 1
+    - name: ASREA
+      bit_offset: 1
+      bit_size: 1
+    - name: ASREB
+      bit_offset: 2
+      bit_size: 1
+    - name: ASREC
+      bit_offset: 3
+      bit_size: 1
+    - name: SRST
+      bit_offset: 4
+      bit_size: 1
+    - name: IDRA
+      bit_offset: 13
+      bit_size: 1
+    - name: USRA
+      bit_offset: 14
+      bit_size: 1
+    - name: IDRB
+      bit_offset: 15
+      bit_size: 1
+    - name: USRB
+      bit_offset: 16
+      bit_size: 1
+    - name: IDRC
+      bit_offset: 17
+      bit_size: 1
+    - name: USRC
+      bit_offset: 18
+      bit_size: 1
+    - name: ATSA
+      bit_offset: 20
+      bit_size: 1
+    - name: ATSB
+      bit_offset: 21
+      bit_size: 1
+    - name: ATSC
+      bit_offset: 22
+      bit_size: 1
+fieldset/ASRC_ASRIER:
+  description: ''
+  fields:
+    - name: ADIEA
+      bit_offset: 0
+      bit_size: 1
+    - name: ADIEB
+      bit_offset: 1
+      bit_size: 1
+    - name: ADIEC
+      bit_offset: 2
+      bit_size: 1
+    - name: ADOEA
+      bit_offset: 3
+      bit_size: 1
+    - name: ADOEB
+      bit_offset: 4
+      bit_size: 1
+    - name: ADOEC
+      bit_offset: 5
+      bit_size: 1
+    - name: AOLIE
+      bit_offset: 6
+      bit_size: 1
+    - name: AFPWE
+      bit_offset: 7
+      bit_size: 1
+fieldset/ASRC_ASRCNCR:
+  description: ''
+  fields:
+    - name: ANCA
+      bit_offset: 0
+      bit_size: 4
+    - name: ANCB
+      bit_offset: 4
+      bit_size: 4
+    - name: ANCC
+      bit_offset: 8
+      bit_size: 4
+fieldset/ASRC_ASRCFG:
+  description: ''
+  fields:
+    - name: PREMODA
+      bit_offset: 6
+      bit_size: 2
+    - name: POSTMODA
+      bit_offset: 8
+      bit_size: 2
+    - name: PREMODB
+      bit_offset: 10
+      bit_size: 2
+    - name: POSTMODB
+      bit_offset: 12
+      bit_size: 2
+    - name: PREMODC
+      bit_offset: 14
+      bit_size: 2
+    - name: POSTMODC
+      bit_offset: 16
+      bit_size: 2
+    - name: NDPRA
+      bit_offset: 18
+      bit_size: 1
+    - name: NDPRB
+      bit_offset: 19
+      bit_size: 1
+    - name: NDPRC
+      bit_offset: 20
+      bit_size: 1
+    - name: INIRQA
+      bit_offset: 21
+      bit_size: 1
+    - name: INIRQB
+      bit_offset: 22
+      bit_size: 1
+    - name: INIRQC
+      bit_offset: 23
+      bit_size: 1
+fieldset/ASRC_ASRCSR:
+  description: ''
+  fields:
+    - name: AICSA
+      bit_offset: 0
+      bit_size: 4
+    - name: AICSB
+      bit_offset: 4
+      bit_size: 4
+    - name: AICSC
+      bit_offset: 8
+      bit_size: 4
+    - name: AOCSA
+      bit_offset: 12
+      bit_size: 4
+    - name: AOCSB
+      bit_offset: 16
+      bit_size: 4
+    - name: AOCSC
+      bit_offset: 20
+      bit_size: 4
+fieldset/ASRC_ASRCDR1:
+  description: ''
+  fields:
+    - name: AICPA
+      bit_offset: 0
+      bit_size: 3
+      description: Input Clock Prescaler A
+    - name: AICDA
+      bit_offset: 3
+      bit_size: 3
+      description: Input Clock Prescaler A
+    - name: AICPB
+      bit_offset: 6
+      bit_size: 3
+      description: Input Clock Divider A
+    - name: AICDB
+      bit_offset: 9
+      bit_size: 3
+      description: Input Clock Prescaler B
+    - name: AOCPA
+      bit_offset: 12
+      bit_size: 3
+      description: Input Clock Divider B
+    - name: AOCDA
+      bit_offset: 15
+      bit_size: 3
+      description: Output Clock Prescaler A
+    - name: AOCPB
+      bit_offset: 18
+      bit_size: 3
+      description: Output Clock Divider A
+    - name: AOCDB
+      bit_offset: 21
+      bit_size: 3
+      description: Output Clock Prescaler B
+fieldset/ASRC_ASRCDR2:
+  description: ''
+  fields:
+    - name: AICPC
+      bit_offset: 0
+      bit_size: 3
+      description: Input Clock Prescaler C
+    - name: AICDC
+      bit_offset: 3
+      bit_size: 3
+      description: Input Clock Prescaler C
+    - name: AOCPC
+      bit_offset: 6
+      bit_size: 3
+      description: Input Clock Divider C
+    - name: AOCDC
+      bit_offset: 9
+      bit_size: 3
+      description: Output Clock Prescaler C
+fieldset/ASRC_ASRSTR:
+  description: ''
+  fields:
+    - name: AIDEA
+      bit_offset: 0
+      bit_size: 1
+    - name: AIDEB
+      bit_offset: 1
+      bit_size: 1
+    - name: AIDEC
+      bit_offset: 2
+      bit_size: 1
+    - name: AODFA
+      bit_offset: 3
+      bit_size: 1
+    - name: AODFB
+      bit_offset: 4
+      bit_size: 1
+    - name: AODFC
+      bit_offset: 5
+      bit_size: 1
+    - name: AOLE
+      bit_offset: 6
+      bit_size: 1
+    - name: FPWT
+      bit_offset: 7
+      bit_size: 1
+    - name: AIDUA
+      bit_offset: 8
+      bit_size: 1
+    - name: AIDUB
+      bit_offset: 9
+      bit_size: 1
+    - name: AIDUC
+      bit_offset: 10
+      bit_size: 1
+    - name: AODOA
+      bit_offset: 11
+      bit_size: 1
+    - name: AODOB
+      bit_offset: 12
+      bit_size: 1
+    - name: AODOC
+      bit_offset: 13
+      bit_size: 1
+    - name: AIOLA
+      bit_offset: 14
+      bit_size: 1
+    - name: AIOLB
+      bit_offset: 15
+      bit_size: 1
+    - name: AIOLC
+      bit_offset: 16
+      bit_size: 1
+    - name: AOOLA
+      bit_offset: 17
+      bit_size: 1
+    - name: AOOLB
+      bit_offset: 18
+      bit_size: 1
+    - name: AOOLC
+      bit_offset: 19
+      bit_size: 1
+    - name: ATQOL
+      bit_offset: 20
+      bit_size: 1
+    - name: DSLCNT
+      bit_offset: 21
+      bit_size: 1
+fieldset/ASRC_ASRPM_PARAMETER:
+  description: ''
+  fields:
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 24
+      description: Parameter Value
+fieldset/ASRC_ASRTFR1_TF:
+  description: ''
+  fields:
+    - name: BASE
+      bit_offset: 6
+      bit_size: 7
+    - name: FILL
+      bit_offset: 13
+      bit_size: 7
+      description: Base Address for Task Queue FIFO
+fieldset/ASRC_ASRCCR:
+  description: ''
+  fields:
+    - name: ACIA
+      bit_offset: 0
+      bit_size: 4
+    - name: ACIB
+      bit_offset: 4
+      bit_size: 4
+      description: Channel Counter for Pair A's Input FIFO
+    - name: ACIC
+      bit_offset: 8
+      bit_size: 4
+      description: Channel Counter for Pair B's Input FIFO
+    - name: ACOA
+      bit_offset: 12
+      bit_size: 4
+      description: Channel Counter for Pair C's Input FIFO
+    - name: ACOB
+      bit_offset: 16
+      bit_size: 4
+      description: Channel Counter for Pair A's Output FIFO
+    - name: ACOC
+      bit_offset: 20
+      bit_size: 4
+      description: Channel Counter for Pair B's Output FIFO
+fieldset/ASRC_ASRDIA:
+  description: ''
+  fields:
+    - name: DATA
+      bit_offset: 0
+      bit_size: 24
+      description: Data
+fieldset/ASRC_ASRDOA:
+  description: ''
+  fields:
+    - name: DATA
+      bit_offset: 0
+      bit_size: 24
+      description: Data
+fieldset/ASRC_ASRDIB:
+  description: ''
+  fields:
+    - name: DATA
+      bit_offset: 0
+      bit_size: 24
+      description: Data
+fieldset/ASRC_ASRDOB:
+  description: ''
+  fields:
+    - name: DATA
+      bit_offset: 0
+      bit_size: 24
+      description: Data
+fieldset/ASRC_ASRDIC:
+  description: ''
+  fields:
+    - name: DATA
+      bit_offset: 0
+      bit_size: 24
+      description: Data
+fieldset/ASRC_ASRDOC:
+  description: ''
+  fields:
+    - name: DATA
+      bit_offset: 0
+      bit_size: 24
+      description: Data
+fieldset/ASRC_ASRIDRHA_IDRATIOA:
+  description: ''
+  fields:
+    - name: H
+      bit_offset: 0
+      bit_size: 8
+      description: Ideal Ratio A High
+fieldset/ASRC_ASRIDRLA_IDRATIOA:
+  description: ''
+  fields:
+    - name: L
+      bit_offset: 0
+      bit_size: 24
+      description: Ideal Ratio A Low
+fieldset/ASRC_ASRIDRHB_IDRATIOB:
+  description: ''
+  fields:
+    - name: H
+      bit_offset: 0
+      bit_size: 8
+      description: Ideal Ratio B High
+fieldset/ASRC_ASRIDRLB_IDRATIOB:
+  description: ''
+  fields:
+    - name: L
+      bit_offset: 0
+      bit_size: 24
+      description: Ideal Ratio B Low
+fieldset/ASRC_ASRIDRHC_IDRATIOC:
+  description: ''
+  fields:
+    - name: H
+      bit_offset: 0
+      bit_size: 8
+      description: Ideal Ratio C High
+fieldset/ASRC_ASRIDRLC_IDRATIOC:
+  description: ''
+  fields:
+    - name: L
+      bit_offset: 0
+      bit_size: 24
+      description: Ideal Ratio C Low
+fieldset/ASRC_ASR76K:
+  description: ''
+  fields:
+    - name: ASR76K
+      bit_offset: 0
+      bit_size: 17
+fieldset/ASRC_ASR56K:
+  description: ''
+  fields:
+    - name: ASR56K
+      bit_offset: 0
+      bit_size: 17
+fieldset/ASRC_ASRMCRA_INFIFO:
+  description: ''
+  fields:
+    - name: THRESHOLDA
+      bit_offset: 0
+      bit_size: 6
+fieldset/ASRC_ASRMCRA:
+  description: ''
+  fields:
+    - name: RSYNOFA
+      bit_offset: 10
+      bit_size: 1
+    - name: RSYNIFA
+      bit_offset: 11
+      bit_size: 1
+    - name: BYPASSPOLYA
+      bit_offset: 20
+      bit_size: 1
+    - name: BUFSTALLA
+      bit_offset: 21
+      bit_size: 1
+    - name: EXTTHRSHA
+      bit_offset: 22
+      bit_size: 1
+    - name: ZEROBUFA
+      bit_offset: 23
+      bit_size: 1
+fieldset/ASRC_ASRMCRA_OUTFIFO:
+  description: ''
+  fields:
+    - name: THRESHOLDA
+      bit_offset: 12
+      bit_size: 6
+fieldset/ASRC_ASRFSTA_INFIFO:
+  description: ''
+  fields:
+    - name: FILLA
+      bit_offset: 0
+      bit_size: 7
+fieldset/ASRC_ASRFSTA:
+  description: ''
+  fields:
+    - name: IAEA
+      bit_offset: 11
+      bit_size: 1
+    - name: OAFA
+      bit_offset: 23
+      bit_size: 1
+fieldset/ASRC_ASRFSTA_OUTFIFO:
+  description: ''
+  fields:
+    - name: FILLA
+      bit_offset: 12
+      bit_size: 7
+fieldset/ASRC_ASRMCRB_INFIFO:
+  description: ''
+  fields:
+    - name: THRESHOLDB
+      bit_offset: 0
+      bit_size: 6
+fieldset/ASRC_ASRMCRB:
+  description: ''
+  fields:
+    - name: RSYNOFB
+      bit_offset: 10
+      bit_size: 1
+    - name: RSYNIFB
+      bit_offset: 11
+      bit_size: 1
+    - name: BYPASSPOLYB
+      bit_offset: 20
+      bit_size: 1
+    - name: BUFSTALLB
+      bit_offset: 21
+      bit_size: 1
+    - name: EXTTHRSHB
+      bit_offset: 22
+      bit_size: 1
+    - name: ZEROBUFB
+      bit_offset: 23
+      bit_size: 1
+fieldset/ASRC_ASRMCRB_OUTFIFO:
+  description: ''
+  fields:
+    - name: THRESHOLDB
+      bit_offset: 12
+      bit_size: 6
+fieldset/ASRC_ASRFSTB_INFIFO:
+  description: ''
+  fields:
+    - name: FILLB
+      bit_offset: 0
+      bit_size: 7
+fieldset/ASRC_ASRFSTB:
+  description: ''
+  fields:
+    - name: IAEB
+      bit_offset: 11
+      bit_size: 1
+    - name: OAFB
+      bit_offset: 23
+      bit_size: 1
+fieldset/ASRC_ASRFSTB_OUTFIFO:
+  description: ''
+  fields:
+    - name: FILLB
+      bit_offset: 12
+      bit_size: 7
+fieldset/ASRC_ASRMCRC_INFIFO:
+  description: ''
+  fields:
+    - name: THRESHOLDC
+      bit_offset: 0
+      bit_size: 6
+fieldset/ASRC_ASRMCRC:
+  description: ''
+  fields:
+    - name: RSYNOFC
+      bit_offset: 10
+      bit_size: 1
+    - name: RSYNIFC
+      bit_offset: 11
+      bit_size: 1
+    - name: BYPASSPOLYC
+      bit_offset: 20
+      bit_size: 1
+    - name: BUFSTALLC
+      bit_offset: 21
+      bit_size: 1
+    - name: EXTTHRSHC
+      bit_offset: 22
+      bit_size: 1
+    - name: ZEROBUFC
+      bit_offset: 23
+      bit_size: 1
+fieldset/ASRC_ASRMCRC_OUTFIFO:
+  description: ''
+  fields:
+    - name: THRESHOLDC
+      bit_offset: 12
+      bit_size: 6
+fieldset/ASRC_ASRFSTC_INFIFO:
+  description: ''
+  fields:
+    - name: FILLC
+      bit_offset: 0
+      bit_size: 7
+fieldset/ASRC_ASRFSTC:
+  description: ''
+  fields:
+    - name: IAEC
+      bit_offset: 11
+      bit_size: 1
+    - name: OAFC
+      bit_offset: 23
+      bit_size: 1
+fieldset/ASRC_ASRFSTC_OUTFIFO:
+  description: ''
+  fields:
+    - name: FILLC
+      bit_offset: 12
+      bit_size: 7
+fieldset/ASRC_ASRMCR1:
+  description: ''
+  fields:
+    - name: OW16
+      bit_offset: 0
+      bit_size: 1
+    - name: OSGN
+      bit_offset: 1
+      bit_size: 1
+    - name: OMSB
+      bit_offset: 2
+      bit_size: 1
+    - name: IMSB
+      bit_offset: 8
+      bit_size: 1
+    - name: IWD
+      bit_offset: 9
+      bit_size: 2

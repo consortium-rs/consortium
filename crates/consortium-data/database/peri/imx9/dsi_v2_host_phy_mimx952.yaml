@@ -1,0 +1,292 @@
+block/DSI_V2_HOST_PHY:
+  description: ''
+  items:
+    - name: PHY_MODE_CFG
+      byte_offset: 0
+    - name: PHY_CLK_CFG
+      byte_offset: 4
+    - name: PHY_STATUS
+      byte_offset: 8
+    - name: PHY_LP2HS_MAN_CFG
+      byte_offset: 12
+    - name: PHY_LP2HS_AUTO
+      byte_offset: 16
+    - name: PHY_HS2LP_MAN_CFG
+      byte_offset: 20
+    - name: PHY_HS2LP_AUTO
+      byte_offset: 24
+    - name: PHY_MAX_RD_T_MAN_CFG
+      byte_offset: 28
+    - name: PHY_MAX_RD_T_AUTO
+      byte_offset: 32
+    - name: PHY_ESC_CMD_T_MAN_CFG
+      byte_offset: 36
+    - name: PHY_ESC_CMD_T_AUTO
+      byte_offset: 40
+    - name: PHY_ESC_BYTE_T_MAN_CFG
+      byte_offset: 44
+    - name: PHY_ESC_BYTE_T_AUTO
+      byte_offset: 48
+    - name: PHY_IPI_RATIO_MAN_CFG
+      byte_offset: 52
+    - name: PHY_IPI_RATIO_AUTO
+      byte_offset: 56
+    - name: PHY_SYS_RATIO_MAN_CFG
+      byte_offset: 60
+    - name: PHY_SYS_RATIO_AUTO
+      byte_offset: 64
+    - name: PHY_TOLERANCE_CFG
+      byte_offset: 68
+    - name: PHY_LANES_CFG
+      byte_offset: 72
+    - name: PRI_TX_CMD
+      byte_offset: 192
+    - name: PRI_RX_CMD
+      byte_offset: 196
+    - name: PRI_CAL_CTRL
+      byte_offset: 200
+    - name: PRI_ULPS_CTRL
+      byte_offset: 204
+fieldset/DSI_V2_HOST_PHY_PHY_MODE_CFG_PHY:
+  description: ''
+  fields:
+    - name: TYPE
+      bit_offset: 0
+      bit_size: 1
+    - name: LANES
+      bit_offset: 4
+      bit_size: 2
+fieldset/DSI_V2_HOST_PHY_PHY_MODE_CFG_PPI:
+  description: ''
+  fields:
+    - name: WIDTH
+      bit_offset: 8
+      bit_size: 2
+fieldset/DSI_V2_HOST_PHY_PHY_MODE_CFG_HS_TRANSFEREN:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 12
+      bit_size: 1
+fieldset/DSI_V2_HOST_PHY_PHY_CLK_CFG_CLK:
+  description: ''
+  fields:
+    - name: TYPE
+      bit_offset: 0
+      bit_size: 1
+fieldset/DSI_V2_HOST_PHY_PHY_CLK_CFG_PHY_LPTX_CLK:
+  description: ''
+  fields:
+    - name: DIV
+      bit_offset: 8
+      bit_size: 6
+fieldset/DSI_V2_HOST_PHY_PHY_STATUS_PHY:
+  description: ''
+  fields:
+    - name: DIRECTION
+      bit_offset: 0
+      bit_size: 1
+fieldset/DSI_V2_HOST_PHY_PHY_STATUS_PHY_CLK:
+  description: ''
+  fields:
+    - name: STOPSTATE
+      bit_offset: 8
+      bit_size: 1
+    - name: ULPSACTIVENOT
+      bit_offset: 16
+      bit_size: 1
+fieldset/DSI_V2_HOST_PHY_PHY_STATUS_PHY_L0:
+  description: ''
+  fields:
+    - name: STOPSTATE
+      bit_offset: 9
+      bit_size: 1
+    - name: ULPSACTIVENOT
+      bit_offset: 17
+      bit_size: 1
+fieldset/DSI_V2_HOST_PHY_PHY_STATUS_PHY_L1:
+  description: ''
+  fields:
+    - name: STOPSTATE
+      bit_offset: 10
+      bit_size: 1
+    - name: ULPSACTIVENOT
+      bit_offset: 18
+      bit_size: 1
+fieldset/DSI_V2_HOST_PHY_PHY_STATUS_PHY_L2:
+  description: ''
+  fields:
+    - name: STOPSTATE
+      bit_offset: 11
+      bit_size: 1
+    - name: ULPSACTIVENOT
+      bit_offset: 19
+      bit_size: 1
+fieldset/DSI_V2_HOST_PHY_PHY_STATUS_PHY_L3:
+  description: ''
+  fields:
+    - name: STOPSTATE
+      bit_offset: 12
+      bit_size: 1
+    - name: ULPSACTIVENOT
+      bit_offset: 20
+      bit_size: 1
+fieldset/DSI_V2_HOST_PHY_PHY_LP2HS_MAN_CFG_PHY_LP2HS:
+  description: ''
+  fields:
+    - name: TIME
+      bit_offset: 0
+      bit_size: 29
+fieldset/DSI_V2_HOST_PHY_PHY_LP2HS_AUTO_PHY_LP2HS_TIME:
+  description: ''
+  fields:
+    - name: AUTO
+      bit_offset: 0
+      bit_size: 29
+fieldset/DSI_V2_HOST_PHY_PHY_HS2LP_MAN_CFG_PHY_HS2LP:
+  description: ''
+  fields:
+    - name: TIME
+      bit_offset: 0
+      bit_size: 29
+fieldset/DSI_V2_HOST_PHY_PHY_HS2LP_AUTO_PHY_HS2LP_TIME:
+  description: ''
+  fields:
+    - name: AUTO
+      bit_offset: 0
+      bit_size: 29
+fieldset/DSI_V2_HOST_PHY_PHY_MAX_RD_T_MAN_CFG_PHY_MAX_RD:
+  description: ''
+  fields:
+    - name: TIME
+      bit_offset: 0
+      bit_size: 27
+fieldset/DSI_V2_HOST_PHY_PHY_MAX_RD_T_AUTO_PHY_MAX_RD_TIME:
+  description: ''
+  fields:
+    - name: AUTO
+      bit_offset: 0
+      bit_size: 27
+fieldset/DSI_V2_HOST_PHY_PHY_ESC_CMD_T_MAN_CFG_PHY_ESC_CMD:
+  description: ''
+  fields:
+    - name: TIME
+      bit_offset: 0
+      bit_size: 29
+fieldset/DSI_V2_HOST_PHY_PHY_ESC_CMD_T_AUTO_PHY_ESC_CMD_TIME:
+  description: ''
+  fields:
+    - name: AUTO
+      bit_offset: 0
+      bit_size: 29
+fieldset/DSI_V2_HOST_PHY_PHY_ESC_BYTE_T_MAN_CFG_PHY_ESC_BYTE:
+  description: ''
+  fields:
+    - name: TIME
+      bit_offset: 0
+      bit_size: 29
+fieldset/DSI_V2_HOST_PHY_PHY_ESC_BYTE_T_AUTO_PHY_ESC_BYTE_TIME:
+  description: ''
+  fields:
+    - name: AUTO
+      bit_offset: 0
+      bit_size: 29
+fieldset/DSI_V2_HOST_PHY_PHY_IPI_RATIO_MAN_CFG_PHY_IPI:
+  description: ''
+  fields:
+    - name: RATIO
+      bit_offset: 0
+      bit_size: 23
+fieldset/DSI_V2_HOST_PHY_PHY_IPI_RATIO_AUTO_PHY_IPI_RATIO:
+  description: ''
+  fields:
+    - name: AUTO
+      bit_offset: 0
+      bit_size: 23
+fieldset/DSI_V2_HOST_PHY_PHY_SYS_RATIO_MAN_CFG_PHY_SYS:
+  description: ''
+  fields:
+    - name: RATIO
+      bit_offset: 0
+      bit_size: 17
+fieldset/DSI_V2_HOST_PHY_PHY_SYS_RATIO_AUTO_PHY_SYS_RATIO:
+  description: ''
+  fields:
+    - name: AUTO
+      bit_offset: 0
+      bit_size: 17
+fieldset/DSI_V2_HOST_PHY_PHY_TOLERANCE_CFG_PHY_HS2LP_LP2HS:
+  description: ''
+  fields:
+    - name: MARGIN
+      bit_offset: 0
+      bit_size: 10
+fieldset/DSI_V2_HOST_PHY_PHY_TOLERANCE_CFG_PHY_STOPSTATE:
+  description: ''
+  fields:
+    - name: DELAY
+      bit_offset: 10
+      bit_size: 10
+fieldset/DSI_V2_HOST_PHY_PHY_LANES_CFG_LANE_1:
+  description: ''
+  fields:
+    - name: MAPPING
+      bit_offset: 4
+      bit_size: 2
+fieldset/DSI_V2_HOST_PHY_PHY_LANES_CFG_LANE_2:
+  description: ''
+  fields:
+    - name: MAPPING
+      bit_offset: 8
+      bit_size: 2
+fieldset/DSI_V2_HOST_PHY_PHY_LANES_CFG_LANE_3:
+  description: ''
+  fields:
+    - name: MAPPING
+      bit_offset: 12
+      bit_size: 2
+fieldset/DSI_V2_HOST_PHY_PRI_TX_CMD_PHY:
+  description: ''
+  fields:
+    - name: DESKEWCAL
+      bit_offset: 8
+      bit_size: 1
+    - name: ALTERNATECAL
+      bit_offset: 9
+      bit_size: 1
+    - name: BTA
+      bit_offset: 16
+      bit_size: 1
+fieldset/DSI_V2_HOST_PHY_PRI_TX_CMD_PHY_ULPS:
+  description: ''
+  fields:
+    - name: ENTRY
+      bit_offset: 12
+      bit_size: 1
+    - name: EXIT
+      bit_offset: 13
+      bit_size: 1
+fieldset/DSI_V2_HOST_PHY_PRI_CAL_CTRL_PHY_CAL:
+  description: ''
+  fields:
+    - name: TIME
+      bit_offset: 0
+      bit_size: 18
+fieldset/DSI_V2_HOST_PHY_PRI_ULPS_CTRL_PHY_ULPS_DATA:
+  description: ''
+  fields:
+    - name: LANES
+      bit_offset: 0
+      bit_size: 1
+fieldset/DSI_V2_HOST_PHY_PRI_ULPS_CTRL_PHY_ULPS_CLK:
+  description: ''
+  fields:
+    - name: LANE
+      bit_offset: 4
+      bit_size: 1
+fieldset/DSI_V2_HOST_PHY_PRI_ULPS_CTRL_PHY_WAKEUP:
+  description: ''
+  fields:
+    - name: TIME
+      bit_offset: 16
+      bit_size: 16

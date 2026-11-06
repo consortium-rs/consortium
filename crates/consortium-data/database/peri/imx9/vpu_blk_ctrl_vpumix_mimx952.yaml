@@ -1,0 +1,166 @@
+block/VPU_BLK_CTRL_VPUMIX:
+  description: ''
+  items:
+    - name: VPU_STATUS
+      byte_offset: 0
+    - name: INIT_PENDING_TX
+      byte_offset: 4
+    - name: VPU_ATU_PM_EN
+      byte_offset: 8
+    - name: FORCE_ON_OFF
+      byte_offset: 12
+    - name: APB_ERROR_CTRL
+      byte_offset: 16
+fieldset/VPU_BLK_CTRL_VPUMIX_VPU_STATUS_WAVE511:
+  description: ''
+  fields:
+    - name: IDLE
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_BLK_CTRL_VPUMIX_VPU_STATUS_CODA980:
+  description: ''
+  fields:
+    - name: IDLE
+      bit_offset: 1
+      bit_size: 1
+fieldset/VPU_BLK_CTRL_VPUMIX_INIT_PENDING_TX_WAVE511:
+  description: ''
+  fields:
+    - name: Primary
+      bit_offset: 0
+      bit_size: 1
+    - name: Secondary
+      bit_offset: 3
+      bit_size: 1
+fieldset/VPU_BLK_CTRL_VPUMIX_INIT_PENDING_TX_WAVE511_Primary:
+  description: ''
+  fields:
+    - name: V0
+      bit_offset: 1
+      bit_size: 1
+fieldset/VPU_BLK_CTRL_VPUMIX_INIT_PENDING_TX_WAVE511_BWB:
+  description: ''
+  fields:
+    - name: WR
+      bit_offset: 2
+      bit_size: 1
+fieldset/VPU_BLK_CTRL_VPUMIX_INIT_PENDING_TX_CODA980:
+  description: ''
+  fields:
+    - name: Primary
+      bit_offset: 4
+      bit_size: 1
+    - name: Secondary
+      bit_offset: 5
+      bit_size: 1
+fieldset/VPU_BLK_CTRL_VPUMIX_INIT_PENDING_TX_JPEG:
+  description: ''
+  fields:
+    - name: Encode
+      bit_offset: 6
+      bit_size: 1
+    - name: Decode
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_BLK_CTRL_VPUMIX_VPU_ATU_PM_EN_CODA:
+  description: ''
+  fields:
+    - name: PRIM
+      bit_offset: 0
+      bit_size: 1
+    - name: SEC
+      bit_offset: 1
+      bit_size: 1
+fieldset/VPU_BLK_CTRL_VPUMIX_VPU_ATU_PM_EN_JPEG:
+  description: ''
+  fields:
+    - name: ENC
+      bit_offset: 2
+      bit_size: 1
+    - name: DEC
+      bit_offset: 3
+      bit_size: 1
+fieldset/VPU_BLK_CTRL_VPUMIX_FORCE_ON_OFF_coda980_ipc:
+  description: ''
+  fields:
+    - name: clk
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_BLK_CTRL_VPUMIX_FORCE_ON_OFF_sel_coda980_ipc:
+  description: ''
+  fields:
+    - name: clk
+      bit_offset: 1
+      bit_size: 1
+fieldset/VPU_BLK_CTRL_VPUMIX_FORCE_ON_OFF_jpeg_dec_ipc:
+  description: ''
+  fields:
+    - name: clk
+      bit_offset: 2
+      bit_size: 1
+fieldset/VPU_BLK_CTRL_VPUMIX_FORCE_ON_OFF_sel_jpeg_dec_ipc:
+  description: ''
+  fields:
+    - name: clk
+      bit_offset: 3
+      bit_size: 1
+fieldset/VPU_BLK_CTRL_VPUMIX_FORCE_ON_OFF_jpeg_enc_ipc:
+  description: ''
+  fields:
+    - name: clk
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_BLK_CTRL_VPUMIX_FORCE_ON_OFF_sel_jpeg_enc_ipc:
+  description: ''
+  fields:
+    - name: clk
+      bit_offset: 5
+      bit_size: 1
+fieldset/VPU_BLK_CTRL_VPUMIX_FORCE_ON_OFF_ssi_ipc:
+  description: ''
+  fields:
+    - name: clk
+      bit_offset: 6
+      bit_size: 1
+fieldset/VPU_BLK_CTRL_VPUMIX_FORCE_ON_OFF_sel_ssi_ipc:
+  description: ''
+  fields:
+    - name: clk
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_BLK_CTRL_VPUMIX_FORCE_ON_OFF_wave511_ipc:
+  description: ''
+  fields:
+    - name: clk
+      bit_offset: 8
+      bit_size: 1
+fieldset/VPU_BLK_CTRL_VPUMIX_FORCE_ON_OFF_sel_wave511_ipc:
+  description: ''
+  fields:
+    - name: clk
+      bit_offset: 9
+      bit_size: 1
+fieldset/VPU_BLK_CTRL_VPUMIX_APB_ERROR_CTRL_JPEG_DEC_PPMR:
+  description: ''
+  fields:
+    - name: CTRL
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_BLK_CTRL_VPUMIX_APB_ERROR_CTRL_JPEG_ENC_PPMR:
+  description: ''
+  fields:
+    - name: CTRL
+      bit_offset: 1
+      bit_size: 1
+fieldset/VPU_BLK_CTRL_VPUMIX_APB_ERROR_CTRL_WAVE511_PPMR:
+  description: ''
+  fields:
+    - name: CTRL
+      bit_offset: 2
+      bit_size: 1
+fieldset/VPU_BLK_CTRL_VPUMIX_APB_ERROR_CTRL_CODA980_PPMR:
+  description: ''
+  fields:
+    - name: CTRL
+      bit_offset: 3
+      bit_size: 1

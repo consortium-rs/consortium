@@ -1,0 +1,278 @@
+block/CORTEXA_BLK_CTRL:
+  description: ''
+  items:
+    - name: STA_CLUSTER_PCH
+      byte_offset: 0
+    - name: STA_CORE_0_1_PCH
+      byte_offset: 4
+    - name: STA_CORE_2_3_PCH
+      byte_offset: 8
+    - name: LPCG_FORCE_0
+      byte_offset: 48
+    - name: LPCG_FORCE_1
+      byte_offset: 52
+    - name: LPCG_FORCE_SEL_0
+      byte_offset: 56
+    - name: LPCG_FORCE_SEL_1
+      byte_offset: 60
+fieldset/CORTEXA_BLK_CTRL_STA_CLUSTER_PCH_CLUSTER:
+  description: ''
+  fields:
+    - name: PACTIVE
+      bit_offset: 0
+      bit_size: 8
+    - name: PSTATE
+      bit_offset: 8
+      bit_size: 7
+fieldset/CORTEXA_BLK_CTRL_STA_CORE_0_1_PCH_CORE0:
+  description: ''
+  fields:
+    - name: PACTIVE
+      bit_offset: 0
+      bit_size: 5
+    - name: PSTATE
+      bit_offset: 8
+      bit_size: 6
+fieldset/CORTEXA_BLK_CTRL_STA_CORE_0_1_PCH_CORE1:
+  description: ''
+  fields:
+    - name: PACTIVE
+      bit_offset: 16
+      bit_size: 5
+    - name: PSTATE
+      bit_offset: 24
+      bit_size: 6
+fieldset/CORTEXA_BLK_CTRL_STA_CORE_2_3_PCH_CORE2:
+  description: ''
+  fields:
+    - name: PACTIVE
+      bit_offset: 0
+      bit_size: 5
+    - name: PSTATE
+      bit_offset: 8
+      bit_size: 6
+fieldset/CORTEXA_BLK_CTRL_STA_CORE_2_3_PCH_CORE3:
+  description: ''
+  fields:
+    - name: PACTIVE
+      bit_offset: 16
+      bit_size: 5
+    - name: PSTATE
+      bit_offset: 24
+      bit_size: 6
+fieldset/CORTEXA_BLK_CTRL_LPCG_FORCE_0_ipc_clk:
+  description: ''
+  fields:
+    - name: sclk
+      bit_offset: 0
+      bit_size: 1
+    - name: coreclk0
+      bit_offset: 6
+      bit_size: 1
+    - name: coreclk1
+      bit_offset: 7
+      bit_size: 1
+    - name: coreclk2
+      bit_offset: 8
+      bit_size: 1
+    - name: coreclk3
+      bit_offset: 9
+      bit_size: 1
+    - name: tsense
+      bit_offset: 13
+      bit_size: 1
+fieldset/CORTEXA_BLK_CTRL_LPCG_FORCE_0_ipc_clk_arm_a55:
+  description: ''
+  fields:
+    - name: at
+      bit_offset: 2
+      bit_size: 1
+    - name: gic
+      bit_offset: 3
+      bit_size: 1
+    - name: periph
+      bit_offset: 4
+      bit_size: 1
+    - name: p
+      bit_offset: 5
+      bit_size: 1
+fieldset/CORTEXA_BLK_CTRL_LPCG_FORCE_0_ipc_clk_ssi_acp:
+  description: ''
+  fields:
+    - name: clk
+      bit_offset: 11
+      bit_size: 1
+fieldset/CORTEXA_BLK_CTRL_LPCG_FORCE_0_ipc_clk_trout:
+  description: ''
+  fields:
+    - name: ref
+      bit_offset: 12
+      bit_size: 1
+fieldset/CORTEXA_BLK_CTRL_LPCG_FORCE_0_ipc_clk_periph:
+  description: ''
+  fields:
+    - name: axi2apb
+      bit_offset: 20
+      bit_size: 1
+fieldset/CORTEXA_BLK_CTRL_LPCG_FORCE_0_ipc_clk_tsense:
+  description: ''
+  fields:
+    - name: axi2apb
+      bit_offset: 22
+      bit_size: 1
+fieldset/CORTEXA_BLK_CTRL_LPCG_FORCE_0_ipc_clk_ssi_gic:
+  description: ''
+  fields:
+    - name: clk
+      bit_offset: 23
+      bit_size: 1
+fieldset/CORTEXA_BLK_CTRL_LPCG_FORCE_1_ipc_clk_sclk:
+  description: ''
+  fields:
+    - name: dft
+      bit_offset: 0
+      bit_size: 1
+fieldset/CORTEXA_BLK_CTRL_LPCG_FORCE_1_ipc_clk_arm_a55_apb:
+  description: ''
+  fields:
+    - name: dft
+      bit_offset: 1
+      bit_size: 1
+fieldset/CORTEXA_BLK_CTRL_LPCG_FORCE_1_ipc_clk_arm_a55_periph:
+  description: ''
+  fields:
+    - name: dft
+      bit_offset: 2
+      bit_size: 1
+fieldset/CORTEXA_BLK_CTRL_LPCG_FORCE_1_ipc_clk_coreclk0:
+  description: ''
+  fields:
+    - name: out
+      bit_offset: 9
+      bit_size: 1
+fieldset/CORTEXA_BLK_CTRL_LPCG_FORCE_1_ipc_clk_coreclk1:
+  description: ''
+  fields:
+    - name: out
+      bit_offset: 10
+      bit_size: 1
+fieldset/CORTEXA_BLK_CTRL_LPCG_FORCE_1_ipc_clk_coreclk2:
+  description: ''
+  fields:
+    - name: out
+      bit_offset: 11
+      bit_size: 1
+fieldset/CORTEXA_BLK_CTRL_LPCG_FORCE_1_ipc_clk_coreclk3:
+  description: ''
+  fields:
+    - name: out
+      bit_offset: 12
+      bit_size: 1
+fieldset/CORTEXA_BLK_CTRL_LPCG_FORCE_SEL_0_ipc_clk:
+  description: ''
+  fields:
+    - name: sclk
+      bit_offset: 0
+      bit_size: 1
+    - name: coreclk0
+      bit_offset: 6
+      bit_size: 1
+    - name: coreclk1
+      bit_offset: 7
+      bit_size: 1
+    - name: coreclk2
+      bit_offset: 8
+      bit_size: 1
+    - name: coreclk3
+      bit_offset: 9
+      bit_size: 1
+    - name: tsense
+      bit_offset: 13
+      bit_size: 1
+fieldset/CORTEXA_BLK_CTRL_LPCG_FORCE_SEL_0_ipc_clk_arm_a55:
+  description: ''
+  fields:
+    - name: at
+      bit_offset: 2
+      bit_size: 1
+    - name: gic
+      bit_offset: 3
+      bit_size: 1
+    - name: periph
+      bit_offset: 4
+      bit_size: 1
+    - name: p
+      bit_offset: 5
+      bit_size: 1
+fieldset/CORTEXA_BLK_CTRL_LPCG_FORCE_SEL_0_ipc_clk_ssi_acp:
+  description: ''
+  fields:
+    - name: clk
+      bit_offset: 11
+      bit_size: 1
+fieldset/CORTEXA_BLK_CTRL_LPCG_FORCE_SEL_0_ipc_clk_trout:
+  description: ''
+  fields:
+    - name: ref
+      bit_offset: 12
+      bit_size: 1
+fieldset/CORTEXA_BLK_CTRL_LPCG_FORCE_SEL_0_ipc_clk_periph:
+  description: ''
+  fields:
+    - name: axi2apb
+      bit_offset: 20
+      bit_size: 1
+fieldset/CORTEXA_BLK_CTRL_LPCG_FORCE_SEL_0_ipc_clk_tsense:
+  description: ''
+  fields:
+    - name: axi2apb
+      bit_offset: 22
+      bit_size: 1
+fieldset/CORTEXA_BLK_CTRL_LPCG_FORCE_SEL_0_ipc_clk_ssi_gic:
+  description: ''
+  fields:
+    - name: clk
+      bit_offset: 23
+      bit_size: 1
+fieldset/CORTEXA_BLK_CTRL_LPCG_FORCE_SEL_1_ipc_clk_sclk:
+  description: ''
+  fields:
+    - name: dft
+      bit_offset: 0
+      bit_size: 1
+fieldset/CORTEXA_BLK_CTRL_LPCG_FORCE_SEL_1_ipc_clk_arm_a55_apb:
+  description: ''
+  fields:
+    - name: dft
+      bit_offset: 1
+      bit_size: 1
+fieldset/CORTEXA_BLK_CTRL_LPCG_FORCE_SEL_1_ipc_clk_periph:
+  description: ''
+  fields:
+    - name: dft
+      bit_offset: 2
+      bit_size: 1
+fieldset/CORTEXA_BLK_CTRL_LPCG_FORCE_SEL_1_ipc_clk_coreclk0:
+  description: ''
+  fields:
+    - name: out
+      bit_offset: 9
+      bit_size: 1
+fieldset/CORTEXA_BLK_CTRL_LPCG_FORCE_SEL_1_ipc_clk_coreclk1:
+  description: ''
+  fields:
+    - name: out
+      bit_offset: 10
+      bit_size: 1
+fieldset/CORTEXA_BLK_CTRL_LPCG_FORCE_SEL_1_ipc_clk_coreclk2:
+  description: ''
+  fields:
+    - name: out
+      bit_offset: 11
+      bit_size: 1
+fieldset/CORTEXA_BLK_CTRL_LPCG_FORCE_SEL_1_ipc_clk_coreclk3:
+  description: ''
+  fields:
+    - name: out
+      bit_offset: 12
+      bit_size: 1

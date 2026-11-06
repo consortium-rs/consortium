@@ -428,6 +428,8 @@ pub fn on_timer_interrupt() {
 /// LPIT1's functional clock on the reference boards.
 ///
 /// - i.MX 95: the 24 MHz AON/root timer domain, as the System Manager leaves it.
+/// - i.MX 952: taken to match i.MX 95 (same System Manager, LPIT1 at the same AON
+///   address); not yet confirmed on hardware or against a reference manual.
 /// - i.MX 93: `bus_aon_root`, which Linux's CCM driver sets up as
 ///   `sys_pll_pfd1` (800 MHz) / 2 (`sys_pll_pfd1_div2`) / 3 = 400/3 MHz
 ///   (FRDM-i.MX93 `clk_summary`; Linux prints it rounded up as 133333334).

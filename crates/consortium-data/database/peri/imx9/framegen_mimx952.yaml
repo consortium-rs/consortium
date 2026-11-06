@@ -1,0 +1,852 @@
+block/FRAMEGEN:
+  description: ''
+  items:
+    - name: LU
+      byte_offset: 0
+      fieldset: FRAMEGEN_LU
+    - name: LOCKS
+      byte_offset: 4
+      fieldset: FRAMEGEN_LOCKS
+    - name: FGSTCTRL
+      byte_offset: 8
+      fieldset: FRAMEGEN_FGSTCTRL
+    - name: HTCFG1
+      byte_offset: 12
+      fieldset: FRAMEGEN_HTCFG1
+    - name: HTCFG2
+      byte_offset: 16
+      fieldset: FRAMEGEN_HTCFG2
+    - name: VTCFG1
+      byte_offset: 20
+      fieldset: FRAMEGEN_VTCFG1
+    - name: VTCFG2
+      byte_offset: 24
+      fieldset: FRAMEGEN_VTCFG2
+    - name: INT0CFG
+      byte_offset: 28
+      fieldset: FRAMEGEN_INT0CFG
+    - name: INT1CFG
+      byte_offset: 32
+      fieldset: FRAMEGEN_INT1CFG
+    - name: INT2CFG
+      byte_offset: 36
+      fieldset: FRAMEGEN_INT2CFG
+    - name: INT3CFG
+      byte_offset: 40
+      fieldset: FRAMEGEN_INT3CFG
+    - name: PKICKCO
+      byte_offset: 44
+      fieldset: FRAMEGEN_PKICKCO
+    - name: SKICKCON
+      byte_offset: 48
+      fieldset: FRAMEGEN_SKICKCON
+    - name: SECSTATC
+      byte_offset: 52
+      fieldset: FRAMEGEN_SECSTATC
+    - name: FGSRCR1
+      byte_offset: 56
+      fieldset: FRAMEGEN_FGSRCR1
+    - name: FGSRCR2
+      byte_offset: 60
+      fieldset: FRAMEGEN_FGSRCR2
+    - name: FGSRCR3
+      byte_offset: 64
+      fieldset: FRAMEGEN_FGSRCR3
+    - name: FGSRCR4
+      byte_offset: 68
+      fieldset: FRAMEGEN_FGSRCR4
+    - name: FGSRCR5
+      byte_offset: 72
+      fieldset: FRAMEGEN_FGSRCR5
+    - name: FGSRCR6
+      byte_offset: 76
+      fieldset: FRAMEGEN_FGSRCR6
+    - name: FGSRCR7
+      byte_offset: 80
+      fieldset: FRAMEGEN_FGSRCR7
+    - name: FGSRCR8
+      byte_offset: 84
+      fieldset: FRAMEGEN_FGSRCR8
+    - name: FGSRCR9
+      byte_offset: 88
+      fieldset: FRAMEGEN_FGSRCR9
+    - name: FGSRCR10
+      byte_offset: 92
+      fieldset: FRAMEGEN_FGSRCR10
+    - name: FGSRCR11
+      byte_offset: 96
+      fieldset: FRAMEGEN_FGSRCR11
+    - name: FGSRCR12
+      byte_offset: 100
+      fieldset: FRAMEGEN_FGSRCR12
+    - name: FGSRCR13
+      byte_offset: 104
+      fieldset: FRAMEGEN_FGSRCR13
+    - name: FGSRCR14
+      byte_offset: 108
+      fieldset: FRAMEGEN_FGSRCR14
+    - name: FGSRCR15
+      byte_offset: 112
+      fieldset: FRAMEGEN_FGSRCR15
+    - name: FGKSDR
+      byte_offset: 116
+      fieldset: FRAMEGEN_FGKSDR
+    - name: PACFG
+      byte_offset: 120
+      fieldset: FRAMEGEN_PACFG
+    - name: SACFG
+      byte_offset: 124
+      fieldset: FRAMEGEN_SACFG
+    - name: FGINCTL
+      byte_offset: 128
+      fieldset: FRAMEGEN_FGINCTL
+    - name: FGINCTLP
+      byte_offset: 132
+      fieldset: FRAMEGEN_FGINCTLP
+    - name: FGCCR
+      byte_offset: 136
+      fieldset: FRAMEGEN_FGCCR
+    - name: FGENABLE
+      byte_offset: 140
+      fieldset: FRAMEGEN_FGENABLE
+    - name: FGSLR
+      byte_offset: 144
+      fieldset: FRAMEGEN_FGSLR
+    - name: FGENSTS
+      byte_offset: 148
+      fieldset: FRAMEGEN_FGENSTS
+    - name: FGTIMEST
+      byte_offset: 152
+      fieldset: FRAMEGEN_FGTIMEST
+    - name: FGCHSTT
+      byte_offset: 156
+      fieldset: FRAMEGEN_FGCHSTT
+    - name: FGCHSTTC
+      byte_offset: 160
+      fieldset: FRAMEGEN_FGCHSTTC
+    - name: FGSKEWMO
+      byte_offset: 164
+      fieldset: FRAMEGEN_FGSKEWMO
+    - name: FGPFIMIN
+      byte_offset: 168
+      fieldset: FRAMEGEN_FGPFIMIN
+    - name: FGPFIMAX
+      byte_offset: 172
+      fieldset: FRAMEGEN_FGPFIMAX
+    - name: FGPFIFC
+      byte_offset: 176
+      fieldset: FRAMEGEN_FGPFIFC
+    - name: FGPFITRS
+      byte_offset: 180
+      fieldset: FRAMEGEN_FGPFITRS
+    - name: FGSFIMIN
+      byte_offset: 184
+      fieldset: FRAMEGEN_FGSFIMIN
+    - name: FGSFIMAX
+      byte_offset: 188
+      fieldset: FRAMEGEN_FGSFIMAX
+    - name: FGSFIFC
+      byte_offset: 192
+      fieldset: FRAMEGEN_FGSFIFC
+    - name: FGSREPD
+      byte_offset: 196
+      fieldset: FRAMEGEN_FGSREPD
+    - name: FGSRFTD
+      byte_offset: 200
+      fieldset: FRAMEGEN_FGSRFTD
+    - name: FGSRCSHT
+      byte_offset: 204
+      fieldset: FRAMEGEN_FGSRCSHT
+    - name: FGSRCKDI
+      byte_offset: 208
+      fieldset: FRAMEGEN_FGSRCKDI
+    - name: FGSL
+      byte_offset: 212
+      fieldset: FRAMEGEN_FGSL
+    - name: FGSKEWDB
+      byte_offset: 216
+      fieldset: FRAMEGEN_FGSKEWDB
+fieldset/FRAMEGEN_LU:
+  description: ''
+  fields:
+    - name: LkUn
+      bit_offset: 0
+      bit_size: 32
+fieldset/FRAMEGEN_LOCKS:
+  description: ''
+  fields:
+    - name: LkSus
+      bit_offset: 0
+      bit_size: 1
+      description: LockStatus
+    - name: PriSt
+      bit_offset: 4
+      bit_size: 1
+      description: LockStatus
+    - name: FreezeS
+      bit_offset: 8
+      bit_size: 1
+      description: PrivilegeStatus
+fieldset/FRAMEGEN_FGSTCTRL:
+  description: ''
+  fields:
+    - name: ShdEn
+      bit_offset: 0
+      bit_size: 1
+      description: ShdEn
+    - name: FgSyMode
+      bit_offset: 1
+      bit_size: 3
+      description: ShdEn
+    - name: FgSTGSM
+      bit_offset: 4
+      bit_size: 1
+    - name: ForceD
+      bit_offset: 30
+      bit_size: 1
+      description: Force_Disable
+fieldset/FRAMEGEN_HTCFG1:
+  description: ''
+  fields:
+    - name: Hact
+      bit_offset: 0
+      bit_size: 14
+      description: Hact
+    - name: Htl
+      bit_offset: 16
+      bit_size: 14
+      description: Hact
+fieldset/FRAMEGEN_HTCFG2:
+  description: ''
+  fields:
+    - name: Hsync
+      bit_offset: 0
+      bit_size: 14
+      description: Hsync
+    - name: Hsbp
+      bit_offset: 16
+      bit_size: 14
+      description: Hsync
+    - name: HsEn
+      bit_offset: 31
+      bit_size: 1
+      description: Hsbp
+fieldset/FRAMEGEN_VTCFG1:
+  description: ''
+  fields:
+    - name: Vact
+      bit_offset: 0
+      bit_size: 14
+      description: Vact
+    - name: Vtotal
+      bit_offset: 16
+      bit_size: 14
+      description: Vact
+fieldset/FRAMEGEN_VTCFG2:
+  description: ''
+  fields:
+    - name: Vsync
+      bit_offset: 0
+      bit_size: 14
+      description: Vsync
+    - name: Vsbp
+      bit_offset: 16
+      bit_size: 14
+      description: Vsync
+    - name: VsAlign
+      bit_offset: 30
+      bit_size: 1
+      description: Vsbp
+    - name: VsEn
+      bit_offset: 31
+      bit_size: 1
+      description: VsAlign
+fieldset/FRAMEGEN_INT0CFG:
+  description: ''
+  fields:
+    - name: Int0Col
+      bit_offset: 0
+      bit_size: 14
+      description: Int0Col
+    - name: Int0HsEn
+      bit_offset: 15
+      bit_size: 1
+      description: Int0Col
+    - name: Int0Row
+      bit_offset: 16
+      bit_size: 14
+      description: Int0HsEn
+    - name: Int0En
+      bit_offset: 31
+      bit_size: 1
+      description: Int0Row
+fieldset/FRAMEGEN_INT1CFG:
+  description: ''
+  fields:
+    - name: Int1Col
+      bit_offset: 0
+      bit_size: 14
+      description: Int1Col
+    - name: Int1HsEn
+      bit_offset: 15
+      bit_size: 1
+      description: Int1Col
+    - name: Int1Row
+      bit_offset: 16
+      bit_size: 14
+      description: Int1HsEn
+    - name: Int1En
+      bit_offset: 31
+      bit_size: 1
+      description: Int1Row
+fieldset/FRAMEGEN_INT2CFG:
+  description: ''
+  fields:
+    - name: Int2Col
+      bit_offset: 0
+      bit_size: 14
+      description: Int2Col
+    - name: Int2HsEn
+      bit_offset: 15
+      bit_size: 1
+      description: Int2Col
+    - name: Int2Row
+      bit_offset: 16
+      bit_size: 14
+      description: Int2HsEn
+    - name: Int2En
+      bit_offset: 31
+      bit_size: 1
+      description: Int2Row
+fieldset/FRAMEGEN_INT3CFG:
+  description: ''
+  fields:
+    - name: Int3Col
+      bit_offset: 0
+      bit_size: 14
+      description: Int3Col
+    - name: Int3HsEn
+      bit_offset: 15
+      bit_size: 1
+      description: Int3Col
+    - name: Int3Row
+      bit_offset: 16
+      bit_size: 14
+      description: Int3HsEn
+    - name: Int3En
+      bit_offset: 31
+      bit_size: 1
+      description: Int3Row
+fieldset/FRAMEGEN_PKICKCO:
+  description: ''
+  fields:
+    - name: PKickCol
+      bit_offset: 0
+      bit_size: 14
+      description: PKickCol
+    - name: PKInt0En
+      bit_offset: 15
+      bit_size: 1
+      description: PKickCol
+    - name: PKickRow
+      bit_offset: 16
+      bit_size: 14
+      description: PKickInt0En
+    - name: PKickEn
+      bit_offset: 31
+      bit_size: 1
+      description: PKickRow
+fieldset/FRAMEGEN_SKICKCON:
+  description: ''
+  fields:
+    - name: SKickCol
+      bit_offset: 0
+      bit_size: 14
+      description: SKickCol
+    - name: SKickIEn
+      bit_offset: 15
+      bit_size: 1
+      description: SKickCol
+    - name: SKickRow
+      bit_offset: 16
+      bit_size: 14
+      description: SKickInt1En
+    - name: SKickTr
+      bit_offset: 30
+      bit_size: 1
+      description: SKickRow
+    - name: SKickEn
+      bit_offset: 31
+      bit_size: 1
+      description: SKickEn
+fieldset/FRAMEGEN_SECSTATC:
+  description: ''
+  fields:
+    - name: LevGodFr
+      bit_offset: 0
+      bit_size: 4
+      description: LevGoodFrames
+    - name: LevBadFr
+      bit_offset: 4
+      bit_size: 4
+      description: LevGoodFrames
+    - name: LevSkInR
+      bit_offset: 8
+      bit_size: 4
+      description: LevBadFrames
+fieldset/FRAMEGEN_FGSRCR1:
+  description: ''
+  fields:
+    - name: SREn
+      bit_offset: 0
+      bit_size: 1
+      description: SREn
+    - name: SRMode
+      bit_offset: 1
+      bit_size: 2
+      description: SREn
+    - name: SRAdj
+      bit_offset: 3
+      bit_size: 1
+      description: SRAdj
+    - name: SREven
+      bit_offset: 4
+      bit_size: 1
+      description: SRAdj
+    - name: SRFaSync
+      bit_offset: 5
+      bit_size: 1
+      description: SREven
+    - name: SRQAlign
+      bit_offset: 6
+      bit_size: 1
+      description: SRFastSync
+    - name: SRQVal
+      bit_offset: 7
+      bit_size: 2
+      description: SRQAlign
+    - name: SRDDisp
+      bit_offset: 9
+      bit_size: 1
+      description: SRDbgDisp
+    - name: SREpOff
+      bit_offset: 10
+      bit_size: 1
+      description: SRDbgDisp
+    - name: SRCMode
+      bit_offset: 11
+      bit_size: 2
+      description: SREpOff
+    - name: SRExt
+      bit_offset: 13
+      bit_size: 1
+      description: SRExt
+    - name: CsSyncSl
+      bit_offset: 30
+      bit_size: 2
+      description: SRExt
+fieldset/FRAMEGEN_FGSRCR2:
+  description: ''
+  fields:
+    - name: HTlMin
+      bit_offset: 0
+      bit_size: 14
+      description: HTotalMin
+    - name: HTlMax
+      bit_offset: 16
+      bit_size: 14
+      description: HTotalMin
+fieldset/FRAMEGEN_FGSRCR3:
+  description: ''
+  fields:
+    - name: VTotMin
+      bit_offset: 0
+      bit_size: 14
+      description: VTotalMin
+    - name: VTotMax
+      bit_offset: 16
+      bit_size: 14
+      description: VTotalMin
+fieldset/FRAMEGEN_FGSRCR4:
+  description: ''
+  fields:
+    - name: TarSkew
+      bit_offset: 0
+      bit_size: 29
+      description: TargetSkew
+fieldset/FRAMEGEN_FGSRCR5:
+  description: ''
+  fields:
+    - name: SynRngLo
+      bit_offset: 0
+      bit_size: 29
+      description: SyncRangeLow
+fieldset/FRAMEGEN_FGSRCR6:
+  description: ''
+  fields:
+    - name: SynRngHi
+      bit_offset: 0
+      bit_size: 29
+      description: SyncRangeHigh
+fieldset/FRAMEGEN_FGSRCR7:
+  description: ''
+  fields:
+    - name: HorizIn
+      bit_offset: 0
+      bit_size: 27
+      description: HorizontalIncrement
+    - name: VertInc
+      bit_offset: 27
+      bit_size: 5
+      description: HorizontalIncrement
+fieldset/FRAMEGEN_FGSRCR8:
+  description: ''
+  fields:
+    - name: StartOff
+      bit_offset: 0
+      bit_size: 18
+      description: StartOffset
+fieldset/FRAMEGEN_FGSRCR9:
+  description: ''
+  fields:
+    - name: clocpref
+      bit_offset: 0
+      bit_size: 20
+      description: clockperiod_ref
+fieldset/FRAMEGEN_FGSRCR10:
+  description: ''
+  fields:
+    - name: clocpmin
+      bit_offset: 0
+      bit_size: 20
+      description: clockperiod_min
+fieldset/FRAMEGEN_FGSRCR11:
+  description: ''
+  fields:
+    - name: clocpmax
+      bit_offset: 0
+      bit_size: 20
+      description: clockperiod_max
+fieldset/FRAMEGEN_FGSRCR12:
+  description: ''
+  fields:
+    - name: pxlperio
+      bit_offset: 0
+      bit_size: 32
+      description: pixel_period
+fieldset/FRAMEGEN_FGSRCR13:
+  description: ''
+  fields:
+    - name: CSRfirat
+      bit_offset: 2
+      bit_size: 2
+    - name: CSRupte
+      bit_offset: 4
+      bit_size: 3
+    - name: CMSyncSe
+      bit_offset: 7
+      bit_size: 1
+fieldset/FRAMEGEN_FGSRCR14:
+  description: ''
+  fields:
+    - name: clocval
+      bit_offset: 0
+      bit_size: 1
+      description: Clockperiod_val
+    - name: CSRSSen
+      bit_offset: 3
+      bit_size: 1
+      description: Clockperiod_val
+    - name: CSRrate
+      bit_offset: 4
+      bit_size: 3
+    - name: CSRraen
+      bit_offset: 7
+      bit_size: 1
+    - name: CSRphgai
+      bit_offset: 8
+      bit_size: 3
+    - name: CSRphgsy
+      bit_offset: 12
+      bit_size: 3
+    - name: SkwOffT
+      bit_offset: 16
+      bit_size: 14
+      description: SkewOffset_Threshold
+fieldset/FRAMEGEN_FGSRCR15:
+  description: ''
+  fields:
+    - name: CsHsPol
+      bit_offset: 14
+      bit_size: 1
+    - name: CsVsPol
+      bit_offset: 15
+      bit_size: 1
+    - name: CsDelay
+      bit_offset: 16
+      bit_size: 14
+      description: CsDelay
+fieldset/FRAMEGEN_FGKSDR:
+  description: ''
+  fields:
+    - name: PCCplMax
+      bit_offset: 0
+      bit_size: 3
+      description: PCntCplMax
+    - name: SCntCplM
+      bit_offset: 16
+      bit_size: 3
+      description: PCntCplMax
+fieldset/FRAMEGEN_PACFG:
+  description: ''
+  fields:
+    - name: Pstartx
+      bit_offset: 0
+      bit_size: 14
+      description: Pstartx
+    - name: Pstarty
+      bit_offset: 16
+      bit_size: 14
+      description: Pstartx
+fieldset/FRAMEGEN_SACFG:
+  description: ''
+  fields:
+    - name: Sstartx
+      bit_offset: 0
+      bit_size: 14
+      description: Sstartx
+    - name: Sstarty
+      bit_offset: 16
+      bit_size: 14
+      description: Sstartx
+fieldset/FRAMEGEN_FGINCTL:
+  description: ''
+  fields:
+    - name: FgDm
+      bit_offset: 0
+      bit_size: 3
+    - name: EnPrimAl
+      bit_offset: 3
+      bit_size: 1
+      description: EnPrimAlpha
+    - name: EnSecAp
+      bit_offset: 4
+      bit_size: 1
+      description: EnPrimAlpha
+fieldset/FRAMEGEN_FGINCTLP:
+  description: ''
+  fields:
+    - name: FgDmPani
+      bit_offset: 0
+      bit_size: 3
+    - name: EnPrimAP
+      bit_offset: 3
+      bit_size: 1
+      description: EnPrimAlphaPanic
+    - name: EnSecAPP
+      bit_offset: 4
+      bit_size: 1
+      description: EnPrimAlphaPanic
+fieldset/FRAMEGEN_FGCCR:
+  description: ''
+  fields:
+    - name: CcBlue
+      bit_offset: 0
+      bit_size: 10
+      description: CcBlue
+    - name: CcGreen
+      bit_offset: 10
+      bit_size: 10
+      description: CcBlue
+    - name: CcRed
+      bit_offset: 20
+      bit_size: 10
+      description: CcGreen
+    - name: CcAlpha
+      bit_offset: 30
+      bit_size: 2
+      description: CcRed
+fieldset/FRAMEGEN_FGENABLE:
+  description: ''
+  fields:
+    - name: FgEn
+      bit_offset: 0
+      bit_size: 1
+      description: FgEn
+fieldset/FRAMEGEN_FGSLR:
+  description: ''
+  fields:
+    - name: SdTokGen
+      bit_offset: 0
+      bit_size: 1
+      description: ShdTokGen
+fieldset/FRAMEGEN_FGENSTS:
+  description: ''
+  fields:
+    - name: EnSts
+      bit_offset: 0
+      bit_size: 1
+      description: EnSts
+    - name: PanS
+      bit_offset: 1
+      bit_size: 1
+      description: EnSts
+fieldset/FRAMEGEN_FGTIMEST:
+  description: ''
+  fields:
+    - name: LineInde
+      bit_offset: 0
+      bit_size: 14
+      description: LineIndex
+    - name: FrameIdx
+      bit_offset: 14
+      bit_size: 18
+      description: LineIndex
+fieldset/FRAMEGEN_FGCHSTT:
+  description: ''
+  fields:
+    - name: PFifoE
+      bit_offset: 0
+      bit_size: 1
+      description: PFifoEmpty
+    - name: PrimSynS
+      bit_offset: 8
+      bit_size: 1
+      description: PFifoEmpty
+    - name: SFifoEm
+      bit_offset: 16
+      bit_size: 1
+      description: PrimSyncStat
+    - name: SkwRanEr
+      bit_offset: 17
+      bit_size: 1
+      description: SFifoEmpty
+    - name: ScSyncS
+      bit_offset: 24
+      bit_size: 1
+      description: SkewRangeErr
+fieldset/FRAMEGEN_FGCHSTTC:
+  description: ''
+  fields:
+    - name: ClrPrimS
+      bit_offset: 0
+      bit_size: 1
+      description: ClrPrimStat
+    - name: ClrSecSt
+      bit_offset: 16
+      bit_size: 1
+      description: ClrPrimStat
+fieldset/FRAMEGEN_FGSKEWMO:
+  description: ''
+  fields:
+    - name: SkwMon
+      bit_offset: 0
+      bit_size: 29
+      description: SkewMon
+fieldset/FRAMEGEN_FGPFIMIN:
+  description: ''
+  fields:
+    - name: PFifoMin
+      bit_offset: 0
+      bit_size: 16
+      description: PFifoMin
+fieldset/FRAMEGEN_FGPFIMAX:
+  description: ''
+  fields:
+    - name: PFifoMax
+      bit_offset: 0
+      bit_size: 16
+      description: PFifoMax
+fieldset/FRAMEGEN_FGPFIFC:
+  description: ''
+  fields:
+    - name: PFifoF
+      bit_offset: 0
+      bit_size: 1
+      description: PFifoFillClr
+fieldset/FRAMEGEN_FGPFITRS:
+  description: ''
+  fields:
+    - name: PFifoT0
+      bit_offset: 0
+      bit_size: 16
+      description: PFifoTres0
+    - name: PFifoT1
+      bit_offset: 16
+      bit_size: 16
+      description: PFifoTres0
+fieldset/FRAMEGEN_FGSFIMIN:
+  description: ''
+  fields:
+    - name: SFifoMin
+      bit_offset: 0
+      bit_size: 16
+      description: SFifoMin
+fieldset/FRAMEGEN_FGSFIMAX:
+  description: ''
+  fields:
+    - name: SFifoMax
+      bit_offset: 0
+      bit_size: 16
+      description: SFifoMax
+fieldset/FRAMEGEN_FGSFIFC:
+  description: ''
+  fields:
+    - name: SFifoFiC
+      bit_offset: 0
+      bit_size: 1
+      description: SFifoFillClr
+fieldset/FRAMEGEN_FGSREPD:
+  description: ''
+  fields:
+    - name: EpVal
+      bit_offset: 0
+      bit_size: 29
+      description: EpVal
+fieldset/FRAMEGEN_FGSRFTD:
+  description: ''
+  fields:
+    - name: FrTot
+      bit_offset: 0
+      bit_size: 28
+      description: FrTot
+fieldset/FRAMEGEN_FGSRCSHT:
+  description: ''
+  fields:
+    - name: FrCSHTot
+      bit_offset: 0
+      bit_size: 32
+      description: FrCSHTotal
+fieldset/FRAMEGEN_FGSRCKDI:
+  description: ''
+  fields:
+    - name: FrClockD
+      bit_offset: 0
+      bit_size: 20
+      description: FrClockDiv
+fieldset/FRAMEGEN_FGSL:
+  description: ''
+  fields:
+    - name: ScanLine
+      bit_offset: 0
+      bit_size: 14
+      description: ScanLine
+    - name: VBlank
+      bit_offset: 31
+      bit_size: 1
+      description: ScanLine
+fieldset/FRAMEGEN_FGSKEWDB:
+  description: ''
+  fields:
+    - name: SState
+      bit_offset: 0
+      bit_size: 2
+      description: SState
+    - name: Skwir
+      bit_offset: 2
+      bit_size: 1
+      description: SState
+    - name: SFrircnt
+      bit_offset: 4
+      bit_size: 4
+      description: Skew_ir

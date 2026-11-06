@@ -1221,6 +1221,66 @@ mod tests {
         ));
     }
 
+    const IMX952_MANIFEST: &str = include_str!("../Consortium.example.mimx952.toml");
+
+    /// The i.MX 952 example (CM7 peripherals only) loads against its own
+    /// database, not i.MX 95's, and its pins validate against the i.MX 952
+    /// signal map.
+    #[test]
+    fn loads_imx952_example_manifest() {
+        let session = Session::from_toml(IMX952_MANIFEST).expect("i.MX 952 example should load");
+        assert_eq!(session.database.name, "MIMX952");
+        assert!(session.config.ipc.channels.is_empty());
+    }
+
+    /// Until the i.MX 952 reference manual gives the MU party windows and the
+    /// OCRAM map, a channel is refused rather than generated at guessed
+    /// addresses. The chip declares neither an SRAM region nor a doorbell, and
+    /// whichever check runs first rejects it.
+    #[test]
+    fn imx952_rejects_ipc_until_the_reference_manual() {
+        let manifest = r#"
+            [profile]
+            chip = "mimx9529avzxn"
+            shared = "./shared"
+            deploy_root = "/opt/consortium"
+
+            [[ipc.channel]]
+            name = "probe"
+            doorbell = "mu7"
+            pattern = "memory"
+            primary = "linux"
+            secondary = "cm7"
+            party.linux = { chan = 0, type = "Ping" }
+            party.cm7 = { chan = 1, type = "Pong" }
+            config.memory = { base = 0x00480000, length = 0x4000 }
+            mtu = 128
+        "#;
+        assert!(matches!(
+            Session::from_toml(manifest),
+            Err(CfgError::RegionOutOfBounds { .. } | CfgError::UnknownDoorbell { .. })
+        ));
+    }
+
+    /// With no SRAM region declared, a debug ring has nowhere valid to go.
+    #[test]
+    fn imx952_rejects_a_dbg_ring_without_sram() {
+        let manifest = r#"
+            [profile]
+            chip = "mimx9529avzxn"
+            shared = "./shared"
+            deploy_root = "/opt/consortium"
+
+            [dbg.cm7]
+            memory = { base = 0x00480000, length = 0x2000 }
+            mtu = 64
+        "#;
+        assert!(matches!(
+            Session::from_toml(manifest),
+            Err(CfgError::RegionOutOfBounds { .. })
+        ));
+    }
+
     const MP235_MANIFEST: &str = include_str!("../Consortium.example.stm32mp235.toml");
 
     /// An STM32MP23 manifest with one CM33 channel and `extra` appended.

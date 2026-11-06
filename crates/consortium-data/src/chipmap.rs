@@ -79,6 +79,12 @@ const CHIPS: &[Embedded] = &[
         json: include_str!("../database/chip/stm32mp21_cm33.json"),
     },
     Embedded {
+        family: "mimx952",
+        core: "cm7",
+        pac: true,
+        json: include_str!("../database/chip/mimx952_cm7.json"),
+    },
+    Embedded {
         family: "mimx95",
         core: "cm7",
         pac: true,
@@ -307,16 +313,34 @@ mod tests {
     }
 
     /// An i.MX 952 CM7 shares IP names with the i.MX 95 CM7 but not their
-    /// addresses (its LPUART3–8, CAN2/3, and MU7/8 all move), so it must not
-    /// pick up the i.MX 95 map.
+    /// addresses (its LPUART3–8, CAN2/3, and MU7/8 all move), so it must get
+    /// its own map. i.MX 937 has no bundled dump at all.
     #[test]
-    fn rejects_imx952_and_imx937_cores() {
-        for chip in ["mimx9529avzxn", "mimx9375"] {
-            assert!(
-                matches!(load(chip, "cm7"), Err(DataError::ChipMapUnavailable { .. })),
-                "{chip} cm7 should not resolve"
-            );
-        }
+    fn imx952_cm7_has_its_own_map() {
+        let imx952 = load("mimx9529avzxn", "cm7").expect("i.MX 952 cm7 should resolve");
+        let imx95 = load("mimx9596avzxn", "cm7").expect("i.MX 95 cm7 should resolve");
+        assert_eq!(imx952.peripheral("LPUART3").unwrap().base, 0x4219_0000);
+        assert_eq!(imx95.peripheral("LPUART3").unwrap().base, 0x4257_0000);
+        // AON instances keep their i.MX 95 addresses.
+        assert_eq!(
+            imx952.peripheral("LPUART1").unwrap().base,
+            imx95.peripheral("LPUART1").unwrap().base
+        );
+        assert!(!imx952.contains_peripheral("CAN4"));
+        assert!(imx952.has_pac_interrupts());
+    }
+
+    #[test]
+    fn rejects_imx937_and_the_imx952_cm33() {
+        assert!(matches!(
+            load("mimx9375", "cm7"),
+            Err(DataError::ChipMapUnavailable { .. })
+        ));
+        // The bundled i.MX 952 dump is the CM7's; the CM33 runs the System Manager.
+        assert!(matches!(
+            load("mimx9529avzxn", "cm33"),
+            Err(DataError::ChipMapUnavailable { .. })
+        ));
     }
 
     #[test]

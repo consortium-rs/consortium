@@ -25,12 +25,16 @@ OUTPUT_DIR = (
 FAMILY_REPRESENTATIVES = {
     "imx93_cm33": ("MIMX9352_cm33", "MIMX9352_cm33_COMMON.h"),
     "imx95_cm7": ("MIMX9596_cm7", "MIMX9596_cm7_COMMON.h"),
+    "imx952_cm7": ("MIMX9529_cm7", "MIMX9529_cm7_COMMON.h"),
 }
 
 IMX9_PERI_OUTPUT_DIR = OUTPUT_DIR / "peri" / "imx9"
+#: i.MX9 families in the order their register layouts are deduplicated: a later
+#: family's block that matches an earlier family's layout reuses that file.
 IMX9_FAMILY_SUFFIXES = {
     "imx93": "mimx93",
     "imx95": "mimx95",
+    "imx952": "mimx952",
 }
 
 
@@ -40,21 +44,51 @@ def imx9_peripheral_yaml_path(block_name: str, family: str) -> Path:
 
 
 def consolidate_identical_imx9_peripherals() -> None:
-    """Collapse matching i.MX93/i.MX95 register YAMLs to a shared _v1 file."""
-    for imx93_path in sorted(IMX9_PERI_OUTPUT_DIR.glob("*_mimx93.yaml")):
-        stem = imx93_path.name.removesuffix("_mimx93.yaml")
-        imx95_path = IMX9_PERI_OUTPUT_DIR / f"{stem}_mimx95.yaml"
-        if not imx95_path.exists():
-            continue
+    """Deduplicate i.MX9 register YAMLs across families by layout.
 
-        if imx93_path.read_bytes() != imx95_path.read_bytes():
-            continue
+    The parser writes one `<block>_<family>.yaml` per family. For each block,
+    a family whose layout matches an earlier family's (in
+    `IMX9_FAMILY_SUFFIXES` order) drops its file and reuses that one, so a
+    `_mimx95` file can also describe i.MX 952. Only a genuinely different layout
+    keeps a file of its own: the second (or third) version of the block.
 
-        shared_path = IMX9_PERI_OUTPUT_DIR / f"{stem}_v1.yaml"
-        shared_path.write_bytes(imx93_path.read_bytes())
-        imx93_path.unlink()
-        imx95_path.unlink()
-        print(f"Wrote {shared_path}")
+    A layout i.MX 93 and i.MX 95 share is written as `_v1`, whether or not a
+    later family also matches it; a file named for a family holds the layout
+    that family introduced.
+
+    Layouts are compared with descriptions removed, and the earliest family's
+    text is kept, so a vendor rewording alone never forks a block.
+    """
+    suffixes = list(IMX9_FAMILY_SUFFIXES.values())
+    stems: dict[str, dict[str, Path]] = {}
+    for path in sorted(IMX9_PERI_OUTPUT_DIR.glob("*.yaml")):
+        for suffix in suffixes:
+            if path.name.endswith(f"_{suffix}.yaml"):
+                stem = path.name.removesuffix(f"_{suffix}.yaml")
+                stems.setdefault(stem, {})[suffix] = path
+                break
+
+    for stem, by_family in sorted(stems.items()):
+        layouts: list[tuple[str, Any]] = []
+        reuses: dict[str, str] = {}
+        for suffix in suffixes:
+            path = by_family.get(suffix)
+            if path is None:
+                continue
+            layout = drop_yaml_descriptions(yaml.safe_load(path.read_text()))
+            match = next((owner for owner, seen in layouts if seen == layout), None)
+            if match is not None:
+                path.unlink()
+                reuses[suffix] = match
+                continue
+            layouts.append((suffix, layout))
+
+        if reuses.get("mimx95") == "mimx93":
+            shared = by_family["mimx93"]
+            shared_path = IMX9_PERI_OUTPUT_DIR / f"{stem}_v1.yaml"
+            shared_path.write_bytes(shared.read_bytes())
+            shared.unlink()
+            print(f"Wrote {shared_path}")
 
 
 def natural_sort_key(path: Path) -> list[Any]:
@@ -116,7 +150,7 @@ def consolidate_numbered_imx9_peripherals() -> None:
     """Collapse repeated numbered i.MX9 blocks into _n templates when shaped alike."""
     groups: dict[tuple[str, str], list[Path]] = {}
     for path in sorted(IMX9_PERI_OUTPUT_DIR.glob("*.yaml")):
-        match = re.match(r"(.+)_(v1|mimx93|mimx95)\.yaml$", path.name)
+        match = re.match(r"(.+)_(v1|mimx93|mimx95|mimx952)\.yaml$", path.name)
         if not match:
             continue
 
@@ -824,16 +858,8 @@ class NXPChipParser:
             peripherals.append(match.group(1))
         return peripherals
 
-    def emit_json(self, peri_blocks: dict[str, str]):
-        """Write chip descriptor JSON."""
-        # Determine family from chip name
-        family = (
-            "imx93"
-            if "9352" in self.chip_name
-            or "9351" in self.chip_name
-            or "9301" in self.chip_name
-            else "imx95"
-        )
+    def emit_json(self, family: str):
+        """Write chip descriptor JSON for `family` (e.g. `imx95`)."""
 
         # Build peripherals list from instances
         peripherals = []
@@ -907,7 +933,7 @@ def main():
             common_parser.parse()
 
             chip_parser = NXPChipParser(chip_header_path, common_parser)
-            chip_parser.emit_json({})
+            chip_parser.emit_json(subfamily)
 
     consolidate_identical_imx9_peripherals()
     consolidate_numbered_imx9_peripherals()

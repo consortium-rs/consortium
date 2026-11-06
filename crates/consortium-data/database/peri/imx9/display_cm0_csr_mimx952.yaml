@@ -1,0 +1,119 @@
+block/DISPLAY_CM0_CSR:
+  description: ''
+  items:
+    - name: CM0P_CLOCK_GATING
+      byte_offset: 0
+    - name: CM0P_ADDR_OFFSET1
+      byte_offset: 4
+      fieldset: DISPLAY_CM0_CSR_CM0P_ADDR_OFFSET1
+    - name: CM0P_ADDR_OFFSET2
+      byte_offset: 8
+      fieldset: DISPLAY_CM0_CSR_CM0P_ADDR_OFFSET2
+    - name: CM0P_CPUWAIT
+      byte_offset: 12
+      fieldset: DISPLAY_CM0_CSR_CM0P_CPUWAIT
+    - name: CM0P_CTL
+      byte_offset: 16
+      fieldset: DISPLAY_CM0_CSR_CM0P_CTL
+    - name: CM0P_STAT
+      byte_offset: 20
+      fieldset: DISPLAY_CM0_CSR_CM0P_STAT
+    - name: LPCAC_ERROR
+      byte_offset: 24
+fieldset/DISPLAY_CM0_CSR_CM0P_CLOCK_GATING_DISP_CM0P:
+  description: ''
+  fields:
+    - name: CLK
+      bit_offset: 0
+      bit_size: 1
+fieldset/DISPLAY_CM0_CSR_CM0P_ADDR_OFFSET1:
+  description: ''
+  fields:
+    - name: OFFSET
+      bit_offset: 8
+      bit_size: 24
+      description: CM0P Address Offset 1
+fieldset/DISPLAY_CM0_CSR_CM0P_ADDR_OFFSET2:
+  description: ''
+  fields:
+    - name: OFFSET
+      bit_offset: 8
+      bit_size: 24
+      description: CM0P Address Offset 2
+fieldset/DISPLAY_CM0_CSR_CM0P_CPUWAIT:
+  description: ''
+  fields:
+    - name: CPW
+      bit_offset: 0
+      bit_size: 1
+    - name: RST
+      bit_offset: 1
+      bit_size: 1
+fieldset/DISPLAY_CM0_CSR_CM0P_CTL:
+  description: ''
+  fields:
+    - name: ILT
+      bit_offset: 2
+      bit_size: 8
+    - name: CLR
+      bit_offset: 10
+      bit_size: 1
+    - name: NAL
+      bit_offset: 11
+      bit_size: 1
+    - name: DWB
+      bit_offset: 12
+      bit_size: 1
+    - name: DIS
+      bit_offset: 13
+      bit_size: 1
+    - name: Boot
+      bit_offset: 15
+      bit_size: 1
+fieldset/DISPLAY_CM0_CSR_CM0P_CTL_lim_lpcac:
+  description: ''
+  fields:
+    - name: wtbf
+      bit_offset: 16
+      bit_size: 1
+fieldset/DISPLAY_CM0_CSR_CM0P_CTL_parity_miss:
+  description: ''
+  fields:
+    - name: en
+      bit_offset: 17
+      bit_size: 1
+fieldset/DISPLAY_CM0_CSR_CM0P_CTL_parity_fault:
+  description: ''
+  fields:
+    - name: en
+      bit_offset: 18
+      bit_size: 1
+fieldset/DISPLAY_CM0_CSR_CM0P_CTL_OCRAM__in_init:
+  description: ''
+  fields:
+    - name: req
+      bit_offset: 19
+      bit_size: 1
+fieldset/DISPLAY_CM0_CSR_CM0P_STAT:
+  description: ''
+  fields:
+    - name: LKP
+      bit_offset: 0
+      bit_size: 1
+fieldset/DISPLAY_CM0_CSR_LPCAC_ERROR_CACHE:
+  description: ''
+  fields:
+    - name: PE
+      bit_offset: 0
+      bit_size: 1
+      description: Cache Data Parity Error
+    - name: WE
+      bit_offset: 1
+      bit_size: 1
+      description: Cache Write-buffer Error
+fieldset/DISPLAY_CM0_CSR_LPCAC_ERROR_CACHE_IRQ:
+  description: ''
+  fields:
+    - name: CLR
+      bit_offset: 31
+      bit_size: 1

@@ -26,17 +26,23 @@
 //!
 //! # Features
 //!
-//! | Feature  | Effect                                                             |
-//! | -------- | ------------------------------------------------------------------ |
-//! | `mimx95` | Chip selection (default).                                           |
-//! | `mimx93` | Chip selection.                                                     |
-//! | `rt`     | `cortex-m-rt` integration: the `#[interrupt]` macro and `__INTERRUPTS`. |
-//! | `defmt`  | Derive `defmt::Format` on generated types where applicable.           |
+//! | Feature   | Effect                                                                  |
+//! | --------- | ----------------------------------------------------------------------- |
+//! | `mimx95`  | Chip selection (default).                                               |
+//! | `mimx93`  | Chip selection.                                                         |
+//! | `mimx952` | Chip selection. A separate die from i.MX 95, with its own map.          |
+//! | `rt`      | `cortex-m-rt` integration: the `#[interrupt]` macro and `__INTERRUPTS`. |
+//! | `defmt`   | Derive `defmt::Format` on generated types where applicable.             |
 //!
 //! Choose **exactly one** chip: the feature selects which generated interrupt and
-//! peripheral map is mounted, and enabling both is a duplicate-definition error. A
-//! dependent selecting `mimx93` must set `default-features = false` so `mimx95` is not
-//! also pulled in — two chips mean an ambiguous `Interrupt` enum.
+//! peripheral map is mounted, and enabling two is a duplicate-definition error. A
+//! dependent selecting `mimx93` or `mimx952` must set `default-features = false` so
+//! `mimx95` is not also pulled in — two chips mean an ambiguous `Interrupt` enum.
+//!
+//! On `mimx952`, the register blocks whose layout differs from i.MX 93/95 (ADC,
+//! CAN, CCM, GPC, GPC_GLOBAL, IOMUXC, IOMUXC_GPR, IRQSTEER) are mounted from their
+//! own i.MX 952 IR under the same module names, and `flexspi` is absent (the die
+//! has xSPI instead).
 //!
 //! `rt` should be enabled by the *application*, since it is what owns the vector table.
 
@@ -57,14 +63,19 @@
 // Chip features select different generated interrupt tables and linker
 // fragments, so they cannot be unified. Diagnosed here so the error names the
 // mistake instead of surfacing as a duplicate `Interrupt` enum.
-#[cfg(all(feature = "mimx93", feature = "mimx95"))]
+#[cfg(any(
+    all(feature = "mimx93", feature = "mimx95"),
+    all(feature = "mimx93", feature = "mimx952"),
+    all(feature = "mimx95", feature = "mimx952"),
+))]
 compile_error!(
-    "chip features are mutually exclusive; enable exactly one of: `mimx93`, `mimx95`. \
-     A dependency selecting the non-default chip must set `default-features = false`."
+    "chip features are mutually exclusive; enable exactly one of: `mimx93`, `mimx95`, \
+     `mimx952`. A dependency selecting a non-default chip must set \
+     `default-features = false`."
 );
 
 pub mod common;
 pub mod interrupts;
 pub mod metadata;
-#[cfg(any(feature = "mimx93", feature = "mimx95"))]
+#[cfg(any(feature = "mimx93", feature = "mimx95", feature = "mimx952"))]
 pub mod peripherals;

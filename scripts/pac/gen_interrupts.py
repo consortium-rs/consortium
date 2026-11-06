@@ -34,6 +34,7 @@ TARGETS = [
     ("stm32mp25_cm33", "crates/consortium-pac-stm32mp2/src/interrupts/stm32mp25"),
     ("stm32mp21_cm33", "crates/consortium-pac-stm32mp2/src/interrupts/stm32mp21"),
     ("mimx95_cm7", "crates/consortium-pac-imx9/src/interrupts/imx95"),
+    ("mimx952_cm7", "crates/consortium-pac-imx9/src/interrupts/imx952"),
     ("mimx93_cm33", "crates/consortium-pac-imx9/src/interrupts/imx93"),
 ]
 

@@ -55,13 +55,18 @@
 //!
 //! # Chip selection
 //!
-//! `mimx93` or `mimx95` — **exactly one**. They select which generated singleton map
-//! is mounted and are forwarded to the PAC so its register and interrupt definitions
-//! match; enabling both is a duplicate-definition error.
+//! `mimx93`, `mimx95`, or `mimx952` — **exactly one**. They select which generated
+//! singleton map is mounted and are forwarded to the PAC so its register and interrupt
+//! definitions match; enabling two is a duplicate-definition error.
 //!
-//! Default is `mimx95`. **A dependent selecting `mimx93` must set
+//! Default is `mimx95`. **A dependent selecting `mimx93` or `mimx952` must set
 //! `default-features = false`**, or `mimx95` comes along too and the PAC's `Interrupt`
 //! enum becomes ambiguous. The doorbell and UART-transport crates all do this.
+//!
+//! `mimx952` is compile-level support: i.MX 952 shares i.MX 95's System Manager
+//! clock model (so [`clock`] is inert), its eDMA request numbers, and LPIT1's
+//! 24 MHz rate, but has its own singleton map and has not run on hardware. Its MU
+//! doorbell is not wired up until the reference manual is published.
 //!
 //! # Interrupts are the application's
 //!
@@ -104,20 +109,28 @@ pub use consortium_pac_imx9 as pac;
 // exclusive: each mounts a different singleton map, so they cannot be unified.
 // Diagnosed here so the error names the mistake rather than surfacing as a
 // duplicate `mod chip`; the `not(mimx95)` below keeps this the only diagnostic.
-#[cfg(all(feature = "mimx93", feature = "mimx95"))]
+#[cfg(any(
+    all(feature = "mimx93", feature = "mimx95"),
+    all(feature = "mimx93", feature = "mimx952"),
+    all(feature = "mimx95", feature = "mimx952"),
+))]
 compile_error!(
-    "chip features are mutually exclusive; enable exactly one of: `mimx93`, `mimx95`. \
-     A dependency selecting the non-default chip must set `default-features = false`."
+    "chip features are mutually exclusive; enable exactly one of: `mimx93`, `mimx95`, \
+     `mimx952`. A dependency selecting a non-default chip must set \
+     `default-features = false`."
 );
 
 #[cfg(feature = "mimx95")]
 #[path = "peripherals/imx95.rs"]
 mod chip;
-#[cfg(all(feature = "mimx93", not(feature = "mimx95")))]
+#[cfg(all(feature = "mimx952", not(feature = "mimx95")))]
+#[path = "peripherals/imx952.rs"]
+mod chip;
+#[cfg(all(feature = "mimx93", not(feature = "mimx95"), not(feature = "mimx952")))]
 #[path = "peripherals/imx93.rs"]
 mod chip;
 
-#[cfg(any(feature = "mimx93", feature = "mimx95"))]
+#[cfg(any(feature = "mimx93", feature = "mimx95", feature = "mimx952"))]
 pub use chip::{Peripherals, peripherals};
 
 /// Take the chip's peripheral singletons.
@@ -126,7 +139,7 @@ pub use chip::{Peripherals, peripherals};
 ///
 /// Panics if called more than once — the singletons are exactly that, and
 /// handing them out twice would let two drivers claim the same registers.
-#[cfg(any(feature = "mimx93", feature = "mimx95"))]
+#[cfg(any(feature = "mimx93", feature = "mimx95", feature = "mimx952"))]
 pub fn init() -> Peripherals {
     Peripherals::take()
 }

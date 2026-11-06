@@ -1,0 +1,6635 @@
+block/VPU_VPU_ENC:
+  description: ''
+  items:
+    - name: BIT_CODE_RUN
+      byte_offset: 0
+    - name: BIT_CODE_DOWN
+      byte_offset: 4
+      fieldset: VPU_VPU_ENC_BIT_CODE_DOWN
+    - name: BIT_INT_REQ
+      byte_offset: 8
+      fieldset: VPU_VPU_ENC_BIT_INT_REQ
+    - name: BIT_INT_CLEAR
+      byte_offset: 12
+      fieldset: VPU_VPU_ENC_BIT_INT_CLEAR
+    - name: BIT_INT_STS
+      byte_offset: 16
+      fieldset: VPU_VPU_ENC_BIT_INT_STS
+    - name: BIT_CODE_RESET
+      byte_offset: 20
+      fieldset: VPU_VPU_ENC_BIT_CODE_RESET
+    - name: BIT_CUR_PC
+      byte_offset: 24
+      fieldset: VPU_VPU_ENC_BIT_CUR_PC
+    - name: BIT_CODEC_BUSY
+      byte_offset: 32
+      fieldset: VPU_VPU_ENC_BIT_CODEC_BUSY
+    - name: BIT_SW_RESET
+      byte_offset: 36
+      fieldset: VPU_VPU_ENC_BIT_SW_RESET
+    - name: BIT_SW_RESET_STATUS
+      byte_offset: 52
+    - name: BIT_BIT_STOP_CMD
+      byte_offset: 64
+    - name: BIT_RESUME_CMD
+      byte_offset: 68
+    - name: BIT_STOP_MB_STS
+      byte_offset: 72
+    - name: BIT_STOP_MB_EN
+      byte_offset: 76
+    - name: BIT_STOP_MB_ADDR
+      byte_offset: 80
+    - name: BIT_FRAME_DONE_CTRL
+      byte_offset: 84
+    - name: BIT_AXI_HIGH_ADDR
+      byte_offset: 88
+    - name: BIT_CODE_BUF_ADDR
+      byte_offset: 256
+      fieldset: VPU_VPU_ENC_BIT_CODE_BUF_ADDR
+    - name: BIT_WORK_BUF_ADDR
+      byte_offset: 260
+      fieldset: VPU_VPU_ENC_BIT_WORK_BUF_ADDR
+    - name: BIT_PARA_BUF_ADDR
+      byte_offset: 264
+      fieldset: VPU_VPU_ENC_BIT_PARA_BUF_ADDR
+    - name: BIT_BIT_STREAM_CTRL
+      byte_offset: 268
+      fieldset: VPU_VPU_ENC_BIT_BIT_STREAM_CTRL
+    - name: BIT_FRAME_MEM_CTRL
+      byte_offset: 272
+      fieldset: VPU_VPU_ENC_BIT_FRAME_MEM_CTRL
+    - name: BIT_BIT_STREAM_PARAM
+      byte_offset: 276
+      fieldset: VPU_VPU_ENC_BIT_BIT_STREAM_PARAM
+    - name: BIT_TEMP_BUF_ADDR
+      byte_offset: 280
+      fieldset: VPU_VPU_ENC_BIT_TEMP_BUF_ADDR
+    - name: BIT_RD_PTR
+      byte_offset: 288
+      fieldset: VPU_VPU_ENC_BIT_RD_PTR
+    - name: BIT_WR_PTR
+      byte_offset: 292
+      fieldset: VPU_VPU_ENC_BIT_WR_PTR
+    - name: BIT_RESET_CTRL
+      byte_offset: 296
+      fieldset: VPU_VPU_ENC_BIT_RESET_CTRL
+    - name: BIT_AXI_SRAM_USE
+      byte_offset: 320
+      fieldset: VPU_VPU_ENC_BIT_AXI_SRAM_USE
+    - name: BIT_BYTE_POS_FRAME_START
+      byte_offset: 324
+      fieldset: VPU_VPU_ENC_BIT_BYTE_POS_FRAME_START
+    - name: BIT_BYTE_POS_FRAME_END
+      byte_offset: 328
+      fieldset: VPU_VPU_ENC_BIT_BYTE_POS_FRAME_END
+    - name: BIT_FRM_DIS_FLG
+      byte_offset: 336
+    - name: BIT_BUSY_FLAG
+      byte_offset: 352
+      fieldset: VPU_VPU_ENC_BIT_BUSY_FLAG
+    - name: BIT_RUN_COMMAND
+      byte_offset: 356
+      fieldset: VPU_VPU_ENC_BIT_RUN_COMMAND
+    - name: BIT_RUN_INDEX
+      byte_offset: 360
+      fieldset: VPU_VPU_ENC_BIT_RUN_INDEX
+    - name: BIT_RUN_COD_STD
+      byte_offset: 364
+      fieldset: VPU_VPU_ENC_BIT_RUN_COD_STD
+    - name: BIT_INT_ENABLE
+      byte_offset: 368
+      fieldset: VPU_VPU_ENC_BIT_INT_ENABLE
+    - name: BIT_INT_REASON
+      byte_offset: 372
+      fieldset: VPU_VPU_ENC_BIT_INT_REASON
+    - name: BIT_RUN_AUX_STD
+      byte_offset: 376
+      fieldset: VPU_VPU_ENC_BIT_RUN_AUX_STD
+    - name: CMD_ENC_HEADER_CODE
+      byte_offset: 384
+      fieldset: VPU_VPU_ENC_CMD_ENC_HEADER_CODE
+    - name: CMD_ENC_HEADER_BB_START
+      byte_offset: 388
+      fieldset: VPU_VPU_ENC_CMD_ENC_HEADER_BB_START
+    - name: CMD_ENC_HEADER_BB_SIZE
+      byte_offset: 392
+      fieldset: VPU_VPU_ENC_CMD_ENC_HEADER_BB_SIZE
+    - name: CMD_ENC_HEADER_FRAME_CROP_H
+      byte_offset: 396
+      fieldset: VPU_VPU_ENC_CMD_ENC_HEADER_FRAME_CROP_H
+    - name: CMD_ENC_HEADER_FRAME_CROP_V
+      byte_offset: 400
+      fieldset: VPU_VPU_ENC_CMD_ENC_HEADER_FRAME_CROP_V
+    - name: CMD_ENC_HEADER_CABAC_MODE
+      byte_offset: 404
+      fieldset: VPU_VPU_ENC_CMD_ENC_HEADER_CABAC_MODE
+    - name: CMD_ENC_HEADER_CABAC_INIT_IDC
+      byte_offset: 408
+      fieldset: VPU_VPU_ENC_CMD_ENC_HEADER_CABAC_INIT_IDC
+    - name: CMD_ENC_HEADER_TRANSFORM_8X8
+      byte_offset: 412
+      fieldset: VPU_VPU_ENC_CMD_ENC_HEADER_TRANSFORM_8X8
+    - name: CMD_ENC_HEADER_CHROMA_FORMAT
+      byte_offset: 416
+      fieldset: VPU_VPU_ENC_CMD_ENC_HEADER_CHROMA_FORMAT
+    - name: CMD_ENC_HEADER_FIELD_FLAG
+      byte_offset: 420
+      fieldset: VPU_VPU_ENC_CMD_ENC_HEADER_FIELD_FLAG
+    - name: CMD_ENC_HEADER_PROFILE
+      byte_offset: 424
+      fieldset: VPU_VPU_ENC_CMD_ENC_HEADER_PROFILE
+    - name: CMD_ENC_HEADER_SCALING_LIST
+      byte_offset: 428
+      fieldset: VPU_VPU_ENC_CMD_ENC_HEADER_SCALING_LIST
+    - name: CMD_ENC_HEADER_QMAT_BASE
+      byte_offset: 432
+      fieldset: VPU_VPU_ENC_CMD_ENC_HEADER_QMAT_BASE
+    - name: CMD_ENC_PARAM_CHANGE_PPS_ID
+      byte_offset: 436
+      fieldset: VPU_VPU_ENC_CMD_ENC_PARAM_CHANGE_PPS_ID
+    - name: CMD_SET_FRAME_MAX_DEC_SIZE
+      byte_offset: 440
+      fieldset: VPU_VPU_ENC_CMD_SET_FRAME_MAX_DEC_SIZE
+    - name: CMD_ENC_PARAM_CHANGE_MIN_MAX_QP
+      byte_offset: 444
+      fieldset: VPU_VPU_ENC_CMD_ENC_PARAM_CHANGE_MIN_MAX_QP
+    - name: RET_ENC_HEADER_SUCCESS
+      byte_offset: 448
+      fieldset: VPU_VPU_ENC_RET_ENC_HEADER_SUCCESS
+    - name: CMD_ENC_SEQ_INTRA_QP
+      byte_offset: 452
+      fieldset: VPU_VPU_ENC_CMD_ENC_SEQ_INTRA_QP
+    - name: CMD_ENC_SEQ_RC_QP_MAX
+      byte_offset: 456
+      fieldset: VPU_VPU_ENC_CMD_ENC_SEQ_RC_QP_MAX
+    - name: CMD_ENC_SEQ_RC_GAMMA
+      byte_offset: 460
+      fieldset: VPU_VPU_ENC_CMD_ENC_SEQ_RC_GAMMA
+    - name: CMD_ENC_SEQ_RC_INTERVAL_MODE
+      byte_offset: 464
+      fieldset: VPU_VPU_ENC_CMD_ENC_SEQ_RC_INTERVAL_MODE
+    - name: CMD_ENC_SEQ_INTRA_WEIGHT
+      byte_offset: 468
+      fieldset: VPU_VPU_ENC_CMD_ENC_SEQ_INTRA_WEIGHT
+    - name: CMD_ENC_SEQ_ME_OPTION
+      byte_offset: 472
+      fieldset: VPU_VPU_ENC_CMD_ENC_SEQ_ME_OPTION
+    - name: CMD_ENC_SEQ_RC_PARA2
+      byte_offset: 476
+      fieldset: VPU_VPU_ENC_CMD_ENC_SEQ_RC_PARA2
+    - name: CMD_ENC_SEQ_QP_RANGE_SET
+      byte_offset: 480
+      fieldset: VPU_VPU_ENC_CMD_ENC_SEQ_QP_RANGE_SET
+    - name: RET_ENC_PIC_SUM_QP
+      byte_offset: 484
+      fieldset: VPU_VPU_ENC_RET_ENC_PIC_SUM_QP
+    - name: CMD_ENC_PIC_SRC_BOTTOM_Y
+      byte_offset: 488
+      fieldset: VPU_VPU_ENC_CMD_ENC_PIC_SRC_BOTTOM_Y
+    - name: CMD_ENC_PIC_SRC_BOTTOM_CB
+      byte_offset: 492
+      fieldset: VPU_VPU_ENC_CMD_ENC_PIC_SRC_BOTTOM_CB
+    - name: CMD_ENC_PIC_SRC_BOTTOM_CR
+      byte_offset: 496
+      fieldset: VPU_VPU_ENC_CMD_ENC_PIC_SRC_BOTTOM_CR
+    - name: CMD_ENC_SEQ_QP_DELTA_QP
+      byte_offset: 500
+      fieldset: VPU_VPU_ENC_CMD_ENC_SEQ_QP_DELTA_QP
+    - name: GDI_PRI_RD_PRIOR_L
+      byte_offset: 4096
+    - name: GDI_PRI_RD_PRIOR_H
+      byte_offset: 4100
+    - name: GDI_PRI_WR_PRIOR_L
+      byte_offset: 4104
+    - name: GDI_PRI_WR_PRIOR_H
+      byte_offset: 4108
+    - name: GDI_PRI_RD_LOCK_CNT
+      byte_offset: 4112
+    - name: GDI_PRI_WR_LOCK_CNT
+      byte_offset: 4116
+    - name: GDI_SEC_RD_PRIOR_L
+      byte_offset: 4120
+    - name: GDI_SEC_RD_PRIOR_H
+      byte_offset: 4124
+    - name: GDI_SEC_WR_PRIOR_L
+      byte_offset: 4128
+    - name: GDI_SEC_WR_PRIOR_H
+      byte_offset: 4132
+    - name: GDI_SEC_RD_LOCK_CNT
+      byte_offset: 4136
+    - name: GDI_SEC_WR_LOCK_CNT
+      byte_offset: 4140
+    - name: GDI_SEC_CLIENT_EN
+      byte_offset: 4144
+      fieldset: VPU_VPU_ENC_GDI_SEC_CLIENT_EN
+    - name: GDI_PIC_INIT_HOST
+      byte_offset: 4152
+    - name: GDI_CONFIG_REPORT_0
+      byte_offset: 4160
+    - name: GDI_CONFIG_REPORT_1
+      byte_offset: 4164
+    - name: GDI_CONFIG_REPORT_2
+      byte_offset: 4168
+    - name: GDI_CONFIG_REPORT_3
+      byte_offset: 4172
+    - name: GDI_CONFIG_REPORT_4
+      byte_offset: 4176
+    - name: GDI_CONFIG_REPORT_5
+      byte_offset: 4180
+    - name: GDI_CONFIG_REPORT_6
+      byte_offset: 4184
+    - name: GDI_CONFIG_REPORT_7
+      byte_offset: 4188
+    - name: GDI_PINFO_REQ
+      byte_offset: 4192
+    - name: GDI_PINFO_ACK
+      byte_offset: 4196
+    - name: GDI_PINFO_ADDR
+      byte_offset: 4200
+    - name: GDI_PINFO_DATA
+      byte_offset: 4204
+    - name: GDI_BWB_ENABLE
+      byte_offset: 4208
+    - name: GDI_BWB_SIZE
+      byte_offset: 4212
+    - name: GDI_BWB_STD_STRUCT
+      byte_offset: 4216
+    - name: GDI_BWB_STATUS
+      byte_offset: 4220
+    - name: GDI_WPROT_ERR_CLEAR
+      byte_offset: 4256
+      fieldset: VPU_VPU_ENC_GDI_WPROT_ERR_CLEAR
+    - name: GDI_WPROT_ERR_RSN
+      byte_offset: 4260
+    - name: GDI_WPROT_ERR_ADR
+      byte_offset: 4264
+    - name: GDI_WPROT_RGN_EN
+      byte_offset: 4268
+    - name: GDI_WPROT_RGN0_STA
+      byte_offset: 4272
+    - name: GDI_WPROT_RGN0_END
+      byte_offset: 4276
+    - name: GDI_WPROT_RGN1_STA
+      byte_offset: 4280
+    - name: GDI_WPROT_RGN1_END
+      byte_offset: 4284
+    - name: GDI_WPROT_RGN2_STA
+      byte_offset: 4288
+    - name: GDI_WPROT_RGN2_END
+      byte_offset: 4292
+    - name: GDI_WPROT_RGN3_STA
+      byte_offset: 4296
+    - name: GDI_WPROT_RGN3_END
+      byte_offset: 4300
+    - name: GDI_WPROT_RGN4_STA
+      byte_offset: 4304
+    - name: GDI_WPROT_RGN4_END
+      byte_offset: 4308
+    - name: GDI_WPROT_RGN5_STA
+      byte_offset: 4312
+    - name: GDI_WPROT_RGN5_END
+      byte_offset: 4316
+    - name: GDI_SRC_IDX_REPORT
+      byte_offset: 4324
+    - name: GDI_DEC_IDX_REPORT
+      byte_offset: 4328
+    - name: GDI_DISP_IDX_REPORT
+      byte_offset: 4332
+    - name: GDI_BUS_CTRL
+      byte_offset: 4336
+    - name: GDI_BUS_STATUS
+      byte_offset: 4340
+    - name: GDI_PIC_INFO_00_0
+      byte_offset: 5120
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_00_0
+    - name: GDI_PIC_INFO_00_1
+      byte_offset: 5124
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_00_1
+    - name: GDI_PIC_INFO_00_2
+      byte_offset: 5128
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_00_2
+    - name: GDI_PIC_INFO_00_3
+      byte_offset: 5132
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_00_3
+    - name: GDI_PIC_INFO_00_4
+      byte_offset: 5136
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_00_4
+    - name: GDI_PIC_INFO_00_5
+      byte_offset: 5140
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_00_5
+    - name: GDI_PIC_INFO_00_6
+      byte_offset: 5144
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_00_6
+    - name: GDI_PIC_INFO_00_7
+      byte_offset: 5148
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_00_7
+    - name: GDI_PIC_INFO_01_0
+      byte_offset: 5152
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_01_0
+    - name: GDI_PIC_INFO_01_1
+      byte_offset: 5156
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_01_1
+    - name: GDI_PIC_INFO_01_2
+      byte_offset: 5160
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_01_2
+    - name: GDI_PIC_INFO_01_3
+      byte_offset: 5164
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_01_3
+    - name: GDI_PIC_INFO_01_4
+      byte_offset: 5168
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_01_4
+    - name: GDI_PIC_INFO_01_5
+      byte_offset: 5172
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_01_5
+    - name: GDI_PIC_INFO_01_6
+      byte_offset: 5176
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_01_6
+    - name: GDI_PIC_INFO_01_7
+      byte_offset: 5180
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_01_7
+    - name: GDI_PIC_INFO_02_0
+      byte_offset: 5184
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_02_0
+    - name: GDI_PIC_INFO_02_1
+      byte_offset: 5188
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_02_1
+    - name: GDI_PIC_INFO_02_2
+      byte_offset: 5192
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_02_2
+    - name: GDI_PIC_INFO_02_3
+      byte_offset: 5196
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_02_3
+    - name: GDI_PIC_INFO_02_4
+      byte_offset: 5200
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_02_4
+    - name: GDI_PIC_INFO_02_5
+      byte_offset: 5204
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_02_5
+    - name: GDI_PIC_INFO_02_6
+      byte_offset: 5208
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_02_6
+    - name: GDI_PIC_INFO_02_7
+      byte_offset: 5212
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_02_7
+    - name: GDI_PIC_INFO_03_0
+      byte_offset: 5216
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_03_0
+    - name: GDI_PIC_INFO_03_1
+      byte_offset: 5220
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_03_1
+    - name: GDI_PIC_INFO_03_2
+      byte_offset: 5224
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_03_2
+    - name: GDI_PIC_INFO_03_3
+      byte_offset: 5228
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_03_3
+    - name: GDI_PIC_INFO_03_4
+      byte_offset: 5232
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_03_4
+    - name: GDI_PIC_INFO_03_5
+      byte_offset: 5236
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_03_5
+    - name: GDI_PIC_INFO_03_6
+      byte_offset: 5240
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_03_6
+    - name: GDI_PIC_INFO_03_7
+      byte_offset: 5244
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_03_7
+    - name: GDI_PIC_INFO_04_0
+      byte_offset: 5248
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_04_0
+    - name: GDI_PIC_INFO_04_1
+      byte_offset: 5252
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_04_1
+    - name: GDI_PIC_INFO_04_2
+      byte_offset: 5256
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_04_2
+    - name: GDI_PIC_INFO_04_3
+      byte_offset: 5260
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_04_3
+    - name: GDI_PIC_INFO_04_4
+      byte_offset: 5264
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_04_4
+    - name: GDI_PIC_INFO_04_5
+      byte_offset: 5268
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_04_5
+    - name: GDI_PIC_INFO_04_6
+      byte_offset: 5272
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_04_6
+    - name: GDI_PIC_INFO_04_7
+      byte_offset: 5276
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_04_7
+    - name: GDI_PIC_INFO_05_0
+      byte_offset: 5280
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_05_0
+    - name: GDI_PIC_INFO_05_1
+      byte_offset: 5284
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_05_1
+    - name: GDI_PIC_INFO_05_2
+      byte_offset: 5288
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_05_2
+    - name: GDI_PIC_INFO_05_3
+      byte_offset: 5292
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_05_3
+    - name: GDI_PIC_INFO_05_4
+      byte_offset: 5296
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_05_4
+    - name: GDI_PIC_INFO_05_5
+      byte_offset: 5300
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_05_5
+    - name: GDI_PIC_INFO_05_6
+      byte_offset: 5304
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_05_6
+    - name: GDI_PIC_INFO_05_7
+      byte_offset: 5308
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_05_7
+    - name: GDI_PIC_INFO_06_0
+      byte_offset: 5312
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_06_0
+    - name: GDI_PIC_INFO_06_1
+      byte_offset: 5316
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_06_1
+    - name: GDI_PIC_INFO_06_2
+      byte_offset: 5320
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_06_2
+    - name: GDI_PIC_INFO_06_3
+      byte_offset: 5324
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_06_3
+    - name: GDI_PIC_INFO_06_4
+      byte_offset: 5328
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_06_4
+    - name: GDI_PIC_INFO_06_5
+      byte_offset: 5332
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_06_5
+    - name: GDI_PIC_INFO_06_6
+      byte_offset: 5336
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_06_6
+    - name: GDI_PIC_INFO_06_7
+      byte_offset: 5340
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_06_7
+    - name: GDI_PIC_INFO_07_0
+      byte_offset: 5344
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_07_0
+    - name: GDI_PIC_INFO_07_1
+      byte_offset: 5348
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_07_1
+    - name: GDI_PIC_INFO_07_2
+      byte_offset: 5352
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_07_2
+    - name: GDI_PIC_INFO_07_3
+      byte_offset: 5356
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_07_3
+    - name: GDI_PIC_INFO_07_4
+      byte_offset: 5360
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_07_4
+    - name: GDI_PIC_INFO_07_5
+      byte_offset: 5364
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_07_5
+    - name: GDI_PIC_INFO_07_6
+      byte_offset: 5368
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_07_6
+    - name: GDI_PIC_INFO_07_7
+      byte_offset: 5372
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_07_7
+    - name: GDI_PIC_INFO_08_0
+      byte_offset: 5376
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_08_0
+    - name: GDI_PIC_INFO_08_1
+      byte_offset: 5380
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_08_1
+    - name: GDI_PIC_INFO_08_2
+      byte_offset: 5384
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_08_2
+    - name: GDI_PIC_INFO_08_3
+      byte_offset: 5388
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_08_3
+    - name: GDI_PIC_INFO_08_4
+      byte_offset: 5392
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_08_4
+    - name: GDI_PIC_INFO_08_5
+      byte_offset: 5396
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_08_5
+    - name: GDI_PIC_INFO_08_6
+      byte_offset: 5400
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_08_6
+    - name: GDI_PIC_INFO_08_7
+      byte_offset: 5404
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_08_7
+    - name: GDI_PIC_INFO_09_0
+      byte_offset: 5408
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_09_0
+    - name: GDI_PIC_INFO_09_1
+      byte_offset: 5412
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_09_1
+    - name: GDI_PIC_INFO_09_2
+      byte_offset: 5416
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_09_2
+    - name: GDI_PIC_INFO_09_3
+      byte_offset: 5420
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_09_3
+    - name: GDI_PIC_INFO_09_4
+      byte_offset: 5424
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_09_4
+    - name: GDI_PIC_INFO_09_5
+      byte_offset: 5428
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_09_5
+    - name: GDI_PIC_INFO_09_6
+      byte_offset: 5432
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_09_6
+    - name: GDI_PIC_INFO_09_7
+      byte_offset: 5436
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_09_7
+    - name: GDI_PIC_INFO_10_0
+      byte_offset: 5440
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_10_0
+    - name: GDI_PIC_INFO_10_1
+      byte_offset: 5444
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_10_1
+    - name: GDI_PIC_INFO_10_2
+      byte_offset: 5448
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_10_2
+    - name: GDI_PIC_INFO_10_3
+      byte_offset: 5452
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_10_3
+    - name: GDI_PIC_INFO_10_4
+      byte_offset: 5456
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_10_4
+    - name: GDI_PIC_INFO_10_5
+      byte_offset: 5460
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_10_5
+    - name: GDI_PIC_INFO_10_6
+      byte_offset: 5464
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_10_6
+    - name: GDI_PIC_INFO_10_7
+      byte_offset: 5468
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_10_7
+    - name: GDI_PIC_INFO_11_0
+      byte_offset: 5472
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_11_0
+    - name: GDI_PIC_INFO_11_1
+      byte_offset: 5476
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_11_1
+    - name: GDI_PIC_INFO_11_2
+      byte_offset: 5480
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_11_2
+    - name: GDI_PIC_INFO_11_3
+      byte_offset: 5484
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_11_3
+    - name: GDI_PIC_INFO_11_4
+      byte_offset: 5488
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_11_4
+    - name: GDI_PIC_INFO_11_5
+      byte_offset: 5492
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_11_5
+    - name: GDI_PIC_INFO_11_6
+      byte_offset: 5496
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_11_6
+    - name: GDI_PIC_INFO_11_7
+      byte_offset: 5500
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_11_7
+    - name: GDI_PIC_INFO_12_0
+      byte_offset: 5504
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_12_0
+    - name: GDI_PIC_INFO_12_1
+      byte_offset: 5508
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_12_1
+    - name: GDI_PIC_INFO_12_2
+      byte_offset: 5512
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_12_2
+    - name: GDI_PIC_INFO_12_3
+      byte_offset: 5516
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_12_3
+    - name: GDI_PIC_INFO_12_4
+      byte_offset: 5520
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_12_4
+    - name: GDI_PIC_INFO_12_5
+      byte_offset: 5524
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_12_5
+    - name: GDI_PIC_INFO_12_6
+      byte_offset: 5528
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_12_6
+    - name: GDI_PIC_INFO_12_7
+      byte_offset: 5532
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_12_7
+    - name: GDI_PIC_INFO_13_0
+      byte_offset: 5536
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_13_0
+    - name: GDI_PIC_INFO_13_1
+      byte_offset: 5540
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_13_1
+    - name: GDI_PIC_INFO_13_2
+      byte_offset: 5544
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_13_2
+    - name: GDI_PIC_INFO_13_3
+      byte_offset: 5548
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_13_3
+    - name: GDI_PIC_INFO_13_4
+      byte_offset: 5552
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_13_4
+    - name: GDI_PIC_INFO_13_5
+      byte_offset: 5556
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_13_5
+    - name: GDI_PIC_INFO_13_6
+      byte_offset: 5560
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_13_6
+    - name: GDI_PIC_INFO_13_7
+      byte_offset: 5564
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_13_7
+    - name: GDI_PIC_INFO_14_0
+      byte_offset: 5568
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_14_0
+    - name: GDI_PIC_INFO_14_1
+      byte_offset: 5572
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_14_1
+    - name: GDI_PIC_INFO_14_2
+      byte_offset: 5576
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_14_2
+    - name: GDI_PIC_INFO_14_3
+      byte_offset: 5580
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_14_3
+    - name: GDI_PIC_INFO_14_4
+      byte_offset: 5584
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_14_4
+    - name: GDI_PIC_INFO_14_5
+      byte_offset: 5588
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_14_5
+    - name: GDI_PIC_INFO_14_6
+      byte_offset: 5592
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_14_6
+    - name: GDI_PIC_INFO_14_7
+      byte_offset: 5596
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_14_7
+    - name: GDI_PIC_INFO_15_0
+      byte_offset: 5600
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_15_0
+    - name: GDI_PIC_INFO_15_1
+      byte_offset: 5604
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_15_1
+    - name: GDI_PIC_INFO_15_2
+      byte_offset: 5608
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_15_2
+    - name: GDI_PIC_INFO_15_3
+      byte_offset: 5612
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_15_3
+    - name: GDI_PIC_INFO_15_4
+      byte_offset: 5616
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_15_4
+    - name: GDI_PIC_INFO_15_5
+      byte_offset: 5620
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_15_5
+    - name: GDI_PIC_INFO_15_6
+      byte_offset: 5624
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_15_6
+    - name: GDI_PIC_INFO_15_7
+      byte_offset: 5628
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_15_7
+    - name: GDI_PIC_INFO_16_0
+      byte_offset: 5632
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_16_0
+    - name: GDI_PIC_INFO_16_1
+      byte_offset: 5636
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_16_1
+    - name: GDI_PIC_INFO_16_2
+      byte_offset: 5640
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_16_2
+    - name: GDI_PIC_INFO_16_3
+      byte_offset: 5644
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_16_3
+    - name: GDI_PIC_INFO_16_4
+      byte_offset: 5648
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_16_4
+    - name: GDI_PIC_INFO_16_5
+      byte_offset: 5652
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_16_5
+    - name: GDI_PIC_INFO_16_6
+      byte_offset: 5656
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_16_6
+    - name: GDI_PIC_INFO_16_7
+      byte_offset: 5660
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_16_7
+    - name: GDI_PIC_INFO_17_0
+      byte_offset: 5664
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_17_0
+    - name: GDI_PIC_INFO_17_1
+      byte_offset: 5668
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_17_1
+    - name: GDI_PIC_INFO_17_2
+      byte_offset: 5672
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_17_2
+    - name: GDI_PIC_INFO_17_3
+      byte_offset: 5676
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_17_3
+    - name: GDI_PIC_INFO_17_4
+      byte_offset: 5680
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_17_4
+    - name: GDI_PIC_INFO_17_5
+      byte_offset: 5684
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_17_5
+    - name: GDI_PIC_INFO_17_6
+      byte_offset: 5688
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_17_6
+    - name: GDI_PIC_INFO_17_7
+      byte_offset: 5692
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_17_7
+    - name: GDI_PIC_INFO_18_0
+      byte_offset: 5696
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_18_0
+    - name: GDI_PIC_INFO_18_1
+      byte_offset: 5700
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_18_1
+    - name: GDI_PIC_INFO_18_2
+      byte_offset: 5704
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_18_2
+    - name: GDI_PIC_INFO_18_3
+      byte_offset: 5708
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_18_3
+    - name: GDI_PIC_INFO_18_4
+      byte_offset: 5712
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_18_4
+    - name: GDI_PIC_INFO_18_5
+      byte_offset: 5716
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_18_5
+    - name: GDI_PIC_INFO_18_6
+      byte_offset: 5720
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_18_6
+    - name: GDI_PIC_INFO_18_7
+      byte_offset: 5724
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_18_7
+    - name: GDI_PIC_INFO_19_0
+      byte_offset: 5728
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_19_0
+    - name: GDI_PIC_INFO_19_1
+      byte_offset: 5732
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_19_1
+    - name: GDI_PIC_INFO_19_2
+      byte_offset: 5736
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_19_2
+    - name: GDI_PIC_INFO_19_3
+      byte_offset: 5740
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_19_3
+    - name: GDI_PIC_INFO_19_4
+      byte_offset: 5744
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_19_4
+    - name: GDI_PIC_INFO_19_5
+      byte_offset: 5748
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_19_5
+    - name: GDI_PIC_INFO_19_6
+      byte_offset: 5752
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_19_6
+    - name: GDI_PIC_INFO_19_7
+      byte_offset: 5756
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_19_7
+    - name: GDI_PIC_INFO_20_0
+      byte_offset: 5760
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_20_0
+    - name: GDI_PIC_INFO_20_1
+      byte_offset: 5764
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_20_1
+    - name: GDI_PIC_INFO_20_2
+      byte_offset: 5768
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_20_2
+    - name: GDI_PIC_INFO_20_3
+      byte_offset: 5772
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_20_3
+    - name: GDI_PIC_INFO_20_4
+      byte_offset: 5776
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_20_4
+    - name: GDI_PIC_INFO_20_5
+      byte_offset: 5780
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_20_5
+    - name: GDI_PIC_INFO_20_6
+      byte_offset: 5784
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_20_6
+    - name: GDI_PIC_INFO_20_7
+      byte_offset: 5788
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_20_7
+    - name: GDI_PIC_INFO_21_0
+      byte_offset: 5792
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_21_0
+    - name: GDI_PIC_INFO_21_1
+      byte_offset: 5796
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_21_1
+    - name: GDI_PIC_INFO_21_2
+      byte_offset: 5800
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_21_2
+    - name: GDI_PIC_INFO_21_3
+      byte_offset: 5804
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_21_3
+    - name: GDI_PIC_INFO_21_4
+      byte_offset: 5808
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_21_4
+    - name: GDI_PIC_INFO_21_5
+      byte_offset: 5812
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_21_5
+    - name: GDI_PIC_INFO_21_6
+      byte_offset: 5816
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_21_6
+    - name: GDI_PIC_INFO_21_7
+      byte_offset: 5820
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_21_7
+    - name: GDI_PIC_INFO_22_0
+      byte_offset: 5824
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_22_0
+    - name: GDI_PIC_INFO_22_1
+      byte_offset: 5828
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_22_1
+    - name: GDI_PIC_INFO_22_2
+      byte_offset: 5832
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_22_2
+    - name: GDI_PIC_INFO_22_3
+      byte_offset: 5836
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_22_3
+    - name: GDI_PIC_INFO_22_4
+      byte_offset: 5840
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_22_4
+    - name: GDI_PIC_INFO_22_5
+      byte_offset: 5844
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_22_5
+    - name: GDI_PIC_INFO_22_6
+      byte_offset: 5848
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_22_6
+    - name: GDI_PIC_INFO_22_7
+      byte_offset: 5852
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_22_7
+    - name: GDI_PIC_INFO_23_0
+      byte_offset: 5856
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_23_0
+    - name: GDI_PIC_INFO_23_1
+      byte_offset: 5860
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_23_1
+    - name: GDI_PIC_INFO_23_2
+      byte_offset: 5864
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_23_2
+    - name: GDI_PIC_INFO_23_3
+      byte_offset: 5868
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_23_3
+    - name: GDI_PIC_INFO_23_4
+      byte_offset: 5872
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_23_4
+    - name: GDI_PIC_INFO_23_5
+      byte_offset: 5876
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_23_5
+    - name: GDI_PIC_INFO_23_6
+      byte_offset: 5880
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_23_6
+    - name: GDI_PIC_INFO_23_7
+      byte_offset: 5884
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_23_7
+    - name: GDI_PIC_INFO_24_0
+      byte_offset: 5888
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_24_0
+    - name: GDI_PIC_INFO_24_1
+      byte_offset: 5892
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_24_1
+    - name: GDI_PIC_INFO_24_2
+      byte_offset: 5896
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_24_2
+    - name: GDI_PIC_INFO_24_3
+      byte_offset: 5900
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_24_3
+    - name: GDI_PIC_INFO_24_4
+      byte_offset: 5904
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_24_4
+    - name: GDI_PIC_INFO_24_5
+      byte_offset: 5908
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_24_5
+    - name: GDI_PIC_INFO_24_6
+      byte_offset: 5912
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_24_6
+    - name: GDI_PIC_INFO_24_7
+      byte_offset: 5916
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_24_7
+    - name: GDI_PIC_INFO_25_0
+      byte_offset: 5920
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_25_0
+    - name: GDI_PIC_INFO_25_1
+      byte_offset: 5924
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_25_1
+    - name: GDI_PIC_INFO_25_2
+      byte_offset: 5928
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_25_2
+    - name: GDI_PIC_INFO_25_3
+      byte_offset: 5932
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_25_3
+    - name: GDI_PIC_INFO_25_4
+      byte_offset: 5936
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_25_4
+    - name: GDI_PIC_INFO_25_5
+      byte_offset: 5940
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_25_5
+    - name: GDI_PIC_INFO_25_6
+      byte_offset: 5944
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_25_6
+    - name: GDI_PIC_INFO_25_7
+      byte_offset: 5948
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_25_7
+    - name: GDI_PIC_INFO_26_0
+      byte_offset: 5952
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_26_0
+    - name: GDI_PIC_INFO_26_1
+      byte_offset: 5956
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_26_1
+    - name: GDI_PIC_INFO_26_2
+      byte_offset: 5960
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_26_2
+    - name: GDI_PIC_INFO_26_3
+      byte_offset: 5964
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_26_3
+    - name: GDI_PIC_INFO_26_4
+      byte_offset: 5968
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_26_4
+    - name: GDI_PIC_INFO_26_5
+      byte_offset: 5972
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_26_5
+    - name: GDI_PIC_INFO_26_6
+      byte_offset: 5976
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_26_6
+    - name: GDI_PIC_INFO_26_7
+      byte_offset: 5980
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_26_7
+    - name: GDI_PIC_INFO_27_0
+      byte_offset: 5984
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_27_0
+    - name: GDI_PIC_INFO_27_1
+      byte_offset: 5988
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_27_1
+    - name: GDI_PIC_INFO_27_2
+      byte_offset: 5992
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_27_2
+    - name: GDI_PIC_INFO_27_3
+      byte_offset: 5996
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_27_3
+    - name: GDI_PIC_INFO_27_4
+      byte_offset: 6000
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_27_4
+    - name: GDI_PIC_INFO_27_5
+      byte_offset: 6004
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_27_5
+    - name: GDI_PIC_INFO_27_6
+      byte_offset: 6008
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_27_6
+    - name: GDI_PIC_INFO_27_7
+      byte_offset: 6012
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_27_7
+    - name: GDI_PIC_INFO_28_0
+      byte_offset: 6016
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_28_0
+    - name: GDI_PIC_INFO_28_1
+      byte_offset: 6020
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_28_1
+    - name: GDI_PIC_INFO_28_2
+      byte_offset: 6024
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_28_2
+    - name: GDI_PIC_INFO_28_3
+      byte_offset: 6028
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_28_3
+    - name: GDI_PIC_INFO_28_4
+      byte_offset: 6032
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_28_4
+    - name: GDI_PIC_INFO_28_5
+      byte_offset: 6036
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_28_5
+    - name: GDI_PIC_INFO_28_6
+      byte_offset: 6040
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_28_6
+    - name: GDI_PIC_INFO_28_7
+      byte_offset: 6044
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_28_7
+    - name: GDI_PIC_INFO_29_0
+      byte_offset: 6048
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_29_0
+    - name: GDI_PIC_INFO_29_1
+      byte_offset: 6052
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_29_1
+    - name: GDI_PIC_INFO_29_2
+      byte_offset: 6056
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_29_2
+    - name: GDI_PIC_INFO_29_3
+      byte_offset: 6060
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_29_3
+    - name: GDI_PIC_INFO_29_4
+      byte_offset: 6064
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_29_4
+    - name: GDI_PIC_INFO_29_5
+      byte_offset: 6068
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_29_5
+    - name: GDI_PIC_INFO_29_6
+      byte_offset: 6072
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_29_6
+    - name: GDI_PIC_INFO_29_7
+      byte_offset: 6076
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_29_7
+    - name: GDI_PIC_INFO_30_0
+      byte_offset: 6080
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_30_0
+    - name: GDI_PIC_INFO_30_1
+      byte_offset: 6084
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_30_1
+    - name: GDI_PIC_INFO_30_2
+      byte_offset: 6088
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_30_2
+    - name: GDI_PIC_INFO_30_3
+      byte_offset: 6092
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_30_3
+    - name: GDI_PIC_INFO_30_4
+      byte_offset: 6096
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_30_4
+    - name: GDI_PIC_INFO_30_5
+      byte_offset: 6100
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_30_5
+    - name: GDI_PIC_INFO_30_6
+      byte_offset: 6104
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_30_6
+    - name: GDI_PIC_INFO_30_7
+      byte_offset: 6108
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_30_7
+    - name: GDI_PIC_INFO_31_0
+      byte_offset: 6112
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_31_0
+    - name: GDI_PIC_INFO_31_1
+      byte_offset: 6116
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_31_1
+    - name: GDI_PIC_INFO_31_2
+      byte_offset: 6120
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_31_2
+    - name: GDI_PIC_INFO_31_3
+      byte_offset: 6124
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_31_3
+    - name: GDI_PIC_INFO_31_4
+      byte_offset: 6128
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_31_4
+    - name: GDI_PIC_INFO_31_5
+      byte_offset: 6132
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_31_5
+    - name: GDI_PIC_INFO_31_6
+      byte_offset: 6136
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_31_6
+    - name: GDI_PIC_INFO_31_7
+      byte_offset: 6140
+      fieldset: VPU_VPU_ENC_GDI_PIC_INFO_31_7
+    - name: GDI_XY2AXI_LUM_BIT00
+      byte_offset: 6144
+    - name: GDI_XY2AXI_LUM_BIT01
+      byte_offset: 6148
+    - name: GDI_XY2AXI_LUM_BIT02
+      byte_offset: 6152
+    - name: GDI_XY2AXI_LUM_BIT03
+      byte_offset: 6156
+    - name: GDI_XY2AXI_LUM_BIT04
+      byte_offset: 6160
+    - name: GDI_XY2AXI_LUM_BIT05
+      byte_offset: 6164
+    - name: GDI_XY2AXI_LUM_BIT06
+      byte_offset: 6168
+    - name: GDI_XY2AXI_LUM_BIT07
+      byte_offset: 6172
+    - name: GDI_XY2AXI_LUM_BIT08
+      byte_offset: 6176
+    - name: GDI_XY2AXI_LUM_BIT09
+      byte_offset: 6180
+    - name: GDI_XY2AXI_LUM_BIT0A
+      byte_offset: 6184
+    - name: GDI_XY2AXI_LUM_BIT0B
+      byte_offset: 6188
+    - name: GDI_XY2AXI_LUM_BIT0C
+      byte_offset: 6192
+    - name: GDI_XY2AXI_LUM_BIT0D
+      byte_offset: 6196
+    - name: GDI_XY2AXI_LUM_BIT0E
+      byte_offset: 6200
+    - name: GDI_XY2AXI_LUM_BIT0F
+      byte_offset: 6204
+    - name: GDI_XY2AXI_LUM_BIT10
+      byte_offset: 6208
+    - name: GDI_XY2AXI_LUM_BIT11
+      byte_offset: 6212
+    - name: GDI_XY2AXI_LUM_BIT12
+      byte_offset: 6216
+    - name: GDI_XY2AXI_LUM_BIT13
+      byte_offset: 6220
+    - name: GDI_XY2AXI_LUM_BIT14
+      byte_offset: 6224
+    - name: GDI_XY2AXI_LUM_BIT15
+      byte_offset: 6228
+    - name: GDI_XY2AXI_LUM_BIT16
+      byte_offset: 6232
+    - name: GDI_XY2AXI_LUM_BIT17
+      byte_offset: 6236
+    - name: GDI_XY2AXI_LUM_BIT18
+      byte_offset: 6240
+    - name: GDI_XY2AXI_LUM_BIT19
+      byte_offset: 6244
+    - name: GDI_XY2AXI_LUM_BIT1A
+      byte_offset: 6248
+    - name: GDI_XY2AXI_LUM_BIT1B
+      byte_offset: 6252
+    - name: GDI_XY2AXI_LUM_BIT1C
+      byte_offset: 6256
+    - name: GDI_XY2AXI_LUM_BIT1D
+      byte_offset: 6260
+    - name: GDI_XY2AXI_LUM_BIT1E
+      byte_offset: 6264
+    - name: GDI_XY2AXI_LUM_BIT1F
+      byte_offset: 6268
+    - name: GDI_XY2AXI_CHR_BIT00
+      byte_offset: 6272
+    - name: GDI_XY2AXI_CHR_BIT01
+      byte_offset: 6276
+    - name: GDI_XY2AXI_CHR_BIT02
+      byte_offset: 6280
+    - name: GDI_XY2AXI_CHR_BIT03
+      byte_offset: 6284
+    - name: GDI_XY2AXI_CHR_BIT04
+      byte_offset: 6288
+    - name: GDI_XY2AXI_CHR_BIT05
+      byte_offset: 6292
+    - name: GDI_XY2AXI_CHR_BIT06
+      byte_offset: 6296
+    - name: GDI_XY2AXI_CHR_BIT07
+      byte_offset: 6300
+    - name: GDI_XY2AXI_CHR_BIT08
+      byte_offset: 6304
+    - name: GDI_XY2AXI_CHR_BIT09
+      byte_offset: 6308
+    - name: GDI_XY2AXI_CHR_BIT0A
+      byte_offset: 6312
+    - name: GDI_XY2AXI_CHR_BIT0B
+      byte_offset: 6316
+    - name: GDI_XY2AXI_CHR_BIT0C
+      byte_offset: 6320
+    - name: GDI_XY2AXI_CHR_BIT0D
+      byte_offset: 6324
+    - name: GDI_XY2AXI_CHR_BIT0E
+      byte_offset: 6328
+    - name: GDI_XY2AXI_CHR_BIT0F
+      byte_offset: 6332
+    - name: GDI_XY2AXI_CHR_BIT10
+      byte_offset: 6336
+    - name: GDI_XY2AXI_CHR_BIT11
+      byte_offset: 6340
+    - name: GDI_XY2AXI_CHR_BIT12
+      byte_offset: 6344
+    - name: GDI_XY2AXI_CHR_BIT13
+      byte_offset: 6348
+    - name: GDI_XY2AXI_CHR_BIT14
+      byte_offset: 6352
+    - name: GDI_XY2AXI_CHR_BIT15
+      byte_offset: 6356
+    - name: GDI_XY2AXI_CHR_BIT16
+      byte_offset: 6360
+    - name: GDI_XY2AXI_CHR_BIT17
+      byte_offset: 6364
+    - name: GDI_XY2AXI_CHR_BIT18
+      byte_offset: 6368
+    - name: GDI_XY2AXI_CHR_BIT19
+      byte_offset: 6372
+    - name: GDI_XY2AXI_CHR_BIT1A
+      byte_offset: 6376
+    - name: GDI_XY2AXI_CHR_BIT1B
+      byte_offset: 6380
+    - name: GDI_XY2AXI_CHR_BIT1C
+      byte_offset: 6384
+    - name: GDI_XY2AXI_CHR_BIT1D
+      byte_offset: 6388
+    - name: GDI_XY2AXI_CHR_BIT1E
+      byte_offset: 6392
+    - name: GDI_XY2AXI_CHR_BIT1F
+      byte_offset: 6396
+    - name: GDI_XY2AXI_CFG
+      byte_offset: 6400
+      fieldset: VPU_VPU_ENC_GDI_XY2AXI_CFG
+    - name: GDI_AXI_BASE_EXTEND
+      byte_offset: 6404
+fieldset/VPU_VPU_ENC_BIT_CODE_RUN_BIT_CODE:
+  description: ''
+  fields:
+    - name: RUN
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_ENC_BIT_CODE_DOWN:
+  description: ''
+  fields:
+    - name: CodeData
+      bit_offset: 0
+      bit_size: 16
+    - name: CodeAddr
+      bit_offset: 16
+      bit_size: 13
+fieldset/VPU_VPU_ENC_BIT_INT_REQ:
+  description: ''
+  fields:
+    - name: IntReq
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_ENC_BIT_INT_CLEAR:
+  description: ''
+  fields:
+    - name: IntClear
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_ENC_BIT_INT_STS:
+  description: ''
+  fields:
+    - name: IntSts
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_ENC_BIT_CODE_RESET:
+  description: ''
+  fields:
+    - name: CodeReset
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_ENC_BIT_CUR_PC:
+  description: ''
+  fields:
+    - name: CurPc
+      bit_offset: 0
+      bit_size: 14
+fieldset/VPU_VPU_ENC_BIT_CODEC_BUSY:
+  description: ''
+  fields:
+    - name: CodecBusy
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_ENC_BIT_SW_RESET:
+  description: ''
+  fields:
+    - name: Reserved0
+      bit_offset: 0
+      bit_size: 3
+    - name: Reserved1
+      bit_offset: 9
+      bit_size: 23
+fieldset/VPU_VPU_ENC_BIT_SW_RESET_RESET_BPU:
+  description: ''
+  fields:
+    - name: CORE
+      bit_offset: 3
+      bit_size: 1
+    - name: BUS
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_BIT_SW_RESET_RESET_VCE:
+  description: ''
+  fields:
+    - name: CORE
+      bit_offset: 5
+      bit_size: 1
+    - name: BUS
+      bit_offset: 6
+      bit_size: 1
+fieldset/VPU_VPU_ENC_BIT_SW_RESET_RESET_GDI:
+  description: ''
+  fields:
+    - name: CORE
+      bit_offset: 7
+      bit_size: 1
+    - name: BUS
+      bit_offset: 8
+      bit_size: 1
+fieldset/VPU_VPU_ENC_BIT_SW_RESET_STATUS_RST_STATE_BPU:
+  description: ''
+  fields:
+    - name: CORE
+      bit_offset: 0
+      bit_size: 1
+    - name: BUS
+      bit_offset: 1
+      bit_size: 1
+fieldset/VPU_VPU_ENC_BIT_SW_RESET_STATUS_RST_STATE_VCE:
+  description: ''
+  fields:
+    - name: CORE
+      bit_offset: 2
+      bit_size: 1
+    - name: BUS
+      bit_offset: 3
+      bit_size: 1
+fieldset/VPU_VPU_ENC_BIT_SW_RESET_STATUS_RST_STATE_GDI:
+  description: ''
+  fields:
+    - name: CORE
+      bit_offset: 4
+      bit_size: 1
+    - name: BUS
+      bit_offset: 5
+      bit_size: 1
+fieldset/VPU_VPU_ENC_BIT_BIT_STOP_CMD_BIT_BIT_STOP:
+  description: ''
+  fields:
+    - name: CMD
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_ENC_BIT_RESUME_CMD_BIT_RESUME:
+  description: ''
+  fields:
+    - name: CMD
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_ENC_BIT_STOP_MB_STS_BIT_STOP_MB:
+  description: ''
+  fields:
+    - name: STS
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_ENC_BIT_STOP_MB_EN_BIT_STOP_MB:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_ENC_BIT_STOP_MB_ADDR_BIT_STOP_MB:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_ENC_BIT_FRAME_DONE_CTRL_BIT_FRAME_DONE:
+  description: ''
+  fields:
+    - name: CTRL
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_ENC_BIT_AXI_HIGH_ADDR_AXI_HIGH:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 8
+fieldset/VPU_VPU_ENC_BIT_CODE_BUF_ADDR:
+  description: ''
+  fields:
+    - name: CodeBufAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_BIT_WORK_BUF_ADDR:
+  description: ''
+  fields:
+    - name: WorkBufAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_BIT_PARA_BUF_ADDR:
+  description: ''
+  fields:
+    - name: ParaBufAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_BIT_BIT_STREAM_CTRL:
+  description: ''
+  fields:
+    - name: SelBigEndian
+      bit_offset: 0
+      bit_size: 1
+    - name: Sel64BitsEndian
+      bit_offset: 1
+      bit_size: 1
+    - name: BufStsCheckDis
+      bit_offset: 2
+      bit_size: 1
+    - name: EncBufPicFlush
+      bit_offset: 3
+      bit_size: 1
+    - name: EncBufPicReset
+      bit_offset: 4
+      bit_size: 1
+    - name: EncDynBufAllocEn
+      bit_offset: 5
+      bit_size: 1
+    - name: EncLineBufIntEn
+      bit_offset: 6
+      bit_size: 1
+fieldset/VPU_VPU_ENC_BIT_FRAME_MEM_CTRL:
+  description: ''
+  fields:
+    - name: SelBigEndian
+      bit_offset: 0
+      bit_size: 1
+    - name: Sel64BitsEndian
+      bit_offset: 1
+      bit_size: 1
+    - name: SelCInterleave
+      bit_offset: 2
+      bit_size: 1
+    - name: SelNV21
+      bit_offset: 3
+      bit_size: 1
+    - name: ChromaFormat400
+      bit_offset: 6
+      bit_size: 3
+    - name: TiledMapEn
+      bit_offset: 9
+      bit_size: 4
+    - name: TiledToLinearEn
+      bit_offset: 13
+      bit_size: 2
+    - name: Burstwritebacken
+      bit_offset: 15
+      bit_size: 1
+    - name: RotBufGdiDirect
+      bit_offset: 16
+      bit_size: 1
+    - name: TiledToLinearOnTheFlyEn
+      bit_offset: 17
+      bit_size: 2
+fieldset/VPU_VPU_ENC_BIT_BIT_STREAM_PARAM:
+  description: ''
+  fields:
+    - name: SeqInitEscape
+      bit_offset: 0
+      bit_size: 1
+    - name: Reserved0
+      bit_offset: 1
+      bit_size: 1
+    - name: StreamEnd
+      bit_offset: 2
+      bit_size: 1
+    - name: StreamMode
+      bit_offset: 3
+      bit_size: 2
+fieldset/VPU_VPU_ENC_BIT_TEMP_BUF_ADDR:
+  description: ''
+  fields:
+    - name: TempBufAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_BIT_RD_PTR:
+  description: ''
+  fields:
+    - name: StreamRdPtr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_BIT_WR_PTR:
+  description: ''
+  fields:
+    - name: StreamWrPtr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_BIT_RESET_CTRL:
+  description: ''
+  fields:
+    - name: ResetCtrl
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_ENC_BIT_AXI_SRAM_USE:
+  description: ''
+  fields:
+    - name: BitAxiSecEn
+      bit_offset: 0
+      bit_size: 1
+    - name: IpAxiSecEn
+      bit_offset: 1
+      bit_size: 1
+    - name: DbkYAxiSecEn
+      bit_offset: 2
+      bit_size: 1
+    - name: DbkCAxiSecEn
+      bit_offset: 3
+      bit_size: 1
+    - name: OvlAxiSecEn
+      bit_offset: 4
+      bit_size: 1
+    - name: BtpAxiSecEn
+      bit_offset: 5
+      bit_size: 1
+    - name: Reserved0
+      bit_offset: 6
+      bit_size: 2
+    - name: BitUseHostAddr
+      bit_offset: 8
+      bit_size: 1
+    - name: IpUseHostAddr
+      bit_offset: 9
+      bit_size: 1
+    - name: DbkYHostAddr
+      bit_offset: 10
+      bit_size: 1
+    - name: DbkCUseHostAddr
+      bit_offset: 11
+      bit_size: 1
+    - name: OvlUseHostAddr
+      bit_offset: 12
+      bit_size: 1
+    - name: BtpUseHostAddr
+      bit_offset: 13
+      bit_size: 1
+    - name: Reserved1
+      bit_offset: 14
+      bit_size: 18
+fieldset/VPU_VPU_ENC_BIT_BYTE_POS_FRAME_START:
+  description: ''
+  fields:
+    - name: BytePosFrameStart
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_BIT_BYTE_POS_FRAME_END:
+  description: ''
+  fields:
+    - name: BytePosFrameEnd
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_BIT_FRM_DIS_FLG_Display:
+  description: ''
+  fields:
+    - name: Use
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_BIT_BUSY_FLAG:
+  description: ''
+  fields:
+    - name: BusyFlag
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_ENC_BIT_RUN_COMMAND:
+  description: ''
+  fields:
+    - name: RunCommand
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_BIT_RUN_INDEX:
+  description: ''
+  fields:
+    - name: RunIndex
+      bit_offset: 0
+      bit_size: 16
+fieldset/VPU_VPU_ENC_BIT_RUN_COD_STD:
+  description: ''
+  fields:
+    - name: CodStd
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_BIT_INT_ENABLE:
+  description: ''
+  fields:
+    - name: IntEnable
+      bit_offset: 0
+      bit_size: 16
+fieldset/VPU_VPU_ENC_BIT_INT_REASON:
+  description: ''
+  fields:
+    - name: IntReason
+      bit_offset: 0
+      bit_size: 16
+fieldset/VPU_VPU_ENC_BIT_RUN_AUX_STD:
+  description: ''
+  fields:
+    - name: RunAuxStd
+      bit_offset: 0
+      bit_size: 2
+fieldset/VPU_VPU_ENC_CMD_ENC_HEADER_CODE:
+  description: ''
+  fields:
+    - name: HeaderCode
+      bit_offset: 0
+      bit_size: 2
+    - name: FrameCroppingFlag
+      bit_offset: 2
+      bit_size: 1
+    - name: UserProfileLevelEnable
+      bit_offset: 4
+      bit_size: 1
+    - name: Reserved0
+      bit_offset: 5
+      bit_size: 3
+    - name: Levelldc
+      bit_offset: 8
+      bit_size: 8
+    - name: PpsId
+      bit_offset: 16
+      bit_size: 8
+    - name: SpsId
+      bit_offset: 24
+      bit_size: 5
+    - name: ZeroPaddingFlag
+      bit_offset: 31
+      bit_size: 1
+fieldset/VPU_VPU_ENC_CMD_ENC_PARAM_CHANGE_ENABLE:
+  description: ''
+  fields:
+    - name: GopNumChangeEn
+      bit_offset: 0
+      bit_size: 1
+    - name: ConstIntraQpChangeEn
+      bit_offset: 1
+      bit_size: 1
+    - name: BitRateChangeEn
+      bit_offset: 2
+      bit_size: 1
+    - name: FrameRateChangeEn
+      bit_offset: 3
+      bit_size: 1
+    - name: IntraRefreshNumChangeEn
+      bit_offset: 4
+      bit_size: 1
+    - name: Reserved0
+      bit_offset: 5
+      bit_size: 1
+fieldset/VPU_VPU_ENC_CMD_ENC_PARAM_CHANGE_ENABLE_HECModeChangeEn:
+  description: ''
+  fields:
+    - name: MinMaxQPChangeEn
+      bit_offset: 6
+      bit_size: 1
+fieldset/VPU_VPU_ENC_CMD_ENC_PARA_SET_TYPE:
+  description: ''
+  fields:
+    - name: EncParaSetType
+      bit_offset: 0
+      bit_size: 2
+    - name: FrameCroppingFlag
+      bit_offset: 2
+      bit_size: 1
+    - name: Levelldc
+      bit_offset: 8
+      bit_size: 8
+    - name: PpsId
+      bit_offset: 16
+      bit_size: 8
+    - name: SpsId
+      bit_offset: 24
+      bit_size: 5
+fieldset/VPU_VPU_ENC_CMD_ENC_PIC_SRC_INDEX:
+  description: ''
+  fields:
+    - name: EncSrcFrameIndex
+      bit_offset: 0
+      bit_size: 5
+fieldset/VPU_VPU_ENC_CMD_ENC_ROI_INFO:
+  description: ''
+  fields:
+    - name: RoiEn
+      bit_offset: 0
+      bit_size: 1
+    - name: RoiPicAverageQp
+      bit_offset: 1
+      bit_size: 7
+fieldset/VPU_VPU_ENC_CMD_ENC_SEQ_BB_START:
+  description: ''
+  fields:
+    - name: BitBufAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_CMD_SET_FRAME_BUF_NUM:
+  description: ''
+  fields:
+    - name: FrameBufNum
+      bit_offset: 0
+      bit_size: 5
+fieldset/VPU_VPU_ENC_CMD_ENC_HEADER_BB_START:
+  description: ''
+  fields:
+    - name: EncHdrBitBufStart
+      bit_offset: 0
+      bit_size: 16
+fieldset/VPU_VPU_ENC_CMD_ENC_PARAM_CHANGE_GOP_NUM:
+  description: ''
+  fields:
+    - name: GopNum
+      bit_offset: 0
+      bit_size: 16
+fieldset/VPU_VPU_ENC_CMD_ENC_PIC_SRC_STRIDE:
+  description: ''
+  fields:
+    - name: EncSrcStride
+      bit_offset: 0
+      bit_size: 12
+fieldset/VPU_VPU_ENC_CMD_ENC_ROI_QP_MAP_ADDR:
+  description: ''
+  fields:
+    - name: RoiQpMapAddr
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_ENC_CMD_ENC_SEQ_BB_SIZE:
+  description: ''
+  fields:
+    - name: BitBufSize
+      bit_offset: 0
+      bit_size: 14
+fieldset/VPU_VPU_ENC_CMD_SET_FRAME_BUF_STRIDE:
+  description: ''
+  fields:
+    - name: LineStride
+      bit_offset: 0
+      bit_size: 11
+fieldset/VPU_VPU_ENC_CMD_ENC_HEADER_BB_SIZE:
+  description: ''
+  fields:
+    - name: EncHdrBitBufSize
+      bit_offset: 0
+      bit_size: 16
+fieldset/VPU_VPU_ENC_CMD_ENC_PARAM_CHANGE_INTRA_QP:
+  description: ''
+  fields:
+    - name: IntraQp
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_CMD_ENC_SEQ_OPTION:
+  description: ''
+  fields:
+    - name: Reserved0
+      bit_offset: 0
+      bit_size: 2
+    - name: AUDEnable
+      bit_offset: 2
+      bit_size: 1
+    - name: Reserved1
+      bit_offset: 3
+      bit_size: 1
+    - name: InterviewEn
+      bit_offset: 4
+      bit_size: 1
+    - name: RcConstIntraQpEnable
+      bit_offset: 5
+      bit_size: 1
+    - name: Reserved2
+      bit_offset: 6
+      bit_size: 1
+    - name: RcGammaSetEnable
+      bit_offset: 7
+      bit_size: 1
+    - name: ParasetRefreshEn
+      bit_offset: 8
+      bit_size: 1
+    - name: PrefixNalEn
+      bit_offset: 9
+      bit_size: 1
+    - name: FieldFlag
+      bit_offset: 10
+      bit_size: 1
+    - name: FieldReferenceMode
+      bit_offset: 11
+      bit_size: 1
+fieldset/VPU_VPU_ENC_CMD_SET_FRAME_SLICE_BB_START:
+  description: ''
+  fields:
+    - name: BitBufAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_CMD_ENC_HEADER_FRAME_CROP_H:
+  description: ''
+  fields:
+    - name: EncHdrFrameCropRight
+      bit_offset: 0
+      bit_size: 16
+    - name: EncHdrFrameCropLeft
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_ENC_CMD_ENC_PARAM_CHANGE_BITRATE:
+  description: ''
+  fields:
+    - name: BitRate
+      bit_offset: 0
+      bit_size: 18
+fieldset/VPU_VPU_ENC_CMD_ENC_PARA_FRAME_CROP_H:
+  description: ''
+  fields:
+    - name: EncParaFrameCropHorizontal
+      bit_offset: 0
+      bit_size: 16
+fieldset/VPU_VPU_ENC_CMD_ENC_PIC_QS:
+  description: ''
+  fields:
+    - name: PictureQs
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_CMD_ENC_SEQ_COD_STD:
+  description: ''
+  fields:
+    - name: EncCodStd
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_CMD_SET_FRAME_SLICE_BB_SIZE:
+  description: ''
+  fields:
+    - name: BitBufSize
+      bit_offset: 0
+      bit_size: 16
+fieldset/VPU_VPU_ENC_CMD_ENC_HEADER_FRAME_CROP_V:
+  description: ''
+  fields:
+    - name: EncHdrFrameCropBottom
+      bit_offset: 0
+      bit_size: 16
+    - name: EncHdrFrameCropTop
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_ENC_CMD_ENC_PARAM_CHANGE_F_RATE:
+  description: ''
+  fields:
+    - name: FrameRateRes
+      bit_offset: 0
+      bit_size: 16
+fieldset/VPU_VPU_ENC_CMD_ENC_PARAM_CHANGE_F_RATE_FrameRateDiv:
+  description: ''
+  fields:
+    - name: Minus1
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_ENC_CMD_ENC_PARA_FRAME_CROP_V:
+  description: ''
+  fields:
+    - name: EncParaFrameCropVertical
+      bit_offset: 0
+      bit_size: 16
+fieldset/VPU_VPU_ENC_CMD_ENC_PIC_ROT_MODE:
+  description: ''
+  fields:
+    - name: PreRotMode
+      bit_offset: 0
+      bit_size: 4
+    - name: LongBurstMode
+      bit_offset: 4
+      bit_size: 1
+    - name: DmaMode
+      bit_offset: 5
+      bit_size: 2
+    - name: SelBigEndian
+      bit_offset: 16
+      bit_size: 1
+    - name: Sel32bit
+      bit_offset: 17
+      bit_size: 1
+    - name: CbCrInterleave
+      bit_offset: 18
+      bit_size: 1
+    - name: Reserved0
+      bit_offset: 19
+      bit_size: 2
+    - name: SelNV21
+      bit_offset: 21
+      bit_size: 1
+fieldset/VPU_VPU_ENC_CMD_ENC_SEQ_SRC_SIZE:
+  description: ''
+  fields:
+    - name: PictureHeight
+      bit_offset: 0
+      bit_size: 16
+    - name: PictureWidth
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_ENC_CMD_SET_FRAME_AXI_BIT_ADDR:
+  description: ''
+  fields:
+    - name: AxiSecAddrBit
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_CMD_ENC_HEADER_CABAC_MODE:
+  description: ''
+  fields:
+    - name: CabacMode
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_ENC_CMD_ENC_PARAM_CHANGE_INTRA_REFRESH_IntraMbRefresh:
+  description: ''
+  fields:
+    - name: Num
+      bit_offset: 0
+      bit_size: 16
+fieldset/VPU_VPU_ENC_CMD_ENC_PARA_SET_CABAC_MODE:
+  description: ''
+  fields:
+    - name: CabacMode
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_ENC_CMD_ENC_PIC_OPTION:
+  description: ''
+  fields:
+    - name: PicSkipEn
+      bit_offset: 0
+      bit_size: 1
+    - name: IdrPic
+      bit_offset: 1
+      bit_size: 1
+    - name: Reserved0
+      bit_offset: 2
+      bit_size: 1
+    - name: enReportMBInfo
+      bit_offset: 3
+      bit_size: 1
+    - name: enReportMVInfo
+      bit_offset: 4
+      bit_size: 1
+    - name: enReportSliceInfo
+      bit_offset: 5
+      bit_size: 1
+    - name: FieldRunMode
+      bit_offset: 8
+      bit_size: 1
+fieldset/VPU_VPU_ENC_CMD_ENC_SEQ_SRC_F_RATE:
+  description: ''
+  fields:
+    - name: FrameRateRes
+      bit_offset: 0
+      bit_size: 16
+fieldset/VPU_VPU_ENC_CMD_ENC_SEQ_SRC_F_RATE_FrameRateDiv:
+  description: ''
+  fields:
+    - name: Minus1
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_ENC_CMD_SET_FRAME_AXI_IPACDC_ADDR:
+  description: ''
+  fields:
+    - name: AxiSecAddrIpAcDc
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_CMD_ENC_HEADER_CABAC_INIT_IDC:
+  description: ''
+  fields:
+    - name: CabacInitIdc
+      bit_offset: 0
+      bit_size: 2
+fieldset/VPU_VPU_ENC_CMD_ENC_PARAM_CHANGE_SLICE_MODE:
+  description: ''
+  fields:
+    - name: SliceMode
+      bit_offset: 0
+      bit_size: 1
+    - name: SliceSizeMode
+      bit_offset: 1
+      bit_size: 1
+    - name: SliceSizeNum
+      bit_offset: 2
+      bit_size: 14
+fieldset/VPU_VPU_ENC_CMD_ENC_PARA_SET_CABAC_INIT_IDC:
+  description: ''
+  fields:
+    - name: CabacInitIdc
+      bit_offset: 0
+      bit_size: 2
+fieldset/VPU_VPU_ENC_CMD_ENC_PIC_BB_START:
+  description: ''
+  fields:
+    - name: EncPicBitBufStart
+      bit_offset: 0
+      bit_size: 16
+fieldset/VPU_VPU_ENC_CMD_ENC_SEQ_MP4_PARA:
+  description: ''
+  fields:
+    - name: DataPartEn
+      bit_offset: 0
+      bit_size: 1
+    - name: RevVlcEn
+      bit_offset: 1
+      bit_size: 1
+    - name: IntraDcVlcThr
+      bit_offset: 2
+      bit_size: 3
+    - name: mp4HecEnable
+      bit_offset: 5
+      bit_size: 1
+    - name: mp4Verid
+      bit_offset: 6
+      bit_size: 1
+fieldset/VPU_VPU_ENC_CMD_SET_FRAME_AXI_DBKY_ADDR:
+  description: ''
+  fields:
+    - name: AxiSecAddrDbkY
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_CMD_ENC_HEADER_TRANSFORM_8X8:
+  description: ''
+  fields:
+    - name: Transform8x8
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_ENC_CMD_ENC_PARAM_CHANGE_HEC_MODE:
+  description: ''
+  fields:
+    - name: HECModeEnable
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_ENC_CMD_ENC_PARA_SET_TRANSFORM_8X8:
+  description: ''
+  fields:
+    - name: Transform8x8
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_ENC_CMD_ENC_PIC_BB_SIZE:
+  description: ''
+  fields:
+    - name: EncPicBitBufSize
+      bit_offset: 0
+      bit_size: 16
+fieldset/VPU_VPU_ENC_CMD_ENC_SEQ_263_PARA_Annex:
+  description: ''
+  fields:
+    - name: T
+      bit_offset: 0
+      bit_size: 1
+    - name: K
+      bit_offset: 1
+      bit_size: 1
+    - name: J
+      bit_offset: 2
+      bit_size: 1
+    - name: I
+      bit_offset: 3
+      bit_size: 1
+fieldset/VPU_VPU_ENC_CMD_SET_FRAME_AXI_DBKC_ADDR:
+  description: ''
+  fields:
+    - name: AxiSecAddrDbkC
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_CMD_ENC_HEADER_CHROMA_FORMAT:
+  description: ''
+  fields:
+    - name: ChromaFormat
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_ENC_CMD_ENC_PARAM_CHANGE_CABAC_MODE:
+  description: ''
+  fields:
+    - name: CabacMode
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_ENC_CMD_ENC_PARA_SET_CHROMA_FORMAT:
+  description: ''
+  fields:
+    - name: ChromaFormat
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_ENC_CMD_ENC_PIC_PARA_BASE_ADDR:
+  description: ''
+  fields:
+    - name: EncPicParaBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_CMD_ENC_SEQ_264_PARA:
+  description: ''
+  fields:
+    - name: ChromaQpOffset
+      bit_offset: 0
+      bit_size: 5
+    - name: ConstIntraFlag
+      bit_offset: 5
+      bit_size: 1
+    - name: DisableDeblk
+      bit_offset: 6
+      bit_size: 2
+    - name: DeblkAlphaOffset
+      bit_offset: 8
+      bit_size: 4
+    - name: DeblkBetaOffset
+      bit_offset: 12
+      bit_size: 4
+fieldset/VPU_VPU_ENC_CMD_ENC_HEADER_FIELD_FLAG:
+  description: ''
+  fields:
+    - name: FieldFlag
+      bit_offset: 0
+      bit_size: 1
+    - name: FieldReferenceMode
+      bit_offset: 1
+      bit_size: 1
+fieldset/VPU_VPU_ENC_CMD_ENC_PARA_SET_FIELD_FLAG:
+  description: ''
+  fields:
+    - name: FieldFlag
+      bit_offset: 0
+      bit_size: 1
+    - name: FieldReferenceMode
+      bit_offset: 1
+      bit_size: 1
+fieldset/VPU_VPU_ENC_CMD_ENC_SEQ_SLICE_MODE:
+  description: ''
+  fields:
+    - name: SliceMode
+      bit_offset: 0
+      bit_size: 2
+    - name: SliceSizeNum
+      bit_offset: 2
+      bit_size: 30
+fieldset/VPU_VPU_ENC_CMD_ENC_HEADER_PROFILE:
+  description: ''
+  fields:
+    - name: ProfileIdc
+      bit_offset: 0
+      bit_size: 2
+fieldset/VPU_VPU_ENC_CMD_ENC_PARA_SET_PROFILE:
+  description: ''
+  fields:
+    - name: ProfileIdc
+      bit_offset: 0
+      bit_size: 2
+fieldset/VPU_VPU_ENC_CMD_ENC_PIC_SRC_ADDR_Y:
+  description: ''
+  fields:
+    - name: SrcAddrY
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_CMD_ENC_SEQ_GOP_NUM:
+  description: ''
+  fields:
+    - name: EncGopNum
+      bit_offset: 0
+      bit_size: 10
+    - name: RcGopIQpOffset
+      bit_offset: 16
+      bit_size: 4
+    - name: RcGopIQpOffsetEn
+      bit_offset: 20
+      bit_size: 1
+    - name: IDRInterval
+      bit_offset: 21
+      bit_size: 8
+fieldset/VPU_VPU_ENC_CMD_SET_FRAME_CACHE_SIZE:
+  description: ''
+  fields:
+    - name: ChromaCacheSizeY
+      bit_offset: 0
+      bit_size: 4
+    - name: ChromaCacheSizeX
+      bit_offset: 4
+      bit_size: 4
+    - name: ChromaPageSizeY
+      bit_offset: 8
+      bit_size: 4
+    - name: ChromaPageSizeX
+      bit_offset: 12
+      bit_size: 4
+    - name: LumaCacheSizeY
+      bit_offset: 16
+      bit_size: 4
+    - name: LumaCacheSizeX
+      bit_offset: 20
+      bit_size: 4
+    - name: LumaPageSizeY
+      bit_offset: 24
+      bit_size: 4
+    - name: LumaPageSizeX
+      bit_offset: 28
+      bit_size: 4
+fieldset/VPU_VPU_ENC_CMD_ENC_HEADER_SCALING_LIST:
+  description: ''
+  fields:
+    - name: ScalingMatrixPresent
+      bit_offset: 0
+      bit_size: 1
+    - name: ScalingListPresent
+      bit_offset: 8
+      bit_size: 8
+    - name: ScalingListDefault
+      bit_offset: 16
+      bit_size: 8
+fieldset/VPU_VPU_ENC_CMD_ENC_PARA_SET_SCALING_LIST:
+  description: ''
+  fields:
+    - name: ScalingMatrixPresent
+      bit_offset: 0
+      bit_size: 1
+    - name: ScalingListPresent
+      bit_offset: 8
+      bit_size: 8
+    - name: ScalingListDefault
+      bit_offset: 16
+      bit_size: 8
+fieldset/VPU_VPU_ENC_CMD_ENC_PIC_SRC_ADDR_CB:
+  description: ''
+  fields:
+    - name: SrcAddrCb
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_CMD_ENC_SEQ_RC_PARA:
+  description: ''
+  fields:
+    - name: HvsMaxDeltaQp
+      bit_offset: 0
+      bit_size: 4
+    - name: Reserved0
+      bit_offset: 4
+      bit_size: 12
+    - name: InitDelay
+      bit_offset: 16
+      bit_size: 15
+    - name: SkipDisable
+      bit_offset: 31
+      bit_size: 1
+fieldset/VPU_VPU_ENC_CMD_SET_FRAME_CACHE_CONFIG:
+  description: ''
+  fields:
+    - name: CacheBypassMC
+      bit_offset: 0
+      bit_size: 1
+    - name: Reserved0
+      bit_offset: 1
+      bit_size: 1
+    - name: CacheMapType
+      bit_offset: 2
+      bit_size: 1
+    - name: CacheBurstMode
+      bit_offset: 3
+      bit_size: 1
+    - name: Reserved1
+      bit_offset: 4
+      bit_size: 1
+    - name: CacheWayChroma
+      bit_offset: 5
+      bit_size: 2
+    - name: CacheWayLuma
+      bit_offset: 7
+      bit_size: 2
+    - name: CacheLineMerge
+      bit_offset: 9
+      bit_size: 2
+    - name: Reserved2
+      bit_offset: 11
+      bit_size: 21
+fieldset/VPU_VPU_ENC_CMD_ENC_HEADER_QMAT_BASE:
+  description: ''
+  fields:
+    - name: ScalingListParamBase
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_CMD_ENC_PARA_SET_QMAT_BASE:
+  description: ''
+  fields:
+    - name: ScalingListParamBase
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_CMD_ENC_PIC_SRC_ADDR_CR:
+  description: ''
+  fields:
+    - name: SrcAddrCr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_CMD_ENC_SEQ_RC_BUF_SIZE:
+  description: ''
+  fields:
+    - name: VbvBufSize
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_CMD_SET_FRAME_MB_BUF_BASE:
+  description: ''
+  fields:
+    - name: MbDataBufBase
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_CMD_ENC_PARAM_CHANGE_PPS_ID:
+  description: ''
+  fields:
+    - name: PpsId
+      bit_offset: 0
+      bit_size: 8
+fieldset/VPU_VPU_ENC_CMD_ENC_SEQ_INTRA_REFRESH_IntraMbRefresh:
+  description: ''
+  fields:
+    - name: Num
+      bit_offset: 0
+      bit_size: 16
+fieldset/VPU_VPU_ENC_CMD_ENC_SEQ_INTRA_REFRESH:
+  description: ''
+  fields:
+    - name: ConscIntraRefreshEn
+      bit_offset: 16
+      bit_size: 1
+    - name: CountIntraMbEn
+      bit_offset: 17
+      bit_size: 1
+    - name: FieldSeqIntraRefreshEn
+      bit_offset: 18
+      bit_size: 1
+fieldset/VPU_VPU_ENC_CMD_SET_FRAME_MAX_DEC_SIZE:
+  description: ''
+  fields:
+    - name: MaxMBY
+      bit_offset: 0
+      bit_size: 8
+    - name: MaxMBX
+      bit_offset: 8
+      bit_size: 8
+    - name: MaxMBs
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_ENC_CMD_ENC_PARAM_CHANGE_MIN_MAX_QP:
+  description: ''
+  fields:
+    - name: MaxQpI
+      bit_offset: 0
+      bit_size: 6
+    - name: MaxQpIEnable
+      bit_offset: 6
+      bit_size: 1
+    - name: Reserved0
+      bit_offset: 7
+      bit_size: 1
+    - name: MinQpI
+      bit_offset: 8
+      bit_size: 6
+    - name: MinQpIEnable
+      bit_offset: 14
+      bit_size: 1
+    - name: Reserved1
+      bit_offset: 15
+      bit_size: 1
+    - name: MaxQpP
+      bit_offset: 16
+      bit_size: 6
+    - name: MaxQpPEnable
+      bit_offset: 22
+      bit_size: 1
+    - name: Reserved2
+      bit_offset: 23
+      bit_size: 1
+    - name: MinQpP
+      bit_offset: 24
+      bit_size: 6
+    - name: MinQpPEnable
+      bit_offset: 30
+      bit_size: 1
+    - name: Reserved3
+      bit_offset: 31
+      bit_size: 1
+fieldset/VPU_VPU_ENC_CMD_SET_FRAME_DELAY:
+  description: ''
+  fields:
+    - name: FrameDelay
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_RET_ENC_HEADER_SUCCESS:
+  description: ''
+  fields:
+    - name: RetStatus
+      bit_offset: 0
+      bit_size: 1
+    - name: Reserved0
+      bit_offset: 1
+      bit_size: 30
+    - name: MemoryAccessViolation
+      bit_offset: 31
+      bit_size: 1
+fieldset/VPU_VPU_ENC_RET_ENC_PAPAM_CHANGE_SUCCESS:
+  description: ''
+  fields:
+    - name: RetStatus
+      bit_offset: 0
+      bit_size: 1
+    - name: MemoryAccessViolation
+      bit_offset: 31
+      bit_size: 1
+fieldset/VPU_VPU_ENC_RET_ENC_PARA_SET_SIZE:
+  description: ''
+  fields:
+    - name: EncParaSetSize
+      bit_offset: 0
+      bit_size: 9
+fieldset/VPU_VPU_ENC_RET_ENC_PIC_FRAME_NUM:
+  description: ''
+  fields:
+    - name: EncFrameNum
+      bit_offset: 0
+      bit_size: 16
+fieldset/VPU_VPU_ENC_RET_ENC_SEQ_END_SUCCESS:
+  description: ''
+  fields:
+    - name: RetStatus
+      bit_offset: 0
+      bit_size: 1
+    - name: MemoryAccessViolation
+      bit_offset: 31
+      bit_size: 1
+fieldset/VPU_VPU_ENC_RET_FW_VER_NUM:
+  description: ''
+  fields:
+    - name: VersionID
+      bit_offset: 0
+      bit_size: 16
+    - name: ProductID
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_ENC_RET_SET_FRAME_SUCCESS:
+  description: ''
+  fields:
+    - name: RetStatus
+      bit_offset: 0
+      bit_size: 1
+    - name: MemoryAccessViolation
+      bit_offset: 31
+      bit_size: 1
+fieldset/VPU_VPU_ENC_CMD_ENC_SEQ_INTRA_QP:
+  description: ''
+  fields:
+    - name: IntraQp
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_RET_ENC_PARA_SET_SUCCESS:
+  description: ''
+  fields:
+    - name: RetStatus
+      bit_offset: 0
+      bit_size: 1
+    - name: MemoryAccessViolation
+      bit_offset: 31
+      bit_size: 1
+fieldset/VPU_VPU_ENC_RET_ENC_PIC_TYPE:
+  description: ''
+  fields:
+    - name: EncPicType
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_ENC_RET_FW_CODE_REV:
+  description: ''
+  fields:
+    - name: CodeRevision
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_CMD_ENC_SEQ_RC_QP_MAX:
+  description: ''
+  fields:
+    - name: RcQpMax
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_RET_ENC_PIC_FRAME_IDX:
+  description: ''
+  fields:
+    - name: RecPicIdx
+      bit_offset: 0
+      bit_size: 16
+fieldset/VPU_VPU_ENC_CMD_ENC_SEQ_RC_GAMMA:
+  description: ''
+  fields:
+    - name: RcGamma
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_RET_ENC_PIC_SLICE_NUM:
+  description: ''
+  fields:
+    - name: EncSliceNum
+      bit_offset: 0
+      bit_size: 15
+fieldset/VPU_VPU_ENC_CMD_ENC_SEQ_RC_INTERVAL_MODE:
+  description: ''
+  fields:
+    - name: RcIntervalMode
+      bit_offset: 0
+      bit_size: 2
+    - name: RcMbInterval
+      bit_offset: 2
+      bit_size: 16
+fieldset/VPU_VPU_ENC_RET_ENC_PIC_FLAG:
+  description: ''
+  fields:
+    - name: EncPicFlag
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_ENC_CMD_ENC_SEQ_INTRA_WEIGHT:
+  description: ''
+  fields:
+    - name: IntraCostWeight
+      bit_offset: 0
+      bit_size: 20
+fieldset/VPU_VPU_ENC_CMD_ENC_SEQ_ME_OPTION:
+  description: ''
+  fields:
+    - name: MeSearchRangeX
+      bit_offset: 0
+      bit_size: 2
+    - name: MeSearchRangeY
+      bit_offset: 2
+      bit_size: 2
+    - name: MeUseZeroPmv
+      bit_offset: 4
+      bit_size: 1
+    - name: MeBlkModeEnable
+      bit_offset: 5
+      bit_size: 4
+    - name: MeLineBufMode
+      bit_offset: 9
+      bit_size: 2
+fieldset/VPU_VPU_ENC_RET_ENC_PIC_SUCCESS:
+  description: ''
+  fields:
+    - name: RetStatus
+      bit_offset: 0
+      bit_size: 1
+    - name: MemoryAccessViolation
+      bit_offset: 31
+      bit_size: 1
+fieldset/VPU_VPU_ENC_RET_ENC_ROI_SUCCESS:
+  description: ''
+  fields:
+    - name: RetStatus
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_ENC_CMD_ENC_SEQ_RC_PARA2:
+  description: ''
+  fields:
+    - name: RateControlType
+      bit_offset: 0
+      bit_size: 4
+    - name: BitRateKBPS
+      bit_offset: 4
+      bit_size: 18
+    - name: StrictCBR
+      bit_offset: 22
+      bit_size: 1
+    - name: EnRowLevelRc
+      bit_offset: 23
+      bit_size: 1
+    - name: EnHvsQp
+      bit_offset: 24
+      bit_size: 1
+    - name: HvsQpScaleDiv2
+      bit_offset: 25
+      bit_size: 1
+fieldset/VPU_VPU_ENC_RET_ENC_PIC_INTRA_MB_NUM:
+  description: ''
+  fields:
+    - name: EncPicIntraMbNum
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_CMD_ENC_SEQ_QP_RANGE_SET:
+  description: ''
+  fields:
+    - name: MaxQpI
+      bit_offset: 0
+      bit_size: 6
+    - name: MaxQpIEnable
+      bit_offset: 6
+      bit_size: 1
+    - name: Reserved0
+      bit_offset: 7
+      bit_size: 1
+    - name: MinQpI
+      bit_offset: 8
+      bit_size: 6
+    - name: MinQpIEnable
+      bit_offset: 14
+      bit_size: 1
+    - name: Reserved1
+      bit_offset: 15
+      bit_size: 1
+    - name: MaxQpP
+      bit_offset: 16
+      bit_size: 6
+    - name: MaxQpPEnable
+      bit_offset: 22
+      bit_size: 1
+    - name: Reserved2
+      bit_offset: 23
+      bit_size: 1
+    - name: MinQpP
+      bit_offset: 24
+      bit_size: 6
+    - name: MinQpPEnable
+      bit_offset: 30
+      bit_size: 1
+    - name: Reserved3
+      bit_offset: 31
+      bit_size: 1
+fieldset/VPU_VPU_ENC_RET_ENC_PIC_SKIPPED_MB_NUM:
+  description: ''
+  fields:
+    - name: EncPicSkippedMbNum
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_RET_ENC_PIC_SUM_QP:
+  description: ''
+  fields:
+    - name: EncPicSumQp
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_CMD_ENC_PIC_SRC_BOTTOM_Y:
+  description: ''
+  fields:
+    - name: SrcBottomAddrY
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_CMD_ENC_PIC_SRC_BOTTOM_CB:
+  description: ''
+  fields:
+    - name: SrcBottomAddrCb
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_CMD_ENC_PIC_SRC_BOTTOM_CR:
+  description: ''
+  fields:
+    - name: SrcBottomAddrCr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_CMD_ENC_SEQ_RC_MAX_INTRA_SIZE:
+  description: ''
+  fields:
+    - name: MaxIntraSize
+      bit_offset: 0
+      bit_size: 16
+    - name: MaxIntraSizeEn
+      bit_offset: 16
+      bit_size: 1
+fieldset/VPU_VPU_ENC_CMD_ENC_SEQ_QP_DELTA_QP:
+  description: ''
+  fields:
+    - name: MaxDeltaQp
+      bit_offset: 0
+      bit_size: 6
+    - name: MaxDeltaQpSetEnable
+      bit_offset: 6
+      bit_size: 1
+    - name: Reserved0
+      bit_offset: 7
+      bit_size: 1
+    - name: MinDeltaQp
+      bit_offset: 8
+      bit_size: 6
+    - name: MinDeltaQpSetEnable
+      bit_offset: 14
+      bit_size: 1
+    - name: Reserved1
+      bit_offset: 15
+      bit_size: 17
+fieldset/VPU_VPU_ENC_GDI_PRI_RD_LOCK_CNT_PRI_RD_LOCK:
+  description: ''
+  fields:
+    - name: CNT
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PRI_WR_LOCK_CNT_PRI_WR_LOCK:
+  description: ''
+  fields:
+    - name: CNT
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_SEC_RD_LOCK_CNT_GDI_SEC_RD_LOCK:
+  description: ''
+  fields:
+    - name: CNT
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_SEC_WR_LOCK_CNT_GDI_SEC_WR_LOCK:
+  description: ''
+  fields:
+    - name: CNT
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_SEC_CLIENT_EN:
+  description: ''
+  fields:
+    - name: SecEn0
+      bit_offset: 0
+      bit_size: 1
+    - name: SecEn1
+      bit_offset: 1
+      bit_size: 1
+    - name: SecEn2
+      bit_offset: 2
+      bit_size: 1
+    - name: SecEn3
+      bit_offset: 3
+      bit_size: 1
+    - name: SecEn4
+      bit_offset: 4
+      bit_size: 1
+    - name: SecEn5
+      bit_offset: 5
+      bit_size: 1
+    - name: SecEn6
+      bit_offset: 6
+      bit_size: 1
+    - name: SecEn7
+      bit_offset: 7
+      bit_size: 1
+    - name: SecEn8
+      bit_offset: 8
+      bit_size: 1
+    - name: SecEn9
+      bit_offset: 9
+      bit_size: 1
+    - name: SecEn10
+      bit_offset: 10
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_PIC_INIT_HOST_GDI_PIC:
+  description: ''
+  fields:
+    - name: INIT
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_PINFO_REQ_PINFO:
+  description: ''
+  fields:
+    - name: REQ
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_PINFO_ACK_PINFO:
+  description: ''
+  fields:
+    - name: ACK
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_PINFO_ADDR_PINFO:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 10
+fieldset/VPU_VPU_ENC_GDI_PINFO_DATA_PINFO:
+  description: ''
+  fields:
+    - name: DATA
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_BWB_ENABLE_FRM:
+  description: ''
+  fields:
+    - name: IDX
+      bit_offset: 0
+      bit_size: 8
+fieldset/VPU_VPU_ENC_GDI_BWB_ENABLE_BWB:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 8
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_BWB_ENABLE_PIC:
+  description: ''
+  fields:
+    - name: INIT
+      bit_offset: 9
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_BWB_SIZE_BWB:
+  description: ''
+  fields:
+    - name: YSIZE
+      bit_offset: 0
+      bit_size: 12
+    - name: XSIZE
+      bit_offset: 16
+      bit_size: 12
+fieldset/VPU_VPU_ENC_GDI_BWB_STD_STRUCT_PIC:
+  description: ''
+  fields:
+    - name: STRUCT
+      bit_offset: 0
+      bit_size: 3
+fieldset/VPU_VPU_ENC_GDI_BWB_STD_STRUCT_STD:
+  description: ''
+  fields:
+    - name: AUX
+      bit_offset: 3
+      bit_size: 2
+fieldset/VPU_VPU_ENC_GDI_BWB_STD_STRUCT_CODEC:
+  description: ''
+  fields:
+    - name: STD
+      bit_offset: 5
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_BWB_STD_STRUCT_CBCR:
+  description: ''
+  fields:
+    - name: INTLV
+      bit_offset: 9
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_BWB_STD_STRUCT_LOOPFILT:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 10
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_BWB_STATUS_OUT:
+  description: ''
+  fields:
+    - name: RESP
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_BWB_STATUS_IN:
+  description: ''
+  fields:
+    - name: RESP
+      bit_offset: 1
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_BWB_STATUS_V:
+  description: ''
+  fields:
+    - name: FLUSH
+      bit_offset: 2
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_BWB_STATUS_U:
+  description: ''
+  fields:
+    - name: FLUSH
+      bit_offset: 3
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_BWB_STATUS_Y:
+  description: ''
+  fields:
+    - name: FLUSH
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_WPROT_ERR_CLEAR:
+  description: ''
+  fields:
+    - name: CLEAR
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_WPROT_ERR_RSN_ERR:
+  description: ''
+  fields:
+    - name: AWLEN
+      bit_offset: 0
+      bit_size: 4
+    - name: AWID
+      bit_offset: 4
+      bit_size: 4
+    - name: FLAG
+      bit_offset: 9
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_WPROT_ERR_RSN_ERR_PRI:
+  description: ''
+  fields:
+    - name: SEC
+      bit_offset: 8
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_WPROT_ERR_ADR_ERR:
+  description: ''
+  fields:
+    - name: AWADDR
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_WPROT_RGN_EN_RGN0:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+    - name: SEC
+      bit_offset: 6
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_WPROT_RGN_EN_RGN1:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 1
+      bit_size: 1
+    - name: SEC
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_WPROT_RGN_EN_RGN2:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 2
+      bit_size: 1
+    - name: SEC
+      bit_offset: 8
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_WPROT_RGN_EN_RGN3:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 3
+      bit_size: 1
+    - name: SEC
+      bit_offset: 9
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_WPROT_RGN_EN_RGN4:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 4
+      bit_size: 1
+    - name: SEC
+      bit_offset: 10
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_WPROT_RGN_EN_RGN5:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 5
+      bit_size: 1
+    - name: SEC
+      bit_offset: 11
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_WPROT_RGN0_STA_RGN:
+  description: ''
+  fields:
+    - name: STA
+      bit_offset: 0
+      bit_size: 20
+fieldset/VPU_VPU_ENC_GDI_WPROT_RGN0_END_RGN:
+  description: ''
+  fields:
+    - name: END
+      bit_offset: 0
+      bit_size: 20
+fieldset/VPU_VPU_ENC_GDI_WPROT_RGN1_STA_RGN:
+  description: ''
+  fields:
+    - name: STA
+      bit_offset: 0
+      bit_size: 20
+fieldset/VPU_VPU_ENC_GDI_WPROT_RGN1_END_RGN:
+  description: ''
+  fields:
+    - name: END
+      bit_offset: 0
+      bit_size: 20
+fieldset/VPU_VPU_ENC_GDI_WPROT_RGN2_STA_RGN:
+  description: ''
+  fields:
+    - name: STA
+      bit_offset: 0
+      bit_size: 20
+fieldset/VPU_VPU_ENC_GDI_WPROT_RGN2_END_RGN:
+  description: ''
+  fields:
+    - name: END
+      bit_offset: 0
+      bit_size: 20
+fieldset/VPU_VPU_ENC_GDI_WPROT_RGN3_STA_RGN:
+  description: ''
+  fields:
+    - name: STA
+      bit_offset: 0
+      bit_size: 20
+fieldset/VPU_VPU_ENC_GDI_WPROT_RGN3_END_RGN:
+  description: ''
+  fields:
+    - name: END
+      bit_offset: 0
+      bit_size: 20
+fieldset/VPU_VPU_ENC_GDI_WPROT_RGN4_STA_RGN:
+  description: ''
+  fields:
+    - name: STA
+      bit_offset: 0
+      bit_size: 20
+fieldset/VPU_VPU_ENC_GDI_WPROT_RGN4_END_RGN:
+  description: ''
+  fields:
+    - name: END
+      bit_offset: 0
+      bit_size: 20
+fieldset/VPU_VPU_ENC_GDI_WPROT_RGN5_STA_RGN:
+  description: ''
+  fields:
+    - name: STA
+      bit_offset: 0
+      bit_size: 20
+fieldset/VPU_VPU_ENC_GDI_WPROT_RGN5_END_RGN:
+  description: ''
+  fields:
+    - name: END
+      bit_offset: 0
+      bit_size: 20
+fieldset/VPU_VPU_ENC_GDI_SRC_IDX_REPORT_GDI_SRC_IDX:
+  description: ''
+  fields:
+    - name: REPORT
+      bit_offset: 0
+      bit_size: 8
+fieldset/VPU_VPU_ENC_GDI_DEC_IDX_REPORT_GDI_DEC_IDX:
+  description: ''
+  fields:
+    - name: REPORT
+      bit_offset: 0
+      bit_size: 8
+fieldset/VPU_VPU_ENC_GDI_DISP_IDX_REPORT_GDI_DISP_IDX:
+  description: ''
+  fields:
+    - name: REPORT
+      bit_offset: 0
+      bit_size: 8
+fieldset/VPU_VPU_ENC_GDI_BUS_CTRL_NO_MORE_REQ:
+  description: ''
+  fields:
+    - name: PRI
+      bit_offset: 0
+      bit_size: 1
+    - name: SEC
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_BUS_STATUS_RD:
+  description: ''
+  fields:
+    - name: EMPTY
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_BUS_STATUS_WD:
+  description: ''
+  fields:
+    - name: EMPTY
+      bit_offset: 1
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_BUS_STATUS_WRESP:
+  description: ''
+  fields:
+    - name: EMPTY
+      bit_offset: 2
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_BUS_STATUS_RD_EMPTY:
+  description: ''
+  fields:
+    - name: SEC
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_BUS_STATUS_WD_EMPTY:
+  description: ''
+  fields:
+    - name: SEC
+      bit_offset: 5
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_BUS_STATUS_WRESP_EMPTY:
+  description: ''
+  fields:
+    - name: SEC
+      bit_offset: 6
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_00_0:
+  description: ''
+  fields:
+    - name: Stride
+      bit_offset: 0
+      bit_size: 16
+    - name: CbCrInterleaved
+      bit_offset: 16
+      bit_size: 1
+    - name: ColorMode
+      bit_offset: 17
+      bit_size: 3
+    - name: FrameMap
+      bit_offset: 20
+      bit_size: 4
+    - name: Reserved0
+      bit_offset: 24
+      bit_size: 8
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_00_1:
+  description: ''
+  fields:
+    - name: PicVerSizeLuma
+      bit_offset: 0
+      bit_size: 16
+    - name: PicHorSizeLuma
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_00_2:
+  description: ''
+  fields:
+    - name: LumaTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_00_3:
+  description: ''
+  fields:
+    - name: CbTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_00_4:
+  description: ''
+  fields:
+    - name: CrTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_00_5:
+  description: ''
+  fields:
+    - name: LumaBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_00_6:
+  description: ''
+  fields:
+    - name: CbBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_00_7:
+  description: ''
+  fields:
+    - name: CrBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_01_0:
+  description: ''
+  fields:
+    - name: Stride
+      bit_offset: 0
+      bit_size: 16
+    - name: CbCrInterleaved
+      bit_offset: 16
+      bit_size: 1
+    - name: ColorMode
+      bit_offset: 17
+      bit_size: 3
+    - name: FrameMap
+      bit_offset: 20
+      bit_size: 4
+    - name: Reserved0
+      bit_offset: 24
+      bit_size: 8
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_01_1:
+  description: ''
+  fields:
+    - name: PicVerSizeLuma
+      bit_offset: 0
+      bit_size: 16
+    - name: PicHorSizeLuma
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_01_2:
+  description: ''
+  fields:
+    - name: LumaTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_01_3:
+  description: ''
+  fields:
+    - name: CbTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_01_4:
+  description: ''
+  fields:
+    - name: CrTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_01_5:
+  description: ''
+  fields:
+    - name: LumaBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_01_6:
+  description: ''
+  fields:
+    - name: CbBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_01_7:
+  description: ''
+  fields:
+    - name: CrBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_02_0:
+  description: ''
+  fields:
+    - name: Stride
+      bit_offset: 0
+      bit_size: 16
+    - name: CbCrInterleaved
+      bit_offset: 16
+      bit_size: 1
+    - name: ColorMode
+      bit_offset: 17
+      bit_size: 3
+    - name: FrameMap
+      bit_offset: 20
+      bit_size: 4
+    - name: Reserved0
+      bit_offset: 24
+      bit_size: 8
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_02_1:
+  description: ''
+  fields:
+    - name: PicVerSizeLuma
+      bit_offset: 0
+      bit_size: 16
+    - name: PicHorSizeLuma
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_02_2:
+  description: ''
+  fields:
+    - name: LumaTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_02_3:
+  description: ''
+  fields:
+    - name: CbTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_02_4:
+  description: ''
+  fields:
+    - name: CrTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_02_5:
+  description: ''
+  fields:
+    - name: LumaBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_02_6:
+  description: ''
+  fields:
+    - name: CbBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_02_7:
+  description: ''
+  fields:
+    - name: CrBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_03_0:
+  description: ''
+  fields:
+    - name: Stride
+      bit_offset: 0
+      bit_size: 16
+    - name: CbCrInterleaved
+      bit_offset: 16
+      bit_size: 1
+    - name: ColorMode
+      bit_offset: 17
+      bit_size: 3
+    - name: FrameMap
+      bit_offset: 20
+      bit_size: 4
+    - name: Reserved0
+      bit_offset: 24
+      bit_size: 8
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_03_1:
+  description: ''
+  fields:
+    - name: PicVerSizeLuma
+      bit_offset: 0
+      bit_size: 16
+    - name: PicHorSizeLuma
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_03_2:
+  description: ''
+  fields:
+    - name: LumaTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_03_3:
+  description: ''
+  fields:
+    - name: CbTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_03_4:
+  description: ''
+  fields:
+    - name: CrTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_03_5:
+  description: ''
+  fields:
+    - name: LumaBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_03_6:
+  description: ''
+  fields:
+    - name: CbBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_03_7:
+  description: ''
+  fields:
+    - name: CrBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_04_0:
+  description: ''
+  fields:
+    - name: Stride
+      bit_offset: 0
+      bit_size: 16
+    - name: CbCrInterleaved
+      bit_offset: 16
+      bit_size: 1
+    - name: ColorMode
+      bit_offset: 17
+      bit_size: 3
+    - name: FrameMap
+      bit_offset: 20
+      bit_size: 4
+    - name: Reserved0
+      bit_offset: 24
+      bit_size: 8
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_04_1:
+  description: ''
+  fields:
+    - name: PicVerSizeLuma
+      bit_offset: 0
+      bit_size: 16
+    - name: PicHorSizeLuma
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_04_2:
+  description: ''
+  fields:
+    - name: LumaTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_04_3:
+  description: ''
+  fields:
+    - name: CbTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_04_4:
+  description: ''
+  fields:
+    - name: CrTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_04_5:
+  description: ''
+  fields:
+    - name: LumaBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_04_6:
+  description: ''
+  fields:
+    - name: CbBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_04_7:
+  description: ''
+  fields:
+    - name: CrBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_05_0:
+  description: ''
+  fields:
+    - name: Stride
+      bit_offset: 0
+      bit_size: 16
+    - name: CbCrInterleaved
+      bit_offset: 16
+      bit_size: 1
+    - name: ColorMode
+      bit_offset: 17
+      bit_size: 3
+    - name: FrameMap
+      bit_offset: 20
+      bit_size: 4
+    - name: Reserved0
+      bit_offset: 24
+      bit_size: 8
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_05_1:
+  description: ''
+  fields:
+    - name: PicVerSizeLuma
+      bit_offset: 0
+      bit_size: 16
+    - name: PicHorSizeLuma
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_05_2:
+  description: ''
+  fields:
+    - name: LumaTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_05_3:
+  description: ''
+  fields:
+    - name: CbTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_05_4:
+  description: ''
+  fields:
+    - name: CrTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_05_5:
+  description: ''
+  fields:
+    - name: LumaBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_05_6:
+  description: ''
+  fields:
+    - name: CbBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_05_7:
+  description: ''
+  fields:
+    - name: CrBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_06_0:
+  description: ''
+  fields:
+    - name: Stride
+      bit_offset: 0
+      bit_size: 16
+    - name: CbCrInterleaved
+      bit_offset: 16
+      bit_size: 1
+    - name: ColorMode
+      bit_offset: 17
+      bit_size: 3
+    - name: FrameMap
+      bit_offset: 20
+      bit_size: 4
+    - name: Reserved0
+      bit_offset: 24
+      bit_size: 8
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_06_1:
+  description: ''
+  fields:
+    - name: PicVerSizeLuma
+      bit_offset: 0
+      bit_size: 16
+    - name: PicHorSizeLuma
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_06_2:
+  description: ''
+  fields:
+    - name: LumaTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_06_3:
+  description: ''
+  fields:
+    - name: CbTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_06_4:
+  description: ''
+  fields:
+    - name: CrTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_06_5:
+  description: ''
+  fields:
+    - name: LumaBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_06_6:
+  description: ''
+  fields:
+    - name: CbBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_06_7:
+  description: ''
+  fields:
+    - name: CrBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_07_0:
+  description: ''
+  fields:
+    - name: Stride
+      bit_offset: 0
+      bit_size: 16
+    - name: CbCrInterleaved
+      bit_offset: 16
+      bit_size: 1
+    - name: ColorMode
+      bit_offset: 17
+      bit_size: 3
+    - name: FrameMap
+      bit_offset: 20
+      bit_size: 4
+    - name: Reserved0
+      bit_offset: 24
+      bit_size: 8
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_07_1:
+  description: ''
+  fields:
+    - name: PicVerSizeLuma
+      bit_offset: 0
+      bit_size: 16
+    - name: PicHorSizeLuma
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_07_2:
+  description: ''
+  fields:
+    - name: LumaTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_07_3:
+  description: ''
+  fields:
+    - name: CbTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_07_4:
+  description: ''
+  fields:
+    - name: CrTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_07_5:
+  description: ''
+  fields:
+    - name: LumaBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_07_6:
+  description: ''
+  fields:
+    - name: CbBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_07_7:
+  description: ''
+  fields:
+    - name: CrBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_08_0:
+  description: ''
+  fields:
+    - name: Stride
+      bit_offset: 0
+      bit_size: 16
+    - name: CbCrInterleaved
+      bit_offset: 16
+      bit_size: 1
+    - name: ColorMode
+      bit_offset: 17
+      bit_size: 3
+    - name: FrameMap
+      bit_offset: 20
+      bit_size: 4
+    - name: Reserved0
+      bit_offset: 24
+      bit_size: 8
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_08_1:
+  description: ''
+  fields:
+    - name: PicVerSizeLuma
+      bit_offset: 0
+      bit_size: 16
+    - name: PicHorSizeLuma
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_08_2:
+  description: ''
+  fields:
+    - name: LumaTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_08_3:
+  description: ''
+  fields:
+    - name: CbTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_08_4:
+  description: ''
+  fields:
+    - name: CrTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_08_5:
+  description: ''
+  fields:
+    - name: LumaBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_08_6:
+  description: ''
+  fields:
+    - name: CbBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_08_7:
+  description: ''
+  fields:
+    - name: CrBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_09_0:
+  description: ''
+  fields:
+    - name: Stride
+      bit_offset: 0
+      bit_size: 16
+    - name: CbCrInterleaved
+      bit_offset: 16
+      bit_size: 1
+    - name: ColorMode
+      bit_offset: 17
+      bit_size: 3
+    - name: FrameMap
+      bit_offset: 20
+      bit_size: 4
+    - name: Reserved0
+      bit_offset: 24
+      bit_size: 8
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_09_1:
+  description: ''
+  fields:
+    - name: PicVerSizeLuma
+      bit_offset: 0
+      bit_size: 16
+    - name: PicHorSizeLuma
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_09_2:
+  description: ''
+  fields:
+    - name: LumaTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_09_3:
+  description: ''
+  fields:
+    - name: CbTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_09_4:
+  description: ''
+  fields:
+    - name: CrTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_09_5:
+  description: ''
+  fields:
+    - name: LumaBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_09_6:
+  description: ''
+  fields:
+    - name: CbBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_09_7:
+  description: ''
+  fields:
+    - name: CrBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_10_0:
+  description: ''
+  fields:
+    - name: Stride
+      bit_offset: 0
+      bit_size: 16
+    - name: CbCrInterleaved
+      bit_offset: 16
+      bit_size: 1
+    - name: ColorMode
+      bit_offset: 17
+      bit_size: 3
+    - name: FrameMap
+      bit_offset: 20
+      bit_size: 4
+    - name: Reserved0
+      bit_offset: 24
+      bit_size: 8
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_10_1:
+  description: ''
+  fields:
+    - name: PicVerSizeLuma
+      bit_offset: 0
+      bit_size: 16
+    - name: PicHorSizeLuma
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_10_2:
+  description: ''
+  fields:
+    - name: LumaTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_10_3:
+  description: ''
+  fields:
+    - name: CbTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_10_4:
+  description: ''
+  fields:
+    - name: CrTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_10_5:
+  description: ''
+  fields:
+    - name: LumaBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_10_6:
+  description: ''
+  fields:
+    - name: CbBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_10_7:
+  description: ''
+  fields:
+    - name: CrBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_11_0:
+  description: ''
+  fields:
+    - name: Stride
+      bit_offset: 0
+      bit_size: 16
+    - name: CbCrInterleaved
+      bit_offset: 16
+      bit_size: 1
+    - name: ColorMode
+      bit_offset: 17
+      bit_size: 3
+    - name: FrameMap
+      bit_offset: 20
+      bit_size: 4
+    - name: Reserved0
+      bit_offset: 24
+      bit_size: 8
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_11_1:
+  description: ''
+  fields:
+    - name: PicVerSizeLuma
+      bit_offset: 0
+      bit_size: 16
+    - name: PicHorSizeLuma
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_11_2:
+  description: ''
+  fields:
+    - name: LumaTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_11_3:
+  description: ''
+  fields:
+    - name: CbTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_11_4:
+  description: ''
+  fields:
+    - name: CrTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_11_5:
+  description: ''
+  fields:
+    - name: LumaBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_11_6:
+  description: ''
+  fields:
+    - name: CbBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_11_7:
+  description: ''
+  fields:
+    - name: CrBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_12_0:
+  description: ''
+  fields:
+    - name: Stride
+      bit_offset: 0
+      bit_size: 16
+    - name: CbCrInterleaved
+      bit_offset: 16
+      bit_size: 1
+    - name: ColorMode
+      bit_offset: 17
+      bit_size: 3
+    - name: FrameMap
+      bit_offset: 20
+      bit_size: 4
+    - name: Reserved0
+      bit_offset: 24
+      bit_size: 8
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_12_1:
+  description: ''
+  fields:
+    - name: PicVerSizeLuma
+      bit_offset: 0
+      bit_size: 16
+    - name: PicHorSizeLuma
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_12_2:
+  description: ''
+  fields:
+    - name: LumaTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_12_3:
+  description: ''
+  fields:
+    - name: CbTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_12_4:
+  description: ''
+  fields:
+    - name: CrTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_12_5:
+  description: ''
+  fields:
+    - name: LumaBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_12_6:
+  description: ''
+  fields:
+    - name: CbBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_12_7:
+  description: ''
+  fields:
+    - name: CrBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_13_0:
+  description: ''
+  fields:
+    - name: Stride
+      bit_offset: 0
+      bit_size: 16
+    - name: CbCrInterleaved
+      bit_offset: 16
+      bit_size: 1
+    - name: ColorMode
+      bit_offset: 17
+      bit_size: 3
+    - name: FrameMap
+      bit_offset: 20
+      bit_size: 4
+    - name: Reserved0
+      bit_offset: 24
+      bit_size: 8
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_13_1:
+  description: ''
+  fields:
+    - name: PicVerSizeLuma
+      bit_offset: 0
+      bit_size: 16
+    - name: PicHorSizeLuma
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_13_2:
+  description: ''
+  fields:
+    - name: LumaTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_13_3:
+  description: ''
+  fields:
+    - name: CbTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_13_4:
+  description: ''
+  fields:
+    - name: CrTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_13_5:
+  description: ''
+  fields:
+    - name: LumaBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_13_6:
+  description: ''
+  fields:
+    - name: CbBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_13_7:
+  description: ''
+  fields:
+    - name: CrBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_14_0:
+  description: ''
+  fields:
+    - name: Stride
+      bit_offset: 0
+      bit_size: 16
+    - name: CbCrInterleaved
+      bit_offset: 16
+      bit_size: 1
+    - name: ColorMode
+      bit_offset: 17
+      bit_size: 3
+    - name: FrameMap
+      bit_offset: 20
+      bit_size: 4
+    - name: Reserved0
+      bit_offset: 24
+      bit_size: 8
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_14_1:
+  description: ''
+  fields:
+    - name: PicVerSizeLuma
+      bit_offset: 0
+      bit_size: 16
+    - name: PicHorSizeLuma
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_14_2:
+  description: ''
+  fields:
+    - name: LumaTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_14_3:
+  description: ''
+  fields:
+    - name: CbTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_14_4:
+  description: ''
+  fields:
+    - name: CrTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_14_5:
+  description: ''
+  fields:
+    - name: LumaBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_14_6:
+  description: ''
+  fields:
+    - name: CbBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_14_7:
+  description: ''
+  fields:
+    - name: CrBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_15_0:
+  description: ''
+  fields:
+    - name: Stride
+      bit_offset: 0
+      bit_size: 16
+    - name: CbCrInterleaved
+      bit_offset: 16
+      bit_size: 1
+    - name: ColorMode
+      bit_offset: 17
+      bit_size: 3
+    - name: FrameMap
+      bit_offset: 20
+      bit_size: 4
+    - name: Reserved0
+      bit_offset: 24
+      bit_size: 8
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_15_1:
+  description: ''
+  fields:
+    - name: PicVerSizeLuma
+      bit_offset: 0
+      bit_size: 16
+    - name: PicHorSizeLuma
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_15_2:
+  description: ''
+  fields:
+    - name: LumaTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_15_3:
+  description: ''
+  fields:
+    - name: CbTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_15_4:
+  description: ''
+  fields:
+    - name: CrTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_15_5:
+  description: ''
+  fields:
+    - name: LumaBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_15_6:
+  description: ''
+  fields:
+    - name: CbBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_15_7:
+  description: ''
+  fields:
+    - name: CrBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_16_0:
+  description: ''
+  fields:
+    - name: Stride
+      bit_offset: 0
+      bit_size: 16
+    - name: CbCrInterleaved
+      bit_offset: 16
+      bit_size: 1
+    - name: ColorMode
+      bit_offset: 17
+      bit_size: 3
+    - name: FrameMap
+      bit_offset: 20
+      bit_size: 4
+    - name: Reserved0
+      bit_offset: 24
+      bit_size: 8
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_16_1:
+  description: ''
+  fields:
+    - name: PicVerSizeLuma
+      bit_offset: 0
+      bit_size: 16
+    - name: PicHorSizeLuma
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_16_2:
+  description: ''
+  fields:
+    - name: LumaTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_16_3:
+  description: ''
+  fields:
+    - name: CbTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_16_4:
+  description: ''
+  fields:
+    - name: CrTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_16_5:
+  description: ''
+  fields:
+    - name: LumaBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_16_6:
+  description: ''
+  fields:
+    - name: CbBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_16_7:
+  description: ''
+  fields:
+    - name: CrBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_17_0:
+  description: ''
+  fields:
+    - name: Stride
+      bit_offset: 0
+      bit_size: 16
+    - name: CbCrInterleaved
+      bit_offset: 16
+      bit_size: 1
+    - name: ColorMode
+      bit_offset: 17
+      bit_size: 3
+    - name: FrameMap
+      bit_offset: 20
+      bit_size: 4
+    - name: Reserved0
+      bit_offset: 24
+      bit_size: 8
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_17_1:
+  description: ''
+  fields:
+    - name: PicVerSizeLuma
+      bit_offset: 0
+      bit_size: 16
+    - name: PicHorSizeLuma
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_17_2:
+  description: ''
+  fields:
+    - name: LumaTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_17_3:
+  description: ''
+  fields:
+    - name: CbTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_17_4:
+  description: ''
+  fields:
+    - name: CrTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_17_5:
+  description: ''
+  fields:
+    - name: LumaBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_17_6:
+  description: ''
+  fields:
+    - name: CbBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_17_7:
+  description: ''
+  fields:
+    - name: CrBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_18_0:
+  description: ''
+  fields:
+    - name: Stride
+      bit_offset: 0
+      bit_size: 16
+    - name: CbCrInterleaved
+      bit_offset: 16
+      bit_size: 1
+    - name: ColorMode
+      bit_offset: 17
+      bit_size: 3
+    - name: FrameMap
+      bit_offset: 20
+      bit_size: 4
+    - name: Reserved0
+      bit_offset: 24
+      bit_size: 8
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_18_1:
+  description: ''
+  fields:
+    - name: PicVerSizeLuma
+      bit_offset: 0
+      bit_size: 16
+    - name: PicHorSizeLuma
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_18_2:
+  description: ''
+  fields:
+    - name: LumaTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_18_3:
+  description: ''
+  fields:
+    - name: CbTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_18_4:
+  description: ''
+  fields:
+    - name: CrTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_18_5:
+  description: ''
+  fields:
+    - name: LumaBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_18_6:
+  description: ''
+  fields:
+    - name: CbBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_18_7:
+  description: ''
+  fields:
+    - name: CrBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_19_0:
+  description: ''
+  fields:
+    - name: Stride
+      bit_offset: 0
+      bit_size: 16
+    - name: CbCrInterleaved
+      bit_offset: 16
+      bit_size: 1
+    - name: ColorMode
+      bit_offset: 17
+      bit_size: 3
+    - name: FrameMap
+      bit_offset: 20
+      bit_size: 4
+    - name: Reserved0
+      bit_offset: 24
+      bit_size: 8
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_19_1:
+  description: ''
+  fields:
+    - name: PicVerSizeLuma
+      bit_offset: 0
+      bit_size: 16
+    - name: PicHorSizeLuma
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_19_2:
+  description: ''
+  fields:
+    - name: LumaTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_19_3:
+  description: ''
+  fields:
+    - name: CbTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_19_4:
+  description: ''
+  fields:
+    - name: CrTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_19_5:
+  description: ''
+  fields:
+    - name: LumaBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_19_6:
+  description: ''
+  fields:
+    - name: CbBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_19_7:
+  description: ''
+  fields:
+    - name: CrBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_20_0:
+  description: ''
+  fields:
+    - name: Stride
+      bit_offset: 0
+      bit_size: 16
+    - name: CbCrInterleaved
+      bit_offset: 16
+      bit_size: 1
+    - name: ColorMode
+      bit_offset: 17
+      bit_size: 3
+    - name: FrameMap
+      bit_offset: 20
+      bit_size: 4
+    - name: Reserved0
+      bit_offset: 24
+      bit_size: 8
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_20_1:
+  description: ''
+  fields:
+    - name: PicVerSizeLuma
+      bit_offset: 0
+      bit_size: 16
+    - name: PicHorSizeLuma
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_20_2:
+  description: ''
+  fields:
+    - name: LumaTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_20_3:
+  description: ''
+  fields:
+    - name: CbTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_20_4:
+  description: ''
+  fields:
+    - name: CrTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_20_5:
+  description: ''
+  fields:
+    - name: LumaBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_20_6:
+  description: ''
+  fields:
+    - name: CbBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_20_7:
+  description: ''
+  fields:
+    - name: CrBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_21_0:
+  description: ''
+  fields:
+    - name: Stride
+      bit_offset: 0
+      bit_size: 16
+    - name: CbCrInterleaved
+      bit_offset: 16
+      bit_size: 1
+    - name: ColorMode
+      bit_offset: 17
+      bit_size: 3
+    - name: FrameMap
+      bit_offset: 20
+      bit_size: 4
+    - name: Reserved0
+      bit_offset: 24
+      bit_size: 8
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_21_1:
+  description: ''
+  fields:
+    - name: PicVerSizeLuma
+      bit_offset: 0
+      bit_size: 16
+    - name: PicHorSizeLuma
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_21_2:
+  description: ''
+  fields:
+    - name: LumaTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_21_3:
+  description: ''
+  fields:
+    - name: CbTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_21_4:
+  description: ''
+  fields:
+    - name: CrTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_21_5:
+  description: ''
+  fields:
+    - name: LumaBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_21_6:
+  description: ''
+  fields:
+    - name: CbBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_21_7:
+  description: ''
+  fields:
+    - name: CrBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_22_0:
+  description: ''
+  fields:
+    - name: Stride
+      bit_offset: 0
+      bit_size: 16
+    - name: CbCrInterleaved
+      bit_offset: 16
+      bit_size: 1
+    - name: ColorMode
+      bit_offset: 17
+      bit_size: 3
+    - name: FrameMap
+      bit_offset: 20
+      bit_size: 4
+    - name: Reserved0
+      bit_offset: 24
+      bit_size: 8
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_22_1:
+  description: ''
+  fields:
+    - name: PicVerSizeLuma
+      bit_offset: 0
+      bit_size: 16
+    - name: PicHorSizeLuma
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_22_2:
+  description: ''
+  fields:
+    - name: LumaTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_22_3:
+  description: ''
+  fields:
+    - name: CbTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_22_4:
+  description: ''
+  fields:
+    - name: CrTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_22_5:
+  description: ''
+  fields:
+    - name: LumaBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_22_6:
+  description: ''
+  fields:
+    - name: CbBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_22_7:
+  description: ''
+  fields:
+    - name: CrBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_23_0:
+  description: ''
+  fields:
+    - name: Stride
+      bit_offset: 0
+      bit_size: 16
+    - name: CbCrInterleaved
+      bit_offset: 16
+      bit_size: 1
+    - name: ColorMode
+      bit_offset: 17
+      bit_size: 3
+    - name: FrameMap
+      bit_offset: 20
+      bit_size: 4
+    - name: Reserved0
+      bit_offset: 24
+      bit_size: 8
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_23_1:
+  description: ''
+  fields:
+    - name: PicVerSizeLuma
+      bit_offset: 0
+      bit_size: 16
+    - name: PicHorSizeLuma
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_23_2:
+  description: ''
+  fields:
+    - name: LumaTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_23_3:
+  description: ''
+  fields:
+    - name: CbTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_23_4:
+  description: ''
+  fields:
+    - name: CrTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_23_5:
+  description: ''
+  fields:
+    - name: LumaBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_23_6:
+  description: ''
+  fields:
+    - name: CbBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_23_7:
+  description: ''
+  fields:
+    - name: CrBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_24_0:
+  description: ''
+  fields:
+    - name: Stride
+      bit_offset: 0
+      bit_size: 16
+    - name: CbCrInterleaved
+      bit_offset: 16
+      bit_size: 1
+    - name: ColorMode
+      bit_offset: 17
+      bit_size: 3
+    - name: FrameMap
+      bit_offset: 20
+      bit_size: 4
+    - name: Reserved0
+      bit_offset: 24
+      bit_size: 8
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_24_1:
+  description: ''
+  fields:
+    - name: PicVerSizeLuma
+      bit_offset: 0
+      bit_size: 16
+    - name: PicHorSizeLuma
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_24_2:
+  description: ''
+  fields:
+    - name: LumaTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_24_3:
+  description: ''
+  fields:
+    - name: CbTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_24_4:
+  description: ''
+  fields:
+    - name: CrTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_24_5:
+  description: ''
+  fields:
+    - name: LumaBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_24_6:
+  description: ''
+  fields:
+    - name: CbBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_24_7:
+  description: ''
+  fields:
+    - name: CrBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_25_0:
+  description: ''
+  fields:
+    - name: Stride
+      bit_offset: 0
+      bit_size: 16
+    - name: CbCrInterleaved
+      bit_offset: 16
+      bit_size: 1
+    - name: ColorMode
+      bit_offset: 17
+      bit_size: 3
+    - name: FrameMap
+      bit_offset: 20
+      bit_size: 4
+    - name: Reserved0
+      bit_offset: 24
+      bit_size: 8
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_25_1:
+  description: ''
+  fields:
+    - name: PicVerSizeLuma
+      bit_offset: 0
+      bit_size: 16
+    - name: PicHorSizeLuma
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_25_2:
+  description: ''
+  fields:
+    - name: LumaTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_25_3:
+  description: ''
+  fields:
+    - name: CbTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_25_4:
+  description: ''
+  fields:
+    - name: CrTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_25_5:
+  description: ''
+  fields:
+    - name: LumaBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_25_6:
+  description: ''
+  fields:
+    - name: CbBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_25_7:
+  description: ''
+  fields:
+    - name: CrBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_26_0:
+  description: ''
+  fields:
+    - name: Stride
+      bit_offset: 0
+      bit_size: 16
+    - name: CbCrInterleaved
+      bit_offset: 16
+      bit_size: 1
+    - name: ColorMode
+      bit_offset: 17
+      bit_size: 3
+    - name: FrameMap
+      bit_offset: 20
+      bit_size: 4
+    - name: Reserved0
+      bit_offset: 24
+      bit_size: 8
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_26_1:
+  description: ''
+  fields:
+    - name: PicVerSizeLuma
+      bit_offset: 0
+      bit_size: 16
+    - name: PicHorSizeLuma
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_26_2:
+  description: ''
+  fields:
+    - name: LumaTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_26_3:
+  description: ''
+  fields:
+    - name: CbTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_26_4:
+  description: ''
+  fields:
+    - name: CrTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_26_5:
+  description: ''
+  fields:
+    - name: LumaBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_26_6:
+  description: ''
+  fields:
+    - name: CbBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_26_7:
+  description: ''
+  fields:
+    - name: CrBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_27_0:
+  description: ''
+  fields:
+    - name: Stride
+      bit_offset: 0
+      bit_size: 16
+    - name: CbCrInterleaved
+      bit_offset: 16
+      bit_size: 1
+    - name: ColorMode
+      bit_offset: 17
+      bit_size: 3
+    - name: FrameMap
+      bit_offset: 20
+      bit_size: 4
+    - name: Reserved0
+      bit_offset: 24
+      bit_size: 8
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_27_1:
+  description: ''
+  fields:
+    - name: PicVerSizeLuma
+      bit_offset: 0
+      bit_size: 16
+    - name: PicHorSizeLuma
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_27_2:
+  description: ''
+  fields:
+    - name: LumaTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_27_3:
+  description: ''
+  fields:
+    - name: CbTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_27_4:
+  description: ''
+  fields:
+    - name: CrTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_27_5:
+  description: ''
+  fields:
+    - name: LumaBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_27_6:
+  description: ''
+  fields:
+    - name: CbBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_27_7:
+  description: ''
+  fields:
+    - name: CrBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_28_0:
+  description: ''
+  fields:
+    - name: Stride
+      bit_offset: 0
+      bit_size: 16
+    - name: CbCrInterleaved
+      bit_offset: 16
+      bit_size: 1
+    - name: ColorMode
+      bit_offset: 17
+      bit_size: 3
+    - name: FrameMap
+      bit_offset: 20
+      bit_size: 4
+    - name: Reserved0
+      bit_offset: 24
+      bit_size: 8
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_28_1:
+  description: ''
+  fields:
+    - name: PicVerSizeLuma
+      bit_offset: 0
+      bit_size: 16
+    - name: PicHorSizeLuma
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_28_2:
+  description: ''
+  fields:
+    - name: LumaTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_28_3:
+  description: ''
+  fields:
+    - name: CbTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_28_4:
+  description: ''
+  fields:
+    - name: CrTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_28_5:
+  description: ''
+  fields:
+    - name: LumaBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_28_6:
+  description: ''
+  fields:
+    - name: CbBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_28_7:
+  description: ''
+  fields:
+    - name: CrBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_29_0:
+  description: ''
+  fields:
+    - name: Stride
+      bit_offset: 0
+      bit_size: 16
+    - name: CbCrInterleaved
+      bit_offset: 16
+      bit_size: 1
+    - name: ColorMode
+      bit_offset: 17
+      bit_size: 3
+    - name: FrameMap
+      bit_offset: 20
+      bit_size: 4
+    - name: Reserved0
+      bit_offset: 24
+      bit_size: 8
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_29_1:
+  description: ''
+  fields:
+    - name: PicVerSizeLuma
+      bit_offset: 0
+      bit_size: 16
+    - name: PicHorSizeLuma
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_29_2:
+  description: ''
+  fields:
+    - name: LumaTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_29_3:
+  description: ''
+  fields:
+    - name: CbTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_29_4:
+  description: ''
+  fields:
+    - name: CrTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_29_5:
+  description: ''
+  fields:
+    - name: LumaBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_29_6:
+  description: ''
+  fields:
+    - name: CbBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_29_7:
+  description: ''
+  fields:
+    - name: CrBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_30_0:
+  description: ''
+  fields:
+    - name: Stride
+      bit_offset: 0
+      bit_size: 16
+    - name: CbCrInterleaved
+      bit_offset: 16
+      bit_size: 1
+    - name: ColorMode
+      bit_offset: 17
+      bit_size: 3
+    - name: FrameMap
+      bit_offset: 20
+      bit_size: 4
+    - name: Reserved0
+      bit_offset: 24
+      bit_size: 8
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_30_1:
+  description: ''
+  fields:
+    - name: PicVerSizeLuma
+      bit_offset: 0
+      bit_size: 16
+    - name: PicHorSizeLuma
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_30_2:
+  description: ''
+  fields:
+    - name: LumaTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_30_3:
+  description: ''
+  fields:
+    - name: CbTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_30_4:
+  description: ''
+  fields:
+    - name: CrTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_30_5:
+  description: ''
+  fields:
+    - name: LumaBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_30_6:
+  description: ''
+  fields:
+    - name: CbBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_30_7:
+  description: ''
+  fields:
+    - name: CrBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_31_0:
+  description: ''
+  fields:
+    - name: Stride
+      bit_offset: 0
+      bit_size: 16
+    - name: CbCrInterleaved
+      bit_offset: 16
+      bit_size: 1
+    - name: ColorMode
+      bit_offset: 17
+      bit_size: 3
+    - name: FrameMap
+      bit_offset: 20
+      bit_size: 4
+    - name: Reserved0
+      bit_offset: 24
+      bit_size: 8
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_31_1:
+  description: ''
+  fields:
+    - name: PicVerSizeLuma
+      bit_offset: 0
+      bit_size: 16
+    - name: PicHorSizeLuma
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_31_2:
+  description: ''
+  fields:
+    - name: LumaTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_31_3:
+  description: ''
+  fields:
+    - name: CbTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_31_4:
+  description: ''
+  fields:
+    - name: CrTopBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_31_5:
+  description: ''
+  fields:
+    - name: LumaBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_31_6:
+  description: ''
+  fields:
+    - name: CbBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_PIC_INFO_31_7:
+  description: ''
+  fields:
+    - name: CrBotBaseAddr
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT00_LUMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT00_LUMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT00_LUMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT01_LUMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT01_LUMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT01_LUMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT02_LUMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT02_LUMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT02_LUMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT03_LUMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT03_LUMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT03_LUMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT04_LUMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT04_LUMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT04_LUMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT05_LUMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT05_LUMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT05_LUMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT06_LUMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT06_LUMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT06_LUMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT07_LUMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT07_LUMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT07_LUMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT08_LUMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT08_LUMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT08_LUMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT09_LUMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT09_LUMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT09_LUMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT0A_LUMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT0A_LUMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT0A_LUMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT0B_LUMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT0B_LUMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT0B_LUMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT0C_LUMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT0C_LUMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT0C_LUMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT0D_LUMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT0D_LUMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT0D_LUMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT0E_LUMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT0E_LUMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT0E_LUMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT0F_LUMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT0F_LUMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT0F_LUMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT10_LUMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT10_LUMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT10_LUMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT11_LUMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT11_LUMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT11_LUMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT12_LUMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT12_LUMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT12_LUMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT13_LUMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT13_LUMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT13_LUMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT14_LUMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT14_LUMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT14_LUMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT15_LUMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT15_LUMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT15_LUMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT16_LUMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT16_LUMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT16_LUMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT17_LUMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT17_LUMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT17_LUMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT18_LUMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT18_LUMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT18_LUMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT19_LUMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT19_LUMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT19_LUMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT1A_LUMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT1A_LUMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT1A_LUMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT1B_LUMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT1B_LUMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT1B_LUMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT1C_LUMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT1C_LUMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT1C_LUMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT1D_LUMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT1D_LUMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT1D_LUMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT1E_LUMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT1E_LUMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT1E_LUMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT1F_LUMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT1F_LUMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_LUM_BIT1F_LUMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT00_CHROMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT00_CHROMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT00_CHROMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT01_CHROMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT01_CHROMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT01_CHROMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT02_CHROMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT02_CHROMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT02_CHROMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT03_CHROMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT03_CHROMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT03_CHROMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT04_CHROMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT04_CHROMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT04_CHROMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT05_CHROMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT05_CHROMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT05_CHROMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT06_CHROMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT06_CHROMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT06_CHROMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT07_CHROMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT07_CHROMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT07_CHROMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT08_CHROMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT08_CHROMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT08_CHROMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT09_CHROMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT09_CHROMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT09_CHROMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT0A_CHROMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT0A_CHROMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT0A_CHROMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT0B_CHROMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT0B_CHROMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT0B_CHROMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT0C_CHROMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT0C_CHROMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT0C_CHROMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT0D_CHROMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT0D_CHROMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT0D_CHROMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT0E_CHROMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT0E_CHROMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT0E_CHROMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT0F_CHROMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT0F_CHROMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT0F_CHROMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT10_CHROMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT10_CHROMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT10_CHROMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT11_CHROMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT11_CHROMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT11_CHROMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT12_CHROMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT12_CHROMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT12_CHROMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT13_CHROMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT13_CHROMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT13_CHROMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT14_CHROMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT14_CHROMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT14_CHROMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT15_CHROMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT15_CHROMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT15_CHROMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT16_CHROMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT16_CHROMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT16_CHROMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT17_CHROMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT17_CHROMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT17_CHROMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT18_CHROMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT18_CHROMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT18_CHROMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT19_CHROMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT19_CHROMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT19_CHROMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT1A_CHROMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT1A_CHROMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT1A_CHROMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT1B_CHROMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT1B_CHROMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT1B_CHROMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT1C_CHROMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT1C_CHROMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT1C_CHROMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT1D_CHROMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT1D_CHROMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT1D_CHROMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT1E_CHROMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT1E_CHROMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT1E_CHROMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT1F_CHROMA_bit:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT1F_CHROMA_xy:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CHR_BIT1F_CHROMA:
+  description: ''
+  fields:
+    - name: tbxor
+      bit_offset: 5
+      bit_size: 1
+    - name: zero
+      bit_offset: 6
+      bit_size: 1
+    - name: inv
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CFG_granule_field:
+  description: ''
+  fields:
+    - name: chr
+      bit_offset: 0
+      bit_size: 4
+    - name: lum
+      bit_offset: 8
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CFG_granule_frame:
+  description: ''
+  fields:
+    - name: chr
+      bit_offset: 4
+      bit_size: 4
+    - name: lum
+      bit_offset: 12
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CFG_burst_inc:
+  description: ''
+  fields:
+    - name: dir
+      bit_offset: 16
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CFG:
+  description: ''
+  fields:
+    - name: Reserved0
+      bit_offset: 17
+      bit_size: 2
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CFG_tb_seperate:
+  description: ''
+  fields:
+    - name: map
+      bit_offset: 19
+      bit_size: 1
+fieldset/VPU_VPU_ENC_GDI_XY2AXI_CFG_max_burst:
+  description: ''
+  fields:
+    - name: 1d
+      bit_offset: 20
+      bit_size: 4
+fieldset/VPU_VPU_ENC_GDI_AXI_BASE_EXTEND_r_base:
+  description: ''
+  fields:
+    - name: ext
+      bit_offset: 0
+      bit_size: 8

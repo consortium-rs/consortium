@@ -1,0 +1,126 @@
+block/EXTDST:
+  description: ''
+  items:
+    - name: LU
+      byte_offset: 0
+      fieldset: EXTDST_LU
+    - name: LOCKS
+      byte_offset: 4
+      fieldset: EXTDST_LOCKS
+    - name: STATCON
+      byte_offset: 8
+      fieldset: EXTDST_STATCON
+    - name: CONTR
+      byte_offset: 12
+      fieldset: EXTDST_CONTR
+    - name: SOFTKICK
+      byte_offset: 16
+      fieldset: EXTDST_SOFTKICK
+    - name: STATUS
+      byte_offset: 20
+      fieldset: EXTDST_STATUS
+    - name: CONTWO
+      byte_offset: 24
+      fieldset: EXTDST_CONTWO
+    - name: CURPXCNT
+      byte_offset: 28
+      fieldset: EXTDST_CURPXCNT
+    - name: LASTPXCN
+      byte_offset: 32
+      fieldset: EXTDST_LASTPXCN
+    - name: PERCOUNT
+      byte_offset: 36
+      fieldset: EXTDST_PERCOUNT
+fieldset/EXTDST_LU:
+  description: ''
+  fields:
+    - name: LkUn
+      bit_offset: 0
+      bit_size: 32
+fieldset/EXTDST_LOCKS:
+  description: ''
+  fields:
+    - name: LkSus
+      bit_offset: 0
+      bit_size: 1
+      description: LockStatus
+    - name: PriSt
+      bit_offset: 4
+      bit_size: 1
+      description: LockStatus
+    - name: FreezeS
+      bit_offset: 8
+      bit_size: 1
+      description: PrivilegeStatus
+fieldset/EXTDST_STATCON:
+  description: ''
+  fields:
+    - name: ShdEn
+      bit_offset: 0
+      bit_size: 1
+      description: ShdEn
+    - name: KICKMODE
+      bit_offset: 8
+      bit_size: 1
+      description: ShdEn
+    - name: PerfCntM
+      bit_offset: 12
+      bit_size: 1
+      description: PerfCountMode
+fieldset/EXTDST_CONTR:
+  description: ''
+  fields:
+    - name: GamAplEn
+      bit_offset: 0
+      bit_size: 1
+      description: GammaApplyEnable
+fieldset/EXTDST_SOFTKICK:
+  description: ''
+  fields:
+    - name: KICK0
+      bit_offset: 0
+      bit_size: 1
+      description: KICK
+fieldset/EXTDST_STATUS:
+  description: ''
+  fields:
+    - name: CNTERRST
+      bit_offset: 0
+      bit_size: 1
+      description: CNT_ERR_STS
+fieldset/EXTDST_CONTWO:
+  description: ''
+  fields:
+    - name: CWVAL
+      bit_offset: 0
+      bit_size: 32
+      description: CW_VAL
+fieldset/EXTDST_CURPXCNT:
+  description: ''
+  fields:
+    - name: CXVAL
+      bit_offset: 0
+      bit_size: 16
+      description: C_XVAL
+    - name: CYVAL
+      bit_offset: 16
+      bit_size: 16
+      description: C_XVAL
+fieldset/EXTDST_LASTPXCN:
+  description: ''
+  fields:
+    - name: LXVAL
+      bit_offset: 0
+      bit_size: 16
+      description: L_XVAL
+    - name: LYVAL
+      bit_offset: 16
+      bit_size: 16
+      description: L_XVAL
+fieldset/EXTDST_PERCOUNT:
+  description: ''
+  fields:
+    - name: PerfRes
+      bit_offset: 0
+      bit_size: 32
+      description: PerfResult

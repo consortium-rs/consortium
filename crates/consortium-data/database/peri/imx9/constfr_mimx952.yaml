@@ -1,0 +1,114 @@
+block/CONSTFR:
+  description: ''
+  items:
+    - name: LU
+      byte_offset: 0
+      fieldset: CONSTFR_LU
+    - name: LOCKS
+      byte_offset: 4
+      fieldset: CONSTFR_LOCKS
+    - name: STATCON
+      byte_offset: 8
+      fieldset: CONSTFR_STATCON
+    - name: FRADIM
+      byte_offset: 12
+      fieldset: CONSTFR_FRADIM
+    - name: CONSTC
+      byte_offset: 16
+      fieldset: CONSTFR_CONSTC
+    - name: CONTRIG
+      byte_offset: 20
+      fieldset: CONSTFR_CONTRIG
+    - name: START
+      byte_offset: 24
+      fieldset: CONSTFR_START
+    - name: STATUS
+      byte_offset: 28
+      fieldset: CONSTFR_STATUS
+fieldset/CONSTFR_LU:
+  description: ''
+  fields:
+    - name: LkUn
+      bit_offset: 0
+      bit_size: 32
+fieldset/CONSTFR_LOCKS:
+  description: ''
+  fields:
+    - name: LkSus
+      bit_offset: 0
+      bit_size: 1
+      description: LockStatus
+    - name: PriSt
+      bit_offset: 4
+      bit_size: 1
+      description: LockStatus
+    - name: FreezeS
+      bit_offset: 8
+      bit_size: 1
+      description: PrivilegeStatus
+fieldset/CONSTFR_STATCON:
+  description: ''
+  fields:
+    - name: ShdEn
+      bit_offset: 0
+      bit_size: 1
+      description: ShdEn
+fieldset/CONSTFR_FRADIM:
+  description: ''
+  fields:
+    - name: FrameWid
+      bit_offset: 0
+      bit_size: 14
+      description: FrameWidth
+    - name: FrameHei
+      bit_offset: 16
+      bit_size: 14
+      description: FrameWidth
+    - name: EmptFram
+      bit_offset: 31
+      bit_size: 1
+      description: FrameHeight
+fieldset/CONSTFR_CONSTC:
+  description: ''
+  fields:
+    - name: ConstA
+      bit_offset: 0
+      bit_size: 8
+      description: ConstantAlpha
+    - name: ConstB
+      bit_offset: 8
+      bit_size: 8
+      description: ConstantAlpha
+    - name: ConstG
+      bit_offset: 16
+      bit_size: 8
+      description: ConstantBlue
+    - name: ConstR
+      bit_offset: 24
+      bit_size: 8
+      description: ConstantGreen
+fieldset/CONSTFR_CONTRIG:
+  description: ''
+  fields:
+    - name: SdTokGen
+      bit_offset: 0
+      bit_size: 1
+      description: ShdTokGen
+fieldset/CONSTFR_START:
+  description: ''
+  fields:
+    - name: Start1
+      bit_offset: 0
+      bit_size: 1
+      description: Start
+fieldset/CONSTFR_STATUS:
+  description: ''
+  fields:
+    - name: StBusy
+      bit_offset: 0
+      bit_size: 1
+      description: StatusBusy
+    - name: ShadowS
+      bit_offset: 1
+      bit_size: 1
+      description: StatusBusy

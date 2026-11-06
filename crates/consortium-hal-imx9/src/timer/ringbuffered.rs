@@ -449,7 +449,7 @@ mod tests {
 
     #[cfg(feature = "mimx93")]
     const TPM_DMA_CHANNEL: usize = 23;
-    #[cfg(feature = "mimx95")]
+    #[cfg(any(feature = "mimx95", feature = "mimx952"))]
     const TPM_DMA_CHANNEL: usize = 26;
 
     #[test]
@@ -487,7 +487,7 @@ mod tests {
         let request = channel_request(TimerId::Tpm5, Channel::Ch3);
         #[cfg(feature = "mimx93")]
         assert_eq!(request.controller(), crate::dma::DmaController::Dma4);
-        #[cfg(feature = "mimx95")]
+        #[cfg(any(feature = "mimx95", feature = "mimx952"))]
         assert_eq!(request.controller(), crate::dma::DmaController::Dma5);
         assert_eq!(request.source(), 32);
     }
