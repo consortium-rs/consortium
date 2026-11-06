@@ -23,7 +23,7 @@ use std::collections::HashMap;
 use consortium_cfg::components::address::{Address, ApAddress};
 use consortium_cfg::components::bella::{BellA, HardwareDoorbell};
 use consortium_cfg::components::ipc_shm::{
-    Channel, DoorbellMeta, DoorbellRingerSide, DoorbellSource, ShuHan, Transceiver,
+    Channel, DoorbellMeta, DoorbellRingerSide, DoorbellSource, ShmNode, Transceiver,
     initialize_instances,
 };
 use consortium_cfg::components::irq::InterruptLine;
@@ -178,7 +178,7 @@ fn bella_nvic_enable_for_controller_core() {
 }
 
 /// A second transceiver on a distinct doorbell, core, and codec, so a
-/// multi-endpoint `ShuHan` exercises more than one of every generated arm.
+/// multi-endpoint `ShmNode` exercises more than one of every generated arm.
 fn pong() -> Transceiver {
     Transceiver {
         name: "pong".to_string(),
@@ -232,16 +232,16 @@ fn pong() -> Transceiver {
 /// A multi-transceiver node spanning two doorbell families, two codecs, and two
 /// controller cores. The full channel definitions + endpoint installers are the
 /// most representative "complicated IR -> code" surface.
-fn shuhan() -> ShuHan {
-    ShuHan::new(vec![transceiver(), pong()])
+fn shm_node() -> ShmNode {
+    ShmNode::new(vec![transceiver(), pong()])
 }
 
 #[test]
-fn shuhan_ap_side_emits_full_endpoint_struct() {
+fn shm_node_ap_side_emits_full_endpoint_struct() {
     let uio = format_ident!("uio");
     let ty_crate: syn::Path = syn::parse_str("::shared").unwrap();
     let tokens = initialize_instances(
-        &shuhan(),
+        &shm_node(),
         VisibleCore::Ap,
         &uio,
         &ty_crate,
@@ -252,15 +252,15 @@ fn shuhan_ap_side_emits_full_endpoint_struct() {
 }
 
 #[test]
-fn shuhan_controller_side_emits_single_endpoint_struct() {
+fn shm_node_controller_side_emits_single_endpoint_struct() {
     // A controller core only participates in the transceivers it is a party to,
-    // but `ShuHan::initialize` still emits the whole node; the snapshot shows the
+    // but `ShmNode::initialize` still emits the whole node; the snapshot shows the
     // cm33 view (it is only a party to `ping`, so `pong`'s cm7 addresses are not
     // resolvable for this core).
     let uio = format_ident!("uio");
     let ty_crate: syn::Path = syn::parse_str("::shared").unwrap();
     let tokens = initialize_instances(
-        &ShuHan::new(vec![transceiver()]),
+        &ShmNode::new(vec![transceiver()]),
         cm33(),
         &uio,
         &ty_crate,
