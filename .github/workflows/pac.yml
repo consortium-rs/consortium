@@ -1,17 +1,21 @@
 name: PAC - Parse and Validate
 
+# No `paths` filter: `parse-and-validate (3.12)` is a required check, and a
+# workflow filtered out by `paths` never reports, which leaves every PR that
+# does not touch the PAC pipeline waiting on it. The job always runs and
+# fast-passes instead when nothing it covers changed.
+# Triggers match `host tests` and `linters`: `push` only on `main` (PR
+# branches are covered by `pull_request`), plus a manual run.
 on:
   push:
-    branches: [main, develop]
-    paths:
-      - 'scripts/pac/**'
-      - 'submodules/**'
-      - '.github/workflows/pac.yml'
-  pull_request:
     branches: [main]
-    paths:
-      - 'scripts/pac/**'
-      - 'submodules/**'
+  pull_request:
+  workflow_dispatch:
+
+# `dorny/paths-filter` lists a PR's changed files through the API.
+permissions:
+  contents: read
+  pull-requests: read
 
 jobs:
   parse-and-validate:
@@ -21,26 +25,55 @@ jobs:
         python-version: ['3.12']
 
     steps:
+      # Submodules are fetched only once the filter says the pipeline must run,
+      # so a fast pass costs a shallow checkout.
       - uses: actions/checkout@v4
+
+      - name: Detect PAC changes
+        id: filter
+        # A manual run always takes the full pipeline.
+        if: github.event_name != 'workflow_dispatch'
+        uses: dorny/paths-filter@v3
         with:
-          submodules: recursive
+          filters: |
+            pac:
+              - 'scripts/pac/**'
+              - 'submodules/**'
+              - '.gitmodules'
+              - '.github/workflows/pac.yml'
+
+      - name: Decide whether to run the pipeline
+        id: gate
+        run: echo "run=${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.pac == 'true' }}" >> "$GITHUB_OUTPUT"
+
+      - name: Fast pass
+        if: steps.gate.outputs.run != 'true'
+        run: echo "No PAC pipeline inputs changed; skipping parse and validate."
+
+      - name: Fetch submodules
+        if: steps.gate.outputs.run == 'true'
+        run: git submodule update --init --recursive --depth 1
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        if: steps.gate.outputs.run == 'true'
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
 
       - name: Install chiptool
+        if: steps.gate.outputs.run == 'true'
         # Pinned: chiptool stamps its revision into every generated file. Keep in
         # step with `chiptool_rev` in the justfile.
         run: cargo install --git https://github.com/embassy-rs/chiptool --rev bcf538a2e7b8584ae874ee9ab72efb1576fc6152 --locked
 
       - name: Install Python dependencies
+        if: steps.gate.outputs.run == 'true'
         run: |
           python -m pip install --upgrade pip
           pip install pyyaml
 
       - name: Apply vendor-header patches
+        if: steps.gate.outputs.run == 'true'
         # Same patches `just pac-patch` applies; `ir/` and `generated/` patch
         # pipeline outputs, not submodules.
         run: |
@@ -53,9 +86,11 @@ jobs:
           done
 
       - name: Stage vendor headers
+        if: steps.gate.outputs.run == 'true'
         run: bash scripts/pac/prepare.sh
 
       - name: Run PAC pipeline
+        if: steps.gate.outputs.run == 'true'
         run: |
           python scripts/pac/parse_stm32.py --all
           python scripts/pac/parse_nxp.py --all
@@ -64,10 +99,11 @@ jobs:
           python scripts/pac/test_output.py
 
       - name: Validate with chiptool
+        if: steps.gate.outputs.run == 'true'
         run: |
           python scripts/pac/validate_with_chiptool.py
 
       - name: Show summary
         run: |
           bash scripts/pac/test_summary.sh
-        if: always()
+        if: always() && steps.gate.outputs.run == 'true'

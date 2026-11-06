@@ -1,7 +1,10 @@
 name: host tests
 
+# Push runs only on `main`: a branch with an open PR is already covered by
+# `pull_request`, and building it for `push` too ran every job twice.
 on:
   push:
+    branches: [main]
   pull_request:
   workflow_dispatch:
 
