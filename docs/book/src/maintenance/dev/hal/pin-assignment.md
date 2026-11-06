@@ -78,7 +78,9 @@ and `TxPin<T>`-style traits only as what generated code (and `steal()`-based bri
 uses to apply a mux. This is the most symmetric option: one declaration, every owner
 lowered by codegen.
 
-_Costs:_ DTS pinctrl rendering, SM config output, and possibly an SCMI client in firmware.
+_Costs:_ DTS pinctrl rendering, SM config output, and an SCMI client in firmware — now
+`consortium-pmi-scmi` (see [Platform Management](../pmi/index.md)), still without an
+i.MX 95 binding.
 Pins chosen at runtime are not supported (they are not today either).
 
 ### B. Embassy-style: drivers take pins

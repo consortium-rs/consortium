@@ -22,6 +22,9 @@ The current implementation centers on explicit cross-core contracts:
   schema, chip databases, validation, and DTS/UIO-oriented transpilers.
 - `consortium-hal`, chip HAL crates, and generated PAC crates provide early
   firmware-side peripheral access for i.MX9 and STM32MP2 targets.
+- `consortium-pmi` defines platform-management provider traits (clock, pin control,
+  power, reset) for resources a core does not own; `consortium-pmi-scmi` implements
+  them as an SCMI agent over core's region and doorbell primitives.
 - `consortium-dbg` implements shared-memory `defmt` logging and an optional panic
   handler.
 - `consortium-log` is the common `defmt`/`tracing` facade used by generated and
@@ -51,6 +54,7 @@ just test hmi host
 just test cfg host
 just test dbg host
 just test codec host
+just test pmi host
 
 # Run host-side lint bundle
 just lint
@@ -98,6 +102,7 @@ A-core, TEE, HMI, UIO, Cog, WebKit, and Yocto/OpenSTLinux flows are Linux/SDK or
 | Codecs          | `consortium-codec`, `consortium-codec-macros`, `consortium-codec-macros-impl`                                                                                                                                                     |
 | Transports      | `consortium-ipc-transport-memory`, `consortium-ipc-transport-uart*`, `consortium-ipc-transport-fdcan*`                                                                                                                            |
 | Configuration   | `consortium-cfg-common`, `consortium-cfg`, `consortium-dts`, `consortium-data`                                                                                                                                                    |
+| Platform mgmt   | `consortium-pmi`, `consortium-pmi-scmi`                                                                                                                                                                                           |
 | HAL/PAC         | `consortium-hal`, `consortium-hal-imx9`, `consortium-hal-stm32mp2`, `consortium-pac-imx9`, `consortium-pac-stm32mp2`                                                                                                              |
 | Macro helpers   | `consortium-macros-helpers`                                                                                                                                                                                                       |
 | Runtimes/build  | `consortium-runtime-app`, `consortium-runtime-mcu`, `consortium-runtime-macros`, `consortium-runtime-macros-impl`, `consortium-runtime-spl`, `consortium-runtime-sys`, `consortium-builder`, `csti` (in `crates/consortium-cli/`) |
@@ -396,6 +401,43 @@ that code. A core the chip PAC's shipped interrupt table does not describe (STM3
 CM0+) has no `Interrupt` variant to name and keeps writing its vectors by hand. The
 relevant vectors are HSEM and IPCC1_RX/IPCC2_RX (non-secure), and the MU lines a core
 drives (i.MX93 CM33 `MU1_B`/`MU2_B`; i.MX95 CM7 `MU5_A`/`MU7_B`/`MU8_B`).
+
+## Platform Management (PMI)
+
+PMI is how a core obtains clocks, pins, power domains, and resets it does not own. (Not
+HMI: PMI is the platform's control plane.) On STM32MP2 and i.MX 93 a controller core
+writes those registers itself; on i.MX 95/952 the System Manager owns them and the M7
+must ask over SCMI; RISC-V platforms may answer RPMI. The design note is
+`docs/book/src/maintenance/dev/pmi/index.md`.
+
+`consortium-pmi` is `no_std` and holds only the seam: `ClockProvider`,
+`PinctrlProvider`, `PowerProvider`, and `ResetProvider`, each async (RPITIT +
+`MaybeSend`, `&mut self` — one request per handle) over opaque `u32` identifiers
+(`ClockId`, `PinId`, …) that the backend numbers. It depends only on `consortium-core`.
+
+`consortium-pmi-scmi` is the SCMI agent, layered like the spec: `header` (message id
+7:0, type 9:8, protocol 17:10, token 27:18), `status` (0 … −10, plus `Unknown`), `smt`
+(the Shared Memory Transport window over any `Region`: status at 0x04 with free/error
+bits, flags 0x10, length 0x14, header 0x18, payload 0x1c), and `client::Client<R, D>`
+over any `Doorbell`. `Client::call` checks the channel is free (`Error::ChannelBusy`
+otherwise), writes and flushes the request, rings the agent-to-platform line, waits —
+`Completion::Doorbell(line)` parks on a line the platform rings back,
+`Completion::Poll` spins on the free bit — and checks the response echoes the request's
+protocol, message, and token. BASE, CLOCK, PINCTRL, POWER, and RESET are implemented;
+`CLOCK_CONFIG_SET` queries the clock protocol version once and sends the 12-byte layout
+from 3.0 on, as Linux does. Message ids and payloads were checked against Linux's
+`drivers/firmware/arm_scmi`; keep them checked against a source, not memory.
+
+Not built yet: the i.MX 95 binding (the SM's MU lines and SMT window, from its
+configuration, as a chip-database record with `Session` reserving that MU),
+`consortium-cfg` lowering of clock/pin settings into provider calls (generated MCU
+`init()` is synchronous), the platform/server role, notifications and delayed
+responses, NXP vendor protocols, a register backend, and RPMI.
+
+`tests/fake_server.rs` drives the agent against a scripted platform over a heap-backed
+`UncachedRegion`; extend it before reaching for hardware. Under `defmt`,
+`Doorbell::Error` must be `Format`, so the host test's fake doorbell builds only
+without it — lint the `defmt` configuration with `--lib`.
 
 ## HAL and PAC
 
@@ -796,6 +838,8 @@ block with the pointer lifetime or ownership invariant.
 
 - Use `cargo test -p <crate>` for focused host-side validation.
 - Use `just test ipc host` for the current host IPC bundle.
+- Use `just test pmi host` for the provider traits and the SCMI agent's fake-platform
+  tests, and `just check-pmi-m` for the controller-core targets.
 - Use `cargo test -p consortium-ipc-transport-memory --no-default-features --test async_atomic_waker_test`
   for the no-std-shaped shared-memory future path.
 - UART protocol changes should run `cargo test -p consortium-ipc-transport-uart`,

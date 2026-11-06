@@ -968,6 +968,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "consortium-pmi"
+version = "0.5.0"
+dependencies = [
+ "consortium-core",
+ "defmt",
+]
+
+[[package]]
+name = "consortium-pmi-scmi"
+version = "0.5.0"
+dependencies = [
+ "consortium-core",
+ "consortium-pmi",
+ "defmt",
+]
+
+[[package]]
 name = "consortium-runtime-app"
 version = "0.5.0"
 dependencies = [
