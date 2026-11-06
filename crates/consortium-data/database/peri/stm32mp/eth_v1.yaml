@@ -2089,6 +2089,10 @@ fieldset/ETH_MACHWF0R:
       bit_offset: 16
       bit_size: 1
       description: Receive Checksum Offload Enabled
+    - name: ADDMACADRSEL
+      bit_offset: 18
+      bit_size: 5
+      description: MAC Addresses 1-31 Selected
     - name: MACADR32SEL
       bit_offset: 23
       bit_size: 1
@@ -2097,10 +2101,18 @@ fieldset/ETH_MACHWF0R:
       bit_offset: 24
       bit_size: 1
       description: MAC Addresses 64-127 Selected
+    - name: TSSTSSEL
+      bit_offset: 25
+      bit_size: 2
+      description: Timestamp System Time Source
     - name: SAVLANINS
       bit_offset: 27
       bit_size: 1
       description: Source Address or VLAN Insertion Enable
+    - name: ACTPHYSEL
+      bit_offset: 28
+      bit_size: 3
+      description: Active PHY Selected
 fieldset/ETH_MACHWF1R:
   description: ''
   fields:

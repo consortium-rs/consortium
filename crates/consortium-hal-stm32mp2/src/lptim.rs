@@ -37,6 +37,47 @@ const CR_CNTSTRT: u32 = 1 << 2;
 const CR_COUNTRST: u32 = 1 << 3;
 const CR_RSTARE: u32 = 1 << 4;
 
+// Write-completion flags in ISR (cleared by the same bits in ICR).
+const ISR_CMP1OK: u32 = 1 << 3;
+const ISR_ARROK: u32 = 1 << 4;
+const ISR_REPOK: u32 = 1 << 8;
+const ISR_CMP2OK: u32 = 1 << 19;
+const ISR_DIEROK: u32 = 1 << 24;
+
+/// Polls of a write-completion flag before giving up on it.
+///
+/// The flag takes a few LPTIM kernel clock cycles, about 100 us at a 32 kHz
+/// LSE. If it never comes (the kernel clock is gated), carry on rather than
+/// hang: the write is merely late or lost, as in upstream Embassy's
+/// `dier_modify`.
+const SYNC_POLLS: u32 = 100_000;
+
+/// Write a register that the LPTIM synchronizes into its kernel clock domain,
+/// then wait for its completion flag `ok`.
+///
+/// RM0457 and STM32CubeMP2: `ARR`, `RCR`, `CCRx`, and `DIER` take effect only
+/// while `ENABLE` is set, and a second write before the flag is set has
+/// unpredictable results. Callers guarantee `ENABLE`.
+fn write_synced(regs: LPTIM, ok: u32, write: impl FnOnce()) {
+    regs.ICR().write(|w| w.0 = ok);
+    write();
+    for _ in 0..SYNC_POLLS {
+        if regs.ISR().read().0 & ok != 0 {
+            return;
+        }
+    }
+}
+
+/// Modify `DIER` and wait for `DIEROK`. A write that changes nothing is
+/// skipped, so it costs no wait. The timer must be enabled.
+fn dier_modify(regs: LPTIM, f: impl FnOnce(u32) -> u32) {
+    let old = regs.DIER().read().0;
+    let new = f(old);
+    if new != old {
+        write_synced(regs, ISR_DIEROK, || regs.DIER().write(|w| w.0 = new));
+    }
+}
+
 #[cfg(feature = "dma")]
 const DIER_CC1DE: u32 = 1 << 16;
 #[cfg(feature = "dma")]
@@ -146,7 +187,7 @@ impl State {
         if pending != 0 {
             self.pending.fetch_or(pending, Ordering::AcqRel);
             regs.ICR().write(|w| w.0 = pending);
-            regs.DIER().modify(|w| w.0 &= !pending);
+            dier_modify(regs, |dier| dier & !pending);
             self.waker.wake();
         }
     }
@@ -216,6 +257,9 @@ pub struct LowPowerTimer {
     id: LptimId,
     clock_hz: u32,
     state: &'static State,
+    /// Counting continuously, so a configuration change that has to disable
+    /// the timer restarts it.
+    continuous: bool,
 }
 
 impl LowPowerTimer {
@@ -236,8 +280,10 @@ impl LowPowerTimer {
     #[allow(unused_variables)]
     fn over(regs: LPTIM, id: LptimId, clock_hz: u32, state: &'static State) -> Self {
         assert!(clock_hz > 0);
+        // DIER is written while enabled, CFGR and CCMR1 while disabled.
+        regs.CR().write(|w| w.0 = CR_ENABLE);
+        dier_modify(regs, |_| 0);
         regs.CR().write(|w| w.0 = 0);
-        regs.DIER().write(|w| w.0 = 0);
         regs.ICR().write(|w| w.0 = 0x01ff_ffff);
         regs.CFGR().write(|w| w.0 = 0);
         regs.CCMR1().write(|w| w.0 = 0);
@@ -248,6 +294,41 @@ impl LowPowerTimer {
             id,
             clock_hz,
             state,
+            continuous: false,
+        }
+    }
+
+    /// Apply a change to `CFGR`, `CFGR2`, or the `CCMR1` mode/polarity fields,
+    /// which RM0457 allows only while `ENABLE` is clear.
+    ///
+    /// An enabled timer is disabled for the change, which resets its counter,
+    /// then re-enabled, and restarted if it was counting continuously.
+    fn while_disabled(&mut self, f: impl FnOnce(LPTIM)) {
+        let enabled = self.is_enabled();
+        if enabled {
+            self.regs.CR().write(|w| w.0 = 0);
+        }
+        f(self.regs);
+        if enabled {
+            self.regs.CR().write(|w| w.0 = CR_ENABLE);
+            if self.continuous {
+                self.regs.CR().modify(|w| w.0 |= CR_CNTSTRT);
+            }
+        }
+    }
+
+    /// Write `ARR`, `RCR`, or `CCRx`, which take effect only while `ENABLE` is
+    /// set, and wait for the matching completion flag `ok`. A disabled timer is
+    /// enabled for the write only.
+    fn while_enabled(&mut self, ok: u32, write: impl FnOnce(LPTIM)) {
+        let enabled = self.is_enabled();
+        if !enabled {
+            self.regs.CR().write(|w| w.0 = CR_ENABLE);
+        }
+        let regs = self.regs;
+        write_synced(regs, ok, || write(regs));
+        if !enabled {
+            self.regs.CR().write(|w| w.0 = 0);
         }
     }
 
@@ -258,6 +339,7 @@ impl LowPowerTimer {
 
     /// Stop and disable the peripheral.
     pub fn disable(&mut self) {
+        self.continuous = false;
         self.regs.CR().write(|w| w.0 = 0);
     }
 
@@ -269,12 +351,14 @@ impl LowPowerTimer {
     /// Start continuous counting.
     pub fn start_continuous(&mut self) {
         self.enable();
+        self.continuous = true;
         self.regs.CR().modify(|w| w.0 |= CR_CNTSTRT);
     }
 
     /// Start one-shot counting.
     pub fn start_single(&mut self) {
         self.enable();
+        self.continuous = false;
         self.regs.CR().modify(|w| w.0 |= CR_SNGSTRT);
     }
 
@@ -302,8 +386,8 @@ impl LowPowerTimer {
     /// Program raw prescaler and autoreload values.
     pub fn set_period(&mut self, prescaler_log2: u8, autoreload: u16) {
         assert!(prescaler_log2 <= 7);
-        self.regs.CFGR().modify(|w| w.set_PRESC(prescaler_log2));
-        self.regs.ARR().write(|w| w.set_ARR(autoreload));
+        self.while_disabled(|r| r.CFGR().modify(|w| w.set_PRESC(prescaler_log2)));
+        self.while_enabled(ISR_ARROK, |r| r.ARR().write(|w| w.set_ARR(autoreload)));
     }
 
     /// Program the counter overflow frequency.
@@ -320,53 +404,61 @@ impl LowPowerTimer {
 
     /// Repetition count (`0` means every period).
     pub fn set_repetition(&mut self, repetitions: u8) {
-        self.regs.RCR().write(|w| w.set_REP(repetitions));
+        self.while_enabled(ISR_REPOK, |r| r.RCR().write(|w| w.set_REP(repetitions)));
     }
 
     /// Configure external-trigger start.
     pub fn configure_trigger(&mut self, source: u8, edge: TriggerEdge, filter: u8) {
         assert!(source <= 7 && filter <= 3);
-        self.regs.CFGR().modify(|w| {
-            w.set_TRIGSEL(source);
-            w.set_TRIGEN(edge as u8);
-            w.set_TRGFLT(filter);
+        self.while_disabled(|r| {
+            r.CFGR().modify(|w| {
+                w.set_TRIGSEL(source);
+                w.set_TRIGEN(edge as u8);
+                w.set_TRGFLT(filter);
+            })
         });
     }
 
     /// Enable timeout mode.
     pub fn set_timeout_mode(&mut self, enabled: bool) {
-        self.regs.CFGR().modify(|w| w.set_TIMOUT(enabled));
+        self.while_disabled(|r| r.CFGR().modify(|w| w.set_TIMOUT(enabled)));
     }
 
     /// Count external clock edges instead of the internal kernel clock.
     pub fn configure_external_counter(&mut self, polarity: Edge, filter: u8) {
         assert!(filter <= 3);
-        self.regs.CFGR().modify(|w| {
-            w.set_CKSEL(true);
-            w.set_CKPOL(polarity as u8);
-            w.set_CKFLT(filter);
-            w.set_COUNTMODE(true);
-            w.set_ENC(false);
+        self.while_disabled(|r| {
+            r.CFGR().modify(|w| {
+                w.set_CKSEL(true);
+                w.set_CKPOL(polarity as u8);
+                w.set_CKFLT(filter);
+                w.set_COUNTMODE(true);
+                w.set_ENC(false);
+            })
         });
     }
 
     /// Enable quadrature encoder mode.
     pub fn configure_encoder(&mut self, filter: u8) {
         assert!(filter <= 3);
-        self.regs.CFGR().modify(|w| {
-            w.set_CKSEL(true);
-            w.set_CKFLT(filter);
-            w.set_COUNTMODE(true);
-            w.set_ENC(true);
+        self.while_disabled(|r| {
+            r.CFGR().modify(|w| {
+                w.set_CKSEL(true);
+                w.set_CKFLT(filter);
+                w.set_COUNTMODE(true);
+                w.set_ENC(true);
+            })
         });
     }
 
     /// Return to internal-clock timer mode.
     pub fn configure_internal_clock(&mut self) {
-        self.regs.CFGR().modify(|w| {
-            w.set_CKSEL(false);
-            w.set_COUNTMODE(false);
-            w.set_ENC(false);
+        self.while_disabled(|r| {
+            r.CFGR().modify(|w| {
+                w.set_CKSEL(false);
+                w.set_COUNTMODE(false);
+                w.set_ENC(false);
+            })
         });
     }
 
@@ -375,7 +467,7 @@ impl LowPowerTimer {
         let mask = event.mask();
         self.state.pending.fetch_and(!mask, Ordering::AcqRel);
         self.regs.ICR().write(|w| w.0 = mask);
-        self.regs.DIER().modify(|w| w.0 |= mask);
+        dier_modify(self.regs, |dier| dier | mask);
         WaitEvent {
             timer: self,
             event,
@@ -385,15 +477,19 @@ impl LowPowerTimer {
 
     /// Consume the timer into two-channel PWM mode.
     pub fn into_pwm(mut self, frequency_hz: u32) -> Result<Pwm, Error> {
-        self.set_frequency(frequency_hz)?;
-        self.regs.CFGR().modify(|w| {
-            w.set_WAVE(false);
-            w.set_PRELOAD(true);
+        let (prescaler, autoreload) = compute_period(self.clock_hz, frequency_hz)?;
+        self.while_disabled(|r| {
+            r.CFGR().modify(|w| {
+                w.set_PRESC(prescaler);
+                w.set_WAVE(false);
+                w.set_PRELOAD(true);
+            });
+            r.CCMR1().modify(|w| {
+                w.set_CC1SEL(false);
+                w.set_CC2SEL(false);
+            });
         });
-        self.regs.CCMR1().modify(|w| {
-            w.set_CC1SEL(false);
-            w.set_CC2SEL(false);
-        });
+        self.while_enabled(ISR_ARROK, |r| r.ARR().write(|w| w.set_ARR(autoreload)));
         self.start_continuous();
         Ok(Pwm { timer: self })
     }
@@ -406,7 +502,7 @@ impl LowPowerTimer {
     }
 
     fn disable_event(&mut self, event: Event) {
-        self.regs.DIER().modify(|w| w.0 &= !event.mask());
+        dier_modify(self.regs, |dier| dier & !event.mask());
     }
 
     #[cfg(feature = "dma")]
@@ -511,9 +607,11 @@ impl Pwm {
     /// Select output polarity.
     pub fn set_polarity(&mut self, channel: Channel, polarity: Polarity) {
         let value = u8::from(matches!(polarity, Polarity::ActiveLow));
-        self.timer.regs.CCMR1().modify(|w| match channel {
-            Channel::Ch1 => w.set_CC1P(value),
-            Channel::Ch2 => w.set_CC2P(value),
+        self.timer.while_disabled(|r| {
+            r.CCMR1().modify(|w| match channel {
+                Channel::Ch1 => w.set_CC1P(value),
+                Channel::Ch2 => w.set_CC2P(value),
+            })
         });
     }
 
@@ -521,8 +619,12 @@ impl Pwm {
     pub fn set_duty_cycle(&mut self, channel: Channel, duty: u16) {
         let duty = duty.min(self.max_duty_cycle());
         match channel {
-            Channel::Ch1 => self.timer.regs.CCR1().write(|w| w.set_CCR1(duty)),
-            Channel::Ch2 => self.timer.regs.CCR2().write(|w| w.set_CCR2(duty)),
+            Channel::Ch1 => self
+                .timer
+                .while_enabled(ISR_CMP1OK, |r| r.CCR1().write(|w| w.set_CCR1(duty))),
+            Channel::Ch2 => self
+                .timer
+                .while_enabled(ISR_CMP2OK, |r| r.CCR2().write(|w| w.set_CCR2(duty))),
         }
     }
 
@@ -577,7 +679,7 @@ impl Pwm {
         let destination = compare_ptr(self.timer.regs, channel);
         // SAFETY: CCR is updated from memory on this LPTIM's UE request.
         let transfer = unsafe { dma.write_peripheral(values, destination, request) };
-        self.timer.regs.DIER().modify(|w| w.0 |= DIER_UEDE);
+        dier_modify(self.timer.regs, |dier| dier | DIER_UEDE);
         Ok(LptimDmaTransfer {
             transfer: Some(transfer),
             regs: self.timer.regs,
@@ -650,25 +752,27 @@ impl InputCapture {
         input_selection: u8,
     ) {
         assert!(filter <= 3 && prescaler <= 3 && input_selection <= 3);
-        self.timer.regs.CCMR1().modify(|w| match channel {
-            Channel::Ch1 => {
-                w.set_CC1SEL(true);
-                w.set_CC1E(true);
-                w.set_CC1P(edge as u8);
-                w.set_IC1F(filter);
-                w.set_IC1PSC(prescaler);
-            }
-            Channel::Ch2 => {
-                w.set_CC2SEL(true);
-                w.set_CC2E(true);
-                w.set_CC2P(edge as u8);
-                w.set_IC2F(filter);
-                w.set_IC2PSC(prescaler);
-            }
-        });
-        self.timer.regs.CFGR2().modify(|w| match channel {
-            Channel::Ch1 => w.set_IC1SEL(input_selection),
-            Channel::Ch2 => w.set_IC2SEL(input_selection),
+        self.timer.while_disabled(|r| {
+            r.CCMR1().modify(|w| match channel {
+                Channel::Ch1 => {
+                    w.set_CC1SEL(true);
+                    w.set_CC1E(true);
+                    w.set_CC1P(edge as u8);
+                    w.set_IC1F(filter);
+                    w.set_IC1PSC(prescaler);
+                }
+                Channel::Ch2 => {
+                    w.set_CC2SEL(true);
+                    w.set_CC2E(true);
+                    w.set_CC2P(edge as u8);
+                    w.set_IC2F(filter);
+                    w.set_IC2PSC(prescaler);
+                }
+            });
+            r.CFGR2().modify(|w| match channel {
+                Channel::Ch1 => w.set_IC1SEL(input_selection),
+                Channel::Ch2 => w.set_IC2SEL(input_selection),
+            });
         });
     }
 
@@ -729,7 +833,7 @@ impl InputCapture {
         // SAFETY: CCR is the capture register associated with the IC request.
         let transfer = unsafe { dma.read_peripheral(source, values, request) };
         let enable = capture_dma_enable(channel);
-        self.timer.regs.DIER().modify(|w| w.0 |= enable);
+        dier_modify(self.timer.regs, |dier| dier | enable);
         Ok(LptimDmaTransfer {
             transfer: Some(transfer),
             regs: self.timer.regs,
@@ -776,7 +880,7 @@ impl Future for LptimDmaTransfer<'_> {
         .poll(cx);
         if result.is_ready() {
             drop(this.transfer.take());
-            this.regs.DIER().modify(|w| w.0 &= !this.dma_enable);
+            dier_modify(this.regs, |dier| dier & !this.dma_enable);
         }
         result
     }
@@ -791,7 +895,7 @@ impl LptimDmaTransfer<'_> {
             .take()
             .expect("transfer already consumed")
             .wait_blocking();
-        self.regs.DIER().modify(|w| w.0 &= !self.dma_enable);
+        dier_modify(self.regs, |dier| dier & !self.dma_enable);
         result
     }
 }
@@ -800,7 +904,7 @@ impl LptimDmaTransfer<'_> {
 impl Drop for LptimDmaTransfer<'_> {
     fn drop(&mut self) {
         drop(self.transfer.take());
-        self.regs.DIER().modify(|w| w.0 &= !self.dma_enable);
+        dier_modify(self.regs, |dier| dier & !self.dma_enable);
     }
 }
 
@@ -821,7 +925,7 @@ impl<'a> RingBufferedPwm<'a> {
 
     /// Enable update-event DMA and start the circular transfer.
     pub fn start(&mut self) {
-        self.pwm.timer.regs.DIER().modify(|w| w.0 |= DIER_UEDE);
+        dier_modify(self.pwm.timer.regs, |dier| dier | DIER_UEDE);
         self.ring_mut().start();
     }
 
@@ -877,7 +981,7 @@ impl<'a> RingBufferedPwm<'a> {
     /// Stop DMA and disable update-event requests.
     pub async fn stop(&mut self) {
         self.ring_mut().stop().await;
-        self.pwm.timer.regs.DIER().modify(|w| w.0 &= !DIER_UEDE);
+        dier_modify(self.pwm.timer.regs, |dier| dier & !DIER_UEDE);
     }
 
     /// PWM channel driven by this stream.
@@ -894,7 +998,7 @@ impl<'a> RingBufferedPwm<'a> {
 impl Drop for RingBufferedPwm<'_> {
     fn drop(&mut self) {
         drop(self.ring.take());
-        self.pwm.timer.regs.DIER().modify(|w| w.0 &= !DIER_UEDE);
+        dier_modify(self.pwm.timer.regs, |dier| dier & !DIER_UEDE);
     }
 }
 
@@ -911,7 +1015,7 @@ impl<'a> RingBufferedCapture<'a> {
     /// Enable capture DMA and start the circular transfer.
     pub fn start(&mut self) {
         let enable = capture_dma_enable(self.channel);
-        self.capture.timer.regs.DIER().modify(|w| w.0 |= enable);
+        dier_modify(self.capture.timer.regs, |dier| dier | enable);
         self.ring_mut().start();
     }
 
@@ -973,7 +1077,7 @@ impl<'a> RingBufferedCapture<'a> {
     pub async fn stop(&mut self) {
         self.ring_mut().stop().await;
         let enable = capture_dma_enable(self.channel);
-        self.capture.timer.regs.DIER().modify(|w| w.0 &= !enable);
+        dier_modify(self.capture.timer.regs, |dier| dier & !enable);
     }
 
     fn ring_mut(&mut self) -> &mut ReadableRingBuffer<'a, u16> {
@@ -986,7 +1090,7 @@ impl Drop for RingBufferedCapture<'_> {
     fn drop(&mut self) {
         drop(self.ring.take());
         let enable = capture_dma_enable(self.channel);
-        self.capture.timer.regs.DIER().modify(|w| w.0 &= !enable);
+        dier_modify(self.capture.timer.regs, |dier| dier & !enable);
     }
 }
 
@@ -1032,5 +1136,33 @@ mod tests {
         pwm.set_duty_cycle(Channel::Ch2, 64);
         assert_ne!(registers[0x2c / 4] & (1 << 17), 0);
         assert_eq!(registers[0x34 / 4], 64);
+    }
+
+    /// `CFGR` is written with `ENABLE` clear and `ARR` with it set (RM0457),
+    /// so a frequency change on running PWM disables the timer for the
+    /// prescaler and must leave it enabled and counting afterwards.
+    #[test]
+    fn frequency_change_keeps_pwm_running() {
+        static STATE: State = State::new();
+        let mut registers = [0u32; 256];
+        // SAFETY: fake MMIO is exclusively owned by the test.
+        let timer = unsafe {
+            LowPowerTimer::over(
+                LPTIM::from_ptr(registers.as_mut_ptr().cast()),
+                LptimId::Lptim1,
+                100_000_000,
+                &STATE,
+            )
+        };
+        let mut pwm = timer.into_pwm(100_000).unwrap();
+        pwm.set_frequency(100).unwrap();
+        let (cfgr, cr, arr) = (
+            registers[0x0c / 4],
+            registers[0x10 / 4],
+            registers[0x18 / 4],
+        );
+        assert_eq!((cfgr >> 9) & 0b111, 4);
+        assert_eq!(arr, 62_499);
+        assert_eq!(cr, CR_ENABLE | CR_CNTSTRT);
     }
 }
