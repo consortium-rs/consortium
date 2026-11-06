@@ -1,0 +1,459 @@
+block/DISPLAY_DSI_CSR:
+  description: ''
+  items:
+    - name: DSI_CLOCK_CNTL
+      byte_offset: 0
+    - name: DSI_PXL_LINK_CNTL
+      byte_offset: 4
+    - name: DSI_CLK_SETTING
+      byte_offset: 8
+    - name: DSI_PARITY_ERROR_STATUS
+      byte_offset: 12
+    - name: DSI_PARITY_ERROR_THRESHOLD
+      byte_offset: 16
+    - name: DSI_HOST_CONFIGURATION
+      byte_offset: 20
+      fieldset: DISPLAY_DSI_CSR_DSI_HOST_CONFIGURATION
+    - name: DSI_PHY_MODE_CONTROL
+      byte_offset: 24
+    - name: DSI_PHY_TEST_MODE_CONTROL
+      byte_offset: 32
+      fieldset: DISPLAY_DSI_CSR_DSI_PHY_TEST_MODE_CONTROL
+    - name: DSI_PHY_TEST_MODE_STATUS
+      byte_offset: 36
+      fieldset: DISPLAY_DSI_CSR_DSI_PHY_TEST_MODE_STATUS
+    - name: DSI_PHY_TEST_IO_CONT
+      byte_offset: 40
+    - name: DSI_PLL_CTRL0
+      byte_offset: 44
+      fieldset: DISPLAY_DSI_CSR_DSI_PLL_CTRL0
+    - name: DSI_PLL_CTRL1
+      byte_offset: 48
+    - name: DSI_PLL_CTRL2
+      byte_offset: 52
+      fieldset: DISPLAY_DSI_CSR_DSI_PLL_CTRL2
+    - name: DSI_PLL_CTRL3
+      byte_offset: 56
+    - name: DSI_PLL_SSC_CTRL0
+      byte_offset: 60
+    - name: DSI_PLL_SSC_CTRL1
+      byte_offset: 64
+    - name: DSI_PLL_SSC_CTRL2
+      byte_offset: 68
+    - name: DSI_PLL_SSC_CTRL3
+      byte_offset: 72
+    - name: DSI_PLL_STATUS1
+      byte_offset: 80
+    - name: DSI_HOST_CFG_EXT
+      byte_offset: 136
+      fieldset: DISPLAY_DSI_CSR_DSI_HOST_CFG_EXT
+    - name: DSI_MON_OUT_STATUS_0
+      byte_offset: 140
+    - name: DSI_MON_OUT_STATUS_1
+      byte_offset: 144
+    - name: DSI_REFORMAT_MODE_SEL
+      byte_offset: 148
+fieldset/DISPLAY_DSI_CSR_DSI_CLOCK_CNTL_DPHY:
+  description: ''
+  fields:
+    - name: CLKIN
+      bit_offset: 2
+      bit_size: 1
+    - name: CLKOUT
+      bit_offset: 3
+      bit_size: 1
+fieldset/DISPLAY_DSI_CSR_DSI_PXL_LINK_CNTL_PXL_LINK:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 0
+      bit_size: 1
+fieldset/DISPLAY_DSI_CSR_DSI_CLK_SETTING_DPHY_REF_CLK:
+  description: ''
+  fields:
+    - name: DIV
+      bit_offset: 0
+      bit_size: 4
+    - name: SRC
+      bit_offset: 7
+      bit_size: 1
+fieldset/DISPLAY_DSI_CSR_DSI_CLK_SETTING_DPHY_PLL:
+  description: ''
+  fields:
+    - name: DIV
+      bit_offset: 8
+      bit_size: 4
+fieldset/DISPLAY_DSI_CSR_DSI_PARITY_ERROR_STATUS_Parity0:
+  description: ''
+  fields:
+    - name: error
+      bit_offset: 0
+      bit_size: 1
+fieldset/DISPLAY_DSI_CSR_DSI_PARITY_ERROR_STATUS_Parity123:
+  description: ''
+  fields:
+    - name: error
+      bit_offset: 1
+      bit_size: 1
+fieldset/DISPLAY_DSI_CSR_DSI_PARITY_ERROR_THRESHOLD_parity0_error:
+  description: ''
+  fields:
+    - name: max
+      bit_offset: 0
+      bit_size: 10
+fieldset/DISPLAY_DSI_CSR_DSI_PARITY_ERROR_THRESHOLD_parity123_error:
+  description: ''
+  fields:
+    - name: max
+      bit_offset: 16
+      bit_size: 10
+fieldset/DISPLAY_DSI_CSR_DSI_HOST_CONFIGURATION_Pixel_link:
+  description: ''
+  fields:
+    - name: format
+      bit_offset: 0
+      bit_size: 3
+fieldset/DISPLAY_DSI_CSR_DSI_HOST_CONFIGURATION:
+  description: ''
+  fields:
+    - name: shutdown
+      bit_offset: 4
+      bit_size: 1
+    - name: colormode
+      bit_offset: 5
+      bit_size: 1
+fieldset/DISPLAY_DSI_CSR_DSI_PHY_MODE_CONTROL_PLL_ATB_SENSE:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 0
+      bit_size: 1
+fieldset/DISPLAY_DSI_CSR_DSI_PHY_MODE_CONTROL_PLL:
+  description: ''
+  fields:
+    - name: CLKSEL
+      bit_offset: 1
+      bit_size: 2
+fieldset/DISPLAY_DSI_CSR_DSI_PHY_MODE_CONTROL_PLL_GP_CLK:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 3
+      bit_size: 1
+fieldset/DISPLAY_DSI_CSR_DSI_PHY_MODE_CONTROL_PHY:
+  description: ''
+  fields:
+    - name: MODE
+      bit_offset: 9
+      bit_size: 1
+fieldset/DISPLAY_DSI_CSR_DSI_PHY_MODE_CONTROL_SHUTDOWN:
+  description: ''
+  fields:
+    - name: N
+      bit_offset: 10
+      bit_size: 1
+fieldset/DISPLAY_DSI_CSR_DSI_PHY_MODE_CONTROL_TEST_STOP_CLK:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 11
+      bit_size: 1
+fieldset/DISPLAY_DSI_CSR_DSI_PHY_MODE_CONTROL_RST:
+  description: ''
+  fields:
+    - name: N
+      bit_offset: 12
+      bit_size: 1
+      description: PHY rst_n Control
+fieldset/DISPLAY_DSI_CSR_DSI_PHY_TEST_MODE_CONTROL_txulpsclk_dck:
+  description: ''
+  fields:
+    - name: ext
+      bit_offset: 0
+      bit_size: 1
+fieldset/DISPLAY_DSI_CSR_DSI_PHY_TEST_MODE_CONTROL_ext_clk:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 1
+      bit_size: 1
+fieldset/DISPLAY_DSI_CSR_DSI_PHY_TEST_MODE_CONTROL_rxclkesc:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 3
+      bit_size: 1
+fieldset/DISPLAY_DSI_CSR_DSI_PHY_TEST_MODE_CONTROL_txdatahs:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 16
+      bit_size: 1
+fieldset/DISPLAY_DSI_CSR_DSI_PHY_TEST_MODE_CONTROL_txbyteclkhs:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 17
+      bit_size: 1
+fieldset/DISPLAY_DSI_CSR_DSI_PHY_TEST_MODE_CONTROL_txulpsclk:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 18
+      bit_size: 1
+fieldset/DISPLAY_DSI_CSR_DSI_PHY_TEST_MODE_CONTROL_txclkesc:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 20
+      bit_size: 1
+fieldset/DISPLAY_DSI_CSR_DSI_PHY_TEST_MODE_CONTROL:
+  description: ''
+  fields:
+    - name: BistOn
+      bit_offset: 21
+      bit_size: 1
+      description: Bist Test ON
+fieldset/DISPLAY_DSI_CSR_DSI_PHY_TEST_MODE_CONTROL_txulpsexit_dck:
+  description: ''
+  fields:
+    - name: ext
+      bit_offset: 27
+      bit_size: 1
+fieldset/DISPLAY_DSI_CSR_DSI_PHY_TEST_MODE_STATUS:
+  description: ''
+  fields:
+    - name: ulpsactivenotclk
+      bit_offset: 9
+      bit_size: 1
+    - name: BistDone
+      bit_offset: 12
+      bit_size: 1
+    - name: BistOK
+      bit_offset: 13
+      bit_size: 1
+fieldset/DISPLAY_DSI_CSR_DSI_PHY_TEST_MODE_STATUS_PHY:
+  description: ''
+  fields:
+    - name: LOCK
+      bit_offset: 11
+      bit_size: 1
+fieldset/DISPLAY_DSI_CSR_DSI_PHY_TEST_IO_CONT_Phy_Cont:
+  description: ''
+  fields:
+    - name: en
+      bit_offset: 0
+      bit_size: 1
+fieldset/DISPLAY_DSI_CSR_DSI_PHY_TEST_IO_CONT_Phy_cont:
+  description: ''
+  fields:
+    - name: data
+      bit_offset: 16
+      bit_size: 11
+fieldset/DISPLAY_DSI_CSR_DSI_PLL_CTRL0:
+  description: ''
+  fields:
+    - name: M
+      bit_offset: 0
+      bit_size: 12
+      description: DSI Control for M
+fieldset/DISPLAY_DSI_CSR_DSI_PLL_CTRL0_VCO:
+  description: ''
+  fields:
+    - name: CNTRL
+      bit_offset: 14
+      bit_size: 6
+      description: DSI Control for M
+fieldset/DISPLAY_DSI_CSR_DSI_PLL_CTRL0_PROP:
+  description: ''
+  fields:
+    - name: CNTRL
+      bit_offset: 20
+      bit_size: 6
+fieldset/DISPLAY_DSI_CSR_DSI_PLL_CTRL0_INT:
+  description: ''
+  fields:
+    - name: CNTRL
+      bit_offset: 26
+      bit_size: 6
+fieldset/DISPLAY_DSI_CSR_DSI_PLL_CTRL1_GMP:
+  description: ''
+  fields:
+    - name: CNTRL
+      bit_offset: 0
+      bit_size: 2
+fieldset/DISPLAY_DSI_CSR_DSI_PLL_CTRL1_CPBIAS:
+  description: ''
+  fields:
+    - name: CNTRL
+      bit_offset: 2
+      bit_size: 7
+fieldset/DISPLAY_DSI_CSR_DSI_PLL_CTRL1_PLL_MEAS:
+  description: ''
+  fields:
+    - name: IV
+      bit_offset: 12
+      bit_size: 18
+fieldset/DISPLAY_DSI_CSR_DSI_PLL_CTRL2_PLL:
+  description: ''
+  fields:
+    - name: OPMODE
+      bit_offset: 0
+      bit_size: 5
+      description: CDPHY PLL operation
+    - name: PRG
+      bit_offset: 5
+      bit_size: 17
+fieldset/DISPLAY_DSI_CSR_DSI_PLL_CTRL2:
+  description: ''
+  fields:
+    - name: N
+      bit_offset: 22
+      bit_size: 4
+      description: DSI Control for N
+fieldset/DISPLAY_DSI_CSR_DSI_PLL_CTRL2_PLL_GP_CLK:
+  description: ''
+  fields:
+    - name: CNTRL
+      bit_offset: 26
+      bit_size: 3
+      description: DSI Control for N
+fieldset/DISPLAY_DSI_CSR_DSI_PLL_CTRL3_PLL:
+  description: ''
+  fields:
+    - name: TH1
+      bit_offset: 0
+      bit_size: 10
+    - name: TH2
+      bit_offset: 10
+      bit_size: 8
+      description: Lock filter length.
+    - name: TH3
+      bit_offset: 18
+      bit_size: 8
+      description: Unlock filter length.
+fieldset/DISPLAY_DSI_CSR_DSI_PLL_SSC_CTRL0_PLL_FRACN_UPDATE:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+fieldset/DISPLAY_DSI_CSR_DSI_PLL_SSC_CTRL0_PLL_SSC:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 1
+      bit_size: 1
+fieldset/DISPLAY_DSI_CSR_DSI_PLL_SSC_CTRL0_PLL_FRACN:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 2
+      bit_size: 1
+fieldset/DISPLAY_DSI_CSR_DSI_PLL_SSC_CTRL0_PLL_SPREAD:
+  description: ''
+  fields:
+    - name: TYPE
+      bit_offset: 3
+      bit_size: 2
+fieldset/DISPLAY_DSI_CSR_DSI_PLL_SSC_CTRL0_PLL:
+  description: ''
+  fields:
+    - name: STEPSIZE
+      bit_offset: 11
+      bit_size: 21
+fieldset/DISPLAY_DSI_CSR_DSI_PLL_SSC_CTRL1_PLL_SSC:
+  description: ''
+  fields:
+    - name: PEAK
+      bit_offset: 0
+      bit_size: 20
+fieldset/DISPLAY_DSI_CSR_DSI_PLL_SSC_CTRL1_PLL:
+  description: ''
+  fields:
+    - name: MINT
+      bit_offset: 20
+      bit_size: 12
+      description: PLL Mint.
+fieldset/DISPLAY_DSI_CSR_DSI_PLL_SSC_CTRL2_PLL_FRAC:
+  description: ''
+  fields:
+    - name: QUOT
+      bit_offset: 0
+      bit_size: 16
+    - name: REM
+      bit_offset: 16
+      bit_size: 16
+fieldset/DISPLAY_DSI_CSR_DSI_PLL_SSC_CTRL3_PLL_FRAC:
+  description: ''
+  fields:
+    - name: DEN
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_DSI_CSR_DSI_PLL_STATUS1_LOCK:
+  description: ''
+  fields:
+    - name: PLL
+      bit_offset: 10
+      bit_size: 1
+fieldset/DISPLAY_DSI_CSR_DSI_HOST_CFG_EXT_tear:
+  description: ''
+  fields:
+    - name: req
+      bit_offset: 0
+      bit_size: 1
+    - name: st
+      bit_offset: 16
+      bit_size: 1
+fieldset/DISPLAY_DSI_CSR_DSI_HOST_CFG_EXT_hibernate:
+  description: ''
+  fields:
+    - name: req
+      bit_offset: 1
+      bit_size: 1
+    - name: st
+      bit_offset: 17
+      bit_size: 1
+fieldset/DISPLAY_DSI_CSR_DSI_HOST_CFG_EXT_ipi:
+  description: ''
+  fields:
+    - name: lanes
+      bit_offset: 2
+      bit_size: 2
+      description: IPI Lanes
+fieldset/DISPLAY_DSI_CSR_DSI_HOST_CFG_EXT_ipi_lanes_cdc:
+  description: ''
+  fields:
+    - name: en
+      bit_offset: 4
+      bit_size: 1
+fieldset/DISPLAY_DSI_CSR_DSI_HOST_CFG_EXT:
+  description: ''
+  fields:
+    - name: halt
+      bit_offset: 18
+      bit_size: 1
+fieldset/DISPLAY_DSI_CSR_DSI_HOST_CFG_EXT_core:
+  description: ''
+  fields:
+    - name: busy
+      bit_offset: 19
+      bit_size: 1
+fieldset/DISPLAY_DSI_CSR_DSI_MON_OUT_STATUS_0_mon:
+  description: ''
+  fields:
+    - name: out
+      bit_offset: 0
+      bit_size: 32
+fieldset/DISPLAY_DSI_CSR_DSI_MON_OUT_STATUS_1_mon:
+  description: ''
+  fields:
+    - name: out
+      bit_offset: 0
+      bit_size: 32
+fieldset/DISPLAY_DSI_CSR_DSI_REFORMAT_MODE_SEL_sync:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 0
+      bit_size: 1

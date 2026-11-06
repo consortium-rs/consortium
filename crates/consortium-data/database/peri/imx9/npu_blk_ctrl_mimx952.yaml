@@ -1,0 +1,89 @@
+block/NPU_BLK_CTRL:
+  description: ''
+  items:
+    - name: LPCG
+      byte_offset: 0
+fieldset/NPU_BLK_CTRL_LPCG_LPCG_1_NPU_CLK_0_UNGATED_FORCE_ON:
+  description: ''
+  fields:
+    - name: 'OFF'
+      bit_offset: 0
+      bit_size: 1
+fieldset/NPU_BLK_CTRL_LPCG_LPCG_1_NPU_CLK_0_UNGATED_FORCE_ON_OFF:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 1
+      bit_size: 1
+fieldset/NPU_BLK_CTRL_LPCG_LPCG_2_NPU_CLK_FORCE_ON:
+  description: ''
+  fields:
+    - name: 'OFF'
+      bit_offset: 2
+      bit_size: 1
+fieldset/NPU_BLK_CTRL_LPCG_LPCG_2_NPU_CLK_FORCE_ON_OFF:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 3
+      bit_size: 1
+fieldset/NPU_BLK_CTRL_LPCG_LPCG_3_NPU_CLK_FORCE_ON:
+  description: ''
+  fields:
+    - name: 'OFF'
+      bit_offset: 4
+      bit_size: 1
+fieldset/NPU_BLK_CTRL_LPCG_LPCG_3_NPU_CLK_FORCE_ON_OFF:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 5
+      bit_size: 1
+fieldset/NPU_BLK_CTRL_LPCG_LPCG_5_PER_CLK_1_FORCE_ON:
+  description: ''
+  fields:
+    - name: 'OFF'
+      bit_offset: 8
+      bit_size: 1
+fieldset/NPU_BLK_CTRL_LPCG_LPCG_5_PER_CLK_1_FORCE_ON_OFF:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 9
+      bit_size: 1
+fieldset/NPU_BLK_CTRL_LPCG_LPCG_5_PER_CLK_2_FORCE_ON:
+  description: ''
+  fields:
+    - name: 'OFF'
+      bit_offset: 10
+      bit_size: 1
+fieldset/NPU_BLK_CTRL_LPCG_LPCG_5_PER_CLK_2_FORCE_ON_OFF:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 11
+      bit_size: 1
+fieldset/NPU_BLK_CTRL_LPCG_LPCG_5_PER_CLK_4_FORCE_ON:
+  description: ''
+  fields:
+    - name: 'OFF'
+      bit_offset: 14
+      bit_size: 1
+fieldset/NPU_BLK_CTRL_LPCG_LPCG_5_PER_CLK_4_FORCE_ON_OFF:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 15
+      bit_size: 1
+fieldset/NPU_BLK_CTRL_LPCG_LPCG_3_NPU_CLK_2_FORCE_ON:
+  description: ''
+  fields:
+    - name: 'OFF'
+      bit_offset: 22
+      bit_size: 1
+fieldset/NPU_BLK_CTRL_LPCG_LPCG_3_NPU_CLK_2_FORCE_ON_OFF:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 23
+      bit_size: 1

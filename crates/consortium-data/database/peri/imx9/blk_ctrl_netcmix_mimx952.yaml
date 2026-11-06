@@ -1,0 +1,247 @@
+block/BLK_CTRL_NETCMIX:
+  description: ''
+  items:
+    - name: MQS_SETTING
+      byte_offset: 0
+      fieldset: BLK_CTRL_NETCMIX_MQS_SETTING
+    - name: NETCMIX_CLK_SEL
+      byte_offset: 4
+    - name: IPG_DEBUG_SAI2
+      byte_offset: 8
+    - name: CFG_LINK_IO_VAR
+      byte_offset: 12
+    - name: CFG_LINK_MII_PROT
+      byte_offset: 16
+    - name: CFG_LINK_PCS_PROT_1
+      byte_offset: 24
+    - name: CFG_SRC_ID
+      byte_offset: 32
+    - name: LPCG
+      byte_offset: 36
+    - name: ENETLINK
+      byte_offset: 40
+    - name: NETC
+      byte_offset: 44
+fieldset/BLK_CTRL_NETCMIX_MQS_SETTING_MQS:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 2
+      bit_size: 1
+fieldset/BLK_CTRL_NETCMIX_MQS_SETTING_SOFT:
+  description: ''
+  fields:
+    - name: RESET
+      bit_offset: 3
+      bit_size: 1
+fieldset/BLK_CTRL_NETCMIX_MQS_SETTING:
+  description: ''
+  fields:
+    - name: OVERSAMPLE
+      bit_offset: 4
+      bit_size: 1
+fieldset/BLK_CTRL_NETCMIX_MQS_SETTING_CLK:
+  description: ''
+  fields:
+    - name: DIVIDE
+      bit_offset: 9
+      bit_size: 8
+fieldset/BLK_CTRL_NETCMIX_NETCMIX_CLK_SEL_SAI2:
+  description: ''
+  fields:
+    - name: MCLK1
+      bit_offset: 0
+      bit_size: 1
+    - name: MCLK2
+      bit_offset: 1
+      bit_size: 4
+    - name: MCLK3
+      bit_offset: 6
+      bit_size: 4
+fieldset/BLK_CTRL_NETCMIX_NETCMIX_CLK_SEL_ENET1_TD2:
+  description: ''
+  fields:
+    - name: DIR
+      bit_offset: 5
+      bit_size: 1
+fieldset/BLK_CTRL_NETCMIX_NETCMIX_CLK_SEL_ENET2_TD2:
+  description: ''
+  fields:
+    - name: DIR
+      bit_offset: 10
+      bit_size: 1
+fieldset/BLK_CTRL_NETCMIX_IPG_DEBUG_SAI2_IPG_DEBUG_CA55:
+  description: ''
+  fields:
+    - name: CORE0
+      bit_offset: 0
+      bit_size: 1
+    - name: CORE1
+      bit_offset: 1
+      bit_size: 1
+    - name: CORE2
+      bit_offset: 2
+      bit_size: 1
+    - name: CORE3
+      bit_offset: 3
+      bit_size: 1
+    - name: CORE4
+      bit_offset: 4
+      bit_size: 1
+    - name: CORE5
+      bit_offset: 5
+      bit_size: 1
+fieldset/BLK_CTRL_NETCMIX_IPG_DEBUG_SAI2_IPG_DEBUG:
+  description: ''
+  fields:
+    - name: CM33
+      bit_offset: 6
+      bit_size: 1
+    - name: M7
+      bit_offset: 7
+      bit_size: 1
+fieldset/BLK_CTRL_NETCMIX_CFG_SRC_ID_CFG_SRC:
+  description: ''
+  fields:
+    - name: ID
+      bit_offset: 0
+      bit_size: 8
+      description: NETC cfgsrc_id
+fieldset/BLK_CTRL_NETCMIX_LPCG_NETC_force_on:
+  description: ''
+  fields:
+    - name: 'off'
+      bit_offset: 0
+      bit_size: 1
+fieldset/BLK_CTRL_NETCMIX_LPCG_NETC_force_on_off:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 1
+      bit_size: 1
+fieldset/BLK_CTRL_NETCMIX_LPCG_SSI_force_on:
+  description: ''
+  fields:
+    - name: 'off'
+      bit_offset: 2
+      bit_size: 1
+fieldset/BLK_CTRL_NETCMIX_LPCG_SSI_force_on_off:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 3
+      bit_size: 1
+fieldset/BLK_CTRL_NETCMIX_LPCG_INFRA_force_on:
+  description: ''
+  fields:
+    - name: 'off'
+      bit_offset: 4
+      bit_size: 1
+fieldset/BLK_CTRL_NETCMIX_LPCG_INFRA_force_on_off:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 5
+      bit_size: 1
+fieldset/BLK_CTRL_NETCMIX_LPCG_SECURITY_force_on:
+  description: ''
+  fields:
+    - name: 'off'
+      bit_offset: 6
+      bit_size: 1
+fieldset/BLK_CTRL_NETCMIX_LPCG_SECURITY_force_on_off:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 7
+      bit_size: 1
+fieldset/BLK_CTRL_NETCMIX_LPCG_PERI_force_on:
+  description: ''
+  fields:
+    - name: 'off'
+      bit_offset: 8
+      bit_size: 1
+fieldset/BLK_CTRL_NETCMIX_LPCG_PERI_force_on_off:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 9
+      bit_size: 1
+fieldset/BLK_CTRL_NETCMIX_LPCG_ETH0_RGMII_TXC_force_on:
+  description: ''
+  fields:
+    - name: 'off'
+      bit_offset: 10
+      bit_size: 1
+fieldset/BLK_CTRL_NETCMIX_LPCG_ETH0_RGMII_TXC_force_on_off:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 11
+      bit_size: 1
+fieldset/BLK_CTRL_NETCMIX_LPCG_ETH1_RGMII_TXC_force_on:
+  description: ''
+  fields:
+    - name: 'off'
+      bit_offset: 12
+      bit_size: 1
+fieldset/BLK_CTRL_NETCMIX_LPCG_ETH1_RGMII_TXC_force_on_off:
+  description: ''
+  fields:
+    - name: sel
+      bit_offset: 13
+      bit_size: 1
+fieldset/BLK_CTRL_NETCMIX_LPCG_APB_RC_REG_ERR_GEN:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 14
+      bit_size: 1
+fieldset/BLK_CTRL_NETCMIX_LPCG_APB_PCFG_ERR_GEN:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 15
+      bit_size: 1
+fieldset/BLK_CTRL_NETCMIX_LPCG_SAI2_QCH_BYPASS:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 16
+      bit_size: 1
+fieldset/BLK_CTRL_NETCMIX_LPCG_SAI2_PPMR_Q_STOPPED:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 17
+      bit_size: 1
+fieldset/BLK_CTRL_NETCMIX_ENETLINK_safe_state_apb:
+  description: ''
+  fields:
+    - name: enable
+      bit_offset: 0
+      bit_size: 1
+fieldset/BLK_CTRL_NETCMIX_ENETLINK_rx_soft_rst:
+  description: ''
+  fields:
+    - name: b
+      bit_offset: 1
+      bit_size: 1
+fieldset/BLK_CTRL_NETCMIX_ENETLINK_rx_overflow:
+  description: ''
+  fields:
+    - name: irq
+      bit_offset: 2
+      bit_size: 1
+fieldset/BLK_CTRL_NETCMIX_ENETLINK_clk_compare:
+  description: ''
+  fields:
+    - name: bypass
+      bit_offset: 3
+      bit_size: 1
+fieldset/BLK_CTRL_NETCMIX_NETC_fccu_fault_event:
+  description: ''
+  fields:
+    - name: en
+      bit_offset: 0
+      bit_size: 1

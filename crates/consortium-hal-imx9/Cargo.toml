@@ -30,8 +30,9 @@ default = [
 # Chip selection — forwarded to the PAC. Choose exactly one; enabling several is
 # a PAC compile error. Dependents that select a different chip must set
 # `default-features = false` so the default `mimx95` is not also pulled in.
-mimx93 = ["consortium-pac-imx9/mimx93"]
-mimx95 = ["consortium-pac-imx9/mimx95"]
+mimx93  = ["consortium-pac-imx9/mimx93"]
+mimx95  = ["consortium-pac-imx9/mimx95"]
+mimx952 = ["consortium-pac-imx9/mimx952"]
 # Forward cortex-m-rt runtime support (vector table, `#[interrupt]`) to the PAC.
 rt  = ["consortium-pac-imx9/rt"]
 adc = []

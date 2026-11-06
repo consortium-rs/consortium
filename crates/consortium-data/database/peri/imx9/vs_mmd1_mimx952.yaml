@@ -1,0 +1,64 @@
+block/VS_MMD1:
+  description: ''
+  items:
+    - name: SR_VSMMD_PMA_ID1
+      byte_offset: 0
+    - name: SR_VSMMD_DEV_ID1
+      byte_offset: 4
+    - name: SR_VSMMD_PCS_ID1
+      byte_offset: 8
+    - name: SR_VSMMD_AN_ID1
+      byte_offset: 12
+    - name: SR_VSMMD_STS
+      byte_offset: 16
+      fieldset: VS_MMD1_SR_VSMMD_STS
+    - name: SR_VSMMD_PKGID1
+      byte_offset: 28
+fieldset/VS_MMD1_SR_VSMMD_STS:
+  description: ''
+  fields:
+    - name: VSDP
+      bit_offset: 14
+      bit_size: 2
+fieldset/VS_MMD1_SR_VSMMD_CTRL_AN_MMD:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+      description: Reserved
+fieldset/VS_MMD1_SR_VSMMD_CTRL_PCS_XS_MMD:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 1
+      bit_size: 1
+      description: Reserved
+fieldset/VS_MMD1_SR_VSMMD_CTRL_MII_MMD:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 2
+      bit_size: 1
+      description: VS MMD Enable
+fieldset/VS_MMD1_SR_VSMMD_CTRL_PMA_MMD:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 3
+      bit_size: 1
+      description: VS MMD Enable
+fieldset/VS_MMD1_SR_VSMMD_CTRL:
+  description: ''
+  fields:
+    - name: FASTSIM
+      bit_offset: 4
+      bit_size: 1
+      description: Reserved
+fieldset/VS_MMD1_SR_VSMMD_CTRL_PD:
+  description: ''
+  fields:
+    - name: CTRL
+      bit_offset: 5
+      bit_size: 1
+      description: Fast Simulation Enable

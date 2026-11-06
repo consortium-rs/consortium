@@ -1,0 +1,539 @@
+block/DSI_V2_HOST_INT:
+  description: ''
+  items:
+    - name: INT_ST_MAIN
+      byte_offset: 0
+    - name: INT_ST_PHY
+      byte_offset: 32
+    - name: INT_ST_TO
+      byte_offset: 36
+    - name: INT_ST_ACK
+      byte_offset: 40
+    - name: INT_ST_IPI
+      byte_offset: 44
+    - name: INT_ST_PRI
+      byte_offset: 48
+    - name: INT_ST_CRI
+      byte_offset: 52
+    - name: INT_UNMASK_PHY
+      byte_offset: 96
+    - name: INT_UNMASK_TO
+      byte_offset: 100
+    - name: INT_UNMASK_ACK
+      byte_offset: 104
+    - name: INT_UNMASK_IPI
+      byte_offset: 108
+    - name: INT_UNMASK_PRI
+      byte_offset: 112
+    - name: INT_UNMASK_CRI
+      byte_offset: 116
+    - name: INT_FORCE_PHY
+      byte_offset: 160
+    - name: INT_FORCE_TO
+      byte_offset: 164
+    - name: INT_FORCE_ACK
+      byte_offset: 168
+    - name: INT_FORCE_IPI
+      byte_offset: 172
+    - name: INT_FORCE_PRI
+      byte_offset: 176
+    - name: INT_FORCE_CRI
+      byte_offset: 180
+fieldset/DSI_V2_HOST_INT_INT_ST_MAIN_INT_ST:
+  description: ''
+  fields:
+    - name: PHY
+      bit_offset: 0
+      bit_size: 1
+    - name: TO
+      bit_offset: 1
+      bit_size: 1
+    - name: ACK
+      bit_offset: 2
+      bit_size: 1
+    - name: IPI
+      bit_offset: 3
+      bit_size: 1
+    - name: PRI
+      bit_offset: 4
+      bit_size: 1
+    - name: CRI
+      bit_offset: 5
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_ST_PHY_PHY_L0:
+  description: ''
+  fields:
+    - name: ERRESC
+      bit_offset: 0
+      bit_size: 1
+    - name: ERRSYNCESC
+      bit_offset: 1
+      bit_size: 1
+    - name: ERRCONTROL
+      bit_offset: 2
+      bit_size: 1
+    - name: ERRCONTENTIONLP0
+      bit_offset: 3
+      bit_size: 1
+    - name: ERRCONTENTIONLP1
+      bit_offset: 4
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_ST_TO_ERR_TO:
+  description: ''
+  fields:
+    - name: HSTX
+      bit_offset: 0
+      bit_size: 1
+    - name: HSTXRDY
+      bit_offset: 1
+      bit_size: 1
+    - name: LPRX
+      bit_offset: 2
+      bit_size: 1
+    - name: LPTXRDY
+      bit_offset: 3
+      bit_size: 1
+    - name: LPTXTRIG
+      bit_offset: 4
+      bit_size: 1
+    - name: LPTXULPS
+      bit_offset: 5
+      bit_size: 1
+    - name: BTA
+      bit_offset: 6
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_ST_IPI_ERR_DISPLAY_CMD:
+  description: ''
+  fields:
+    - name: TIME
+      bit_offset: 0
+      bit_size: 1
+    - name: OVFL
+      bit_offset: 8
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_ST_IPI_ERR_IPI:
+  description: ''
+  fields:
+    - name: DTYPE
+      bit_offset: 1
+      bit_size: 1
+    - name: CMD
+      bit_offset: 3
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_ST_IPI_ERR_VID:
+  description: ''
+  fields:
+    - name: BANDWIDTH
+      bit_offset: 2
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_ST_IPI_IPI_EVENT_FIFO:
+  description: ''
+  fields:
+    - name: OVER
+      bit_offset: 16
+      bit_size: 1
+    - name: UNDER
+      bit_offset: 17
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_ST_IPI_IPI_PIXEL_FIFO:
+  description: ''
+  fields:
+    - name: OVER
+      bit_offset: 18
+      bit_size: 1
+    - name: UNDER
+      bit_offset: 19
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_ST_PRI_ERR_PRI_TX:
+  description: ''
+  fields:
+    - name: TIME
+      bit_offset: 0
+      bit_size: 1
+    - name: CMD
+      bit_offset: 1
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_ST_CRI_ERR_CRI_CMD:
+  description: ''
+  fields:
+    - name: TIME
+      bit_offset: 0
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_ST_CRI_ERR_CRI:
+  description: ''
+  fields:
+    - name: DTYPE
+      bit_offset: 1
+      bit_size: 1
+    - name: VCHANNEL
+      bit_offset: 2
+      bit_size: 1
+    - name: ECC
+      bit_offset: 4
+      bit_size: 1
+    - name: CRC
+      bit_offset: 6
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_ST_CRI_ERR_CRI_RX:
+  description: ''
+  fields:
+    - name: LENGTH
+      bit_offset: 3
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_ST_CRI_ERR_CRI_ECC:
+  description: ''
+  fields:
+    - name: FATAL
+      bit_offset: 5
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_ST_CRI_CMD_RD_PLD_FIFO:
+  description: ''
+  fields:
+    - name: OVER
+      bit_offset: 16
+      bit_size: 1
+    - name: UNDER
+      bit_offset: 17
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_ST_CRI_CMD_WR_PLD_FIFO:
+  description: ''
+  fields:
+    - name: OVER
+      bit_offset: 18
+      bit_size: 1
+    - name: UNDER
+      bit_offset: 19
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_ST_CRI_CMD_WR_HDR_FIFO:
+  description: ''
+  fields:
+    - name: OVER
+      bit_offset: 20
+      bit_size: 1
+    - name: UNDER
+      bit_offset: 21
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_UNMASK_PHY_UNMASK_PHY_L0:
+  description: ''
+  fields:
+    - name: ERRESC
+      bit_offset: 0
+      bit_size: 1
+    - name: ERRSYNCESC
+      bit_offset: 1
+      bit_size: 1
+    - name: ERRCONTROL
+      bit_offset: 2
+      bit_size: 1
+    - name: ERRCONTENTIONLP0
+      bit_offset: 3
+      bit_size: 1
+    - name: ERRCONTENTIONLP1
+      bit_offset: 4
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_UNMASK_PHY_UNMASK_TXHS_FIFO:
+  description: ''
+  fields:
+    - name: OVER
+      bit_offset: 16
+      bit_size: 1
+    - name: UNDER
+      bit_offset: 17
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_UNMASK_TO_UNMASK_ERR_TO:
+  description: ''
+  fields:
+    - name: HSTX
+      bit_offset: 0
+      bit_size: 1
+    - name: HSTXRDY
+      bit_offset: 1
+      bit_size: 1
+    - name: LPRX
+      bit_offset: 2
+      bit_size: 1
+    - name: LPTXRDY
+      bit_offset: 3
+      bit_size: 1
+    - name: LPTXTRIG
+      bit_offset: 4
+      bit_size: 1
+    - name: LPTXULPS
+      bit_offset: 5
+      bit_size: 1
+    - name: BTA
+      bit_offset: 6
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_UNMASK_IPI_UNMASK_ERR_DISPLAY_CMD:
+  description: ''
+  fields:
+    - name: TIME
+      bit_offset: 0
+      bit_size: 1
+    - name: OVFL
+      bit_offset: 8
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_UNMASK_IPI_UNMASK_ERR_IPI:
+  description: ''
+  fields:
+    - name: DTYPE
+      bit_offset: 1
+      bit_size: 1
+    - name: CMD
+      bit_offset: 3
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_UNMASK_IPI_UNMASK_ERR_VID:
+  description: ''
+  fields:
+    - name: BANDWIDTH
+      bit_offset: 2
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_UNMASK_IPI_UNMASK_IPI_EVENT_FIFO:
+  description: ''
+  fields:
+    - name: OVER
+      bit_offset: 16
+      bit_size: 1
+    - name: UNDER
+      bit_offset: 17
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_UNMASK_IPI_UNMASK_IPI_PIXEL_FIFO:
+  description: ''
+  fields:
+    - name: OVER
+      bit_offset: 18
+      bit_size: 1
+    - name: UNDER
+      bit_offset: 19
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_UNMASK_PRI_UNMASK_ERR_PRI_TX:
+  description: ''
+  fields:
+    - name: TIME
+      bit_offset: 0
+      bit_size: 1
+    - name: CMD
+      bit_offset: 1
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_UNMASK_CRI_UNMASK_ERR_CRI_CMD:
+  description: ''
+  fields:
+    - name: TIME
+      bit_offset: 0
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_UNMASK_CRI_UNMASK_ERR_CRI:
+  description: ''
+  fields:
+    - name: DTYPE
+      bit_offset: 1
+      bit_size: 1
+    - name: VCHANNEL
+      bit_offset: 2
+      bit_size: 1
+    - name: ECC
+      bit_offset: 4
+      bit_size: 1
+    - name: CRC
+      bit_offset: 6
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_UNMASK_CRI_UNMASK_ERR_CRI_RX:
+  description: ''
+  fields:
+    - name: LENGTH
+      bit_offset: 3
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_UNMASK_CRI_UNMASK_ERR_CRI_ECC:
+  description: ''
+  fields:
+    - name: FATAL
+      bit_offset: 5
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_UNMASK_CRI_UNMASK_CMD_RD_PLD_FIFO:
+  description: ''
+  fields:
+    - name: OVER
+      bit_offset: 16
+      bit_size: 1
+    - name: UNDER
+      bit_offset: 17
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_UNMASK_CRI_UNMASK_CMD_WR_PLD_FIFO:
+  description: ''
+  fields:
+    - name: OVER
+      bit_offset: 18
+      bit_size: 1
+    - name: UNDER
+      bit_offset: 19
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_UNMASK_CRI_UNMASK_CMD_WR_HDR_FIFO:
+  description: ''
+  fields:
+    - name: OVER
+      bit_offset: 20
+      bit_size: 1
+    - name: UNDER
+      bit_offset: 21
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_FORCE_PHY_FORCE_PHY_L0:
+  description: ''
+  fields:
+    - name: ERRESC
+      bit_offset: 0
+      bit_size: 1
+    - name: ERRSYNCESC
+      bit_offset: 1
+      bit_size: 1
+    - name: ERRCONTROL
+      bit_offset: 2
+      bit_size: 1
+    - name: ERRCONTENTIONLP0
+      bit_offset: 3
+      bit_size: 1
+    - name: ERRCONTENTIONLP1
+      bit_offset: 4
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_FORCE_PHY_FORCE_TXHS_FIFO:
+  description: ''
+  fields:
+    - name: OVER
+      bit_offset: 16
+      bit_size: 1
+    - name: UNDER
+      bit_offset: 17
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_FORCE_TO_FORCE_ERR_TO:
+  description: ''
+  fields:
+    - name: HSTX
+      bit_offset: 0
+      bit_size: 1
+    - name: HSTXRDY
+      bit_offset: 1
+      bit_size: 1
+    - name: LPRX
+      bit_offset: 2
+      bit_size: 1
+    - name: LPTXRDY
+      bit_offset: 3
+      bit_size: 1
+    - name: LPTXTRIG
+      bit_offset: 4
+      bit_size: 1
+    - name: LPTXULPS
+      bit_offset: 5
+      bit_size: 1
+    - name: BTA
+      bit_offset: 6
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_FORCE_IPI_FORCE_ERR_DISPLAY_CMD:
+  description: ''
+  fields:
+    - name: TIME
+      bit_offset: 0
+      bit_size: 1
+    - name: OVFL
+      bit_offset: 8
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_FORCE_IPI_FORCE_ERR_IPI:
+  description: ''
+  fields:
+    - name: DTYPE
+      bit_offset: 1
+      bit_size: 1
+    - name: CMD
+      bit_offset: 3
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_FORCE_IPI_FORCE_ERR_VID:
+  description: ''
+  fields:
+    - name: BANDWIDTH
+      bit_offset: 2
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_FORCE_IPI_FORCE_IPI_EVENT_FIFO:
+  description: ''
+  fields:
+    - name: OVER
+      bit_offset: 16
+      bit_size: 1
+    - name: UNDER
+      bit_offset: 17
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_FORCE_IPI_FORCE_IPI_PIXEL_FIFO:
+  description: ''
+  fields:
+    - name: OVER
+      bit_offset: 18
+      bit_size: 1
+    - name: UNDER
+      bit_offset: 19
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_FORCE_PRI_FORCE_ERR_PRI_TX:
+  description: ''
+  fields:
+    - name: TIME
+      bit_offset: 0
+      bit_size: 1
+    - name: CMD
+      bit_offset: 1
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_FORCE_CRI_FORCE_ERR_CRI_CMD:
+  description: ''
+  fields:
+    - name: TIME
+      bit_offset: 0
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_FORCE_CRI_FORCE_ERR_CRI:
+  description: ''
+  fields:
+    - name: DTYPE
+      bit_offset: 1
+      bit_size: 1
+    - name: VCHANNEL
+      bit_offset: 2
+      bit_size: 1
+    - name: ECC
+      bit_offset: 4
+      bit_size: 1
+    - name: CRC
+      bit_offset: 6
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_FORCE_CRI_FORCE_ERR_CRI_RX:
+  description: ''
+  fields:
+    - name: LENGTH
+      bit_offset: 3
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_FORCE_CRI_FORCE_ERR_CRI_ECC:
+  description: ''
+  fields:
+    - name: FATAL
+      bit_offset: 5
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_FORCE_CRI_FORCE_CMD_RD_PLD_FIFO:
+  description: ''
+  fields:
+    - name: OVER
+      bit_offset: 16
+      bit_size: 1
+    - name: UNDER
+      bit_offset: 17
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_FORCE_CRI_FORCE_CMD_WR_PLD_FIFO:
+  description: ''
+  fields:
+    - name: OVER
+      bit_offset: 18
+      bit_size: 1
+    - name: UNDER
+      bit_offset: 19
+      bit_size: 1
+fieldset/DSI_V2_HOST_INT_INT_FORCE_CRI_FORCE_CMD_WR_HDR_FIFO:
+  description: ''
+  fields:
+    - name: OVER
+      bit_offset: 20
+      bit_size: 1
+    - name: UNDER
+      bit_offset: 21
+      bit_size: 1

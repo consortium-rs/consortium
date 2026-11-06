@@ -1,0 +1,36 @@
+# i.MX 952: compile-level support only. The chip database declares no shared
+# SRAM and no MU doorbell until the reference manual is published, so this
+# fixture has no `[dbg.*]` ring or `[[ipc.channel]]`; it exercises peripheral
+# ownership, pin validation, and the CM7 time driver.
+[profile]
+chip        = "mimx9529avzxn"
+shared      = "./shared"
+deploy_root = "/opt/consortium"
+
+[endpoints]
+linux = "./app"
+cm7   = "./firmware"
+
+[peripheral.lpuart3]
+owner  = "cm7"
+secure = false
+pin.tx = "GPIO_IO14"
+pin.rx = "GPIO_IO15"
+
+[peripheral.lpi2c3]
+owner     = "cm7"
+secure    = false
+clock     = 24000000
+frequency = 400000
+pin.sda   = "GPIO_IO28"
+pin.scl   = "GPIO_IO29"
+
+[peripheral.can2]
+owner  = "cm7"
+secure = false
+pin.tx = "GPIO_IO25"
+pin.rx = "GPIO_IO27"
+
+[peripheral.gpio2]
+owner  = "cm7"
+secure = false

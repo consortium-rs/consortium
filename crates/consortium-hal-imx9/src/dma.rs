@@ -132,13 +132,13 @@ pub mod request {
         TPM6_CH0_CH2 = 34, TPM6_CH1_CH3 = 35, TPM6_OVERFLOW = 36
     }
 
-    #[cfg(feature = "mimx95")]
+    #[cfg(any(feature = "mimx95", feature = "mimx952"))]
     requests! { Dma3;
         LPTMR1 = 2, TPM1_OVERFLOW = 4, TPM2_OVERFLOW = 5, ADC1 = 7,
         TPM1_CH0_CH2 = 26, TPM1_CH1_CH3 = 27,
         TPM2_CH0_CH2 = 28, TPM2_CH1_CH3 = 29
     }
-    #[cfg(feature = "mimx95")]
+    #[cfg(any(feature = "mimx95", feature = "mimx952"))]
     requests! { Dma5;
         LPTMR2 = 16,
         TPM3_CH0_CH2 = 25, TPM3_CH1_CH3 = 26, TPM3_OVERFLOW = 27,

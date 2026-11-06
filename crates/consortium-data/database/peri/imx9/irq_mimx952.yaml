@@ -1,0 +1,150 @@
+block/IRQ:
+  description: ''
+  items:
+    - name: LU
+      byte_offset: 0
+      fieldset: IRQ_LU
+    - name: LOCKS
+      byte_offset: 4
+      fieldset: IRQ_LOCKS
+    - name: INTERE0
+      byte_offset: 8
+      fieldset: IRQ_INTERE0
+    - name: INTERE1
+      byte_offset: 12
+      fieldset: IRQ_INTERE1
+    - name: INTERE2
+      byte_offset: 16
+      fieldset: IRQ_INTERE2
+    - name: INTERP0
+      byte_offset: 20
+      fieldset: IRQ_INTERP0
+    - name: INTERP1
+      byte_offset: 24
+      fieldset: IRQ_INTERP1
+    - name: INTERP2
+      byte_offset: 28
+      fieldset: IRQ_INTERP2
+    - name: INTERC0
+      byte_offset: 32
+      fieldset: IRQ_INTERC0
+    - name: INTERC1
+      byte_offset: 36
+      fieldset: IRQ_INTERC1
+    - name: INTERC2
+      byte_offset: 40
+      fieldset: IRQ_INTERC2
+    - name: INTERS0
+      byte_offset: 44
+      fieldset: IRQ_INTERS0
+    - name: INTERS1
+      byte_offset: 48
+      fieldset: IRQ_INTERS1
+    - name: INTERS2
+      byte_offset: 52
+      fieldset: IRQ_INTERS2
+fieldset/IRQ_LU:
+  description: ''
+  fields:
+    - name: LkUn
+      bit_offset: 0
+      bit_size: 32
+fieldset/IRQ_LOCKS:
+  description: ''
+  fields:
+    - name: LkSus
+      bit_offset: 0
+      bit_size: 1
+      description: LockStatus
+    - name: PriSt
+      bit_offset: 4
+      bit_size: 1
+      description: LockStatus
+    - name: FreezeS
+      bit_offset: 8
+      bit_size: 1
+      description: PrivilegeStatus
+fieldset/IRQ_INTERE0:
+  description: ''
+  fields:
+    - name: IntE0
+      bit_offset: 0
+      bit_size: 32
+      description: InterruptEnable0
+fieldset/IRQ_INTERE1:
+  description: ''
+  fields:
+    - name: IntE1
+      bit_offset: 0
+      bit_size: 32
+      description: InterruptEnable1
+fieldset/IRQ_INTERE2:
+  description: ''
+  fields:
+    - name: IntE2
+      bit_offset: 0
+      bit_size: 21
+      description: InterruptEnable2
+fieldset/IRQ_INTERP0:
+  description: ''
+  fields:
+    - name: IntP0
+      bit_offset: 0
+      bit_size: 32
+      description: InterruptPreset0
+fieldset/IRQ_INTERP1:
+  description: ''
+  fields:
+    - name: IntP1
+      bit_offset: 0
+      bit_size: 32
+      description: InterruptPreset1
+fieldset/IRQ_INTERP2:
+  description: ''
+  fields:
+    - name: IntP2
+      bit_offset: 0
+      bit_size: 21
+      description: InterruptPreset2
+fieldset/IRQ_INTERC0:
+  description: ''
+  fields:
+    - name: IntC0
+      bit_offset: 0
+      bit_size: 32
+      description: InterruptClear0
+fieldset/IRQ_INTERC1:
+  description: ''
+  fields:
+    - name: IntC1
+      bit_offset: 0
+      bit_size: 32
+      description: InterruptClear1
+fieldset/IRQ_INTERC2:
+  description: ''
+  fields:
+    - name: IntC2
+      bit_offset: 0
+      bit_size: 21
+      description: InterruptClear2
+fieldset/IRQ_INTERS0:
+  description: ''
+  fields:
+    - name: IntS0
+      bit_offset: 0
+      bit_size: 32
+      description: InterruptStatus0
+fieldset/IRQ_INTERS1:
+  description: ''
+  fields:
+    - name: IntS1
+      bit_offset: 0
+      bit_size: 32
+      description: InterruptStatus1
+fieldset/IRQ_INTERS2:
+  description: ''
+  fields:
+    - name: IntS2
+      bit_offset: 0
+      bit_size: 21
+      description: InterruptStatus2

@@ -1,0 +1,4337 @@
+block/VPU_VPU_DEC:
+  description: ''
+  items:
+    - name: VPU_PO_CONF_CONTROL_REG
+      byte_offset: 0
+      fieldset: VPU_VPU_DEC_VPU_PO_CONF_CONTROL_REG
+    - name: VCPU_CUR_PC_CONTROL_REG
+      byte_offset: 4
+    - name: VCPU_CUR_LR_CONTROL_REG
+      byte_offset: 8
+    - name: VPU_PDBG_STEP_MASK_CONTROL_REG
+      byte_offset: 12
+    - name: VPU_PDBG_CTRL_CONTROL_REG
+      byte_offset: 16
+      fieldset: VPU_VPU_DEC_VPU_PDBG_CTRL_CONTROL_REG
+    - name: VPU_PDBG_IDX_REG_CONTROL_REG
+      byte_offset: 20
+      fieldset: VPU_VPU_DEC_VPU_PDBG_IDX_REG_CONTROL_REG
+    - name: VPU_PDBG_WDATA_REG_CONTROL_REG
+      byte_offset: 24
+    - name: VPU_PDBG_RDATA_REG_CONTROL_REG
+      byte_offset: 28
+    - name: VPU_FIO_CTRL_ADDR_CONTROL_REG
+      byte_offset: 32
+      fieldset: VPU_VPU_DEC_VPU_FIO_CTRL_ADDR_CONTROL_REG
+    - name: VPU_FIO_DATA_CONTROL_REG
+      byte_offset: 36
+    - name: VPU_VINT_REASON_USR_CONTROL_REG
+      byte_offset: 48
+      fieldset: VPU_VPU_DEC_VPU_VINT_REASON_USR_CONTROL_REG
+    - name: VPU_VINT_REASON_CLR_CONTROL_REG
+      byte_offset: 52
+      fieldset: VPU_VPU_DEC_VPU_VINT_REASON_CLR_CONTROL_REG
+    - name: VPU_HOST_INT_REQ0_CONTROL_REG
+      byte_offset: 56
+      fieldset: VPU_VPU_DEC_VPU_HOST_INT_REQ0_CONTROL_REG
+    - name: VPU_VINT_CLEAR_CONTROL_REG
+      byte_offset: 60
+      fieldset: VPU_VPU_DEC_VPU_VINT_CLEAR_CONTROL_REG
+    - name: VPU_HINT_CLEAR_CONTROL_REG
+      byte_offset: 64
+      fieldset: VPU_VPU_DEC_VPU_HINT_CLEAR_CONTROL_REG
+    - name: VPU_VPU_INT_STS_CONTROL_REG
+      byte_offset: 68
+    - name: VPU_VINT_ENABLE_CONTROL_REG
+      byte_offset: 72
+      fieldset: VPU_VPU_DEC_VPU_VINT_ENABLE_CONTROL_REG
+    - name: VPU_VINT_REASON_CONTROL_REG
+      byte_offset: 76
+      fieldset: VPU_VPU_DEC_VPU_VINT_REASON_CONTROL_REG
+    - name: VPU_RESET_REQ_CONTROL_REG
+      byte_offset: 80
+    - name: VPU_RESET_STATUS_CONTROL_REG
+      byte_offset: 84
+    - name: VCPU_RESTART_CONTROL_REG
+      byte_offset: 88
+    - name: VPU_CLK_MASK_CONTROL_REG
+      byte_offset: 92
+    - name: VPU_REMAP_CTRL_CONTROL_REG
+      byte_offset: 96
+      fieldset: VPU_VPU_DEC_VPU_REMAP_CTRL_CONTROL_REG
+    - name: VPU_REMAP_VADDR_CONTROL_REG
+      byte_offset: 100
+    - name: VPU_REMAP_PADDR_CONTROL_REG
+      byte_offset: 104
+    - name: VPU_REMAP_CORE_START_CONTROL_REG
+      byte_offset: 108
+    - name: VPU_BUSY_STATUS_CONTROL_REG
+      byte_offset: 112
+    - name: VPU_HALT_STATUS_CONTROL_REG
+      byte_offset: 116
+    - name: VPU_VCPU_STATUS_CONTROL_REG
+      byte_offset: 120
+    - name: RET_FIO_STATUS_CONTROL_REG
+      byte_offset: 128
+      fieldset: VPU_VPU_DEC_RET_FIO_STATUS_CONTROL_REG
+    - name: RET_PRODUCT_NAME_CONTROL_REG
+      byte_offset: 144
+    - name: RET_PRODUCT_VERSION_CONTROL_REG
+      byte_offset: 148
+    - name: RET_VCPU_CONFIG0_CONTROL_REG
+      byte_offset: 152
+      fieldset: VPU_VPU_DEC_RET_VCPU_CONFIG0_CONTROL_REG
+    - name: RET_VCPU_CONFIG1_CONTROL_REG
+      byte_offset: 156
+      fieldset: VPU_VPU_DEC_RET_VCPU_CONFIG1_CONTROL_REG
+    - name: RET_CODEC_STD_CONTROL_REG
+      byte_offset: 160
+    - name: RET_CONF_DATE_CONTROL_REG
+      byte_offset: 164
+    - name: RET_CONF_REVISION_CONTROL_REG
+      byte_offset: 168
+    - name: RET_CONF_TYPE_CONTROL_REG
+      byte_offset: 172
+    - name: RET_VCORE0_CFG_CONTROL_REG
+      byte_offset: 176
+    - name: RET_VCORE1_CFG_CONTROL_REG
+      byte_offset: 180
+    - name: RET_VCORE2_CFG_CONTROL_REG
+      byte_offset: 184
+    - name: VPU_CMD_BUSY_STATUS_V_CONTROL_REG
+      byte_offset: 188
+      fieldset: VPU_VPU_DEC_VPU_CMD_BUSY_STATUS_V_CONTROL_REG
+    - name: VPU_RET_VCORE_PRESET_CONTROL_REG
+      byte_offset: 192
+    - name: VPU_DBG_SW_UART_STATUS_CONTROL_REG
+      byte_offset: 240
+    - name: VPU_DBG_SW_UART_TX_CONTROL_REG
+      byte_offset: 244
+    - name: VPU_REQUIRE_WORK_BUF_ADDR_CONTROL_REG
+      byte_offset: 248
+    - name: VPU_REQUIRE_WORK_BUF_SIZE_CONTROL_REG
+      byte_offset: 252
+    - name: COMMAND
+      byte_offset: 256
+      fieldset: VPU_VPU_DEC_COMMAND
+    - name: CMD_DEC_PIC_OPTION
+      byte_offset: 260
+    - name: RET_SUCCESS
+      byte_offset: 264
+    - name: RET_FAIL_REASON
+      byte_offset: 268
+    - name: ADDR_CODE_BASE
+      byte_offset: 272
+    - name: CMD_DEC_ADDR_USERDATA_BASE
+      byte_offset: 276
+    - name: CMD_BS_RD_PTR
+      byte_offset: 280
+    - name: CMD_BS_WR_PTR
+      byte_offset: 284
+    - name: CMD_BS_OPTIONS
+      byte_offset: 288
+      fieldset: VPU_VPU_DEC_CMD_BS_OPTIONS
+    - name: CMD_CREATE_INST_BS_PARAM
+      byte_offset: 292
+    - name: CMD_INIT_SEC_AXI_SIZE
+      byte_offset: 296
+    - name: CMD_CREATE_INST_ADDR_TEMP_BASE
+      byte_offset: 300
+    - name: CMD_CREATE_INST_TEMP_SIZE
+      byte_offset: 304
+    - name: CMD_DEC_FORCE_FB_LATENCY_PLUS1
+      byte_offset: 308
+    - name: CMD_CREATE_INST_EXT_ADDR
+      byte_offset: 312
+      fieldset: VPU_VPU_DEC_CMD_CREATE_INST_EXT_ADDR
+    - name: CMD_CREATE_INST_NUM_CQ_DEPTH_M1
+      byte_offset: 316
+    - name: CMD_SET_FB_ADDR_FBC_C_OFFSET0
+      byte_offset: 320
+    - name: CMD_SET_FB_ADDR_FBC_Y_BASE
+      byte_offset: 324
+    - name: CMD_SET_FB_ADDR_CB_BASE1
+      byte_offset: 328
+    - name: CMD_QUERY_BW_OPTION
+      byte_offset: 332
+    - name: CMD_DEC_USE_SEC_AXI
+      byte_offset: 336
+      fieldset: VPU_VPU_DEC_CMD_DEC_USE_SEC_AXI
+    - name: CMD_DEC_SCALE_SIZE
+      byte_offset: 340
+    - name: CMD_SET_FB_ADDR_CB_BASE2
+      byte_offset: 344
+    - name: CMD_SET_FB_ADDR_CR_BASE2
+      byte_offset: 348
+    - name: CMD_SET_FB_ADDR_FBC_C_OFFSET2
+      byte_offset: 352
+    - name: CMD_SET_FB_ADDR_LUMA_BASE3
+      byte_offset: 356
+    - name: CMD_SET_FB_ADDR_CB_BASE3
+      byte_offset: 360
+    - name: CMD_SET_FB_ADDR_CR_BASE3
+      byte_offset: 364
+    - name: CMD_SET_FB_ADDR_FBC_C_OFFSET3
+      byte_offset: 368
+    - name: CMD_SET_FB_ADDR_LUMA_BASE4
+      byte_offset: 372
+    - name: CMD_SET_FB_ADDR_CB_BASE4
+      byte_offset: 376
+    - name: CMD_SET_FB_ADDR_CR_BASE4
+      byte_offset: 380
+    - name: CMD_SET_FB_ADDR_FBC_C_OFFSET4
+      byte_offset: 384
+    - name: CMD_SET_FB_ADDR_LUMA_BASE5
+      byte_offset: 388
+    - name: CMD_SET_FB_ADDR_CB_BASE5
+      byte_offset: 392
+    - name: CMD_SET_FB_ADDR_CR_BASE5
+      byte_offset: 396
+    - name: CMD_SET_FB_ADDR_FBC_C_OFFSET5
+      byte_offset: 400
+    - name: CMD_DEC_VCORE_INFO
+      byte_offset: 404
+    - name: CMD_SET_FB_ADDR_CB_BASE6
+      byte_offset: 408
+    - name: CMD_SET_FB_ADDR_CR_BASE6
+      byte_offset: 412
+    - name: CMD_SET_FB_ADDR_FBC_C_OFFSET6
+      byte_offset: 416
+    - name: CMD_SET_FB_ADDR_LUMA_BASE7
+      byte_offset: 420
+    - name: CMD_SET_FB_ADDR_CB_BASE7
+      byte_offset: 424
+    - name: CMD_SET_FB_ADDR_CR_BASE7
+      byte_offset: 428
+    - name: CMD_SET_FB_ADDR_FBC_C_OFFSET7
+      byte_offset: 432
+    - name: CMD_SET_FB_ADDR_MV_COL0
+      byte_offset: 436
+    - name: CMD_SET_FB_ADDR_MV_COL1
+      byte_offset: 440
+    - name: CMD_SET_FB_ADDR_MV_COL2
+      byte_offset: 444
+    - name: CMD_SET_FB_ADDR_MV_COL3
+      byte_offset: 448
+    - name: CMD_SET_FB_ADDR_MV_COL4
+      byte_offset: 452
+    - name: CMD_SET_FB_ADDR_MV_COL5
+      byte_offset: 456
+    - name: CMD_SET_FB_ADDR_MV_COL6
+      byte_offset: 460
+    - name: CMD_SET_FB_ADDR_MV_COL7
+      byte_offset: 464
+    - name: RET_QUERY_DEC_WARN_INFO
+      byte_offset: 468
+    - name: RET_QUERY_DEC_ERR_INFO
+      byte_offset: 472
+    - name: RET_QUERY_DEC_SUCCESS
+      byte_offset: 476
+    - name: RET_QUEUE_STATUS
+      byte_offset: 480
+    - name: RET_BS_EMPTY
+      byte_offset: 484
+    - name: RET_QUEUED_CMD_DONE
+      byte_offset: 488
+    - name: RET_SRC_RELEASE
+      byte_offset: 492
+    - name: RET_PARSING_INSTANCE_INFO
+      byte_offset: 496
+    - name: RET_DECODING_INSTANCE_INFO
+      byte_offset: 500
+    - name: RET_ENCODING_INSTANCE_INFO
+      byte_offset: 504
+    - name: RET_DONE_INSTANCE_INFO
+      byte_offset: 508
+    - name: VPU_RESET_REQ
+      byte_offset: 4176
+    - name: VPU_RESET_STATUS
+      byte_offset: 4180
+    - name: VCPU_RESTART
+      byte_offset: 4184
+    - name: VPU_CLK_MASK
+      byte_offset: 4188
+    - name: VPU_REMAP_CTRL
+      byte_offset: 4192
+      fieldset: VPU_VPU_DEC_VPU_REMAP_CTRL
+    - name: VPU_REMAP_VADDR
+      byte_offset: 4196
+    - name: VPU_REMAP_PADDR
+      byte_offset: 4200
+    - name: VPU_REMAP_CORE_START
+      byte_offset: 4204
+    - name: VPU_BUSY_STATUS
+      byte_offset: 4208
+    - name: VPU_GLOBAL_H_COMMAND
+      byte_offset: 4356
+    - name: BACKBONE_BUS_CTRL_VCORE
+      byte_offset: 36368
+    - name: BACKBONE_BUS_STATUS_VCORE
+      byte_offset: 36372
+      fieldset: VPU_VPU_DEC_BACKBONE_BUS_STATUS_VCORE
+    - name: BACKBONE_BUS_CTRL_VCPU
+      byte_offset: 65040
+    - name: BACKBONE_BUS_STATUS_VCPU
+      byte_offset: 65044
+    - name: BACKBONE_BUS_PROC_EXT_ADDR
+      byte_offset: 65216
+      fieldset: VPU_VPU_DEC_BACKBONE_BUS_PROC_EXT_ADDR
+fieldset/VPU_VPU_DEC_VPU_PO_CONF_CONTROL_REG:
+  description: ''
+  fields:
+    - name: DEBUGMODE
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_PO_CONF_CONTROL_REG_USE_PO:
+  description: ''
+  fields:
+    - name: CONF
+      bit_offset: 3
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_PO_CONF_CONTROL_REG_VM:
+  description: ''
+  fields:
+    - name: DEBUGMODE
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_PO_CONF_CONTROL_REG_VM_USE_PO:
+  description: ''
+  fields:
+    - name: CONF
+      bit_offset: 3
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VCPU_CUR_PC_CONTROL_REG_CUR:
+  description: ''
+  fields:
+    - name: PC
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_VCPU_CUR_PC_CONTROL_REG_VM_CUR:
+  description: ''
+  fields:
+    - name: PC
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_VCPU_CUR_LR_CONTROL_REG_CUR:
+  description: ''
+  fields:
+    - name: LR
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_VCPU_CUR_LR_CONTROL_REG_VM_CUR:
+  description: ''
+  fields:
+    - name: LR
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_VPU_PDBG_STEP_MASK_CONTROL_REG_STEP_MASK:
+  description: ''
+  fields:
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_PDBG_STEP_MASK_CONTROL_REG_VM_STEP_MASK:
+  description: ''
+  fields:
+    - name: ENABLE
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_PDBG_CTRL_CONTROL_REG:
+  description: ''
+  fields:
+    - name: STEP
+      bit_offset: 0
+      bit_size: 1
+    - name: RESUME
+      bit_offset: 1
+      bit_size: 1
+    - name: STABLEBRK
+      bit_offset: 2
+      bit_size: 1
+    - name: IMMBRK
+      bit_offset: 3
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_PDBG_CTRL_CONTROL_REG_VM:
+  description: ''
+  fields:
+    - name: STEP
+      bit_offset: 0
+      bit_size: 1
+    - name: RESUME
+      bit_offset: 1
+      bit_size: 1
+    - name: STABLEBRK
+      bit_offset: 2
+      bit_size: 1
+    - name: IMMBRK
+      bit_offset: 3
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_PDBG_IDX_REG_CONTROL_REG:
+  description: ''
+  fields:
+    - name: DBGIDX
+      bit_offset: 0
+      bit_size: 8
+    - name: WRDBG
+      bit_offset: 8
+      bit_size: 1
+    - name: RDDBG
+      bit_offset: 9
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_PDBG_IDX_REG_CONTROL_REG_VM:
+  description: ''
+  fields:
+    - name: DBGIDX
+      bit_offset: 0
+      bit_size: 8
+    - name: WRDBG
+      bit_offset: 8
+      bit_size: 1
+    - name: RDDBG
+      bit_offset: 9
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_PDBG_WDATA_REG_CONTROL_REG_VPU_PDBG_WDATA:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_VPU_PDBG_WDATA_REG_CONTROL_REG_VM_VPU_PDBG_WDATA:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_VPU_PDBG_RDATA_REG_CONTROL_REG_VPU_PDBG_RDATA:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_VPU_PDBG_RDATA_REG_CONTROL_REG_VM_VPU_PDBG_RDATA:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_VPU_FIO_CTRL_ADDR_CONTROL_REG_FIO:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 16
+fieldset/VPU_VPU_DEC_VPU_FIO_CTRL_ADDR_CONTROL_REG_RW:
+  description: ''
+  fields:
+    - name: FLAG
+      bit_offset: 16
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_FIO_CTRL_ADDR_CONTROL_REG:
+  description: ''
+  fields:
+    - name: READY
+      bit_offset: 31
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_FIO_CTRL_ADDR_CONTROL_REG_VM_FIO:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 16
+fieldset/VPU_VPU_DEC_VPU_FIO_CTRL_ADDR_CONTROL_REG_VM_RW:
+  description: ''
+  fields:
+    - name: FLAG
+      bit_offset: 16
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_FIO_CTRL_ADDR_CONTROL_REG_VM:
+  description: ''
+  fields:
+    - name: READY
+      bit_offset: 31
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_FIO_DATA_CONTROL_REG_FIO:
+  description: ''
+  fields:
+    - name: DATA
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_VPU_FIO_DATA_CONTROL_REG_VM_FIO:
+  description: ''
+  fields:
+    - name: DATA
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_USR_CONTROL_REG_CMD0_INTR:
+  description: ''
+  fields:
+    - name: USER
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_USR_CONTROL_REG_CMD1_INTR:
+  description: ''
+  fields:
+    - name: USER
+      bit_offset: 1
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_USR_CONTROL_REG_CMD2_INTR:
+  description: ''
+  fields:
+    - name: USER
+      bit_offset: 2
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_USR_CONTROL_REG_CMD3_INTR:
+  description: ''
+  fields:
+    - name: USER
+      bit_offset: 3
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_USR_CONTROL_REG_CMD4_INTR:
+  description: ''
+  fields:
+    - name: USER
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_USR_CONTROL_REG_CMD5_INTR:
+  description: ''
+  fields:
+    - name: USER
+      bit_offset: 5
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_USR_CONTROL_REG_CMD6_INTR:
+  description: ''
+  fields:
+    - name: USER
+      bit_offset: 6
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_USR_CONTROL_REG_CMD7_INTR:
+  description: ''
+  fields:
+    - name: USER
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_USR_CONTROL_REG_CMD8_INTR:
+  description: ''
+  fields:
+    - name: USER
+      bit_offset: 8
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_USR_CONTROL_REG_CMD9_INTR:
+  description: ''
+  fields:
+    - name: USER
+      bit_offset: 9
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_USR_CONTROL_REG_REL_SRC_INTR:
+  description: ''
+  fields:
+    - name: USER
+      bit_offset: 10
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_USR_CONTROL_REG:
+  description: ''
+  fields:
+    - name: RSVD1
+      bit_offset: 11
+      bit_size: 1
+    - name: RSVD0
+      bit_offset: 12
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_USR_CONTROL_REG_CMDD_INTR:
+  description: ''
+  fields:
+    - name: USER
+      bit_offset: 13
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_USR_CONTROL_REG_CMDE_INTR:
+  description: ''
+  fields:
+    - name: USER
+      bit_offset: 14
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_USR_CONTROL_REG_BSEMPTY_INTR:
+  description: ''
+  fields:
+    - name: USER
+      bit_offset: 15
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_USR_CONTROL_REG_VM_CMD0_INTR:
+  description: ''
+  fields:
+    - name: USER
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_USR_CONTROL_REG_VM_CMD1_INTR:
+  description: ''
+  fields:
+    - name: USER
+      bit_offset: 1
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_USR_CONTROL_REG_VM_CMD2_INTR:
+  description: ''
+  fields:
+    - name: USER
+      bit_offset: 2
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_USR_CONTROL_REG_VM_CMD3_INTR:
+  description: ''
+  fields:
+    - name: USER
+      bit_offset: 3
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_USR_CONTROL_REG_VM_CMD4_INTR:
+  description: ''
+  fields:
+    - name: USER
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_USR_CONTROL_REG_VM_CMD5_INTR:
+  description: ''
+  fields:
+    - name: USER
+      bit_offset: 5
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_USR_CONTROL_REG_VM_CMD6_INTR:
+  description: ''
+  fields:
+    - name: USER
+      bit_offset: 6
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_USR_CONTROL_REG_VM_CMD7_INTR:
+  description: ''
+  fields:
+    - name: USER
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_USR_CONTROL_REG_VM_CMD8_INTR:
+  description: ''
+  fields:
+    - name: USER
+      bit_offset: 8
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_USR_CONTROL_REG_VM_CMD9_INTR:
+  description: ''
+  fields:
+    - name: USER
+      bit_offset: 9
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_USR_CONTROL_REG_VM_REL_SRC_INTR:
+  description: ''
+  fields:
+    - name: USER
+      bit_offset: 10
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_USR_CONTROL_REG_VM:
+  description: ''
+  fields:
+    - name: RSVD0
+      bit_offset: 11
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_USR_CONTROL_REG_VM_CMDC_INTR:
+  description: ''
+  fields:
+    - name: USER
+      bit_offset: 12
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_USR_CONTROL_REG_VM_CMDD_INTR:
+  description: ''
+  fields:
+    - name: USER
+      bit_offset: 13
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_USR_CONTROL_REG_VM_CMDE_INTR:
+  description: ''
+  fields:
+    - name: USER
+      bit_offset: 14
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_USR_CONTROL_REG_VM_BSEMPTY_INTR:
+  description: ''
+  fields:
+    - name: USER
+      bit_offset: 15
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CLR_CONTROL_REG_CMD0:
+  description: ''
+  fields:
+    - name: CLR
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CLR_CONTROL_REG_CMD1:
+  description: ''
+  fields:
+    - name: CLR
+      bit_offset: 1
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CLR_CONTROL_REG_CMD2:
+  description: ''
+  fields:
+    - name: CLR
+      bit_offset: 2
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CLR_CONTROL_REG_CMD3:
+  description: ''
+  fields:
+    - name: CLR
+      bit_offset: 3
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CLR_CONTROL_REG_CMD4:
+  description: ''
+  fields:
+    - name: CLR
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CLR_CONTROL_REG_CMD5:
+  description: ''
+  fields:
+    - name: CLR
+      bit_offset: 5
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CLR_CONTROL_REG_CMD6:
+  description: ''
+  fields:
+    - name: CLR
+      bit_offset: 6
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CLR_CONTROL_REG_CMD7:
+  description: ''
+  fields:
+    - name: CLR
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CLR_CONTROL_REG_CMD8:
+  description: ''
+  fields:
+    - name: CLR
+      bit_offset: 8
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CLR_CONTROL_REG_CMD9:
+  description: ''
+  fields:
+    - name: CLR
+      bit_offset: 9
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CLR_CONTROL_REG_REL_SRC:
+  description: ''
+  fields:
+    - name: CLR
+      bit_offset: 10
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CLR_CONTROL_REG_INSUFFICIENT_VLC:
+  description: ''
+  fields:
+    - name: BUFFER
+      bit_offset: 11
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CLR_CONTROL_REG:
+  description: ''
+  fields:
+    - name: RSVD0
+      bit_offset: 12
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CLR_CONTROL_REG_CMDD:
+  description: ''
+  fields:
+    - name: CLR
+      bit_offset: 13
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CLR_CONTROL_REG_CMDE:
+  description: ''
+  fields:
+    - name: CLR
+      bit_offset: 14
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CLR_CONTROL_REG_BSEMPTY:
+  description: ''
+  fields:
+    - name: CLR
+      bit_offset: 15
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CLR_CONTROL_REG_VM_CMD0:
+  description: ''
+  fields:
+    - name: CLR
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CLR_CONTROL_REG_VM_CMD1:
+  description: ''
+  fields:
+    - name: CLR
+      bit_offset: 1
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CLR_CONTROL_REG_VM_CMD2:
+  description: ''
+  fields:
+    - name: CLR
+      bit_offset: 2
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CLR_CONTROL_REG_VM_CMD3:
+  description: ''
+  fields:
+    - name: CLR
+      bit_offset: 3
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CLR_CONTROL_REG_VM_CMD4:
+  description: ''
+  fields:
+    - name: CLR
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CLR_CONTROL_REG_VM_CMD5:
+  description: ''
+  fields:
+    - name: CLR
+      bit_offset: 5
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CLR_CONTROL_REG_VM_CMD6:
+  description: ''
+  fields:
+    - name: CLR
+      bit_offset: 6
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CLR_CONTROL_REG_VM_CMD7:
+  description: ''
+  fields:
+    - name: CLR
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CLR_CONTROL_REG_VM_CMD8:
+  description: ''
+  fields:
+    - name: CLR
+      bit_offset: 8
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CLR_CONTROL_REG_VM_CMD9:
+  description: ''
+  fields:
+    - name: CLR
+      bit_offset: 9
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CLR_CONTROL_REG_VM_REL_SRC:
+  description: ''
+  fields:
+    - name: CLR
+      bit_offset: 10
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CLR_CONTROL_REG_VM_INSUFFICIENT_VLC:
+  description: ''
+  fields:
+    - name: BUFFER
+      bit_offset: 11
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CLR_CONTROL_REG_VM:
+  description: ''
+  fields:
+    - name: RSVD0
+      bit_offset: 12
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CLR_CONTROL_REG_VM_CMDD:
+  description: ''
+  fields:
+    - name: CLR
+      bit_offset: 13
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CLR_CONTROL_REG_VM_CMDE:
+  description: ''
+  fields:
+    - name: CLR
+      bit_offset: 14
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CLR_CONTROL_REG_VM_BSEMPTY:
+  description: ''
+  fields:
+    - name: CLR
+      bit_offset: 15
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_HOST_INT_REQ0_CONTROL_REG:
+  description: ''
+  fields:
+    - name: HINTREQ
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_HOST_INT_REQ0_CONTROL_REG_VM:
+  description: ''
+  fields:
+    - name: HINTREQ
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_CLEAR_CONTROL_REG:
+  description: ''
+  fields:
+    - name: VINTCLR
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_CLEAR_CONTROL_REG_VM:
+  description: ''
+  fields:
+    - name: VINTCLR
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_HINT_CLEAR_CONTROL_REG:
+  description: ''
+  fields:
+    - name: HINTCLR
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_HINT_CLEAR_CONTROL_REG_VM:
+  description: ''
+  fields:
+    - name: HINTCLR
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VPU_INT_STS_CONTROL_REG_VPU_VPU_INT:
+  description: ''
+  fields:
+    - name: STS
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VPU_INT_STS_CONTROL_REG_VM_VPU_VPU_INT:
+  description: ''
+  fields:
+    - name: STS
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_ENABLE_CONTROL_REG_CMD0:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_ENABLE_CONTROL_REG_CMD1:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 1
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_ENABLE_CONTROL_REG_CMD2:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 2
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_ENABLE_CONTROL_REG_CMD3:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 3
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_ENABLE_CONTROL_REG_CMD4:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_ENABLE_CONTROL_REG_CMD5:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 5
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_ENABLE_CONTROL_REG_CMD6:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 6
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_ENABLE_CONTROL_REG_CMD7:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_ENABLE_CONTROL_REG_CMD8:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 8
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_ENABLE_CONTROL_REG_CMD9:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 9
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_ENABLE_CONTROL_REG_REL_SRC:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 10
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_ENABLE_CONTROL_REG_INSUFFICIENT_VLC:
+  description: ''
+  fields:
+    - name: BUFFER
+      bit_offset: 11
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_ENABLE_CONTROL_REG:
+  description: ''
+  fields:
+    - name: RSVD0
+      bit_offset: 12
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_ENABLE_CONTROL_REG_CMDD:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 13
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_ENABLE_CONTROL_REG_CMDE:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 14
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_ENABLE_CONTROL_REG_CMDF:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 15
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_ENABLE_CONTROL_REG_VM_CMD0:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_ENABLE_CONTROL_REG_VM_CMD1:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 1
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_ENABLE_CONTROL_REG_VM_CMD2:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 2
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_ENABLE_CONTROL_REG_VM_CMD3:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 3
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_ENABLE_CONTROL_REG_VM_CMD4:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_ENABLE_CONTROL_REG_VM_CMD5:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 5
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_ENABLE_CONTROL_REG_VM_CMD6:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 6
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_ENABLE_CONTROL_REG_VM_CMD7:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_ENABLE_CONTROL_REG_VM_CMD8:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 8
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_ENABLE_CONTROL_REG_VM_CMD9:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 9
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_ENABLE_CONTROL_REG_VM_REL_SRC:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 10
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_ENABLE_CONTROL_REG_VM_INSUFFICIENT_VLC:
+  description: ''
+  fields:
+    - name: BUFFER
+      bit_offset: 11
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_ENABLE_CONTROL_REG_VM:
+  description: ''
+  fields:
+    - name: RSVD0
+      bit_offset: 12
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_ENABLE_CONTROL_REG_VM_CMDD:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 13
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_ENABLE_CONTROL_REG_VM_CMDE:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 14
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_ENABLE_CONTROL_REG_VM_CMDF:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 15
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CONTROL_REG_CMD0:
+  description: ''
+  fields:
+    - name: INTR
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CONTROL_REG_CMD1:
+  description: ''
+  fields:
+    - name: INTR
+      bit_offset: 1
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CONTROL_REG_CMD2:
+  description: ''
+  fields:
+    - name: INTR
+      bit_offset: 2
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CONTROL_REG_CMD3:
+  description: ''
+  fields:
+    - name: INTR
+      bit_offset: 3
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CONTROL_REG_CMD4:
+  description: ''
+  fields:
+    - name: INTR
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CONTROL_REG_CMD5:
+  description: ''
+  fields:
+    - name: INTR
+      bit_offset: 5
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CONTROL_REG_CMD6:
+  description: ''
+  fields:
+    - name: INTR
+      bit_offset: 6
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CONTROL_REG_CMD7:
+  description: ''
+  fields:
+    - name: INTR
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CONTROL_REG_CMD8:
+  description: ''
+  fields:
+    - name: INTR
+      bit_offset: 8
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CONTROL_REG_CMD9:
+  description: ''
+  fields:
+    - name: INTR
+      bit_offset: 9
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CONTROL_REG_REL_SRC:
+  description: ''
+  fields:
+    - name: INTR
+      bit_offset: 10
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CONTROL_REG_INSUFFICIENT_VLC:
+  description: ''
+  fields:
+    - name: BUFFER
+      bit_offset: 11
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CONTROL_REG:
+  description: ''
+  fields:
+    - name: RSVD0
+      bit_offset: 12
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CONTROL_REG_CMDD:
+  description: ''
+  fields:
+    - name: INTR
+      bit_offset: 13
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CONTROL_REG_CMDE:
+  description: ''
+  fields:
+    - name: INTR
+      bit_offset: 14
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CONTROL_REG_BSEMPTY:
+  description: ''
+  fields:
+    - name: INTR
+      bit_offset: 15
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CONTROL_REG_VM_CMD0:
+  description: ''
+  fields:
+    - name: INTR
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CONTROL_REG_VM_CMD1:
+  description: ''
+  fields:
+    - name: INTR
+      bit_offset: 1
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CONTROL_REG_VM_CMD2:
+  description: ''
+  fields:
+    - name: INTR
+      bit_offset: 2
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CONTROL_REG_VM_CMD3:
+  description: ''
+  fields:
+    - name: INTR
+      bit_offset: 3
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CONTROL_REG_VM_CMD4:
+  description: ''
+  fields:
+    - name: INTR
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CONTROL_REG_VM_CMD5:
+  description: ''
+  fields:
+    - name: INTR
+      bit_offset: 5
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CONTROL_REG_VM_CMD6:
+  description: ''
+  fields:
+    - name: INTR
+      bit_offset: 6
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CONTROL_REG_VM_CMD7:
+  description: ''
+  fields:
+    - name: INTR
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CONTROL_REG_VM_CMD8:
+  description: ''
+  fields:
+    - name: INTR
+      bit_offset: 8
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CONTROL_REG_VM_CMD9:
+  description: ''
+  fields:
+    - name: INTR
+      bit_offset: 9
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CONTROL_REG_VM_REL_SRC:
+  description: ''
+  fields:
+    - name: INTR
+      bit_offset: 10
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CONTROL_REG_VM_INSUFFICIENT_VLC:
+  description: ''
+  fields:
+    - name: BUFFER
+      bit_offset: 11
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CONTROL_REG_VM:
+  description: ''
+  fields:
+    - name: RSVD0
+      bit_offset: 12
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CONTROL_REG_VM_CMDD:
+  description: ''
+  fields:
+    - name: INTR
+      bit_offset: 13
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CONTROL_REG_VM_CMDE:
+  description: ''
+  fields:
+    - name: INTR
+      bit_offset: 14
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VINT_REASON_CONTROL_REG_VM_BSEMPTY:
+  description: ''
+  fields:
+    - name: INTR
+      bit_offset: 15
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_RESET_REQ_CONTROL_REG_CRST:
+  description: ''
+  fields:
+    - name: REQ
+      bit_offset: 0
+      bit_size: 8
+fieldset/VPU_VPU_DEC_VPU_RESET_REQ_CONTROL_REG_BRST:
+  description: ''
+  fields:
+    - name: REQ
+      bit_offset: 8
+      bit_size: 8
+fieldset/VPU_VPU_DEC_VPU_RESET_REQ_CONTROL_REG_ARST:
+  description: ''
+  fields:
+    - name: REQ
+      bit_offset: 16
+      bit_size: 8
+fieldset/VPU_VPU_DEC_VPU_RESET_REQ_CONTROL_REG_VARST:
+  description: ''
+  fields:
+    - name: REQ1
+      bit_offset: 24
+      bit_size: 1
+    - name: REQ0
+      bit_offset: 26
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_RESET_REQ_CONTROL_REG_VBRST:
+  description: ''
+  fields:
+    - name: REQ1
+      bit_offset: 25
+      bit_size: 1
+    - name: REQ0
+      bit_offset: 27
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_RESET_REQ_CONTROL_REG_VM_CRST:
+  description: ''
+  fields:
+    - name: REQ
+      bit_offset: 0
+      bit_size: 8
+fieldset/VPU_VPU_DEC_VPU_RESET_REQ_CONTROL_REG_VM_BRST:
+  description: ''
+  fields:
+    - name: REQ
+      bit_offset: 8
+      bit_size: 8
+fieldset/VPU_VPU_DEC_VPU_RESET_REQ_CONTROL_REG_VM_ARST:
+  description: ''
+  fields:
+    - name: REQ
+      bit_offset: 16
+      bit_size: 8
+fieldset/VPU_VPU_DEC_VPU_RESET_REQ_CONTROL_REG_VM_VARST:
+  description: ''
+  fields:
+    - name: REQ1
+      bit_offset: 24
+      bit_size: 1
+    - name: REQ0
+      bit_offset: 26
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_RESET_REQ_CONTROL_REG_VM_VBRST:
+  description: ''
+  fields:
+    - name: REQ1
+      bit_offset: 25
+      bit_size: 1
+    - name: REQ0
+      bit_offset: 27
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_RESET_STATUS_CONTROL_REG_CRST:
+  description: ''
+  fields:
+    - name: STS
+      bit_offset: 0
+      bit_size: 8
+fieldset/VPU_VPU_DEC_VPU_RESET_STATUS_CONTROL_REG_BRST:
+  description: ''
+  fields:
+    - name: STS
+      bit_offset: 8
+      bit_size: 8
+fieldset/VPU_VPU_DEC_VPU_RESET_STATUS_CONTROL_REG_ARST:
+  description: ''
+  fields:
+    - name: STS
+      bit_offset: 16
+      bit_size: 8
+fieldset/VPU_VPU_DEC_VPU_RESET_STATUS_CONTROL_REG_VARST:
+  description: ''
+  fields:
+    - name: STS1
+      bit_offset: 24
+      bit_size: 1
+    - name: STS0
+      bit_offset: 26
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_RESET_STATUS_CONTROL_REG_VBRST:
+  description: ''
+  fields:
+    - name: STS1
+      bit_offset: 25
+      bit_size: 1
+    - name: STS0
+      bit_offset: 27
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_RESET_STATUS_CONTROL_REG_VM_CRST:
+  description: ''
+  fields:
+    - name: STS
+      bit_offset: 0
+      bit_size: 8
+fieldset/VPU_VPU_DEC_VPU_RESET_STATUS_CONTROL_REG_VM_BRST:
+  description: ''
+  fields:
+    - name: STS
+      bit_offset: 8
+      bit_size: 8
+fieldset/VPU_VPU_DEC_VPU_RESET_STATUS_CONTROL_REG_VM_ARST:
+  description: ''
+  fields:
+    - name: STS
+      bit_offset: 16
+      bit_size: 8
+fieldset/VPU_VPU_DEC_VPU_RESET_STATUS_CONTROL_REG_VM_VARST:
+  description: ''
+  fields:
+    - name: STS1
+      bit_offset: 24
+      bit_size: 1
+    - name: STS0
+      bit_offset: 26
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_RESET_STATUS_CONTROL_REG_VM_VBRST:
+  description: ''
+  fields:
+    - name: STS1
+      bit_offset: 25
+      bit_size: 1
+    - name: STS0
+      bit_offset: 27
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VCPU_RESTART_CONTROL_REG_VCPU:
+  description: ''
+  fields:
+    - name: RESTART
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_CLK_MASK_CONTROL_REG_CCLK:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 0
+      bit_size: 8
+fieldset/VPU_VPU_DEC_VPU_CLK_MASK_CONTROL_REG_BCLK:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 8
+      bit_size: 8
+fieldset/VPU_VPU_DEC_VPU_CLK_MASK_CONTROL_REG_ACLK:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 16
+      bit_size: 8
+fieldset/VPU_VPU_DEC_VPU_CLK_MASK_CONTROL_REG_ACLK_CPU:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 24
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_CLK_MASK_CONTROL_REG_VCLK_CPU:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 25
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_CLK_MASK_CONTROL_REG_CCLK_CPU:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 26
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_CLK_MASK_CONTROL_REG_VM_CCLK:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 0
+      bit_size: 8
+fieldset/VPU_VPU_DEC_VPU_CLK_MASK_CONTROL_REG_VM_BCLK:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 8
+      bit_size: 8
+fieldset/VPU_VPU_DEC_VPU_CLK_MASK_CONTROL_REG_VM_ACLK:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 16
+      bit_size: 8
+fieldset/VPU_VPU_DEC_VPU_CLK_MASK_CONTROL_REG_VM_ACLK_CPU:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 24
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_CLK_MASK_CONTROL_REG_VM_VCLK_CPU:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 25
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_CLK_MASK_CONTROL_REG_VM_CCLK_CPU:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 26
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_REMAP_CTRL_CONTROL_REG_REMAP:
+  description: ''
+  fields:
+    - name: PSIZE
+      bit_offset: 0
+      bit_size: 9
+    - name: BYPASS
+      bit_offset: 10
+      bit_size: 1
+    - name: IDX
+      bit_offset: 12
+      bit_size: 2
+fieldset/VPU_VPU_DEC_VPU_REMAP_CTRL_CONTROL_REG_REMAP_BUS:
+  description: ''
+  fields:
+    - name: ERR
+      bit_offset: 9
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_REMAP_CTRL_CONTROL_REG:
+  description: ''
+  fields:
+    - name: RSVD3
+      bit_offset: 11
+      bit_size: 1
+    - name: RSVD2
+      bit_offset: 14
+      bit_size: 2
+    - name: ENDIAN
+      bit_offset: 16
+      bit_size: 4
+    - name: RSVD1
+      bit_offset: 24
+      bit_size: 5
+    - name: RSVD0
+      bit_offset: 31
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_REMAP_CTRL_CONTROL_REG_AXIID:
+  description: ''
+  fields:
+    - name: PROC
+      bit_offset: 20
+      bit_size: 4
+fieldset/VPU_VPU_DEC_VPU_REMAP_CTRL_CONTROL_REG_REMAP_INF:
+  description: ''
+  fields:
+    - name: ERR
+      bit_offset: 29
+      bit_size: 1
+    - name: BYPASS
+      bit_offset: 30
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_REMAP_CTRL_CONTROL_REG_VM_REMAP:
+  description: ''
+  fields:
+    - name: PSIZE
+      bit_offset: 0
+      bit_size: 9
+    - name: BYPASS
+      bit_offset: 10
+      bit_size: 1
+    - name: IDX
+      bit_offset: 12
+      bit_size: 2
+fieldset/VPU_VPU_DEC_VPU_REMAP_CTRL_CONTROL_REG_VM_REMAP_BUS:
+  description: ''
+  fields:
+    - name: ERR
+      bit_offset: 9
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_REMAP_CTRL_CONTROL_REG_VM:
+  description: ''
+  fields:
+    - name: RSVD3
+      bit_offset: 11
+      bit_size: 1
+    - name: RSVD2
+      bit_offset: 14
+      bit_size: 2
+    - name: ENDIAN
+      bit_offset: 16
+      bit_size: 4
+    - name: RSVD1
+      bit_offset: 24
+      bit_size: 5
+    - name: RSVD0
+      bit_offset: 31
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_REMAP_CTRL_CONTROL_REG_VM_AXIID:
+  description: ''
+  fields:
+    - name: PROC
+      bit_offset: 20
+      bit_size: 4
+fieldset/VPU_VPU_DEC_VPU_REMAP_CTRL_CONTROL_REG_VM_REMAP_INF:
+  description: ''
+  fields:
+    - name: ERR
+      bit_offset: 29
+      bit_size: 1
+    - name: BYPASS
+      bit_offset: 30
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_REMAP_VADDR_CONTROL_REG_VPU_REMAP:
+  description: ''
+  fields:
+    - name: VADDR
+      bit_offset: 12
+      bit_size: 20
+fieldset/VPU_VPU_DEC_VPU_REMAP_VADDR_CONTROL_REG_VM_VPU_REMAP:
+  description: ''
+  fields:
+    - name: VADDR
+      bit_offset: 12
+      bit_size: 20
+fieldset/VPU_VPU_DEC_VPU_REMAP_PADDR_CONTROL_REG_VPU_REMAP:
+  description: ''
+  fields:
+    - name: PADDR
+      bit_offset: 12
+      bit_size: 20
+fieldset/VPU_VPU_DEC_VPU_REMAP_PADDR_CONTROL_REG_VM_VPU_REMAP:
+  description: ''
+  fields:
+    - name: PADDR
+      bit_offset: 12
+      bit_size: 20
+fieldset/VPU_VPU_DEC_VPU_REMAP_CORE_START_CONTROL_REG_VPU_REMAP_CORE:
+  description: ''
+  fields:
+    - name: START
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_REMAP_CORE_START_CONTROL_REG_VM_VPU_REMAP_CORE:
+  description: ''
+  fields:
+    - name: START
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_BUSY_STATUS_CONTROL_REG_VPU_BUSY:
+  description: ''
+  fields:
+    - name: STATUS
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_BUSY_STATUS_CONTROL_REG_VM_VPU_BUSY:
+  description: ''
+  fields:
+    - name: STATUS
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_HALT_STATUS_CONTROL_REG_VPU_HALT_STATUS:
+  description: ''
+  fields:
+    - name: DEBUG
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_DEC_VPU_HALT_STATUS_CONTROL_REG_VPU_HALT:
+  description: ''
+  fields:
+    - name: STATUS
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_HALT_STATUS_CONTROL_REG_VM_VPU_HALT_STATUS:
+  description: ''
+  fields:
+    - name: DEBUG
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_DEC_VPU_HALT_STATUS_CONTROL_REG_VM_VPU_HALT:
+  description: ''
+  fields:
+    - name: STATUS
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_VCPU_STATUS_CONTROL_REG_VPU_VCPU:
+  description: ''
+  fields:
+    - name: STATUS
+      bit_offset: 0
+      bit_size: 15
+fieldset/VPU_VPU_DEC_VPU_VCPU_STATUS_CONTROL_REG_VCPU_BUS:
+  description: ''
+  fields:
+    - name: STATUS
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_DEC_VPU_VCPU_STATUS_CONTROL_REG_VM_VPU_VCPU:
+  description: ''
+  fields:
+    - name: STATUS
+      bit_offset: 0
+      bit_size: 15
+fieldset/VPU_VPU_DEC_VPU_VCPU_STATUS_CONTROL_REG_VM_VCPU_BUS:
+  description: ''
+  fields:
+    - name: STATUS
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_DEC_RET_FIO_STATUS_CONTROL_REG:
+  description: ''
+  fields:
+    - name: RSVD0
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_FIO_STATUS_CONTROL_REG_VM:
+  description: ''
+  fields:
+    - name: RSVD0
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_PRODUCT_NAME_CONTROL_REG_HW:
+  description: ''
+  fields:
+    - name: NAME
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_DEC_RET_PRODUCT_NAME_CONTROL_REG_VM_HW:
+  description: ''
+  fields:
+    - name: NAME
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_DEC_RET_PRODUCT_VERSION_CONTROL_REG_HW:
+  description: ''
+  fields:
+    - name: VERSION
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_DEC_RET_PRODUCT_VERSION_CONTROL_REG_VM_HW:
+  description: ''
+  fields:
+    - name: VERSION
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_DEC_RET_VCPU_CONFIG0_CONTROL_REG:
+  description: ''
+  fields:
+    - name: RSVD0
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_VCPU_CONFIG0_CONTROL_REG_VM:
+  description: ''
+  fields:
+    - name: RSVD0
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_VCPU_CONFIG1_CONTROL_REG:
+  description: ''
+  fields:
+    - name: RSVD0
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_VCPU_CONFIG1_CONTROL_REG_VM:
+  description: ''
+  fields:
+    - name: RSVD0
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_CODEC_STD_CONTROL_REG_CODEC:
+  description: ''
+  fields:
+    - name: STD
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_CODEC_STD_CONTROL_REG_VM_CODEC:
+  description: ''
+  fields:
+    - name: STD
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_CONF_DATE_CONTROL_REG_HW:
+  description: ''
+  fields:
+    - name: DATE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_CONF_DATE_CONTROL_REG_VM_HW:
+  description: ''
+  fields:
+    - name: DATE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_CONF_REVISION_CONTROL_REG_HW:
+  description: ''
+  fields:
+    - name: REVISION
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_CONF_REVISION_CONTROL_REG_VM_HW:
+  description: ''
+  fields:
+    - name: REVISION
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_CONF_TYPE_CONTROL_REG_HW:
+  description: ''
+  fields:
+    - name: TYPE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_CONF_TYPE_CONTROL_REG_VM_HW:
+  description: ''
+  fields:
+    - name: TYPE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_VCORE0_CFG_CONTROL_REG_CONFIG:
+  description: ''
+  fields:
+    - name: VORE0
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_VCORE0_CFG_CONTROL_REG_VM_CONFIG:
+  description: ''
+  fields:
+    - name: VORE0
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_VCORE1_CFG_CONTROL_REG_CONFIG:
+  description: ''
+  fields:
+    - name: VORE1
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_VCORE1_CFG_CONTROL_REG_VM_CONFIG:
+  description: ''
+  fields:
+    - name: VORE1
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_VCORE2_CFG_CONTROL_REG_CONFIG:
+  description: ''
+  fields:
+    - name: VORE2
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_VCORE2_CFG_CONTROL_REG_VM_CONFIG:
+  description: ''
+  fields:
+    - name: VORE2
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_VPU_CMD_BUSY_STATUS_V_CONTROL_REG_VPU_CMD_BUSY:
+  description: ''
+  fields:
+    - name: STATUS
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_CMD_BUSY_STATUS_V_CONTROL_REG:
+  description: ''
+  fields:
+    - name: RSVD0
+      bit_offset: 1
+      bit_size: 31
+fieldset/VPU_VPU_DEC_VPU_CMD_BUSY_STATUS_V_CONTROL_REG_VM_VPU_CMD_BUSY:
+  description: ''
+  fields:
+    - name: STATUS
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_CMD_BUSY_STATUS_V_CONTROL_REG_VM:
+  description: ''
+  fields:
+    - name: RSVD0
+      bit_offset: 1
+      bit_size: 31
+fieldset/VPU_VPU_DEC_VPU_RET_VCORE_PRESET_CONTROL_REG_VCORE:
+  description: ''
+  fields:
+    - name: PRESENT
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_DEC_VPU_RET_VCORE_PRESET_CONTROL_REG_VM_VCORE:
+  description: ''
+  fields:
+    - name: PRESENT
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_DEC_VPU_DBG_SW_UART_STATUS_CONTROL_REG_VPU_DBG_SW_UART:
+  description: ''
+  fields:
+    - name: STATUS
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_DEC_VPU_DBG_SW_UART_STATUS_CONTROL_REG_VM_VPU_DBG_SW_UART:
+  description: ''
+  fields:
+    - name: STATUS
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_DEC_VPU_DBG_SW_UART_TX_CONTROL_REG_VPU_DBG_SW_UART:
+  description: ''
+  fields:
+    - name: TX
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_DEC_VPU_DBG_SW_UART_TX_CONTROL_REG_VM_VPU_DBG_SW_UART:
+  description: ''
+  fields:
+    - name: TX
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_DEC_VPU_REQUIRE_WORK_BUF_ADDR_CONTROL_REG_VPU_REQUIRE_WORK_BUF:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_VPU_REQUIRE_WORK_BUF_ADDR_CONTROL_REG_VM_VPU_REQUIRE_WORK_BUF:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_VPU_REQUIRE_WORK_BUF_SIZE_CONTROL_REG_VPU_REQUIRE_WORK_BUF:
+  description: ''
+  fields:
+    - name: SIZE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_VPU_REQUIRE_WORK_BUF_SIZE_CONTROL_REG_VM_VPU_REQUIRE_WORK_BUF:
+  description: ''
+  fields:
+    - name: SIZE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_COMMAND:
+  description: ''
+  fields:
+    - name: COMMAND
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_DEC_PIC_OPTION_SKIP:
+  description: ''
+  fields:
+    - name: MODE
+      bit_offset: 0
+      bit_size: 6
+fieldset/VPU_VPU_DEC_CMD_DEC_PIC_OPTION_force_film_grain:
+  description: ''
+  fields:
+    - name: 'off'
+      bit_offset: 6
+      bit_size: 1
+fieldset/VPU_VPU_DEC_CMD_INIT_SEQ_OPTION_INIT_SEQ:
+  description: ''
+  fields:
+    - name: OPTION
+      bit_offset: 0
+      bit_size: 6
+fieldset/VPU_VPU_DEC_CMD_OPTION:
+  description: ''
+  fields:
+    - name: RSVD0
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_QUERY_OPTION_QUERY:
+  description: ''
+  fields:
+    - name: OPTION
+      bit_offset: 0
+      bit_size: 6
+fieldset/VPU_VPU_DEC_CMD_QUERY_OPTION_QUERY_GET_BS_RD_PTR_QUERY:
+  description: ''
+  fields:
+    - name: OPTION
+      bit_offset: 0
+      bit_size: 6
+fieldset/VPU_VPU_DEC_CMD_QUERY_OPTION_QUERY_GET_BW_RESULT_QUERY:
+  description: ''
+  fields:
+    - name: OPTION
+      bit_offset: 0
+      bit_size: 6
+fieldset/VPU_VPU_DEC_CMD_QUERY_OPTION_QUERY_GET_PF_RESULT_QUERY:
+  description: ''
+  fields:
+    - name: OPTION
+      bit_offset: 0
+      bit_size: 6
+fieldset/VPU_VPU_DEC_CMD_QUERY_OPTION_QUERY_GET_RESULT_DEC_QUERY:
+  description: ''
+  fields:
+    - name: OPTION
+      bit_offset: 0
+      bit_size: 6
+fieldset/VPU_VPU_DEC_CMD_QUERY_OPTION_QUERY_SET_BS_RD_PTR_QUERY:
+  description: ''
+  fields:
+    - name: OPTION
+      bit_offset: 0
+      bit_size: 6
+fieldset/VPU_VPU_DEC_CMD_QUERY_OPTION_QUERY_UPDATE_DISP_IDC_QUERY:
+  description: ''
+  fields:
+    - name: OPTION
+      bit_offset: 0
+      bit_size: 6
+fieldset/VPU_VPU_DEC_CMD_SET_FB_OPTION_SET_FB:
+  description: ''
+  fields:
+    - name: MODE
+      bit_offset: 0
+      bit_size: 3
+fieldset/VPU_VPU_DEC_CMD_SET_FB_OPTION_FB_GROUP:
+  description: ''
+  fields:
+    - name: INDICATOR
+      bit_offset: 3
+      bit_size: 1
+fieldset/VPU_VPU_DEC_CMD_SET_FB_OPTION_SETUP:
+  description: ''
+  fields:
+    - name: DONE
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_DEC_CMD_SET_FB_OPTION_FB:
+  description: ''
+  fields:
+    - name: ENDIAN
+      bit_offset: 16
+      bit_size: 4
+fieldset/VPU_VPU_DEC_CMD_SET_FB_OPTION:
+  description: ''
+  fields:
+    - name: RSVD0
+      bit_offset: 20
+      bit_size: 6
+fieldset/VPU_VPU_DEC_CMD_SET_FB_OPTION_NON_REF_FBC:
+  description: ''
+  fields:
+    - name: WRITING
+      bit_offset: 26
+      bit_size: 1
+fieldset/VPU_VPU_DEC_CMD_SET_FB_OPTION_SET_FB_DEC_SET_FB:
+  description: ''
+  fields:
+    - name: MODE
+      bit_offset: 0
+      bit_size: 3
+fieldset/VPU_VPU_DEC_CMD_SET_FB_OPTION_SET_FB_DEC_FB_GROUP:
+  description: ''
+  fields:
+    - name: INDICATOR
+      bit_offset: 3
+      bit_size: 1
+fieldset/VPU_VPU_DEC_CMD_SET_FB_OPTION_SET_FB_DEC_SETUP:
+  description: ''
+  fields:
+    - name: DONE
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_DEC_CMD_SET_FB_OPTION_SET_FB_DEC_FB:
+  description: ''
+  fields:
+    - name: ENDIAN
+      bit_offset: 16
+      bit_size: 4
+fieldset/VPU_VPU_DEC_CMD_SET_FB_OPTION_SET_FB_DEC:
+  description: ''
+  fields:
+    - name: RSVD0
+      bit_offset: 20
+      bit_size: 6
+fieldset/VPU_VPU_DEC_CMD_SET_FB_OPTION_SET_FB_DEC_NON_REF_FBC:
+  description: ''
+  fields:
+    - name: WRITING
+      bit_offset: 26
+      bit_size: 1
+fieldset/VPU_VPU_DEC_RET_SUCCESS_RUN_CMD:
+  description: ''
+  fields:
+    - name: STATUS
+      bit_offset: 0
+      bit_size: 2
+fieldset/VPU_VPU_DEC_RET_FAIL_REASON_FAIL:
+  description: ''
+  fields:
+    - name: REASON
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_ADDR_CODE_BASE_CODE_BUF:
+  description: ''
+  fields:
+    - name: BASE
+      bit_offset: 12
+      bit_size: 20
+fieldset/VPU_VPU_DEC_CMD_INSTANCE_INFO_INST:
+  description: ''
+  fields:
+    - name: INDEX
+      bit_offset: 0
+      bit_size: 16
+fieldset/VPU_VPU_DEC_CMD_INSTANCE_INFO_CODEC:
+  description: ''
+  fields:
+    - name: STD
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_DEC_CMD_WAKEUP_ADDR_CODE_BASE_CODE_BUF:
+  description: ''
+  fields:
+    - name: BASE
+      bit_offset: 12
+      bit_size: 20
+fieldset/VPU_VPU_DEC_RET_DETAIL_REASON_HOST_CMD_QUE_FAIL:
+  description: ''
+  fields:
+    - name: REASON
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_DETAIL_REASON_DEC_PIC_HOST_CMD_QUE_FAIL:
+  description: ''
+  fields:
+    - name: REASON
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_DEC_ADDR_USERDATA_BASE_USER_DATA_BUF:
+  description: ''
+  fields:
+    - name: BASE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_WAKEUP_CODE_SIZE_CODE_BUF:
+  description: ''
+  fields:
+    - name: SIZE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CODE_SIZE_CODE_BUF:
+  description: ''
+  fields:
+    - name: SIZE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_BS_RD_PTR_RD:
+  description: ''
+  fields:
+    - name: PTR
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_BS_RD_PTR_DEC_PIC_RD:
+  description: ''
+  fields:
+    - name: PTR
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_DEC_USERDATA_SIZE_USER_DATA_BUF:
+  description: ''
+  fields:
+    - name: SIZE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_QUERY_DEC_SET_DISP_IDC_SET_DISP:
+  description: ''
+  fields:
+    - name: IDC
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_COMMON_PIC_INFO_DPB:
+  description: ''
+  fields:
+    - name: STRIDE
+      bit_offset: 0
+      bit_size: 16
+fieldset/VPU_VPU_DEC_CMD_SET_FB_COMMON_PIC_INFO_CHROMA_OUTPUT:
+  description: ''
+  fields:
+    - name: FORMAT
+      bit_offset: 16
+      bit_size: 3
+fieldset/VPU_VPU_DEC_CMD_SET_FB_COMMON_PIC_INFO_PIXEL:
+  description: ''
+  fields:
+    - name: FORMAT
+      bit_offset: 19
+      bit_size: 1
+fieldset/VPU_VPU_DEC_CMD_SET_FB_COMMON_PIC_INFO_PIXEL_OUTPUT:
+  description: ''
+  fields:
+    - name: MODE
+      bit_offset: 20
+      bit_size: 3
+fieldset/VPU_VPU_DEC_CMD_SET_FB_COMMON_PIC_INFO_PIXEL_ORDER:
+  description: ''
+  fields:
+    - name: MODE
+      bit_offset: 23
+      bit_size: 1
+fieldset/VPU_VPU_DEC_CMD_SET_FB_COMMON_PIC_INFO:
+  description: ''
+  fields:
+    - name: RSVD0
+      bit_offset: 24
+      bit_size: 4
+fieldset/VPU_VPU_DEC_CMD_SET_FB_COMMON_PIC_INFO_BWB:
+  description: ''
+  fields:
+    - name: ENABLE
+      bit_offset: 28
+      bit_size: 1
+fieldset/VPU_VPU_DEC_CMD_SET_FB_COMMON_PIC_INFO_SCL:
+  description: ''
+  fields:
+    - name: ENABLE
+      bit_offset: 29
+      bit_size: 1
+fieldset/VPU_VPU_DEC_CMD_SET_FB_COMMON_PIC_INFO_AFBC:
+  description: ''
+  fields:
+    - name: ENABLE
+      bit_offset: 30
+      bit_size: 1
+fieldset/VPU_VPU_DEC_CMD_SET_FB_COMMON_PIC_INFO_PVRIC:
+  description: ''
+  fields:
+    - name: ENABLE
+      bit_offset: 31
+      bit_size: 1
+fieldset/VPU_VPU_DEC_CMD_SET_FB_STRIDE_FBC:
+  description: ''
+  fields:
+    - name: STRIDE
+      bit_offset: 0
+      bit_size: 16
+fieldset/VPU_VPU_DEC_CMD_SET_FB_STRIDE_BWB:
+  description: ''
+  fields:
+    - name: STRIDE
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_DEC_CMD_WAKEUP_CODE_PARAM_CODE:
+  description: ''
+  fields:
+    - name: ENDIAN
+      bit_offset: 0
+      bit_size: 4
+    - name: AXIID
+      bit_offset: 4
+      bit_size: 4
+fieldset/VPU_VPU_DEC_CODE_PARAM_CODE:
+  description: ''
+  fields:
+    - name: ENDIAN
+      bit_offset: 0
+      bit_size: 4
+    - name: AXIID
+      bit_offset: 4
+      bit_size: 4
+fieldset/VPU_VPU_DEC_RET_QUERY_BW_PRP_AXI_READ_BW_PRP_AXI:
+  description: ''
+  fields:
+    - name: READ
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_FW_VERSION_RET_FW:
+  description: ''
+  fields:
+    - name: VERSION
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_PF_CMD_IDX_PF_HOST_CMD:
+  description: ''
+  fields:
+    - name: IDX
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_BS_WR_PTR_WR:
+  description: ''
+  fields:
+    - name: PTR
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_BS_WR_PTR_DEC_PIC_WR:
+  description: ''
+  fields:
+    - name: PTR
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_BS_WR_PTR_UPDATE_BS_DEC_BS_WR:
+  description: ''
+  fields:
+    - name: PTR
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_CREATE_INST_BS_START_ADDR_BS_START:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_DEC_USERDATA_PARAM_USER_DATA:
+  description: ''
+  fields:
+    - name: ENDIAN
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_DEC_CMD_QUERY_DEC_CLR_DISP_IDC_CLR_DISP:
+  description: ''
+  fields:
+    - name: IDC
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_PIC_SIZE_DPB:
+  description: ''
+  fields:
+    - name: HEIGHT
+      bit_offset: 0
+      bit_size: 16
+    - name: WIDTH
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_DEC_CMD_SET_FB_PIC_SIZE_SET_FB_DEC_DPB:
+  description: ''
+  fields:
+    - name: HEIGHT
+      bit_offset: 0
+      bit_size: 16
+    - name: WIDTH
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_DEC_CMD_VLC_BASE_UPDATE_VLC:
+  description: ''
+  fields:
+    - name: BASE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_WAKEUP_ADDR_TEMP_BASE_TEMP_BUF:
+  description: ''
+  fields:
+    - name: BASE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_BW_PRP_AXI_WRITE_BW_PRP_AXI:
+  description: ''
+  fields:
+    - name: WRITE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_BS_RD_PTR_BS_RD:
+  description: ''
+  fields:
+    - name: PTR
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_ENC_BS_RD_PTR_QUERY_DEC_BS_RD:
+  description: ''
+  fields:
+    - name: PTR
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_PF_HOST_CMD_TICK_PF_HOST_CMD:
+  description: ''
+  fields:
+    - name: TICK
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_PRODUCT_NAME_HW:
+  description: ''
+  fields:
+    - name: NAME
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_DEC_SET_QUERY_BS_RD_PTR_QUERY_SET_BS_RD:
+  description: ''
+  fields:
+    - name: PTR
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_BS_OPTIONS_EXPLICIT:
+  description: ''
+  fields:
+    - name: END
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_DEC_CMD_BS_OPTIONS_STREAM:
+  description: ''
+  fields:
+    - name: END
+      bit_offset: 1
+      bit_size: 1
+    - name: FORMAT
+      bit_offset: 2
+      bit_size: 2
+fieldset/VPU_VPU_DEC_CMD_BS_OPTIONS:
+  description: ''
+  fields:
+    - name: RSVD0
+      bit_offset: 4
+      bit_size: 28
+fieldset/VPU_VPU_DEC_CMD_BS_OPTIONS_DEC_PIC_EXPLICIT:
+  description: ''
+  fields:
+    - name: END
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_DEC_CMD_BS_OPTIONS_DEC_PIC_STREAM:
+  description: ''
+  fields:
+    - name: END
+      bit_offset: 1
+      bit_size: 1
+    - name: FMT
+      bit_offset: 2
+      bit_size: 2
+fieldset/VPU_VPU_DEC_CMD_BS_OPTIONS_DEC_PIC:
+  description: ''
+  fields:
+    - name: RSVD0
+      bit_offset: 4
+      bit_size: 27
+fieldset/VPU_VPU_DEC_CMD_BS_OPTIONS_DEC_PIC_RD_PTR_VALID:
+  description: ''
+  fields:
+    - name: FLAG
+      bit_offset: 31
+      bit_size: 1
+fieldset/VPU_VPU_DEC_CMD_BS_OPTIONS_UPDATE_BS_DEC_EXPLICIT:
+  description: ''
+  fields:
+    - name: END
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_DEC_CMD_BS_OPTIONS_UPDATE_BS_DEC_END_OF:
+  description: ''
+  fields:
+    - name: STREAM
+      bit_offset: 1
+      bit_size: 1
+fieldset/VPU_VPU_DEC_CMD_CREATE_INST_BS_SIZE_BS_BUF:
+  description: ''
+  fields:
+    - name: SIZE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_INDICE_FBC:
+  description: ''
+  fields:
+    - name: IDX
+      bit_offset: 0
+      bit_size: 8
+fieldset/VPU_VPU_DEC_CMD_SET_FB_INDICE_BWB:
+  description: ''
+  fields:
+    - name: IDX
+      bit_offset: 8
+      bit_size: 8
+fieldset/VPU_VPU_DEC_CMD_SET_FB_INDICE_MVCOL:
+  description: ''
+  fields:
+    - name: IDX
+      bit_offset: 16
+      bit_size: 8
+fieldset/VPU_VPU_DEC_CMD_SET_FB_NUM_FB_NUM:
+  description: ''
+  fields:
+    - name: END
+      bit_offset: 0
+      bit_size: 5
+    - name: START
+      bit_offset: 8
+      bit_size: 5
+fieldset/VPU_VPU_DEC_CMD_VLC_SIZE_UPDATE_VLC:
+  description: ''
+  fields:
+    - name: SIZE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_WAKEUP_TEMP_SIZE_TEMP_BUF:
+  description: ''
+  fields:
+    - name: SIZE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_BW_FBD_Y_AXI_READ_BW_FBD_Y_AXI:
+  description: ''
+  fields:
+    - name: READ
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_SEQ_PARAM_LEVEL:
+  description: ''
+  fields:
+    - name: IDC
+      bit_offset: 0
+      bit_size: 8
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_SEQ_PARAM_FRAME_ONLY_CONSTRAINT:
+  description: ''
+  fields:
+    - name: FLAG
+      bit_offset: 8
+      bit_size: 1
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_SEQ_PARAM_NON_PACKED_CONSTRAINT:
+  description: ''
+  fields:
+    - name: FLAG
+      bit_offset: 9
+      bit_size: 1
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_SEQ_PARAM_INTERLACE_SOURCE:
+  description: ''
+  fields:
+    - name: FLAG
+      bit_offset: 10
+      bit_size: 1
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_SEQ_PARAM_PROGRESS_SOURCE:
+  description: ''
+  fields:
+    - name: FLAG
+      bit_offset: 11
+      bit_size: 1
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_SEQ_PARAM_PROFILE_COMPATIBILITY:
+  description: ''
+  fields:
+    - name: FLAG
+      bit_offset: 12
+      bit_size: 8
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_SEQ_PARAM:
+  description: ''
+  fields:
+    - name: RSVD0
+      bit_offset: 20
+      bit_size: 1
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_SEQ_PARAM_SPS_MAX_SUB:
+  description: ''
+  fields:
+    - name: LAYER
+      bit_offset: 21
+      bit_size: 3
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_SEQ_PARAM_PROFILE:
+  description: ''
+  fields:
+    - name: IDC
+      bit_offset: 24
+      bit_size: 5
+    - name: SPACE
+      bit_offset: 30
+      bit_size: 2
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_SEQ_PARAM_PROFILE_TIER:
+  description: ''
+  fields:
+    - name: FLAG
+      bit_offset: 29
+      bit_size: 1
+fieldset/VPU_VPU_DEC_RET_QUERY_PF_STG_0_START_PF_STAGE_0_START:
+  description: ''
+  fields:
+    - name: TICK
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_PRODUCT_VERSION_HW:
+  description: ''
+  fields:
+    - name: VERSION
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_DEC_CMD_CREATE_INST_BS_PARAM_BS:
+  description: ''
+  fields:
+    - name: ENDIAN
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_DEC_CMD_INIT_ADDR_SEC_AXI_SEC_AXI:
+  description: ''
+  fields:
+    - name: BASE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_WAKEUP_ADDR_SEC_AXI_SEC_AXI:
+  description: ''
+  fields:
+    - name: BASE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_BW_FBC_Y_AXI_WRITE_BW_FBC_Y_AXI:
+  description: ''
+  fields:
+    - name: WRITE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_COLOR_SAMPLE_INFO_BIT_DEPTH:
+  description: ''
+  fields:
+    - name: LUMA
+      bit_offset: 0
+      bit_size: 4
+    - name: CHROMA
+      bit_offset: 4
+      bit_size: 4
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_COLOR_SAMPLE_INFO_COLOR_FORMAT:
+  description: ''
+  fields:
+    - name: IDC
+      bit_offset: 8
+      bit_size: 4
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_COLOR_SAMPLE_INFO_LF_PIC_DBK:
+  description: ''
+  fields:
+    - name: DISABLE
+      bit_offset: 12
+      bit_size: 1
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_COLOR_SAMPLE_INFO_ASPECT_RATIO:
+  description: ''
+  fields:
+    - name: IDC
+      bit_offset: 16
+      bit_size: 8
+fieldset/VPU_VPU_DEC_RET_QUERY_PF_STG_0_END_PF_STAGE_0_END:
+  description: ''
+  fields:
+    - name: TICK
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_STD_DEF0_BWB:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 3
+      bit_size: 1
+fieldset/VPU_VPU_DEC_RET_QUERY_STD_DEF0_SCALER:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 4
+      bit_size: 4
+fieldset/VPU_VPU_DEC_RET_QUERY_STD_DEF0_FBC:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 8
+      bit_size: 4
+fieldset/VPU_VPU_DEC_RET_QUERY_STD_DEF0_AFBC:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 12
+      bit_size: 4
+fieldset/VPU_VPU_DEC_RET_QUERY_STD_DEF0_CONFIG:
+  description: ''
+  fields:
+    - name: INFO
+      bit_offset: 16
+      bit_size: 14
+fieldset/VPU_VPU_DEC_RET_QUERY_STD_DEF0_MAP_CONVERTER:
+  description: ''
+  fields:
+    - name: SIG
+      bit_offset: 30
+      bit_size: 1
+    - name: REG
+      bit_offset: 31
+      bit_size: 1
+fieldset/VPU_VPU_DEC_CMD_INIT_SEC_AXI_SIZE_SEC_AXI_MEM:
+  description: ''
+  fields:
+    - name: SIZE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SEQ_CHANGE_ENABLE_FLAG:
+  description: ''
+  fields:
+    - name: RSVD2
+      bit_offset: 0
+      bit_size: 5
+    - name: RSVD1
+      bit_offset: 6
+      bit_size: 9
+    - name: RSVD0
+      bit_offset: 20
+      bit_size: 12
+fieldset/VPU_VPU_DEC_CMD_SEQ_CHANGE_ENABLE_FLAG_SEQ_CHANGE_ENABLE_FLAG:
+  description: ''
+  fields:
+    - name: PROFILE
+      bit_offset: 5
+      bit_size: 1
+    - name: SIZE
+      bit_offset: 16
+      bit_size: 1
+    - name: BITDEPTH
+      bit_offset: 18
+      bit_size: 1
+fieldset/VPU_VPU_DEC_CMD_SEQ_CHANGE_ENABLE_FLAG_SEQ_CHANGE_ENABLE_FLAG_CHROMA:
+  description: ''
+  fields:
+    - name: FORMAT
+      bit_offset: 15
+      bit_size: 1
+fieldset/VPU_VPU_DEC_CMD_SEQ_CHANGE_ENABLE_FLAG_SEQ_CHANGE_ENABLE_FLAG_INTER_RES:
+  description: ''
+  fields:
+    - name: CHANGE
+      bit_offset: 17
+      bit_size: 1
+fieldset/VPU_VPU_DEC_CMD_SEQ_CHANGE_ENABLE_FLAG_SEQ_CHANGE_ENABLE_FLAG_DPB:
+  description: ''
+  fields:
+    - name: COUNT
+      bit_offset: 19
+      bit_size: 1
+fieldset/VPU_VPU_DEC_CMD_WAKEUP_SEC_AXI_SIZE_SEC_AXI_MEM:
+  description: ''
+  fields:
+    - name: SIZE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_BW_FBD_C_AXI_READ_BW_FBD_C_AXI:
+  description: ''
+  fields:
+    - name: READ
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_ASPECT_RATIO_SAR:
+  description: ''
+  fields:
+    - name: HEIGHT
+      bit_offset: 0
+      bit_size: 16
+    - name: WIDTH
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_DEC_RET_QUERY_PF_STG_0_BLOCK_START_PF_STAGE_0_BLOCK_START:
+  description: ''
+  fields:
+    - name: TICK
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_STD_DEF1_FEATURE:
+  description: ''
+  fields:
+    - name: SET
+      bit_offset: 0
+      bit_size: 16
+fieldset/VPU_VPU_DEC_RET_QUERY_STD_DEF1_INTERNAL:
+  description: ''
+  fields:
+    - name: BLOCK
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_DEC_CMD_CREATE_INST_ADDR_TEMP_BASE_TEMP_BUF:
+  description: ''
+  fields:
+    - name: BASE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_DEC_SEI_MASK:
+  description: ''
+  fields:
+    - name: RSVD3
+      bit_offset: 0
+      bit_size: 2
+    - name: RSVD2
+      bit_offset: 3
+      bit_size: 1
+    - name: RSVD1
+      bit_offset: 9
+      bit_size: 1
+    - name: RSVD0
+      bit_offset: 17
+      bit_size: 15
+fieldset/VPU_VPU_DEC_CMD_DEC_SEI_MASK_REPORT:
+  description: ''
+  fields:
+    - name: VUI
+      bit_offset: 2
+      bit_size: 1
+fieldset/VPU_VPU_DEC_CMD_DEC_SEI_MASK_PREFIX_SEI_PIC:
+  description: ''
+  fields:
+    - name: TIMING
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_DEC_CMD_DEC_SEI_MASK_PREFIX_SEI_USER_DATA:
+  description: ''
+  fields:
+    - name: UNREGISTERED
+      bit_offset: 6
+      bit_size: 1
+fieldset/VPU_VPU_DEC_CMD_DEC_SEI_MASK_SUFFIX_SEI_USER_DATA:
+  description: ''
+  fields:
+    - name: UNREGISTERED
+      bit_offset: 8
+      bit_size: 1
+fieldset/VPU_VPU_DEC_CMD_DEC_SEI_MASK_PREFIX_SEI_MASTERING_DISPLAY_COLOUR:
+  description: ''
+  fields:
+    - name: VOLUME
+      bit_offset: 10
+      bit_size: 1
+fieldset/VPU_VPU_DEC_CMD_DEC_SEI_MASK_PREFIX_SEI_CHROMA_RESAMPLING_FILTER:
+  description: ''
+  fields:
+    - name: HINT
+      bit_offset: 11
+      bit_size: 1
+fieldset/VPU_VPU_DEC_CMD_DEC_SEI_MASK_PREFIX_SEI_KNEE_FUNCTION:
+  description: ''
+  fields:
+    - name: INFO
+      bit_offset: 12
+      bit_size: 1
+fieldset/VPU_VPU_DEC_CMD_DEC_SEI_MASK_PREFIX_SEI_TONE_MAPPING:
+  description: ''
+  fields:
+    - name: INFO
+      bit_offset: 13
+      bit_size: 1
+fieldset/VPU_VPU_DEC_CMD_DEC_SEI_MASK_PREFIX_SEI_FILM_GRAIN_CHARACTERISTICS:
+  description: ''
+  fields:
+    - name: INFO
+      bit_offset: 14
+      bit_size: 1
+fieldset/VPU_VPU_DEC_CMD_DEC_SEI_MASK_PREFIX_SEI_CONTENT_LIGHT_LEVEL:
+  description: ''
+  fields:
+    - name: INFO
+      bit_offset: 15
+      bit_size: 1
+fieldset/VPU_VPU_DEC_CMD_DEC_SEI_MASK_SUFFIX_SEI_COLOUR_REAMPPING:
+  description: ''
+  fields:
+    - name: INFO
+      bit_offset: 16
+      bit_size: 1
+fieldset/VPU_VPU_DEC_CMD_INIT_HW_OPTION_UART:
+  description: ''
+  fields:
+    - name: OPTION
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_DEC_CMD_WAKEUP_HW_OPTION_UART:
+  description: ''
+  fields:
+    - name: OPTION
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_DEC_RET_QUERY_BW_FBC_C_AXI_WRITE_BW_FBC_C_AXI:
+  description: ''
+  fields:
+    - name: WRITE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_CONF_FEATURE_CONFIG:
+  description: ''
+  fields:
+    - name: FEATURE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_BIT_RATE_MAX_BIT:
+  description: ''
+  fields:
+    - name: RATE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_PF_STG_0_BLOCK_END_PF_STAGE_0_BLOCK_END:
+  description: ''
+  fields:
+    - name: TICK
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_CREATE_INST_TEMP_SIZE_TEMP_BUF:
+  description: ''
+  fields:
+    - name: SIZE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_DEC_TEMPORAL_ID_PLUS1_TARGET_DEC_TEMP_ID:
+  description: ''
+  fields:
+    - name: PLUS1
+      bit_offset: 0
+      bit_size: 8
+fieldset/VPU_VPU_DEC_CMD_DEC_TEMPORAL_ID_PLUS1_DEC_TEMP_ID:
+  description: ''
+  fields:
+    - name: MODE
+      bit_offset: 8
+      bit_size: 1
+fieldset/VPU_VPU_DEC_CMD_DEC_TEMPORAL_ID_PLUS1_TARGET_DEC_SPATIAL_ID:
+  description: ''
+  fields:
+    - name: PLUS1
+      bit_offset: 9
+      bit_size: 3
+fieldset/VPU_VPU_DEC_RET_QUERY_BW_PRI_AXI_READ_BW_PRI_AXI:
+  description: ''
+  fields:
+    - name: READ
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_CONF_DATE_HW:
+  description: ''
+  fields:
+    - name: DATE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_FRAME_RATE_NR_FRAME_RATE:
+  description: ''
+  fields:
+    - name: NR
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_PF_STG_1_START_PF_STAGE_1_START:
+  description: ''
+  fields:
+    - name: TICK
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_DEC_FORCE_FB_LATENCY_PLUS1_USER_DEF_DISP_LATENCY:
+  description: ''
+  fields:
+    - name: PLUS1
+      bit_offset: 0
+      bit_size: 5
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_LUMA_BASE_LUMA:
+  description: ''
+  fields:
+    - name: BASE0
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_LUMA_BASE0_LUMA:
+  description: ''
+  fields:
+    - name: BASE0
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_BW_PRI_AXI_WRITE_BW_PRI_AXI:
+  description: ''
+  fields:
+    - name: WRITE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_CONF_REVISION_HW:
+  description: ''
+  fields:
+    - name: REVISION
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_FRAME_RATE_DR_FRAME_RATE:
+  description: ''
+  fields:
+    - name: DR
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_PF_STG_1_END_PF_STAGE_1_END:
+  description: ''
+  fields:
+    - name: TICK
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_CREATE_INST_EXT_ADDR_PRI_AXI_EXT:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 8
+fieldset/VPU_VPU_DEC_CMD_CREATE_INST_EXT_ADDR:
+  description: ''
+  fields:
+    - name: RSVD0
+      bit_offset: 8
+      bit_size: 24
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_CB_BASE_CB:
+  description: ''
+  fields:
+    - name: BASE0
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_CB_BASE0_CB:
+  description: ''
+  fields:
+    - name: BASE0
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_BW_SEC_AXI_READ_BW_SEC_AXI:
+  description: ''
+  fields:
+    - name: READ
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_CONF_TYPE_HW:
+  description: ''
+  fields:
+    - name: TYPE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_NUM_REQURED_FB_MIN_DPB:
+  description: ''
+  fields:
+    - name: NUM
+      bit_offset: 0
+      bit_size: 5
+fieldset/VPU_VPU_DEC_RET_QUERY_PF_STG_1_BLOCK_START_PF_STAGE_1_BLOCK_START:
+  description: ''
+  fields:
+    - name: TICK
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_CREATE_INST_NUM_CQ_DEPTH_M1_NUM_CQ_DEPTH:
+  description: ''
+  fields:
+    - name: M1
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_CR_BASE_CR:
+  description: ''
+  fields:
+    - name: BASE0
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_CR_BASE0_CR:
+  description: ''
+  fields:
+    - name: BASE0
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_FBC_Y_OFFSET0_FBC_LUMA_OFFSET:
+  description: ''
+  fields:
+    - name: BASE0
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_BW_SEC_AXI_WRITE_BW_SEC_AXI:
+  description: ''
+  fields:
+    - name: WRITE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_NUM_REORDER_DELAY_REORDER_DELAY:
+  description: ''
+  fields:
+    - name: NUM
+      bit_offset: 0
+      bit_size: 5
+fieldset/VPU_VPU_DEC_RET_QUERY_PF_STG_1_BLOCK_END_PF_STAGE_1_BLOCK_END:
+  description: ''
+  fields:
+    - name: TICK
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_PRODUCT_ID_PRODUCT:
+  description: ''
+  fields:
+    - name: ID
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_FBC_C_OFFSET0_FBC_CHROMA_OFFSET:
+  description: ''
+  fields:
+    - name: BASE0
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_MV_COL_COL_MV_BUF:
+  description: ''
+  fields:
+    - name: BASE0
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_BW_PROC_AXI_READ_BW_PROC_AXI:
+  description: ''
+  fields:
+    - name: READ
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_CUSTOMER_ID_CUSTOMER:
+  description: ''
+  fields:
+    - name: ID
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_SUB_LAYER_INFO_TEMPORAL:
+  description: ''
+  fields:
+    - name: ID
+      bit_offset: 0
+      bit_size: 8
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_SUB_LAYER_INFO_MAX_TEMPORAL:
+  description: ''
+  fields:
+    - name: ID
+      bit_offset: 8
+      bit_size: 8
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_SUB_LAYER_INFO_SPATIAL_SVC:
+  description: ''
+  fields:
+    - name: FLAG
+      bit_offset: 16
+      bit_size: 1
+    - name: MODE
+      bit_offset: 17
+      bit_size: 1
+    - name: LAYER
+      bit_offset: 18
+      bit_size: 1
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_SUB_LAYER_INFO_SPATIAL:
+  description: ''
+  fields:
+    - name: ID
+      bit_offset: 19
+      bit_size: 2
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_SUB_LAYER_INFO_MAX_SPATIAL:
+  description: ''
+  fields:
+    - name: ID
+      bit_offset: 24
+      bit_size: 2
+fieldset/VPU_VPU_DEC_RET_QUERY_PF_STG_2_START_PF_STAGE_2_START:
+  description: ''
+  fields:
+    - name: TICK
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_FBC_Y_BASE_FBC_LUMA:
+  description: ''
+  fields:
+    - name: BASE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_LUMA_BASE1_LUMA:
+  description: ''
+  fields:
+    - name: BASE1
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_BW_PROC_AXI_WRITE_BW_PROC_AXI:
+  description: ''
+  fields:
+    - name: WRITE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_NOTIFICATION:
+  description: ''
+  fields:
+    - name: RSVD2
+      bit_offset: 0
+      bit_size: 5
+    - name: RSVD1
+      bit_offset: 6
+      bit_size: 9
+    - name: RSVD0
+      bit_offset: 20
+      bit_size: 12
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_NOTIFICATION_NOTI_FLAG:
+  description: ''
+  fields:
+    - name: PROFILE
+      bit_offset: 5
+      bit_size: 1
+    - name: SIZE
+      bit_offset: 16
+      bit_size: 1
+    - name: BITDEPTH
+      bit_offset: 18
+      bit_size: 1
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_NOTIFICATION_NOTI_FLAG_CHROMA_FORMAT:
+  description: ''
+  fields:
+    - name: CHANGE
+      bit_offset: 15
+      bit_size: 1
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_NOTIFICATION_NOTI_FLAG_INTER_RES:
+  description: ''
+  fields:
+    - name: CHANGE
+      bit_offset: 17
+      bit_size: 1
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_NOTIFICATION_NOTI_FLAG_DPB:
+  description: ''
+  fields:
+    - name: COUNT
+      bit_offset: 19
+      bit_size: 1
+fieldset/VPU_VPU_DEC_RET_QUERY_PF_STG_2_END_PF_STAGE_2_END:
+  description: ''
+  fields:
+    - name: TICK
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_CB_BASE1_CB:
+  description: ''
+  fields:
+    - name: BASE1
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_FBC_C_BASE_FBC_CHROMA:
+  description: ''
+  fields:
+    - name: BASE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_BW_BWB_AXI_WRITE_BW_BWB_AXI:
+  description: ''
+  fields:
+    - name: WRITE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_USERDATA_IDC:
+  description: ''
+  fields:
+    - name: RSVD21
+      bit_offset: 0
+      bit_size: 1
+    - name: RSVD18
+      bit_offset: 3
+      bit_size: 1
+    - name: RSVD12
+      bit_offset: 9
+      bit_size: 1
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_USERDATA_IDC_USERDATA:
+  description: ''
+  fields:
+    - name: FLAG20
+      bit_offset: 1
+      bit_size: 1
+    - name: FLAG19
+      bit_offset: 2
+      bit_size: 1
+    - name: FLAG17
+      bit_offset: 4
+      bit_size: 1
+    - name: FLAG16
+      bit_offset: 5
+      bit_size: 1
+    - name: FLAG15
+      bit_offset: 6
+      bit_size: 1
+    - name: FLAG14
+      bit_offset: 7
+      bit_size: 1
+    - name: FLAG13
+      bit_offset: 8
+      bit_size: 1
+    - name: FLAG11
+      bit_offset: 10
+      bit_size: 1
+    - name: FLAG10
+      bit_offset: 11
+      bit_size: 1
+    - name: FLAG9
+      bit_offset: 12
+      bit_size: 1
+    - name: FLAG8
+      bit_offset: 13
+      bit_size: 1
+    - name: FLAG7
+      bit_offset: 14
+      bit_size: 1
+    - name: FLAG6
+      bit_offset: 15
+      bit_size: 1
+    - name: FLAG5
+      bit_offset: 16
+      bit_size: 1
+    - name: FLAG4
+      bit_offset: 17
+      bit_size: 11
+    - name: FLAG3
+      bit_offset: 28
+      bit_size: 1
+    - name: FLAG2
+      bit_offset: 29
+      bit_size: 1
+    - name: FLAG1
+      bit_offset: 30
+      bit_size: 1
+    - name: FLAG0
+      bit_offset: 31
+      bit_size: 1
+fieldset/VPU_VPU_DEC_RET_QUERY_PF_STG_2_BLOCK_START_PF_STAGE_2_BLOCK_START:
+  description: ''
+  fields:
+    - name: TICK
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_QUERY_BW_OPTION_BW_QUERY_BL:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_DEC_CMD_QUERY_BW_OPTION_BW_QUERY_BW:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 4
+      bit_size: 1
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_CR_BASE1_CR:
+  description: ''
+  fields:
+    - name: BASE1
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_FBC_Y_OFFSET_FBC_LUMA_OFFSET:
+  description: ''
+  fields:
+    - name: BASE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_FBC_Y_OFFSET1_FBC_LUMA_OFFSET:
+  description: ''
+  fields:
+    - name: BASE1
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_PIC_SIZE_DECODED_PIC:
+  description: ''
+  fields:
+    - name: HEIGHT
+      bit_offset: 0
+      bit_size: 16
+    - name: WIDTH
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_DEC_RET_QUERY_PF_STG_2_BLOCK_END_PF_STAGE_2_BLOCK_END:
+  description: ''
+  fields:
+    - name: TICK
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_DEC_USE_SEC_AXI_SEC_AXI:
+  description: ''
+  fields:
+    - name: BPU
+      bit_offset: 0
+      bit_size: 1
+    - name: SCL
+      bit_offset: 5
+      bit_size: 1
+fieldset/VPU_VPU_DEC_CMD_DEC_USE_SEC_AXI_SEC_AXI_SCL:
+  description: ''
+  fields:
+    - name: PACKED
+      bit_offset: 6
+      bit_size: 1
+fieldset/VPU_VPU_DEC_CMD_DEC_USE_SEC_AXI_SEC_AXI_VCE:
+  description: ''
+  fields:
+    - name: IP
+      bit_offset: 9
+      bit_size: 1
+    - name: LF
+      bit_offset: 15
+      bit_size: 1
+fieldset/VPU_VPU_DEC_CMD_DEC_USE_SEC_AXI:
+  description: ''
+  fields:
+    - name: RSVD0
+      bit_offset: 10
+      bit_size: 5
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_FBC_C_OFFSET_FBC_CHROMA_OFFSET:
+  description: ''
+  fields:
+    - name: BASE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_FBC_C_OFFSET1_FBC_CHROMA_OFFSET:
+  description: ''
+  fields:
+    - name: BASE1
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_CROP_TOP_BOTTOM_DISPLAY_BOTTOM:
+  description: ''
+  fields:
+    - name: OFFSET
+      bit_offset: 0
+      bit_size: 16
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_CROP_TOP_BOTTOM_DISPLAY_TOP:
+  description: ''
+  fields:
+    - name: OFFSET
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_DEC_RET_QUERY_PF_STG_0_BLOCK_TICK_PF_STAGE_0_BLOCK:
+  description: ''
+  fields:
+    - name: TICK
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_DEC_SCALE_SIZE_SCALED:
+  description: ''
+  fields:
+    - name: HEIGHT
+      bit_offset: 0
+      bit_size: 16
+    - name: WIDTH
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_LUMA_BASE2_LUMA:
+  description: ''
+  fields:
+    - name: BASE2
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_CROP_LEFT_RIGHT_DISPLAY_RIGHT:
+  description: ''
+  fields:
+    - name: OFFSET
+      bit_offset: 0
+      bit_size: 16
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_CROP_LEFT_RIGHT_DISPLAY_LEFT:
+  description: ''
+  fields:
+    - name: OFFSET
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_DEC_RET_QUERY_PF_STG_1_BLOCK_TICK_PF_STAGE_1_BLOCK:
+  description: ''
+  fields:
+    - name: TICK
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_CB_BASE2_CB:
+  description: ''
+  fields:
+    - name: BASE2
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_AU_START_POS_AU_START:
+  description: ''
+  fields:
+    - name: POS
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_PF_STG_2_BLOCK_TICK_PF_STAGE_2_BLOCK:
+  description: ''
+  fields:
+    - name: TICK
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_CR_BASE2_CR:
+  description: ''
+  fields:
+    - name: BASE2
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_FBC_Y_OFFSET2_FBC_LUMA_OFFSET:
+  description: ''
+  fields:
+    - name: BASE2
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_AU_END_POS_AU_END:
+  description: ''
+  fields:
+    - name: POS
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_PF_PIC_DONE_TICK_PF_PIC_DONE:
+  description: ''
+  fields:
+    - name: TICK
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_FBC_C_OFFSET2_FBC_CHROMA_OFFSET:
+  description: ''
+  fields:
+    - name: BASE2
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_PIC_TYPE_PIC:
+  description: ''
+  fields:
+    - name: TYPE
+      bit_offset: 0
+      bit_size: 3
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_PIC_TYPE:
+  description: ''
+  fields:
+    - name: RSVD0
+      bit_offset: 3
+      bit_size: 1
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_PIC_TYPE_VCL_NAL_UNIT:
+  description: ''
+  fields:
+    - name: TYPE
+      bit_offset: 4
+      bit_size: 6
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_PIC_TYPE_CTU:
+  description: ''
+  fields:
+    - name: SIZE
+      bit_offset: 10
+      bit_size: 2
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_PIC_TYPE_REF_PIC:
+  description: ''
+  fields:
+    - name: FLAG
+      bit_offset: 30
+      bit_size: 1
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_PIC_TYPE_OUTPUT:
+  description: ''
+  fields:
+    - name: FLAG
+      bit_offset: 31
+      bit_size: 1
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_LUMA_BASE3_LUMA:
+  description: ''
+  fields:
+    - name: BASE3
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_PIC_POC_PIC_ORDER:
+  description: ''
+  fields:
+    - name: COUNT
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_CB_BASE3_CB_BASE_FBC_CBCR:
+  description: ''
+  fields:
+    - name: BASE3
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_RECOVERY_POINT_SIGNED_RECOVERY_POC:
+  description: ''
+  fields:
+    - name: CNT
+      bit_offset: 0
+      bit_size: 16
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_RECOVERY_POINT_EXACT_MATCH:
+  description: ''
+  fields:
+    - name: FLAG
+      bit_offset: 16
+      bit_size: 1
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_RECOVERY_POINT_BROKEN_LINK:
+  description: ''
+  fields:
+    - name: FLAG
+      bit_offset: 17
+      bit_size: 1
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_RECOVERY_POINT_EXIST:
+  description: ''
+  fields:
+    - name: FLAG
+      bit_offset: 18
+      bit_size: 1
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_CR_BASE3_CR_BASE_FBC_Y_OFFSET:
+  description: ''
+  fields:
+    - name: BASE3
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_FBC_Y_OFFSET3_CR_BASE_FBC_Y_OFFSET:
+  description: ''
+  fields:
+    - name: BASE3
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_DEBUG_INDEX_DEC_BWB_FB:
+  description: ''
+  fields:
+    - name: INDEX
+      bit_offset: 0
+      bit_size: 16
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_DEBUG_INDEX_DEC_FBC_FB:
+  description: ''
+  fields:
+    - name: INDEX
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_FBC_C_OFFSET3_FBC_CHROMA_OFFSET:
+  description: ''
+  fields:
+    - name: BASE3
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_DECODED_INDEX_DEC_PIC:
+  description: ''
+  fields:
+    - name: INDEX
+      bit_offset: 0
+      bit_size: 5
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_LUMA_BASE4_LUMA:
+  description: ''
+  fields:
+    - name: BASE4
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_DISPLAY_INDEX_DISPLAY_PIC:
+  description: ''
+  fields:
+    - name: INDEX
+      bit_offset: 0
+      bit_size: 5
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_CB_BASE4_CB_BASE_FBC_CBCR:
+  description: ''
+  fields:
+    - name: BASE4
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_REALLOC_INDEX_DISPLAY_PIC:
+  description: ''
+  fields:
+    - name: INDEX
+      bit_offset: 0
+      bit_size: 5
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_CR_BASE4_CR_BASE_FBC_Y_OFFSET:
+  description: ''
+  fields:
+    - name: BASE4
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_FBC_Y_OFFSET4_CR_BASE_FBC_Y_OFFSET:
+  description: ''
+  fields:
+    - name: BASE4
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_DISP_IDC_DISPLAY:
+  description: ''
+  fields:
+    - name: FLAG
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_DISP_IDC_QUERY_UPDATE_DISP_IDC_DEC_DISP:
+  description: ''
+  fields:
+    - name: IDC
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_FBC_C_OFFSET4_FBC_CHROMA_OFFSET:
+  description: ''
+  fields:
+    - name: BASE4
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_NUM_ERR_CTB_ERROR_CTU:
+  description: ''
+  fields:
+    - name: NUMBER
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_LUMA_BASE5_LUMA:
+  description: ''
+  fields:
+    - name: BASE5
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_VLC_BASE_VLC_BUF:
+  description: ''
+  fields:
+    - name: BASE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_CB_BASE5_CB_BASE_FBC_CBCR:
+  description: ''
+  fields:
+    - name: BASE5
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_LINEAR_Y_BASE_LINEAR_Y_BUF:
+  description: ''
+  fields:
+    - name: BASE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_CR_BASE5_CR_BASE_FBC_Y_OFFSET:
+  description: ''
+  fields:
+    - name: BASE5
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_FBC_Y_OFFSET5_CR_BASE_FBC_Y_OFFSET:
+  description: ''
+  fields:
+    - name: BASE5
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_LINEAR_CB_BASE_LINEAR_CB_BUF:
+  description: ''
+  fields:
+    - name: BASE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_FBC_C_OFFSET5_FBC_CHROMA_OFFSET:
+  description: ''
+  fields:
+    - name: BASE5
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_LINEAR_CR_BASE_LINEAR_CR_BUF:
+  description: ''
+  fields:
+    - name: BASE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_DEC_VCORE_INFO_USE_VCORE:
+  description: ''
+  fields:
+    - name: NUM
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_DEC_CMD_DEC_VCORE_INFO_VCORE_CORE:
+  description: ''
+  fields:
+    - name: IDC
+      bit_offset: 4
+      bit_size: 4
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_LUMA_BASE6_LUMA:
+  description: ''
+  fields:
+    - name: BASE6
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_INPLACE_Y_BASE_INPLACE_Y:
+  description: ''
+  fields:
+    - name: BASE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_CB_BASE6_CB_BASE_FBC_CBCR:
+  description: ''
+  fields:
+    - name: BASE6
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_INPLACE_C_BASE_INPLACE_C:
+  description: ''
+  fields:
+    - name: BASE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_CR_BASE6_CR_BASE_FBC_Y_OFFSET:
+  description: ''
+  fields:
+    - name: BASE6
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_FBC_Y_OFFSET6_CR_BASE_FBC_Y_OFFSET:
+  description: ''
+  fields:
+    - name: BASE6
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_CORE_IDC_STAGE0_CORE:
+  description: ''
+  fields:
+    - name: IDC
+      bit_offset: 0
+      bit_size: 4
+fieldset/VPU_VPU_DEC_RET_QUERY_CORE_IDC_STAGE1_CORE:
+  description: ''
+  fields:
+    - name: IDC
+      bit_offset: 4
+      bit_size: 4
+fieldset/VPU_VPU_DEC_RET_QUERY_CORE_IDC_STAGE2_CORE:
+  description: ''
+  fields:
+    - name: IDC
+      bit_offset: 8
+      bit_size: 4
+fieldset/VPU_VPU_DEC_RET_QUERY_CORE_IDC_STAGE3_CORE:
+  description: ''
+  fields:
+    - name: IDC
+      bit_offset: 12
+      bit_size: 4
+fieldset/VPU_VPU_DEC_RET_QUERY_CORE_IDC:
+  description: ''
+  fields:
+    - name: RSVD0
+      bit_offset: 16
+      bit_size: 16
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_FBC_C_OFFSET6_FBC_CHROMA_OFFSET:
+  description: ''
+  fields:
+    - name: BASE6
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_PIC_PARAM_ENABLE:
+  description: ''
+  fields:
+    - name: INTRABC
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_PIC_PARAM_ENABLE_SCREEN_CONT:
+  description: ''
+  fields:
+    - name: TOOLS
+      bit_offset: 1
+      bit_size: 1
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_PIC_PARAM:
+  description: ''
+  fields:
+    - name: RSVD0
+      bit_offset: 2
+      bit_size: 30
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_LUMA_BASE7_LUMA:
+  description: ''
+  fields:
+    - name: BASE7
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_CB_BASE7_CB_BASE_FBC_CBCR:
+  description: ''
+  fields:
+    - name: BASE7
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_CR_BASE7_CR_BASE_FBC_Y_OFFSET:
+  description: ''
+  fields:
+    - name: BASE7
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_FBC_Y_OFFSET7_CR_BASE_FBC_Y_OFFSET:
+  description: ''
+  fields:
+    - name: BASE7
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_FBC_C_OFFSET7_FBC_CHROMA_OFFSET:
+  description: ''
+  fields:
+    - name: BASE7
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_VLC_BUF_SIZE_VLC_BUF:
+  description: ''
+  fields:
+    - name: SIZE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_MV_COL0_COL_MV_BUF:
+  description: ''
+  fields:
+    - name: BASE0
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_PARAM_BUF_SIZE_PARAM_BUF:
+  description: ''
+  fields:
+    - name: SIZE
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_MV_COL1_COL_MV_BUF:
+  description: ''
+  fields:
+    - name: BASE1
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_HOST_CMD_TICK_HOST_CMD:
+  description: ''
+  fields:
+    - name: TICK
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_MV_COL2_COL_MV_BUF:
+  description: ''
+  fields:
+    - name: BASE2
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_SEEK_START_TICK_SEEK_START:
+  description: ''
+  fields:
+    - name: TICK
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_MV_COL3_COL_MV_BUF:
+  description: ''
+  fields:
+    - name: BASE3
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_SEEK_END_TICK_SEEK_END:
+  description: ''
+  fields:
+    - name: TICK
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_MV_COL4_COL_MV_BUF:
+  description: ''
+  fields:
+    - name: BASE4
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_PARSING_START_TICK_PARSE_START:
+  description: ''
+  fields:
+    - name: TICK
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_MV_COL5_COL_MV_BUF:
+  description: ''
+  fields:
+    - name: BASE5
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_PARSING_END_TICK_PARSE_END:
+  description: ''
+  fields:
+    - name: TICK
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_MV_COL6_COL_MV_BUF:
+  description: ''
+  fields:
+    - name: BASE6
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_DECODING_START_TICK_DEC_START:
+  description: ''
+  fields:
+    - name: TICK
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_CMD_SET_FB_ADDR_MV_COL7_COL_MV_BUF:
+  description: ''
+  fields:
+    - name: BASE7
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_DECODING_END_TICK_DEC_END:
+  description: ''
+  fields:
+    - name: TICK
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_WARN_INFO_DEC_WARN:
+  description: ''
+  fields:
+    - name: INFO
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_ERR_INFO_ERROR:
+  description: ''
+  fields:
+    - name: INFO
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUERY_DEC_SUCCESS_QUERY_DEC:
+  description: ''
+  fields:
+    - name: SUCCESS
+      bit_offset: 0
+      bit_size: 2
+fieldset/VPU_VPU_DEC_RET_QUEUE_STATUS_QUEUED_COMMAND:
+  description: ''
+  fields:
+    - name: NUM
+      bit_offset: 0
+      bit_size: 16
+fieldset/VPU_VPU_DEC_RET_QUEUE_STATUS_QUEUED_COMMAND_NUM_CURRENT:
+  description: ''
+  fields:
+    - name: ISNT
+      bit_offset: 16
+      bit_size: 8
+fieldset/VPU_VPU_DEC_RET_BS_EMPTY_BS_EMPTY_INST:
+  description: ''
+  fields:
+    - name: FLAG
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_QUEUED_CMD_DONE_QUEUED_CMD_INST:
+  description: ''
+  fields:
+    - name: FLAG
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_SRC_RELEASE_SRC_RELEASE_INST:
+  description: ''
+  fields:
+    - name: FLAG
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_RET_PARSING_INSTANCE_INFO_PRES_INST_ID:
+  description: ''
+  fields:
+    - name: CORE0
+      bit_offset: 0
+      bit_size: 8
+    - name: CORE1
+      bit_offset: 8
+      bit_size: 8
+    - name: CORE2
+      bit_offset: 16
+      bit_size: 8
+    - name: CORE3
+      bit_offset: 24
+      bit_size: 8
+fieldset/VPU_VPU_DEC_RET_DECODING_INSTANCE_INFO_DEC_INST_ID:
+  description: ''
+  fields:
+    - name: CORE0
+      bit_offset: 0
+      bit_size: 8
+    - name: CORE1
+      bit_offset: 8
+      bit_size: 8
+    - name: CORE2
+      bit_offset: 16
+      bit_size: 8
+    - name: CORE3
+      bit_offset: 24
+      bit_size: 8
+fieldset/VPU_VPU_DEC_RET_ENCODING_INSTANCE_INFO_PACK_INST_ID:
+  description: ''
+  fields:
+    - name: CORE0
+      bit_offset: 0
+      bit_size: 8
+    - name: CORE1
+      bit_offset: 8
+      bit_size: 8
+    - name: CORE2
+      bit_offset: 16
+      bit_size: 8
+    - name: CORE3
+      bit_offset: 24
+      bit_size: 8
+fieldset/VPU_VPU_DEC_RET_DONE_INSTANCE_INFO_DONE_INST:
+  description: ''
+  fields:
+    - name: IDX
+      bit_offset: 0
+      bit_size: 5
+fieldset/VPU_VPU_DEC_VPU_RESET_REQ_CRST:
+  description: ''
+  fields:
+    - name: REQ
+      bit_offset: 0
+      bit_size: 8
+fieldset/VPU_VPU_DEC_VPU_RESET_REQ_BRST:
+  description: ''
+  fields:
+    - name: REQ
+      bit_offset: 8
+      bit_size: 8
+fieldset/VPU_VPU_DEC_VPU_RESET_REQ_ARST:
+  description: ''
+  fields:
+    - name: REQ
+      bit_offset: 16
+      bit_size: 8
+fieldset/VPU_VPU_DEC_VPU_RESET_REQ_VARST:
+  description: ''
+  fields:
+    - name: REQ1
+      bit_offset: 24
+      bit_size: 1
+    - name: REQ0
+      bit_offset: 26
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_RESET_REQ_VBRST:
+  description: ''
+  fields:
+    - name: REQ1
+      bit_offset: 25
+      bit_size: 1
+    - name: REQ0
+      bit_offset: 27
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_RESET_STATUS_CRST:
+  description: ''
+  fields:
+    - name: STS
+      bit_offset: 0
+      bit_size: 8
+fieldset/VPU_VPU_DEC_VPU_RESET_STATUS_BRST:
+  description: ''
+  fields:
+    - name: STS
+      bit_offset: 8
+      bit_size: 8
+fieldset/VPU_VPU_DEC_VPU_RESET_STATUS_ARST:
+  description: ''
+  fields:
+    - name: STS
+      bit_offset: 16
+      bit_size: 8
+fieldset/VPU_VPU_DEC_VPU_RESET_STATUS_VARST:
+  description: ''
+  fields:
+    - name: STS1
+      bit_offset: 24
+      bit_size: 1
+    - name: STS0
+      bit_offset: 26
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_RESET_STATUS_VBRST:
+  description: ''
+  fields:
+    - name: STS1
+      bit_offset: 25
+      bit_size: 1
+    - name: STS0
+      bit_offset: 27
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VCPU_RESTART_VCPU:
+  description: ''
+  fields:
+    - name: RESTART
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_CLK_MASK_CCLK:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 0
+      bit_size: 8
+fieldset/VPU_VPU_DEC_VPU_CLK_MASK_BCLK:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 8
+      bit_size: 8
+fieldset/VPU_VPU_DEC_VPU_CLK_MASK_ACLK:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 16
+      bit_size: 8
+fieldset/VPU_VPU_DEC_VPU_CLK_MASK_ACLK_CPU:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 24
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_CLK_MASK_VCLK_CPU:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 25
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_CLK_MASK_CCLK_CPU:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 26
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_REMAP_CTRL_REMAP:
+  description: ''
+  fields:
+    - name: PSIZE
+      bit_offset: 0
+      bit_size: 9
+    - name: BYPASS
+      bit_offset: 10
+      bit_size: 1
+    - name: IDX
+      bit_offset: 12
+      bit_size: 2
+fieldset/VPU_VPU_DEC_VPU_REMAP_CTRL_REMAP_BUS:
+  description: ''
+  fields:
+    - name: ERR
+      bit_offset: 9
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_REMAP_CTRL_EN_REMAP:
+  description: ''
+  fields:
+    - name: SIZE
+      bit_offset: 11
+      bit_size: 1
+    - name: INFO
+      bit_offset: 31
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_REMAP_CTRL:
+  description: ''
+  fields:
+    - name: RSVD1
+      bit_offset: 14
+      bit_size: 2
+    - name: ENDIAN
+      bit_offset: 16
+      bit_size: 4
+    - name: RSVD0
+      bit_offset: 24
+      bit_size: 5
+fieldset/VPU_VPU_DEC_VPU_REMAP_CTRL_AXIID:
+  description: ''
+  fields:
+    - name: PROC
+      bit_offset: 20
+      bit_size: 4
+fieldset/VPU_VPU_DEC_VPU_REMAP_CTRL_REMAP_INF:
+  description: ''
+  fields:
+    - name: ERR
+      bit_offset: 29
+      bit_size: 1
+    - name: BYPASS
+      bit_offset: 30
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_REMAP_VADDR_VPU_REMAP:
+  description: ''
+  fields:
+    - name: VADDR
+      bit_offset: 12
+      bit_size: 20
+fieldset/VPU_VPU_DEC_VPU_REMAP_PADDR_VPU_REMAP:
+  description: ''
+  fields:
+    - name: PADDR
+      bit_offset: 12
+      bit_size: 20
+fieldset/VPU_VPU_DEC_VPU_REMAP_CORE_START_VPU_REMAP_CORE:
+  description: ''
+  fields:
+    - name: START
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_BUSY_STATUS_VPU_BUSY:
+  description: ''
+  fields:
+    - name: STATUS
+      bit_offset: 0
+      bit_size: 1
+fieldset/VPU_VPU_DEC_VPU_GLOBAL_H_COMMAND_GLOBAL:
+  description: ''
+  fields:
+    - name: COMMAND
+      bit_offset: 0
+      bit_size: 32
+fieldset/VPU_VPU_DEC_BACKBONE_BUS_CTRL_VCORE_NO_MORE:
+  description: ''
+  fields:
+    - name: REQ0
+      bit_offset: 0
+      bit_size: 1
+    - name: REQ1
+      bit_offset: 1
+      bit_size: 1
+    - name: REQ2
+      bit_offset: 2
+      bit_size: 1
+fieldset/VPU_VPU_DEC_BACKBONE_BUS_STATUS_VCORE_EMPTY:
+  description: ''
+  fields:
+    - name: FLAG0
+      bit_offset: 0
+      bit_size: 1
+    - name: FLAG1
+      bit_offset: 1
+      bit_size: 1
+    - name: FLAG2
+      bit_offset: 2
+      bit_size: 1
+    - name: FLAG3
+      bit_offset: 3
+      bit_size: 1
+    - name: FLAG4
+      bit_offset: 4
+      bit_size: 1
+    - name: FLAG5
+      bit_offset: 5
+      bit_size: 1
+fieldset/VPU_VPU_DEC_BACKBONE_BUS_STATUS_VCORE_BUSY:
+  description: ''
+  fields:
+    - name: FLAG6
+      bit_offset: 6
+      bit_size: 1
+    - name: FLAG7
+      bit_offset: 7
+      bit_size: 1
+    - name: FLAG11
+      bit_offset: 11
+      bit_size: 1
+fieldset/VPU_VPU_DEC_BACKBONE_BUS_STATUS_VCORE:
+  description: ''
+  fields:
+    - name: RSVD0
+      bit_offset: 8
+      bit_size: 3
+fieldset/VPU_VPU_DEC_BACKBONE_BUS_CTRL_VCPU_NO_MORE:
+  description: ''
+  fields:
+    - name: REQ0
+      bit_offset: 0
+      bit_size: 1
+    - name: REQ1
+      bit_offset: 1
+      bit_size: 1
+    - name: REQ2
+      bit_offset: 2
+      bit_size: 1
+    - name: REQ3
+      bit_offset: 3
+      bit_size: 1
+    - name: REQ4
+      bit_offset: 4
+      bit_size: 1
+    - name: REQ5
+      bit_offset: 5
+      bit_size: 1
+    - name: REQ6
+      bit_offset: 6
+      bit_size: 1
+    - name: REQ7
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_DEC_BACKBONE_BUS_STATUS_VCPU_EMPTY:
+  description: ''
+  fields:
+    - name: FLAG0
+      bit_offset: 0
+      bit_size: 1
+    - name: FLAG1
+      bit_offset: 1
+      bit_size: 1
+    - name: FLAG2
+      bit_offset: 2
+      bit_size: 1
+    - name: FLAG3
+      bit_offset: 3
+      bit_size: 1
+    - name: FLAG4
+      bit_offset: 4
+      bit_size: 1
+    - name: FLAG5
+      bit_offset: 5
+      bit_size: 1
+    - name: FLAG6
+      bit_offset: 6
+      bit_size: 1
+    - name: FLAG7
+      bit_offset: 7
+      bit_size: 1
+fieldset/VPU_VPU_DEC_BACKBONE_BUS_PROC_EXT_ADDR_BACKBONE_BUS:
+  description: ''
+  fields:
+    - name: PROC
+      bit_offset: 0
+      bit_size: 8
+fieldset/VPU_VPU_DEC_BACKBONE_BUS_PROC_EXT_ADDR:
+  description: ''
+  fields:
+    - name: RSVD0
+      bit_offset: 8
+      bit_size: 24

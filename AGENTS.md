@@ -180,7 +180,7 @@ blanket impl backs it: Tokio `AsyncRead`/`AsyncWrite` (`Unpin + Send`) under `st
 `embedded-io-async` (0.7) without. The two blankets cannot coexist, hence the feature.
 Both backends live in the same crate: the `unix` feature (implies `std`) adds a `unix`
 module that opens raw 8N1 `/dev/tty*` devices with `tokio-serial` and provides
-pseudo-terminal pairs for tests, and a chip feature (`mimx93`/`mimx95` or
+pseudo-terminal pairs for tests, and a chip feature (`mimx93`/`mimx95`/`mimx952` or
 `stm32mp21x`/`stm32mp23x`/`stm32mp25x`, used with `default-features = false`) re-exports
 that chip HAL's interrupt-buffered UART driver (`BufferedUart`, in `imx9`/`stm32mp2`
 submodules); with no chip feature it stays chip-agnostic over any `embedded-io-async`
@@ -399,8 +399,8 @@ drives (i.MX93 CM33 `MU1_B`/`MU2_B`; i.MX95 CM7 `MU5_A`/`MU7_B`/`MU8_B`).
 `Peripheral`, `ClockControl`, `InterruptSource`, `MonotonicTimer`, and `nvic::Irq`.
 
 `consortium-pac-imx9` and `consortium-pac-stm32mp2` are generated `no_std` PAC crates.
-Their chip features are `mimx93`/`mimx95` (default `mimx95`) and `stm32mp21`/`stm32mp257`
-(default `stm32mp257`), respectively. `just pac-regen` regenerates every PAC output end to
+Their chip features are `mimx93`/`mimx95`/`mimx952` (default `mimx95`) and
+`stm32mp21`/`stm32mp257` (default `stm32mp257`), respectively. `just pac-regen` regenerates every PAC output end to
 end — chip dumps and IR under `crates/consortium-data/database/{chip,peri}/`, the
 per-family pin-mux/DMA-request databases under `database/signal/` (from
 `STM32_open_pin_data` and MCUX's `fsl_iomuxc.h`/eDMA headers), the PACs'
@@ -412,17 +412,32 @@ vendor headers, `scripts/pac/patches/ir/` for the IR and chip dumps (applied bef
 interrupt/singleton generators), and `scripts/pac/patches/generated/` for the Rust.
 Never hand-edit the outputs; add or update a patch and re-run.
 
+The i.MX9 register IR is deduplicated by layout across families, in the order
+i.MX 93, i.MX 95, i.MX 952 (`consolidate_identical_imx9_peripherals` in
+`parse_nxp.py`). A block whose layout matches an earlier family's reuses that file —
+`_v1` for the i.MX 93/95 shared layout, otherwise the `_<family>` file of the family
+that introduced it — so a `_mimx95` file may also describe i.MX 952. Only a different
+layout gets a file of its own (`_mimx952`), and only those blocks get a separate PAC
+module (`<block>_mimx952.rs`), which `peripherals/mod.rs` mounts under the shared
+module name when `mimx952` is selected. Descriptions are not part of the comparison.
+
 `consortium-hal-imx9` and `consortium-hal-stm32mp2` re-export the shared HAL and their
 PAC crates (with `default-features = false`), re-export `interrupts`/`Interrupt` and the
 `rt`-gated `#[interrupt]` macro, and expose feature-gated ADC, CAN, DMA, GPIO, I2C, I3C,
 PWM, SPI, timer, UART, and watchdog modules plus the Embassy time driver (all on by
 default alongside the default chip; STM32MP2 adds LPTIM). They also
 own the chip-selection features forwarded to the PAC:
-`mimx93`/`mimx95` (hal-imx9, default `mimx95`) and `stm32mp21x`/`stm32mp23x`/`stm32mp25x`
+`mimx93`/`mimx95`/`mimx952` (hal-imx9, default `mimx95`) and `stm32mp21x`/`stm32mp23x`/`stm32mp25x`
 (hal-stm32mp2, default `stm32mp25x`, where `stm32mp23x`/`stm32mp25x` both map to the PAC's
 `stm32mp257`; MP23 is the same die and reference manual, RM0457, but mounts its own
 generated singleton map without the instances its datasheet rules out, such as I2C3–6,
-FDCAN3, LPDMA and IPCC2). Keep these crates firmware-friendly: `no_std`, narrow unsafe blocks, and
+FDCAN3, LPDMA and IPCC2). i.MX 952 (`mimx952`) is a separate die, not an i.MX 95
+variant: its WAKEUP-domain instances (LPUART3–8, CAN2/3, LPI2C3–8, TPM3–6, LPIT2, MU7/8)
+sit at other addresses and it has no CAN4/5, so it has its own interrupt table and
+singleton map; it shares i.MX 95's System Manager clock model, eDMA request numbers and
+LPIT1 rate, so drivers take the i.MX 95 paths. Support is compile-level only: its chip
+database declares no SRAM region and no MU doorbell until the reference manual is
+published, so `[dbg.*]` rings and IPC channels are rejected for it. Keep these crates firmware-friendly: `no_std`, narrow unsafe blocks, and
 chip-specific details inside the chip HAL rather than the shared HAL traits.
 
 ### Peripheral Singletons

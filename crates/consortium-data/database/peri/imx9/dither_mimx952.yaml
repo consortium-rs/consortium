@@ -1,0 +1,118 @@
+block/DITHER:
+  description: ''
+  items:
+    - name: LU
+      byte_offset: 0
+      fieldset: DITHER_LU
+    - name: LOCKS
+      byte_offset: 4
+      fieldset: DITHER_LOCKS
+    - name: CONTR
+      byte_offset: 8
+      fieldset: DITHER_CONTR
+    - name: MASKSTAR
+      byte_offset: 12
+      fieldset: DITHER_MASKSTAR
+    - name: MASKSIZE
+      byte_offset: 16
+      fieldset: DITHER_MASKSIZE
+    - name: DITCON10
+      byte_offset: 20
+      fieldset: DITHER_DITCON10
+    - name: DITCON12
+      byte_offset: 24
+      fieldset: DITHER_DITCON12
+fieldset/DITHER_LU:
+  description: ''
+  fields:
+    - name: LkUn
+      bit_offset: 0
+      bit_size: 32
+fieldset/DITHER_LOCKS:
+  description: ''
+  fields:
+    - name: LkSus
+      bit_offset: 0
+      bit_size: 1
+      description: LockStatus
+    - name: PriSt
+      bit_offset: 4
+      bit_size: 1
+      description: LockStatus
+    - name: FreezeS
+      bit_offset: 8
+      bit_size: 1
+      description: PrivilegeStatus
+fieldset/DITHER_CONTR:
+  description: ''
+  fields:
+    - name: mode
+      bit_offset: 0
+      bit_size: 2
+    - name: offstsel
+      bit_offset: 16
+      bit_size: 1
+    - name: algosel
+      bit_offset: 20
+      bit_size: 2
+    - name: makinen
+      bit_offset: 24
+      bit_size: 1
+    - name: makinsel
+      bit_offset: 25
+      bit_size: 1
+    - name: makininv
+      bit_offset: 26
+      bit_size: 1
+    - name: pxwinon0
+      bit_offset: 28
+      bit_size: 1
+    - name: pxwininv
+      bit_offset: 29
+      bit_size: 1
+fieldset/DITHER_MASKSTAR:
+  description: ''
+  fields:
+    - name: passvst
+      bit_offset: 0
+      bit_size: 14
+      description: pass_vstart
+    - name: passhst
+      bit_offset: 16
+      bit_size: 14
+      description: pass_vstart
+fieldset/DITHER_MASKSIZE:
+  description: ''
+  fields:
+    - name: passvsi
+      bit_offset: 0
+      bit_size: 14
+      description: pass_vsize
+    - name: passhsi
+      bit_offset: 16
+      bit_size: 14
+      description: pass_vsize
+fieldset/DITHER_DITCON10:
+  description: ''
+  fields:
+    - name: bluers10
+      bit_offset: 0
+      bit_size: 3
+    - name: greers10
+      bit_offset: 4
+      bit_size: 3
+    - name: rranse10
+      bit_offset: 8
+      bit_size: 3
+fieldset/DITHER_DITCON12:
+  description: ''
+  fields:
+    - name: bluers12
+      bit_offset: 0
+      bit_size: 3
+    - name: greers12
+      bit_offset: 4
+      bit_size: 3
+    - name: rranse12
+      bit_offset: 8
+      bit_size: 3

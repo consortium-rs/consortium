@@ -69,6 +69,17 @@ BLOCKS: dict[tuple[str, str], str] = {
     ("consortium-pac-imx9", "rgpio"): "imx9/rgpio_v1.yaml",
     ("consortium-pac-imx9", "tpm"): "imx9/tpm_mimx95.yaml",
     ("consortium-pac-imx9", "wdog"): "imx9/wdog_mimx95.yaml",
+    # i.MX 952 versions of the blocks whose layout differs from the i.MX 93/95
+    # IR above; `peripherals/mod.rs` mounts them under the shared module name
+    # when `mimx952` is selected. Every other block reuses the shared module.
+    ("consortium-pac-imx9", "adc_mimx952"): "imx9/adc_mimx952.yaml",
+    ("consortium-pac-imx9", "can_mimx952"): "imx9/can_mimx952.yaml",
+    ("consortium-pac-imx9", "ccm_mimx952"): "imx9/ccm_mimx952.yaml",
+    ("consortium-pac-imx9", "gpc_mimx952"): "imx9/gpc_mimx952.yaml",
+    ("consortium-pac-imx9", "gpc_global_mimx952"): "imx9/gpc_global_mimx952.yaml",
+    ("consortium-pac-imx9", "iomuxc_mimx952"): "imx9/iomuxc_mimx952.yaml",
+    ("consortium-pac-imx9", "iomuxc_gpr_mimx952"): "imx9/iomuxc_gpr_mimx952.yaml",
+    ("consortium-pac-imx9", "irqsteer_mimx952"): "imx9/irqsteer_mimx952.yaml",
 }
 
 #: Modules written by hand rather than generated.

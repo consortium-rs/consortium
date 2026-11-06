@@ -5,12 +5,17 @@ mkdir -p ./data
 mkdir -p ./data/imx95_cm7
 mkdir -p ./data/imx93_cm33
 mkdir -p ./data/imx95_cm33
+mkdir -p ./data/imx952_cm7
 
 cp ./submodules/mcux-devices-imx/i.MX95/**/*cm7*.h ./data/imx95_cm7/
 cp ./submodules/mcux-devices-imx/i.MX93/**/*cm33*.h ./data/imx93_cm33/
 cp ./submodules/imx-sm/devices/MIMX95/*MIMX95*.h ./data/imx95_cm33/
 cp ./submodules/mcux-devices-imx/i.MX95/periph/*.h ./data/imx95_cm7/
 cp ./submodules/mcux-devices-imx/i.MX93/periph/*.h ./data/imx93_cm33/
+# i.MX 952 is its own die (not an i.MX 95 variant); MIMX9529 is the full-featured
+# segment, and every segment's CM7 header is identical to it.
+cp ./submodules/mcux-devices-imx/i.MX952/MIMX9529/*cm7*.h ./data/imx952_cm7/
+cp ./submodules/mcux-devices-imx/i.MX952/periph/*.h ./data/imx952_cm7/
 
 mkdir -p ./data/stm32mp25_cm33
 mkdir -p ./data/stm32mp25_cm0p
@@ -44,8 +49,10 @@ for family in stm32mp21 stm32mp23 stm32mp25; do
     cp "$CUBE_HAL/stm32mp2xx_hal_dma.h" "./data/signal/$family/"
 done
 
-mkdir -p ./data/signal/mimx93 ./data/signal/mimx95
+mkdir -p ./data/signal/mimx93 ./data/signal/mimx95 ./data/signal/mimx952
 cp "$MCUX"/i.MX93/MIMX9352/drivers/fsl_iomuxc.h ./data/signal/mimx93/
 cp "$MCUX"/i.MX93/periph/PERI_DMA.h "$MCUX"/i.MX93/periph/PERI_DMA4.h ./data/signal/mimx93/
 cp "$MCUX"/i.MX95/MIMX9596/drivers/fsl_iomuxc.h ./data/signal/mimx95/
 cp "$MCUX"/i.MX95/MIMX9596/drivers/fsl_edma_soc.h ./data/signal/mimx95/
+cp "$MCUX"/i.MX952/MIMX9529/drivers/fsl_iomuxc.h ./data/signal/mimx952/
+cp "$MCUX"/i.MX952/MIMX9529/drivers/fsl_edma_soc.h ./data/signal/mimx952/

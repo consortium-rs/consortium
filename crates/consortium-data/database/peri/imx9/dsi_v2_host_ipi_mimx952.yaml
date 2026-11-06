@@ -1,0 +1,188 @@
+block/DSI_V2_HOST_IPI:
+  description: ''
+  items:
+    - name: IPI_COLOR_MAN_CFG
+      byte_offset: 0
+    - name: IPI_VID_HSA_MAN_CFG
+      byte_offset: 4
+    - name: IPI_VID_HSA_AUTO
+      byte_offset: 8
+    - name: IPI_VID_HBP_MAN_CFG
+      byte_offset: 12
+    - name: IPI_VID_HBP_AUTO
+      byte_offset: 16
+    - name: IPI_VID_HACT_MAN_CFG
+      byte_offset: 20
+    - name: IPI_VID_HACT_AUTO
+      byte_offset: 24
+    - name: IPI_VID_HLINE_MAN_CFG
+      byte_offset: 28
+    - name: IPI_VID_HLINE_AUTO
+      byte_offset: 32
+    - name: IPI_VID_VSA_MAN_CFG
+      byte_offset: 36
+    - name: IPI_VID_VSA_AUTO
+      byte_offset: 40
+    - name: IPI_VID_VBP_MAN_CFG
+      byte_offset: 44
+    - name: IPI_VID_VBP_AUTO
+      byte_offset: 48
+    - name: IPI_VID_VACT_MAN_CFG
+      byte_offset: 52
+    - name: IPI_VID_VACT_AUTO
+      byte_offset: 56
+    - name: IPI_VID_VFP_MAN_CFG
+      byte_offset: 60
+    - name: IPI_VID_VFP_AUTO
+      byte_offset: 64
+    - name: IPI_PIX_PKT_CFG
+      byte_offset: 68
+    - name: IPI_HIBERNATE_CFG
+      byte_offset: 72
+    - name: IPI_LANES_MAN_CFG
+      byte_offset: 76
+    - name: IPI_FIFO_DEPTH_CFG
+      byte_offset: 192
+    - name: IPI_MAPPING_CFG
+      byte_offset: 196
+fieldset/DSI_V2_HOST_IPI_IPI_COLOR_MAN_CFG_IPI:
+  description: ''
+  fields:
+    - name: FORMAT
+      bit_offset: 0
+      bit_size: 4
+    - name: DEPTH
+      bit_offset: 4
+      bit_size: 4
+fieldset/DSI_V2_HOST_IPI_IPI_VID_HSA_MAN_CFG_VID_HSA:
+  description: ''
+  fields:
+    - name: TIME
+      bit_offset: 0
+      bit_size: 30
+fieldset/DSI_V2_HOST_IPI_IPI_VID_HSA_AUTO_VID_HSA_TIME:
+  description: ''
+  fields:
+    - name: AUTO
+      bit_offset: 0
+      bit_size: 30
+fieldset/DSI_V2_HOST_IPI_IPI_VID_HBP_MAN_CFG_VID_HBP:
+  description: ''
+  fields:
+    - name: TIME
+      bit_offset: 0
+      bit_size: 30
+fieldset/DSI_V2_HOST_IPI_IPI_VID_HBP_AUTO_VID_HBP_TIME:
+  description: ''
+  fields:
+    - name: AUTO
+      bit_offset: 0
+      bit_size: 30
+fieldset/DSI_V2_HOST_IPI_IPI_VID_HACT_MAN_CFG_VID_HACT:
+  description: ''
+  fields:
+    - name: TIME
+      bit_offset: 0
+      bit_size: 30
+fieldset/DSI_V2_HOST_IPI_IPI_VID_HACT_AUTO_VID_HACT_TIME:
+  description: ''
+  fields:
+    - name: AUTO
+      bit_offset: 0
+      bit_size: 30
+fieldset/DSI_V2_HOST_IPI_IPI_VID_HLINE_MAN_CFG_VID_HLINE:
+  description: ''
+  fields:
+    - name: TIME
+      bit_offset: 0
+      bit_size: 32
+fieldset/DSI_V2_HOST_IPI_IPI_VID_HLINE_AUTO_VID_HLINE_TIME:
+  description: ''
+  fields:
+    - name: AUTO
+      bit_offset: 0
+      bit_size: 32
+fieldset/DSI_V2_HOST_IPI_IPI_VID_VSA_MAN_CFG_VID_VSA:
+  description: ''
+  fields:
+    - name: LINES
+      bit_offset: 0
+      bit_size: 10
+fieldset/DSI_V2_HOST_IPI_IPI_VID_VSA_AUTO_VID_VSA_LINES:
+  description: ''
+  fields:
+    - name: AUTO
+      bit_offset: 0
+      bit_size: 10
+fieldset/DSI_V2_HOST_IPI_IPI_VID_VBP_MAN_CFG_VID_VBP:
+  description: ''
+  fields:
+    - name: LINES
+      bit_offset: 0
+      bit_size: 10
+fieldset/DSI_V2_HOST_IPI_IPI_VID_VBP_AUTO_VID_VBP_LINES:
+  description: ''
+  fields:
+    - name: AUTO
+      bit_offset: 0
+      bit_size: 10
+fieldset/DSI_V2_HOST_IPI_IPI_VID_VACT_MAN_CFG_VID_VACT:
+  description: ''
+  fields:
+    - name: LINES
+      bit_offset: 0
+      bit_size: 14
+fieldset/DSI_V2_HOST_IPI_IPI_VID_VACT_AUTO_VID_VACT_LINES:
+  description: ''
+  fields:
+    - name: AUTO
+      bit_offset: 0
+      bit_size: 14
+fieldset/DSI_V2_HOST_IPI_IPI_VID_VFP_MAN_CFG_VID_VFP:
+  description: ''
+  fields:
+    - name: LINES
+      bit_offset: 0
+      bit_size: 20
+fieldset/DSI_V2_HOST_IPI_IPI_VID_VFP_AUTO_VID_VFP_LINES:
+  description: ''
+  fields:
+    - name: AUTO
+      bit_offset: 0
+      bit_size: 20
+fieldset/DSI_V2_HOST_IPI_IPI_PIX_PKT_CFG_MAX_PIX:
+  description: ''
+  fields:
+    - name: PKT
+      bit_offset: 0
+      bit_size: 16
+fieldset/DSI_V2_HOST_IPI_IPI_HIBERNATE_CFG_HIB:
+  description: ''
+  fields:
+    - name: TYPE
+      bit_offset: 0
+      bit_size: 1
+fieldset/DSI_V2_HOST_IPI_IPI_HIBERNATE_CFG_HIB_ULPS_WAKEUP:
+  description: ''
+  fields:
+    - name: TIME
+      bit_offset: 16
+      bit_size: 16
+fieldset/DSI_V2_HOST_IPI_IPI_LANES_MAN_CFG_IPI:
+  description: ''
+  fields:
+    - name: LANES
+      bit_offset: 0
+      bit_size: 2
+fieldset/DSI_V2_HOST_IPI_IPI_FIFO_DEPTH_CFG_IPI_FIFO_DEPTH:
+  description: ''
+  fields:
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 16
+fieldset/DSI_V2_HOST_IPI_IPI_MAPPING_CFG_IPI:
+  description: ''
+  fields:
+    - name: MAPPING
+      bit_offset: 0
+      bit_size: 2

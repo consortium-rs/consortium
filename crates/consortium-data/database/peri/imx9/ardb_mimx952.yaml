@@ -1,0 +1,16 @@
+block/ARDB:
+  description: ''
+  items:
+    - name: ARDB
+      byte_offset: 0
+      array:
+        len: 128
+        stride: 4
+      fieldset: ARDB_ARDB
+fieldset/ARDB_ARDB:
+  description: ''
+  fields:
+    - name: ARXD
+      bit_offset: 0
+      bit_size: 32
+      description: ARDB provided RX buffer data

@@ -1,0 +1,65 @@
+name: MIMX952
+# The i.MX 952 reference manual is not published yet (MCUX's CM7 header cites an
+# `iMX952RM rev1 draftM`), so there are no page numbers to cite below.
+trm: i.MX 952 reference manual (unpublished)
+ap: ca55
+interrupt_parent: gic
+# As on i.MX 95: the CM33 runs the System Manager (imx-sm `devices/MIMX952`) and
+# the CM7 is the remoteproc-loaded controller core.
+cp:
+  - name: cm33
+    variant: manager
+  - name: cm7
+    variant: remote
+remoteproc:
+  cm7:
+    # Mainline `imx952-evk.dts` drives the CM7 with the i.MX 95 binding and
+    # carveouts: `fsl,imx95-cm7`, `m7_reserved` at 0x80000000 (16 MiB), and the
+    # resource table at 0x88220000. MCUX's `MIMX9529_cm7_ddr_ram.ld` places
+    # `m_interrupts`/`m_text` at the same DDR addresses as i.MX 95's, so the
+    # layout below is i.MX 95's.
+    compatible: fsl,imx95-cm7
+    vector_section: .interrupts
+    vector_placement: flash
+    vector:
+      name: m_interrupts
+      read: true
+      write: false
+      execute: true
+      window:
+        origin: 0x80000000
+        length: 0x00001000
+        reserve: true
+    flash:
+      origin: 0x80001000
+      length: 0x007ff000
+      reserve: true
+    shmem:
+      name: m_rsc_tbl_in_dram
+      read: true
+      write: true
+      execute: false
+      window:
+        origin: 0x88220000
+        length: 0x00004000
+        reserve: true
+    ram:
+      origin: 0x80800000
+      length: 0x00800000
+      reserve: true
+memory:
+  trm_page: []
+  # Aliases only translate SRAM-region and doorbell addresses, and this chip
+  # declares neither yet; i.MX 95's values are not assumed to carry over.
+  aliases: []
+  # No shared SRAM is listed until the reference manual gives the OCRAM map:
+  # neither MCUX nor the mainline device tree describes it. Without a region,
+  # `[dbg.<core>]` rings and `[[ipc.channel]]` windows are rejected for this
+  # chip rather than placed at a guessed address.
+  regions: []
+peripheral:
+  aliases: []
+  # The MU block is present (MU1..MU8, both halves, at the addresses in
+  # `chip/mimx952_cm7.json`), but its party windows and interrupt lines wait for
+  # the reference manual, so no doorbell is declared yet.
+  doorbells: []

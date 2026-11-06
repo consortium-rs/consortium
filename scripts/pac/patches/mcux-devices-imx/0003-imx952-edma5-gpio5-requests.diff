@@ -1,0 +1,26 @@
+Fix duplicated eDMA5 request numbers in NXP's i.MX 952 SoC header
+(mcux-devices-imx, `MIMX9529/drivers/fsl_edma_soc.h`):
+
+- The i.MX 952 header carries the same rows as i.MX 95's (see
+  0002-imx95-edma5-gpio5-requests.diff): Dma5RequestMuxGPIO5Request0/1 are
+  53/54, the numbers of FlexSPI1 Tx/Rx directly above, and 55/56 are unused.
+  GPIO5 Request0/1 are taken to be 55/56, the same inference as i.MX 95. Not
+  yet checked against an i.MX 952 reference manual, which is unpublished.
+
+Without this `parse_signals_nxp.py` rejects mimx952 for a duplicate request.
+
+diff --git a/i.MX952/MIMX9529/drivers/fsl_edma_soc.h b/i.MX952/MIMX9529/drivers/fsl_edma_soc.h
+index 920c9a99..c547c160 100644
+--- a/i.MX952/MIMX9529/drivers/fsl_edma_soc.h
++++ b/i.MX952/MIMX9529/drivers/fsl_edma_soc.h
+@@ -161,8 +161,8 @@ typedef enum _dma5_request_source
+     Dma5RequestMuxFlexIO2Request7      = 52U,  /**< FlexIO2 Request7 */
+     Dma5RequestMuxFlexSPI1Tx           = 53U,  /**< FlexSPI1 Transmit */
+     Dma5RequestMuxFlexSPI1Rx           = 54U,  /**< FlexSPI1 Receive */
+-    Dma5RequestMuxGPIO5Request0        = 53U,  /**< GPIO5 Request0 */
+-    Dma5RequestMuxGPIO5Request1        = 54U,  /**< GPIO5 Request1 */
++    Dma5RequestMuxGPIO5Request0        = 55U,  /**< GPIO5 Request0 */
++    Dma5RequestMuxGPIO5Request1        = 56U,  /**< GPIO5 Request1 */
+     Dma5RequestMuxCAN3                 = 57U,  /**< CAN3 */
+     Dma5RequestMuxSai2Tx               = 58U,  /**< SAI2 Transmit */
+     Dma5RequestMuxSai2Rx               = 59U,  /**< SAI2 Receive */

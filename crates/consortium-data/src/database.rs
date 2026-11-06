@@ -49,6 +49,10 @@ const DATABASES: &[Embedded] = &[
         yaml: include_str!("../database/memory/stm32mp21.yaml"),
     },
     Embedded {
+        prefix: "mimx952",
+        yaml: include_str!("../database/memory/mimx952.yaml"),
+    },
+    Embedded {
         prefix: "mimx95",
         yaml: include_str!("../database/memory/mimx95.yaml"),
     },
@@ -122,21 +126,16 @@ mod tests {
     fn resolves_imx_families_from_full_part_numbers() {
         assert_eq!(load("mimx9596xvt").unwrap().name, "MIMX95");
         assert_eq!(load("mimx9352").unwrap().name, "MIMX93");
+        assert_eq!(load("mimx9529avzxn").unwrap().name, "MIMX952");
+        assert_eq!(load("imx952").unwrap().name, "MIMX952");
         assert_eq!(load("imx93").unwrap().name, "MIMX93");
     }
 
-    /// i.MX 952 and i.MX 937 are separate dies whose part numbers merely start
-    /// with `mimx95`/`mimx93`; resolving them to those families would hand them
-    /// the wrong memory map.
+    /// i.MX 937 is a separate die whose part numbers merely start with
+    /// `mimx93`; resolving it to that family would hand it the wrong memory map.
     #[test]
     fn rejects_other_dies_sharing_an_imx_prefix() {
-        for chip in [
-            "mimx9529avzxn",
-            "mimx9522",
-            "imx952",
-            "mimx9375",
-            "mimx9371xxvtx",
-        ] {
+        for chip in ["mimx9375", "mimx9371xxvtx", "imx937"] {
             assert!(
                 matches!(load(chip), Err(DataError::UnknownChip(_))),
                 "{chip} should not resolve"

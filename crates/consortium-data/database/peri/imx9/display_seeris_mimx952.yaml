@@ -1,0 +1,35 @@
+block/DISPLAY_SEERIS:
+  description: ''
+  items:
+    - name: IPIDENT
+      byte_offset: 0
+      fieldset: DISPLAY_SEERIS_IPIDENT
+fieldset/DISPLAY_SEERIS_IPIDENT:
+  description: ''
+  fields:
+    - name: DesDeID
+      bit_offset: 4
+      bit_size: 4
+      description: DesignDeliveryID
+    - name: DesMaLe
+      bit_offset: 8
+      bit_size: 4
+      description: DesignDeliveryID
+    - name: IPEvol
+      bit_offset: 12
+      bit_size: 3
+    - name: LD
+      bit_offset: 15
+      bit_size: 1
+    - name: IPFeatuS
+      bit_offset: 16
+      bit_size: 4
+    - name: IPAppl
+      bit_offset: 20
+      bit_size: 4
+    - name: IPConf
+      bit_offset: 24
+      bit_size: 4
+    - name: IPFamily
+      bit_offset: 28
+      bit_size: 4

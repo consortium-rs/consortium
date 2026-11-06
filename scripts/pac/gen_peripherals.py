@@ -156,6 +156,14 @@ TARGETS = (
     Target(
         "mimx93_cm33", "crates/consortium-hal-imx9/src/peripherals/imx93", IMX9_BINDINGS
     ),
+    # i.MX 952 is its own die: its WAKEUP-domain instances sit at other
+    # addresses than i.MX 95's, so it gets its own singleton map and interrupt
+    # table rather than borrowing i.MX 95's.
+    Target(
+        "mimx952_cm7",
+        "crates/consortium-hal-imx9/src/peripherals/imx952",
+        IMX9_BINDINGS,
+    ),
     Target(
         "stm32mp25_cm33",
         "crates/consortium-hal-stm32mp2/src/peripherals/stm32mp25",

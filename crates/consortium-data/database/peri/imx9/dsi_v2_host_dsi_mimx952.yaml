@@ -1,0 +1,234 @@
+block/DSI_V2_HOST_DSI:
+  description: ''
+  items:
+    - name: DSI_GENERAL_CFG
+      byte_offset: 0
+    - name: DSI_VCID_CFG
+      byte_offset: 4
+    - name: DSI_SCRAMBLING_CFG
+      byte_offset: 8
+    - name: DSI_VID_TX_CFG
+      byte_offset: 12
+    - name: DSI_MAX_RPS_CFG
+      byte_offset: 16
+    - name: DSI_TEAR_EFFECT_CFG
+      byte_offset: 20
+    - name: CRI_TX_HDR
+      byte_offset: 192
+    - name: CRI_TX_PLD
+      byte_offset: 196
+    - name: CRI_RX_HDR
+      byte_offset: 200
+    - name: CRI_RX_PLD
+      byte_offset: 204
+    - name: CRI_TX_CTRL
+      byte_offset: 208
+    - name: CRI_FIFO_DEPTH_CFG
+      byte_offset: 224
+fieldset/DSI_V2_HOST_DSI_DSI_GENERAL_CFG_EOTP_TX:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+fieldset/DSI_V2_HOST_DSI_DSI_GENERAL_CFG_BTA:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 1
+      bit_size: 1
+fieldset/DSI_V2_HOST_DSI_DSI_VCID_CFG_TX:
+  description: ''
+  fields:
+    - name: VCID
+      bit_offset: 0
+      bit_size: 2
+fieldset/DSI_V2_HOST_DSI_DSI_SCRAMBLING_CFG_SCRAMBLING:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+    - name: SEED
+      bit_offset: 16
+      bit_size: 16
+fieldset/DSI_V2_HOST_DSI_DSI_VID_TX_CFG_VID_MODE:
+  description: ''
+  fields:
+    - name: TYPE
+      bit_offset: 0
+      bit_size: 2
+fieldset/DSI_V2_HOST_DSI_DSI_VID_TX_CFG_BLK_HSA_HS:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 4
+      bit_size: 1
+fieldset/DSI_V2_HOST_DSI_DSI_VID_TX_CFG_BLK_HBP_HS:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 5
+      bit_size: 1
+fieldset/DSI_V2_HOST_DSI_DSI_VID_TX_CFG_BLK_HFP_HS:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 6
+      bit_size: 1
+fieldset/DSI_V2_HOST_DSI_DSI_VID_TX_CFG_BLK_VSA_HS:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 12
+      bit_size: 1
+fieldset/DSI_V2_HOST_DSI_DSI_VID_TX_CFG_BLK_VBP_HS:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 13
+      bit_size: 1
+fieldset/DSI_V2_HOST_DSI_DSI_VID_TX_CFG_BLK_VFP_HS:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 14
+      bit_size: 1
+fieldset/DSI_V2_HOST_DSI_DSI_VID_TX_CFG_CMD_VSA:
+  description: ''
+  fields:
+    - name: DISABLE
+      bit_offset: 16
+      bit_size: 1
+fieldset/DSI_V2_HOST_DSI_DSI_VID_TX_CFG_CMD_VBP:
+  description: ''
+  fields:
+    - name: DISABLE
+      bit_offset: 17
+      bit_size: 1
+fieldset/DSI_V2_HOST_DSI_DSI_VID_TX_CFG_CMD_HFP:
+  description: ''
+  fields:
+    - name: DISABLE
+      bit_offset: 18
+      bit_size: 1
+fieldset/DSI_V2_HOST_DSI_DSI_VID_TX_CFG_CMD_VFP:
+  description: ''
+  fields:
+    - name: DISABLE
+      bit_offset: 19
+      bit_size: 1
+fieldset/DSI_V2_HOST_DSI_DSI_VID_TX_CFG_LPDT_DISPLAY_CMD:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 20
+      bit_size: 1
+fieldset/DSI_V2_HOST_DSI_DSI_MAX_RPS_CFG_MAX_RT_PKT:
+  description: ''
+  fields:
+    - name: SZ
+      bit_offset: 0
+      bit_size: 16
+fieldset/DSI_V2_HOST_DSI_DSI_TEAR_EFFECT_CFG_AUTO_TEAR_BTA:
+  description: ''
+  fields:
+    - name: DISABLE
+      bit_offset: 0
+      bit_size: 1
+fieldset/DSI_V2_HOST_DSI_DSI_TEAR_EFFECT_CFG_TE_TYPE:
+  description: ''
+  fields:
+    - name: HW
+      bit_offset: 1
+      bit_size: 1
+fieldset/DSI_V2_HOST_DSI_DSI_TEAR_EFFECT_CFG_SET_TEAR_ON_ARGS:
+  description: ''
+  fields:
+    - name: HW
+      bit_offset: 8
+      bit_size: 8
+fieldset/DSI_V2_HOST_DSI_DSI_TEAR_EFFECT_CFG_SET:
+  description: ''
+  fields:
+    - name: SCANLINE
+      bit_offset: 16
+      bit_size: 16
+fieldset/DSI_V2_HOST_DSI_CRI_TX_HDR_DATA:
+  description: ''
+  fields:
+    - name: TYPE
+      bit_offset: 0
+      bit_size: 6
+fieldset/DSI_V2_HOST_DSI_CRI_TX_HDR_VIRTUAL:
+  description: ''
+  fields:
+    - name: CHANNEL
+      bit_offset: 6
+      bit_size: 2
+fieldset/DSI_V2_HOST_DSI_CRI_TX_HDR_WC:
+  description: ''
+  fields:
+    - name: LSB
+      bit_offset: 8
+      bit_size: 8
+    - name: MSB
+      bit_offset: 16
+      bit_size: 8
+fieldset/DSI_V2_HOST_DSI_CRI_TX_HDR_CMD_TX:
+  description: ''
+  fields:
+    - name: MODE
+      bit_offset: 24
+      bit_size: 1
+fieldset/DSI_V2_HOST_DSI_CRI_TX_HDR_CMD_HDR:
+  description: ''
+  fields:
+    - name: RD
+      bit_offset: 28
+      bit_size: 1
+    - name: LONG
+      bit_offset: 29
+      bit_size: 1
+fieldset/DSI_V2_HOST_DSI_CRI_RX_HDR_DATA:
+  description: ''
+  fields:
+    - name: TYPE
+      bit_offset: 0
+      bit_size: 6
+fieldset/DSI_V2_HOST_DSI_CRI_RX_HDR_VIRTUAL:
+  description: ''
+  fields:
+    - name: CHANNEL
+      bit_offset: 6
+      bit_size: 2
+fieldset/DSI_V2_HOST_DSI_CRI_RX_HDR_WC:
+  description: ''
+  fields:
+    - name: LSB
+      bit_offset: 8
+      bit_size: 8
+    - name: MSB
+      bit_offset: 16
+      bit_size: 8
+fieldset/DSI_V2_HOST_DSI_CRI_TX_CTRL_CRI:
+  description: ''
+  fields:
+    - name: HOLD
+      bit_offset: 0
+      bit_size: 1
+    - name: MODE
+      bit_offset: 8
+      bit_size: 1
+fieldset/DSI_V2_HOST_DSI_CRI_FIFO_DEPTH_CFG_WR:
+  description: ''
+  fields:
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 16
+fieldset/DSI_V2_HOST_DSI_CRI_FIFO_DEPTH_CFG_RD:
+  description: ''
+  fields:
+    - name: VALUE
+      bit_offset: 16
+      bit_size: 16

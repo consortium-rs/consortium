@@ -31,10 +31,15 @@
 /// (`mimx95`, the bare family name).
 ///
 /// The digit sets are the variant directories `mcux-devices-imx` ships under
-/// `i.MX93/` (`MIMX93[01235]x`) and `i.MX95/` (`MIMX95[0345789N]x`). Anything
-/// else after `mimx93`/`mimx95` belongs to a different die (`i.MX937/`,
-/// `i.MX952/`) and must not resolve to these families.
-const SUBFAMILIES: &[(&str, &str)] = &[("mimx93", "01235"), ("mimx95", "0345789n")];
+/// `i.MX93/` (`MIMX93[01235]x`), `i.MX95/` (`MIMX95[0345789N]x`), and
+/// `i.MX952/` (`MIMX952[234589]x`). Anything else after `mimx93`/`mimx95`
+/// belongs to a different die (`i.MX937/`, `i.MX952/`) and must not resolve to
+/// these families.
+const SUBFAMILIES: &[(&str, &str)] = &[
+    ("mimx93", "01235"),
+    ("mimx95", "0345789n"),
+    ("mimx952", "234589"),
+];
 
 /// Lowercases the part number and rewrites `imx` aliases to the `mimx` prefix.
 pub(crate) fn normalize(chip: &str) -> String {
@@ -71,11 +76,12 @@ mod tests {
         "mimx9506", "mimx9534", "mimx9536", "mimx9546", "mimx9554", "mimx9556", "mimx9574",
         "mimx9576", "mimx9586", "mimx9594", "mimx9596", "mimx95n4", "mimx95n6",
     ];
-    /// The i.MX 937 and i.MX 952 variant directories: other dies.
-    const OTHER_DIES: &[&str] = &[
-        "mimx9371", "mimx9373", "mimx9375", "mimx9522", "mimx9523", "mimx9524", "mimx9525",
-        "mimx9528", "mimx9529",
+    /// Every i.MX 952 variant directory in `mcux-devices-imx`.
+    const IMX952: &[&str] = &[
+        "mimx9522", "mimx9523", "mimx9524", "mimx9525", "mimx9528", "mimx9529",
     ];
+    /// The i.MX 937 variant directories: a die with no bundled data yet.
+    const IMX937: &[&str] = &["mimx9371", "mimx9373", "mimx9375"];
 
     #[test]
     fn accepts_every_variant_of_its_family() {
@@ -84,6 +90,9 @@ mod tests {
         }
         for part in IMX95 {
             assert!(matches(part, "mimx95"), "{part}");
+        }
+        for part in IMX952 {
+            assert!(matches(part, "mimx952"), "{part}");
         }
     }
 
@@ -98,12 +107,18 @@ mod tests {
 
     #[test]
     fn rejects_other_dies_sharing_a_prefix() {
-        for part in OTHER_DIES {
+        for part in IMX952.iter().chain(IMX937) {
             assert!(!matches(part, "mimx93"), "{part} matched mimx93");
             assert!(!matches(part, "mimx95"), "{part} matched mimx95");
         }
+        for part in IMX937 {
+            assert!(!matches(part, "mimx952"), "{part} matched mimx952");
+        }
         assert!(!matches("mimx9529avzxn", "mimx95"));
         assert!(!matches(&normalize("IMX952"), "mimx95"));
+        assert!(matches(&normalize("IMX952"), "mimx952"));
+        assert!(matches("mimx9529avzxn", "mimx952"));
+        assert!(!matches("mimx9521", "mimx952"), "no i.MX 952 segment 1");
     }
 
     #[test]

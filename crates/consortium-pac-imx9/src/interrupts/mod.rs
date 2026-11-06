@@ -13,7 +13,12 @@ pub use imx95::*;
 // `not(mimx95)` suppresses a duplicate-definition cascade when both chip
 // features are on. That combination is already fatal — `lib.rs` raises a
 // `compile_error!` naming it — and this keeps that guard the only diagnostic.
-#[cfg(all(feature = "mimx93", not(feature = "mimx95")))]
+#[cfg(all(feature = "mimx952", not(feature = "mimx95")))]
+mod imx952;
+#[cfg(all(feature = "mimx952", not(feature = "mimx95")))]
+pub use imx952::*;
+
+#[cfg(all(feature = "mimx93", not(feature = "mimx95"), not(feature = "mimx952")))]
 mod imx93;
-#[cfg(all(feature = "mimx93", not(feature = "mimx95")))]
+#[cfg(all(feature = "mimx93", not(feature = "mimx95"), not(feature = "mimx952")))]
 pub use imx93::*;

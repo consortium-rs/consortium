@@ -1,0 +1,4249 @@
+block/DISPLAY_MIPI_DSI_PHY:
+  description: ''
+  items:
+    - name: PPI_STARTUP_RW_COMMON_DPHY_0
+      byte_offset: 12288
+    - name: PPI_STARTUP_RW_COMMON_DPHY_1
+      byte_offset: 12292
+    - name: PPI_STARTUP_RW_COMMON_DPHY_2
+      byte_offset: 12296
+    - name: PPI_STARTUP_RW_COMMON_DPHY_3
+      byte_offset: 12300
+    - name: PPI_STARTUP_RW_COMMON_DPHY_4
+      byte_offset: 12304
+    - name: PPI_STARTUP_RW_COMMON_DPHY_5
+      byte_offset: 12308
+    - name: PPI_STARTUP_RW_COMMON_DPHY_6
+      byte_offset: 12312
+    - name: PPI_STARTUP_RW_COMMON_DPHY_7
+      byte_offset: 12316
+    - name: PPI_STARTUP_RW_COMMON_DPHY_8
+      byte_offset: 12320
+    - name: PPI_STARTUP_RW_COMMON_DPHY_9
+      byte_offset: 12324
+    - name: PPI_STARTUP_RW_COMMON_DPHY_A
+      byte_offset: 12328
+    - name: PPI_STARTUP_RW_COMMON_DPHY_10
+      byte_offset: 12352
+    - name: PPI_STARTUP_RW_COMMON_STARTUP_1_1
+      byte_offset: 12356
+    - name: PPI_CALIBCTRL_RW_COMMON_CALIBCTRL_2_0
+      byte_offset: 12416
+    - name: PPI_CALIBCTRL_R_COMMON_CALIBCTRL_2_1
+      byte_offset: 12420
+    - name: PPI_CALIBCTRL_R_COMMON_CALIBCTRL_2_2
+      byte_offset: 12424
+    - name: PPI_CALIBCTRL_R_COMMON_CALIBCTRL_2_3
+      byte_offset: 12428
+    - name: PPI_CALIBCTRL_R_COMMON_CALIBCTRL_2_4
+      byte_offset: 12432
+    - name: PPI_CALIBCTRL_R_COMMON_CALIBCTRL_2_5
+      byte_offset: 12436
+    - name: PPI_CALIBCTRL_RW_COMMON_BG_0
+      byte_offset: 12440
+    - name: PPI_CALIBCTRL_RW_COMMON_CALIBCTRL_2_7
+      byte_offset: 12444
+    - name: PPI_CALIBCTRL_RW_ADC_CFG_0
+      byte_offset: 12448
+    - name: PPI_CALIBCTRL_RW_ADC_CFG_1
+      byte_offset: 12452
+    - name: PPI_CALIBCTRL_R_ADC_DEBUG
+      byte_offset: 12456
+    - name: PPI_RW_LPDCOCAL_TIMEBASE
+      byte_offset: 14340
+    - name: PPI_RW_LPDCOCAL_NREF
+      byte_offset: 14344
+    - name: PPI_RW_LPDCOCAL_NREF_RANGE
+      byte_offset: 14348
+    - name: PPI_RW_LPDCOCAL_TWAIT_CONFIG
+      byte_offset: 14356
+    - name: PPI_RW_LPDCOCAL_VT_CONFIG
+      byte_offset: 14360
+    - name: PPI_R_LPDCOCAL_DEBUG_RB
+      byte_offset: 14364
+    - name: PPI_RW_LPDCOCAL_COARSE_CFG
+      byte_offset: 14368
+    - name: PPI_R_LPDCOCAL_DEBUG_COARSE_RB
+      byte_offset: 14372
+    - name: PPI_R_LPDCOCAL_DEBUG_COARSE_MEAS_0_RB
+      byte_offset: 14376
+    - name: PPI_R_LPDCOCAL_DEBUG_COARSE_MEAS_1_RB
+      byte_offset: 14380
+    - name: PPI_R_LPDCOCAL_DEBUG_COARSE_FWORD_RB
+      byte_offset: 14384
+    - name: PPI_R_LPDCOCAL_DEBUG_MEASURE_CURR_ERROR
+      byte_offset: 14388
+    - name: PPI_R_LPDCOCAL_DEBUG_MEASURE_LAST_ERROR
+      byte_offset: 14392
+    - name: PPI_R_LPDCOCAL_DEBUG_VT
+      byte_offset: 14396
+    - name: PPI_RW_LB_TIMEBASE_CONFIG
+      byte_offset: 14400
+    - name: PPI_RW_LB_STARTCMU_CONFIG
+      byte_offset: 14404
+    - name: PPI_R_LBPULSE_COUNTER_RB
+      byte_offset: 14408
+    - name: PPI_R_LB_START_CMU_RB
+      byte_offset: 14412
+    - name: PPI_RW_LB_DPHY_BURST_START
+      byte_offset: 14416
+    - name: PPI_RW_LB_CPHY_BURST_START
+      byte_offset: 14420
+    - name: PPI_RW_DDLCAL_CFG_0
+      byte_offset: 14464
+    - name: PPI_RW_DDLCAL_CFG_1
+      byte_offset: 14468
+    - name: PPI_RW_DDLCAL_CFG_2
+      byte_offset: 14472
+    - name: PPI_RW_DDLCAL_CFG_3
+      byte_offset: 14476
+    - name: PPI_RW_DDLCAL_CFG_4
+      byte_offset: 14480
+    - name: PPI_RW_DDLCAL_CFG_5
+      byte_offset: 14484
+    - name: PPI_RW_DDLCAL_CFG_6
+      byte_offset: 14488
+    - name: PPI_RW_DDLCAL_CFG_7
+      byte_offset: 14492
+    - name: PPI_R_DDLCAL_DEBUG_0
+      byte_offset: 14496
+    - name: PPI_R_DDLCAL_DEBUG_1
+      byte_offset: 14500
+    - name: PPI_RW_PARITY_TEST
+      byte_offset: 14528
+    - name: PPI_RW_STARTUP_OVR_0
+      byte_offset: 14532
+    - name: PPI_RW_STARTUP_STATE_OVR_1
+      byte_offset: 14536
+    - name: PPI_RW_DTB_SELECTOR
+      byte_offset: 14540
+    - name: PPI_RW_HSTX_FIFO_CFG
+      byte_offset: 14544
+    - name: PPI_RW_DPHY_CLK_SPARE
+      byte_offset: 14548
+    - name: PPI_RW_COMMON_CFG
+      byte_offset: 14552
+    - name: PPI_RW_TERMCAL_CFG_0
+      byte_offset: 14592
+    - name: PPI_R_TERMCAL_DEBUG_0
+      byte_offset: 14596
+    - name: PPI_RW_OFFSETCAL_CFG_0
+      byte_offset: 14656
+    - name: PPI_R_OFFSETCAL_DEBUG_LANE0
+      byte_offset: 14660
+    - name: PPI_R_OFFSETCAL_DEBUG_LANE1
+      byte_offset: 14664
+    - name: PPI_R_OFFSETCAL_DEBUG_LANE2
+      byte_offset: 14668
+    - name: PPI_R_OFFSETCAL_DEBUG_LANE3
+      byte_offset: 14672
+    - name: PPI_R_OFFSETCAL_DEBUG_LANE4
+      byte_offset: 14676
+    - name: PPI_RW_PLL_STARTUP_CFG_0
+      byte_offset: 14720
+    - name: PPI_RW_PLL_STARTUP_CFG_1
+      byte_offset: 14724
+    - name: PPI_RW_PLL_STARTUP_CFG_2
+      byte_offset: 14728
+    - name: PPI_RW_TX_HIBERNATE_CFG_0
+      byte_offset: 14784
+    - name: CORE_DIG_IOCTRL_RW_AFE_LANE0_CTRL_2_0
+      byte_offset: 16512
+    - name: CORE_DIG_RW_TRIO0_0
+      byte_offset: 16896
+    - name: CORE_DIG_RW_TRIO0_1
+      byte_offset: 16900
+    - name: CORE_DIG_RW_TRIO0_2
+      byte_offset: 16904
+    - name: CORE_DIG_IOCTRL_RW_AFE_LANE1_CTRL_2_0
+      byte_offset: 18560
+    - name: CORE_DIG_RW_TRIO1_0
+      byte_offset: 18944
+    - name: CORE_DIG_RW_TRIO1_1
+      byte_offset: 18948
+    - name: CORE_DIG_RW_TRIO1_2
+      byte_offset: 18952
+    - name: CORE_DIG_IOCTRL_RW_AFE_LANE2_CTRL_2_0
+      byte_offset: 20608
+    - name: CORE_DIG_RW_TRIO2_0
+      byte_offset: 20992
+    - name: CORE_DIG_RW_TRIO2_1
+      byte_offset: 20996
+    - name: CORE_DIG_RW_TRIO2_2
+      byte_offset: 21000
+    - name: CORE_DIG_IOCTRL_RW_AFE_LANE3_CTRL_2_0
+      byte_offset: 22656
+    - name: CORE_DIG_IOCTRL_RW_AFE_LANE4_CTRL_2_0
+      byte_offset: 24704
+    - name: CORE_DIG_RW_COMMON_0
+      byte_offset: 28928
+    - name: CORE_DIG_RW_COMMON_1
+      byte_offset: 28932
+    - name: CORE_DIG_RW_COMMON_2
+      byte_offset: 28936
+    - name: CORE_DIG_RW_COMMON_3
+      byte_offset: 28940
+    - name: CORE_DIG_RW_COMMON_4
+      byte_offset: 28944
+    - name: CORE_DIG_RW_COMMON_5
+      byte_offset: 28948
+    - name: CORE_DIG_RW_COMMON_6
+      byte_offset: 28952
+    - name: CORE_DIG_RW_COMMON_7
+      byte_offset: 28956
+    - name: CORE_DIG_RW_COMMON_8
+      byte_offset: 28960
+    - name: CORE_DIG_RW_COMMON_9
+      byte_offset: 28964
+    - name: CORE_DIG_RW_COMMON_10
+      byte_offset: 28968
+    - name: CORE_DIG_RW_COMMON_11
+      byte_offset: 28972
+    - name: CORE_DIG_RW_COMMON_12
+      byte_offset: 28976
+    - name: CORE_DIG_RW_COMMON_13
+      byte_offset: 28980
+    - name: CORE_DIG_RW_COMMON_14
+      byte_offset: 28984
+    - name: CORE_DIG_RW_COMMON_15
+      byte_offset: 28988
+    - name: CORE_DIG_ANACTRL_RW_COMMON_ANACTRL_0
+      byte_offset: 29632
+    - name: CORE_DIG_ANACTRL_RW_COMMON_ANACTRL_1
+      byte_offset: 29636
+    - name: CORE_DIG_ANACTRL_RW_COMMON_ANACTRL_3
+      byte_offset: 29644
+    - name: CORE_DIG_COMMON_RW_DESKEW_FINE_MEM
+      byte_offset: 32704
+    - name: CORE_DIG_COMMON_R_DESKEW_FINE_MEM
+      byte_offset: 32708
+    - name: PPI_RW_DPHY_LANE0_LBERT_1
+      byte_offset: 32772
+    - name: PPI_R_DPHY_LANE0_LBERT_0
+      byte_offset: 32776
+    - name: PPI_R_DPHY_LANE0_LBERT_1
+      byte_offset: 32780
+    - name: PPI_RW_DPHY_LANE0_SPARE
+      byte_offset: 32784
+    - name: PPI_RW_DPHY_LANE1_LBERT_1
+      byte_offset: 34820
+    - name: PPI_R_DPHY_LANE1_LBERT_0
+      byte_offset: 34824
+    - name: PPI_R_DPHY_LANE1_LBERT_1
+      byte_offset: 34828
+    - name: PPI_RW_DPHY_LANE1_SPARE
+      byte_offset: 34832
+    - name: PPI_RW_DPHY_LANE2_LBERT_1
+      byte_offset: 36868
+    - name: PPI_R_DPHY_LANE2_LBERT_0
+      byte_offset: 36872
+    - name: PPI_R_DPHY_LANE2_LBERT_1
+      byte_offset: 36876
+    - name: PPI_RW_DPHY_LANE2_SPARE
+      byte_offset: 36880
+    - name: PPI_RW_DPHY_LANE3_LBERT_1
+      byte_offset: 38916
+    - name: PPI_R_DPHY_LANE3_LBERT_0
+      byte_offset: 38920
+    - name: PPI_R_DPHY_LANE3_LBERT_1
+      byte_offset: 38924
+    - name: PPI_RW_DPHY_LANE3_SPARE
+      byte_offset: 38928
+    - name: CORE_DIG_DLANE_0_RW_CFG_0
+      byte_offset: 49152
+    - name: CORE_DIG_DLANE_0_RW_CFG_1
+      byte_offset: 49156
+    - name: CORE_DIG_DLANE_0_RW_CFG_2
+      byte_offset: 49160
+    - name: CORE_DIG_DLANE_0_RW_LP_0
+      byte_offset: 49408
+    - name: CORE_DIG_DLANE_0_RW_LP_1
+      byte_offset: 49412
+    - name: CORE_DIG_DLANE_0_R_LP_0
+      byte_offset: 49472
+    - name: CORE_DIG_DLANE_0_R_LP_1
+      byte_offset: 49476
+    - name: CORE_DIG_DLANE_0_R_HS_TX_0
+      byte_offset: 49600
+    - name: CORE_DIG_DLANE_0_RW_HS_RX_0
+      byte_offset: 49664
+    - name: CORE_DIG_DLANE_0_RW_HS_RX_1
+      byte_offset: 49668
+    - name: CORE_DIG_DLANE_0_RW_HS_RX_2
+      byte_offset: 49672
+    - name: CORE_DIG_DLANE_0_RW_HS_RX_3
+      byte_offset: 49676
+    - name: CORE_DIG_DLANE_0_RW_HS_RX_4
+      byte_offset: 49680
+    - name: CORE_DIG_DLANE_0_RW_HS_RX_5
+      byte_offset: 49684
+    - name: CORE_DIG_DLANE_0_RW_HS_RX_6
+      byte_offset: 49688
+    - name: CORE_DIG_DLANE_0_RW_HS_RX_8
+      byte_offset: 49696
+    - name: CORE_DIG_DLANE_0_R_HS_RX_0
+      byte_offset: 49728
+      fieldset: DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_R_HS_RX_0
+    - name: CORE_DIG_DLANE_0_R_HS_RX_1
+      byte_offset: 49732
+      fieldset: DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_R_HS_RX_1
+    - name: CORE_DIG_DLANE_0_R_HS_RX_2
+      byte_offset: 49736
+    - name: CORE_DIG_DLANE_0_R_HS_RX_3
+      byte_offset: 49740
+    - name: CORE_DIG_DLANE_0_R_HS_RX_4
+      byte_offset: 49744
+    - name: CORE_DIG_DLANE_0_RW_HS_TX_0
+      byte_offset: 50176
+    - name: CORE_DIG_DLANE_0_RW_HS_TX_1
+      byte_offset: 50180
+    - name: CORE_DIG_DLANE_0_RW_HS_TX_2
+      byte_offset: 50184
+    - name: CORE_DIG_DLANE_0_RW_HS_TX_4
+      byte_offset: 50192
+    - name: CORE_DIG_DLANE_0_RW_HS_TX_5
+      byte_offset: 50196
+    - name: CORE_DIG_DLANE_0_RW_HS_TX_6
+      byte_offset: 50200
+    - name: CORE_DIG_DLANE_0_RW_HS_TX_8
+      byte_offset: 50208
+    - name: CORE_DIG_DLANE_0_RW_HS_TX_9
+      byte_offset: 50212
+    - name: CORE_DIG_DLANE_0_RW_HS_TX_10
+      byte_offset: 50216
+    - name: CORE_DIG_DLANE_0_RW_HS_TX_11
+      byte_offset: 50220
+    - name: CORE_DIG_DLANE_0_RW_HS_TX_12
+      byte_offset: 50224
+    - name: CORE_DIG_DLANE_1_RW_CFG_0
+      byte_offset: 51200
+    - name: CORE_DIG_DLANE_1_RW_CFG_1
+      byte_offset: 51204
+    - name: CORE_DIG_DLANE_1_RW_CFG_2
+      byte_offset: 51208
+    - name: CORE_DIG_DLANE_1_RW_LP_0
+      byte_offset: 51456
+    - name: CORE_DIG_DLANE_1_RW_LP_1
+      byte_offset: 51460
+    - name: CORE_DIG_DLANE_1_R_LP_0
+      byte_offset: 51520
+    - name: CORE_DIG_DLANE_1_R_LP_1
+      byte_offset: 51524
+    - name: CORE_DIG_DLANE_1_R_HS_TX_0
+      byte_offset: 51648
+    - name: CORE_DIG_DLANE_1_RW_HS_RX_0
+      byte_offset: 51712
+    - name: CORE_DIG_DLANE_1_RW_HS_RX_1
+      byte_offset: 51716
+    - name: CORE_DIG_DLANE_1_RW_HS_RX_2
+      byte_offset: 51720
+    - name: CORE_DIG_DLANE_1_RW_HS_RX_3
+      byte_offset: 51724
+    - name: CORE_DIG_DLANE_1_RW_HS_RX_4
+      byte_offset: 51728
+    - name: CORE_DIG_DLANE_1_RW_HS_RX_5
+      byte_offset: 51732
+    - name: CORE_DIG_DLANE_1_RW_HS_RX_6
+      byte_offset: 51736
+    - name: CORE_DIG_DLANE_1_RW_HS_RX_8
+      byte_offset: 51744
+    - name: CORE_DIG_DLANE_1_R_HS_RX_0
+      byte_offset: 51776
+      fieldset: DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_R_HS_RX_0
+    - name: CORE_DIG_DLANE_1_R_HS_RX_1
+      byte_offset: 51780
+      fieldset: DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_R_HS_RX_1
+    - name: CORE_DIG_DLANE_1_R_HS_RX_2
+      byte_offset: 51784
+    - name: CORE_DIG_DLANE_1_R_HS_RX_3
+      byte_offset: 51788
+    - name: CORE_DIG_DLANE_1_R_HS_RX_4
+      byte_offset: 51792
+    - name: CORE_DIG_DLANE_1_RW_HS_TX_0
+      byte_offset: 52224
+    - name: CORE_DIG_DLANE_1_RW_HS_TX_1
+      byte_offset: 52228
+    - name: CORE_DIG_DLANE_1_RW_HS_TX_2
+      byte_offset: 52232
+    - name: CORE_DIG_DLANE_1_RW_HS_TX_4
+      byte_offset: 52240
+    - name: CORE_DIG_DLANE_1_RW_HS_TX_5
+      byte_offset: 52244
+    - name: CORE_DIG_DLANE_1_RW_HS_TX_6
+      byte_offset: 52248
+    - name: CORE_DIG_DLANE_1_RW_HS_TX_8
+      byte_offset: 52256
+    - name: CORE_DIG_DLANE_1_RW_HS_TX_9
+      byte_offset: 52260
+    - name: CORE_DIG_DLANE_1_RW_HS_TX_10
+      byte_offset: 52264
+    - name: CORE_DIG_DLANE_1_RW_HS_TX_11
+      byte_offset: 52268
+    - name: CORE_DIG_DLANE_1_RW_HS_TX_12
+      byte_offset: 52272
+    - name: CORE_DIG_DLANE_2_RW_CFG_0
+      byte_offset: 53248
+    - name: CORE_DIG_DLANE_2_RW_CFG_1
+      byte_offset: 53252
+    - name: CORE_DIG_DLANE_2_RW_CFG_2
+      byte_offset: 53256
+    - name: CORE_DIG_DLANE_2_RW_LP_0
+      byte_offset: 53504
+    - name: CORE_DIG_DLANE_2_RW_LP_1
+      byte_offset: 53508
+    - name: CORE_DIG_DLANE_2_R_LP_0
+      byte_offset: 53568
+    - name: CORE_DIG_DLANE_2_R_LP_1
+      byte_offset: 53572
+    - name: CORE_DIG_DLANE_2_R_HS_TX_0
+      byte_offset: 53696
+    - name: CORE_DIG_DLANE_2_RW_HS_RX_0
+      byte_offset: 53760
+    - name: CORE_DIG_DLANE_2_RW_HS_RX_1
+      byte_offset: 53764
+    - name: CORE_DIG_DLANE_2_RW_HS_RX_2
+      byte_offset: 53768
+    - name: CORE_DIG_DLANE_2_RW_HS_RX_3
+      byte_offset: 53772
+    - name: CORE_DIG_DLANE_2_RW_HS_RX_4
+      byte_offset: 53776
+    - name: CORE_DIG_DLANE_2_RW_HS_RX_5
+      byte_offset: 53780
+    - name: CORE_DIG_DLANE_2_RW_HS_RX_6
+      byte_offset: 53784
+    - name: CORE_DIG_DLANE_2_RW_HS_RX_8
+      byte_offset: 53792
+    - name: CORE_DIG_DLANE_2_R_HS_RX_0
+      byte_offset: 53824
+      fieldset: DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_R_HS_RX_0
+    - name: CORE_DIG_DLANE_2_R_HS_RX_1
+      byte_offset: 53828
+      fieldset: DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_R_HS_RX_1
+    - name: CORE_DIG_DLANE_2_R_HS_RX_2
+      byte_offset: 53832
+    - name: CORE_DIG_DLANE_2_R_HS_RX_3
+      byte_offset: 53836
+    - name: CORE_DIG_DLANE_2_R_HS_RX_4
+      byte_offset: 53840
+    - name: CORE_DIG_DLANE_2_RW_HS_TX_0
+      byte_offset: 54272
+    - name: CORE_DIG_DLANE_2_RW_HS_TX_1
+      byte_offset: 54276
+    - name: CORE_DIG_DLANE_2_RW_HS_TX_2
+      byte_offset: 54280
+    - name: CORE_DIG_DLANE_2_RW_HS_TX_4
+      byte_offset: 54288
+    - name: CORE_DIG_DLANE_2_RW_HS_TX_5
+      byte_offset: 54292
+    - name: CORE_DIG_DLANE_2_RW_HS_TX_6
+      byte_offset: 54296
+    - name: CORE_DIG_DLANE_2_RW_HS_TX_8
+      byte_offset: 54304
+    - name: CORE_DIG_DLANE_2_RW_HS_TX_9
+      byte_offset: 54308
+    - name: CORE_DIG_DLANE_2_RW_HS_TX_10
+      byte_offset: 54312
+    - name: CORE_DIG_DLANE_2_RW_HS_TX_11
+      byte_offset: 54316
+    - name: CORE_DIG_DLANE_2_RW_HS_TX_12
+      byte_offset: 54320
+    - name: CORE_DIG_DLANE_3_RW_CFG_0
+      byte_offset: 55296
+    - name: CORE_DIG_DLANE_3_RW_CFG_1
+      byte_offset: 55300
+    - name: CORE_DIG_DLANE_3_RW_CFG_2
+      byte_offset: 55304
+    - name: CORE_DIG_DLANE_3_RW_LP_0
+      byte_offset: 55552
+    - name: CORE_DIG_DLANE_3_RW_LP_1
+      byte_offset: 55556
+    - name: CORE_DIG_DLANE_3_R_LP_0
+      byte_offset: 55616
+    - name: CORE_DIG_DLANE_3_R_LP_1
+      byte_offset: 55620
+    - name: CORE_DIG_DLANE_3_R_HS_TX_0
+      byte_offset: 55744
+    - name: CORE_DIG_DLANE_3_RW_HS_RX_0
+      byte_offset: 55808
+    - name: CORE_DIG_DLANE_3_RW_HS_RX_1
+      byte_offset: 55812
+    - name: CORE_DIG_DLANE_3_RW_HS_RX_2
+      byte_offset: 55816
+    - name: CORE_DIG_DLANE_3_RW_HS_RX_3
+      byte_offset: 55820
+    - name: CORE_DIG_DLANE_3_RW_HS_RX_4
+      byte_offset: 55824
+    - name: CORE_DIG_DLANE_3_RW_HS_RX_5
+      byte_offset: 55828
+    - name: CORE_DIG_DLANE_3_RW_HS_RX_6
+      byte_offset: 55832
+    - name: CORE_DIG_DLANE_3_RW_HS_RX_8
+      byte_offset: 55840
+    - name: CORE_DIG_DLANE_3_R_HS_RX_0
+      byte_offset: 55872
+      fieldset: DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_R_HS_RX_0
+    - name: CORE_DIG_DLANE_3_R_HS_RX_1
+      byte_offset: 55876
+      fieldset: DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_R_HS_RX_1
+    - name: CORE_DIG_DLANE_3_R_HS_RX_2
+      byte_offset: 55880
+    - name: CORE_DIG_DLANE_3_R_HS_RX_3
+      byte_offset: 55884
+    - name: CORE_DIG_DLANE_3_R_HS_RX_4
+      byte_offset: 55888
+    - name: CORE_DIG_DLANE_3_RW_HS_TX_0
+      byte_offset: 56320
+    - name: CORE_DIG_DLANE_3_RW_HS_TX_1
+      byte_offset: 56324
+    - name: CORE_DIG_DLANE_3_RW_HS_TX_2
+      byte_offset: 56328
+    - name: CORE_DIG_DLANE_3_RW_HS_TX_4
+      byte_offset: 56336
+    - name: CORE_DIG_DLANE_3_RW_HS_TX_5
+      byte_offset: 56340
+    - name: CORE_DIG_DLANE_3_RW_HS_TX_6
+      byte_offset: 56344
+    - name: CORE_DIG_DLANE_3_RW_HS_TX_8
+      byte_offset: 56352
+    - name: CORE_DIG_DLANE_3_RW_HS_TX_9
+      byte_offset: 56356
+    - name: CORE_DIG_DLANE_3_RW_HS_TX_10
+      byte_offset: 56360
+    - name: CORE_DIG_DLANE_3_RW_HS_TX_11
+      byte_offset: 56364
+    - name: CORE_DIG_DLANE_3_RW_HS_TX_12
+      byte_offset: 56368
+    - name: CORE_DIG_DLANE_CLK_RW_CFG_0
+      byte_offset: 57344
+    - name: CORE_DIG_DLANE_CLK_RW_CFG_1
+      byte_offset: 57348
+    - name: CORE_DIG_DLANE_CLK_RW_CFG_2
+      byte_offset: 57352
+    - name: CORE_DIG_DLANE_CLK_RW_LP_0
+      byte_offset: 57600
+    - name: CORE_DIG_DLANE_CLK_RW_LP_1
+      byte_offset: 57604
+    - name: CORE_DIG_DLANE_CLK_R_LP_0
+      byte_offset: 57664
+    - name: CORE_DIG_DLANE_CLK_R_LP_1
+      byte_offset: 57668
+    - name: CORE_DIG_DLANE_CLK_R_HS_TX_0
+      byte_offset: 57792
+    - name: CORE_DIG_DLANE_CLK_RW_HS_RX_0
+      byte_offset: 57856
+    - name: CORE_DIG_DLANE_CLK_RW_HS_RX_1
+      byte_offset: 57860
+    - name: CORE_DIG_DLANE_CLK_RW_HS_RX_2
+      byte_offset: 57864
+    - name: CORE_DIG_DLANE_CLK_RW_HS_RX_3
+      byte_offset: 57868
+    - name: CORE_DIG_DLANE_CLK_RW_HS_RX_4
+      byte_offset: 57872
+    - name: CORE_DIG_DLANE_CLK_RW_HS_RX_5
+      byte_offset: 57876
+    - name: CORE_DIG_DLANE_CLK_RW_HS_RX_6
+      byte_offset: 57880
+    - name: CORE_DIG_DLANE_CLK_RW_HS_RX_7
+      byte_offset: 57884
+    - name: CORE_DIG_DLANE_CLK_RW_HS_RX_8
+      byte_offset: 57888
+    - name: CORE_DIG_DLANE_CLK_R_HS_RX_0
+      byte_offset: 57920
+      fieldset: DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_R_HS_RX_0
+    - name: CORE_DIG_DLANE_CLK_R_HS_RX_1
+      byte_offset: 57924
+      fieldset: DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_R_HS_RX_1
+    - name: CORE_DIG_DLANE_CLK_R_HS_RX_2
+      byte_offset: 57928
+    - name: CORE_DIG_DLANE_CLK_R_HS_RX_3
+      byte_offset: 57932
+    - name: CORE_DIG_DLANE_CLK_R_HS_RX_4
+      byte_offset: 57936
+    - name: CORE_DIG_DLANE_CLK_RW_HS_TX_0
+      byte_offset: 58368
+    - name: CORE_DIG_DLANE_CLK_RW_HS_TX_1
+      byte_offset: 58372
+    - name: CORE_DIG_DLANE_CLK_RW_HS_TX_2
+      byte_offset: 58376
+    - name: CORE_DIG_DLANE_CLK_RW_HS_TX_4
+      byte_offset: 58384
+    - name: CORE_DIG_DLANE_CLK_RW_HS_TX_5
+      byte_offset: 58388
+    - name: CORE_DIG_DLANE_CLK_RW_HS_TX_6
+      byte_offset: 58392
+    - name: CORE_DIG_DLANE_CLK_RW_HS_TX_8
+      byte_offset: 58400
+    - name: CORE_DIG_DLANE_CLK_RW_HS_TX_9
+      byte_offset: 58404
+    - name: CORE_DIG_DLANE_CLK_RW_HS_TX_10
+      byte_offset: 58408
+    - name: CORE_DIG_DLANE_CLK_RW_HS_TX_11
+      byte_offset: 58412
+    - name: CORE_DIG_DLANE_CLK_RW_HS_TX_12
+      byte_offset: 58416
+    - name: CORE_DIG_CLANE_0_RW_CFG_0
+      byte_offset: 81920
+    - name: CORE_DIG_CLANE_0_RW_HS_TX_6
+      byte_offset: 82968
+    - name: CORE_DIG_CLANE_1_RW_CFG_0
+      byte_offset: 83968
+    - name: CORE_DIG_CLANE_1_RW_HS_TX_6
+      byte_offset: 85016
+    - name: CORE_DIG_CLANE_2_RW_CFG_0
+      byte_offset: 86016
+    - name: CORE_DIG_CLANE_2_RW_HS_TX_6
+      byte_offset: 87064
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_STARTUP_RW_COMMON_DPHY_0_PWR_DWN:
+  description: ''
+  fields:
+    - name: addr
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_STARTUP_RW_COMMON_DPHY_1_BG_ON:
+  description: ''
+  fields:
+    - name: addr
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_STARTUP_RW_COMMON_DPHY_2_RCAL:
+  description: ''
+  fields:
+    - name: addr
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_STARTUP_RW_COMMON_DPHY_3_PLL_START:
+  description: ''
+  fields:
+    - name: addr
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_STARTUP_RW_COMMON_DPHY_4_HS_DCO_CAL:
+  description: ''
+  fields:
+    - name: addr
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_STARTUP_RW_COMMON_DPHY_5_OFFSET_CAL:
+  description: ''
+  fields:
+    - name: addr
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_STARTUP_RW_COMMON_DPHY_6_LP_DCO_CAL:
+  description: ''
+  fields:
+    - name: addr
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_STARTUP_RW_COMMON_DPHY_7_DPHY_DDL_CAL:
+  description: ''
+  fields:
+    - name: addr
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_STARTUP_RW_COMMON_DPHY_8_CPHY_DDL_CAL:
+  description: ''
+  fields:
+    - name: addr
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_STARTUP_RW_COMMON_DPHY_9_DESKEW_1P1:
+  description: ''
+  fields:
+    - name: addr
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_STARTUP_RW_COMMON_DPHY_A_HIBERNATE:
+  description: ''
+  fields:
+    - name: addr
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_STARTUP_RW_COMMON_DPHY_10_PHY_READY:
+  description: ''
+  fields:
+    - name: addr
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_STARTUP_RW_COMMON_STARTUP_1_1_PHY_READY:
+  description: ''
+  fields:
+    - name: DLY
+      bit_offset: 0
+      bit_size: 12
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_CALIBCTRL_RW_COMMON_CALIBCTRL_2_0_LANE_CALIB_OFFSETCAL:
+  description: ''
+  fields:
+    - name: LAST
+      bit_offset: 0
+      bit_size: 5
+    - name: EN
+      bit_offset: 5
+      bit_size: 5
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_CALIBCTRL_RW_COMMON_CALIBCTRL_2_0_OFFSETCAL_RECALIBRATION:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 10
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_CALIBCTRL_RW_COMMON_CALIBCTRL_2_0_TERMCAL_RECALIBRATION:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 11
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_CALIBCTRL_R_COMMON_CALIBCTRL_2_1_DDL_COUNTER_TARGET_OBS:
+  description: ''
+  fields:
+    - name: LSBs
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_CALIBCTRL_R_COMMON_CALIBCTRL_2_2_DDL_COUNTER_TARGET_OBS:
+  description: ''
+  fields:
+    - name: MSBs
+      bit_offset: 0
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_CALIBCTRL_R_COMMON_CALIBCTRL_2_2_DDL_COUNTER_MULT_OBS:
+  description: ''
+  fields:
+    - name: LSBs
+      bit_offset: 4
+      bit_size: 12
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_CALIBCTRL_R_COMMON_CALIBCTRL_2_3_DDL_COUNTER_MULT_OBS:
+  description: ''
+  fields:
+    - name: MSBs
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_CALIBCTRL_R_COMMON_CALIBCTRL_2_4_DDL_COUNTER_SUM:
+  description: ''
+  fields:
+    - name: OBS
+      bit_offset: 0
+      bit_size: 11
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_CALIBCTRL_R_COMMON_CALIBCTRL_2_5_DDL_CAL:
+  description: ''
+  fields:
+    - name: STATUS0
+      bit_offset: 0
+      bit_size: 4
+    - name: STATUS1
+      bit_offset: 4
+      bit_size: 4
+    - name: STATUS2
+      bit_offset: 8
+      bit_size: 4
+    - name: STATUS3
+      bit_offset: 12
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_CALIBCTRL_RW_COMMON_BG_0_BG_MAX:
+  description: ''
+  fields:
+    - name: COUNTER
+      bit_offset: 0
+      bit_size: 9
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_CALIBCTRL_RW_COMMON_CALIBCTRL_2_7_STATE_DONE_TIMER:
+  description: ''
+  fields:
+    - name: THRES
+      bit_offset: 0
+      bit_size: 5
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_CALIBCTRL_RW_ADC_CFG_0_ADC:
+  description: ''
+  fields:
+    - name: ENB
+      bit_offset: 0
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_CALIBCTRL_RW_ADC_CFG_1_ADC_WAIT_THRESH:
+  description: ''
+  fields:
+    - name: T1
+      bit_offset: 0
+      bit_size: 8
+    - name: T2
+      bit_offset: 8
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_CALIBCTRL_R_ADC_DEBUG_CB_ATB_SEL:
+  description: ''
+  fields:
+    - name: DAC
+      bit_offset: 0
+      bit_size: 10
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_CALIBCTRL_R_ADC_DEBUG_ADC:
+  description: ''
+  fields:
+    - name: DONE
+      bit_offset: 10
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_LPDCOCAL_TIMEBASE_LPCDCOCAL:
+  description: ''
+  fields:
+    - name: TIMEBASE
+      bit_offset: 0
+      bit_size: 10
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_LPDCOCAL_NREF_LPCDCOCAL:
+  description: ''
+  fields:
+    - name: NREF
+      bit_offset: 0
+      bit_size: 11
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_LPDCOCAL_NREF_RANGE_LPCDCOCAL_NREF:
+  description: ''
+  fields:
+    - name: RANGE
+      bit_offset: 0
+      bit_size: 5
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_LPDCOCAL_TWAIT_CONFIG_LPCDCOCAL_TWAIT:
+  description: ''
+  fields:
+    - name: COARSE
+      bit_offset: 0
+      bit_size: 9
+    - name: PON
+      bit_offset: 9
+      bit_size: 7
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_LPDCOCAL_VT_CONFIG_LPCDCOCAL_VT_TRACKING:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_LPDCOCAL_VT_CONFIG_LPCDCOCAL_USE_IDEAL:
+  description: ''
+  fields:
+    - name: NREF
+      bit_offset: 1
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_LPDCOCAL_VT_CONFIG_LPCDCOCAL_VT_NREF:
+  description: ''
+  fields:
+    - name: RANGE
+      bit_offset: 2
+      bit_size: 5
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_LPDCOCAL_VT_CONFIG_LPCDCOCAL_TWAIT:
+  description: ''
+  fields:
+    - name: FINE
+      bit_offset: 7
+      bit_size: 9
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_R_LPDCOCAL_DEBUG_RB_LPDCOCAL_N:
+  description: ''
+  fields:
+    - name: MEAS
+      bit_offset: 0
+      bit_size: 11
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_R_LPDCOCAL_DEBUG_RB_LPDCOCAL_ERROR:
+  description: ''
+  fields:
+    - name: RB
+      bit_offset: 11
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_R_LPDCOCAL_DEBUG_RB_LPDCOCAL_CAL:
+  description: ''
+  fields:
+    - name: DONE
+      bit_offset: 12
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_R_LPDCOCAL_DEBUG_RB_LPDCOCAL_N_MEAS:
+  description: ''
+  fields:
+    - name: DONE
+      bit_offset: 13
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_R_LPDCOCAL_DEBUG_RB_LPDCOCAL_ERROR_VT:
+  description: ''
+  fields:
+    - name: RB
+      bit_offset: 14
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_LPDCOCAL_COARSE_CFG_NCOARSE:
+  description: ''
+  fields:
+    - name: START
+      bit_offset: 0
+      bit_size: 2
+    - name: DIAG
+      bit_offset: 2
+      bit_size: 2
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_LPDCOCAL_COARSE_CFG_SCALE:
+  description: ''
+  fields:
+    - name: REF
+      bit_offset: 4
+      bit_size: 5
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_R_LPDCOCAL_DEBUG_COARSE_RB_LPDCOCAL_CAL_BOUND:
+  description: ''
+  fields:
+    - name: STATUS
+      bit_offset: 0
+      bit_size: 2
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_R_LPDCOCAL_DEBUG_COARSE_RB_LPDCOCAL_CAL_COARSE:
+  description: ''
+  fields:
+    - name: HIT
+      bit_offset: 2
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_R_LPDCOCAL_DEBUG_COARSE_RB_LPDCOCAL_PON:
+  description: ''
+  fields:
+    - name: STATE
+      bit_offset: 6
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_R_LPDCOCAL_DEBUG_MEASURE_CURR_ERROR_LPDCOCAL_MEAS_CURR:
+  description: ''
+  fields:
+    - name: ERROR
+      bit_offset: 0
+      bit_size: 12
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_R_LPDCOCAL_DEBUG_MEASURE_LAST_ERROR_LPDCOCAL_LAST_MEAS:
+  description: ''
+  fields:
+    - name: ERROR
+      bit_offset: 0
+      bit_size: 12
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_R_LPDCOCAL_DEBUG_MEASURE_LAST_ERROR_LPDCOCAL_VT:
+  description: ''
+  fields:
+    - name: STATE
+      bit_offset: 12
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_R_LPDCOCAL_DEBUG_VT_LPDCOCAL_N_WITHIN_RANGE:
+  description: ''
+  fields:
+    - name: VT
+      bit_offset: 0
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_R_LPDCOCAL_DEBUG_VT_LPDCOCAL_N_BELOW_RANGE:
+  description: ''
+  fields:
+    - name: VT
+      bit_offset: 1
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_R_LPDCOCAL_DEBUG_VT_LPDCOCAL_N_ABOVE_RANGE:
+  description: ''
+  fields:
+    - name: VT
+      bit_offset: 2
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_R_LPDCOCAL_DEBUG_VT_LPDCOCAL_MEAS_ADJ_P0:
+  description: ''
+  fields:
+    - name: VT
+      bit_offset: 3
+      bit_size: 11
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_LB_TIMEBASE_CONFIG_LOOPBACK:
+  description: ''
+  fields:
+    - name: TIMEBASE
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_LB_STARTCMU_CONFIG_LB_START:
+  description: ''
+  fields:
+    - name: CMU
+      bit_offset: 0
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_R_LBPULSE_COUNTER_RB_LB_PULSE:
+  description: ''
+  fields:
+    - name: COUNTER
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_R_LB_START_CMU_RB_LB_STOP:
+  description: ''
+  fields:
+    - name: CMU
+      bit_offset: 0
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_LB_DPHY_BURST_START_LBERT_DPHY_TXREQUESTHS:
+  description: ''
+  fields:
+    - name: CLK
+      bit_offset: 0
+      bit_size: 1
+    - name: DATA
+      bit_offset: 1
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_LB_DPHY_BURST_START_LBERT_DPHY_TXDATATRANSFERENHS:
+  description: ''
+  fields:
+    - name: DATA
+      bit_offset: 2
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_LB_DPHY_BURST_START_LBERT_DPHY_TXSKEWCALHS:
+  description: ''
+  fields:
+    - name: DATA
+      bit_offset: 3
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_LB_DPHY_BURST_START_LBERT_DPHY_TXALTERNATECALHS:
+  description: ''
+  fields:
+    - name: DATA
+      bit_offset: 4
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_LB_CPHY_BURST_START_LBERT_CPHY_TXREQUESTHS:
+  description: ''
+  fields:
+    - name: DATA
+      bit_offset: 0
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_LB_CPHY_BURST_START_LBERT_CPHY_TXDATATRANSFERENHS:
+  description: ''
+  fields:
+    - name: DATA
+      bit_offset: 1
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_DDLCAL_CFG_0_DDLCAL_TIMEBASE:
+  description: ''
+  fields:
+    - name: TARGET
+      bit_offset: 0
+      bit_size: 10
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_DDLCAL_CFG_1_DDLCAL_MAX:
+  description: ''
+  fields:
+    - name: PHASE
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_DDLCAL_CFG_1_DDLCAL_DISABLE:
+  description: ''
+  fields:
+    - name: TIME
+      bit_offset: 8
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_DDLCAL_CFG_2_DDLCAL_ENABLE:
+  description: ''
+  fields:
+    - name: WAIT
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_DDLCAL_CFG_2_DDLCAL_DDL:
+  description: ''
+  fields:
+    - name: DLL
+      bit_offset: 8
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_DDLCAL_CFG_2_DDLCAL_UPDATE:
+  description: ''
+  fields:
+    - name: SETTINGS
+      bit_offset: 9
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_DDLCAL_CFG_2_DDLCAL_TUNE:
+  description: ''
+  fields:
+    - name: MODE
+      bit_offset: 10
+      bit_size: 2
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_DDLCAL_CFG_2_DDLCAL:
+  description: ''
+  fields:
+    - name: WAIT
+      bit_offset: 12
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_DDLCAL_CFG_3_DDLCAL_COUNTER:
+  description: ''
+  fields:
+    - name: REF
+      bit_offset: 0
+      bit_size: 10
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_DDLCAL_CFG_4_DDLCAL_STUCK:
+  description: ''
+  fields:
+    - name: THRESH
+      bit_offset: 0
+      bit_size: 10
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_DDLCAL_CFG_5_DDLCAL_DDL_COARSE:
+  description: ''
+  fields:
+    - name: BANK
+      bit_offset: 0
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_DDLCAL_CFG_5_DDLCAL_DLL:
+  description: ''
+  fields:
+    - name: FBK
+      bit_offset: 4
+      bit_size: 6
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_DDLCAL_CFG_6_DDLCAL_MAX:
+  description: ''
+  fields:
+    - name: DIFF
+      bit_offset: 0
+      bit_size: 10
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_DDLCAL_CFG_6_DDLCAL_CLEAR_COUNT:
+  description: ''
+  fields:
+    - name: THRESH
+      bit_offset: 10
+      bit_size: 6
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_DDLCAL_CFG_7_DDLCAL_START:
+  description: ''
+  fields:
+    - name: DELAY
+      bit_offset: 0
+      bit_size: 7
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_DDLCAL_CFG_7_DDLCAL_DECR:
+  description: ''
+  fields:
+    - name: WAIT
+      bit_offset: 7
+      bit_size: 6
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_R_DDLCAL_DEBUG_0_DDLCAL:
+  description: ''
+  fields:
+    - name: COUNTER0
+      bit_offset: 0
+      bit_size: 10
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_R_DDLCAL_DEBUG_1_DDLCAL:
+  description: ''
+  fields:
+    - name: COUNTERX
+      bit_offset: 0
+      bit_size: 10
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_PARITY_TEST_CR_PARITY:
+  description: ''
+  fields:
+    - name: TESTCLEAR
+      bit_offset: 0
+      bit_size: 1
+    - name: TESTSET
+      bit_offset: 1
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_STARTUP_OVR_0_STARTUP_STATE_OVR:
+  description: ''
+  fields:
+    - name: VAL
+      bit_offset: 0
+      bit_size: 5
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_STARTUP_STATE_OVR_1_STARTUP_STATE_OVR:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_STARTUP_STATE_OVR_1_TXCLKESC:
+  description: ''
+  fields:
+    - name: BYPASS
+      bit_offset: 1
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_DTB_SELECTOR_DTB_SELECT:
+  description: ''
+  fields:
+    - name: ADDR
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_DTB_SELECTOR_DTB_SOURCE:
+  description: ''
+  fields:
+    - name: SELECT
+      bit_offset: 8
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_HSTX_FIFO_CFG_TXDATATRANSFERENHS:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 0
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_HSTX_FIFO_CFG_WADDR:
+  description: ''
+  fields:
+    - name: INIT
+      bit_offset: 1
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_HSTX_FIFO_CFG_TXSYMBOLCLKHS:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 4
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_DPHY_CLK_SPARE_DPHY_CLK_LANE:
+  description: ''
+  fields:
+    - name: SPARE
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_COMMON_CFG_CFG_CLK_DIV:
+  description: ''
+  fields:
+    - name: FACTOR
+      bit_offset: 0
+      bit_size: 2
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_TERMCAL_CFG_0_TERMCAL:
+  description: ''
+  fields:
+    - name: TIMER
+      bit_offset: 0
+      bit_size: 7
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_R_TERMCAL_DEBUG_0_TERMCAL_COMP:
+  description: ''
+  fields:
+    - name: UNCHANGED
+      bit_offset: 0
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_R_TERMCAL_DEBUG_0_TERMCAL_CAL:
+  description: ''
+  fields:
+    - name: ERROR
+      bit_offset: 1
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_OFFSETCAL_CFG_0_OFFSETCAL_WAIT:
+  description: ''
+  fields:
+    - name: THRESH
+      bit_offset: 0
+      bit_size: 5
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_OFFSETCAL_CFG_0_OFFSETCAL_CALIB:
+  description: ''
+  fields:
+    - name: MODE
+      bit_offset: 5
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_R_OFFSETCAL_DEBUG_LANE0_OFFSETCAL_ERRCAL:
+  description: ''
+  fields:
+    - name: RIGHT
+      bit_offset: 0
+      bit_size: 4
+    - name: LEFT
+      bit_offset: 4
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_R_OFFSETCAL_DEBUG_LANE1_OFFSETCAL_ERRCAL:
+  description: ''
+  fields:
+    - name: RIGHT
+      bit_offset: 0
+      bit_size: 4
+    - name: LEFT
+      bit_offset: 4
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_R_OFFSETCAL_DEBUG_LANE2_OFFSETCAL_ERRCAL:
+  description: ''
+  fields:
+    - name: RIGHT
+      bit_offset: 0
+      bit_size: 4
+    - name: LEFT
+      bit_offset: 4
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_R_OFFSETCAL_DEBUG_LANE3_OFFSETCAL_ERRCAL:
+  description: ''
+  fields:
+    - name: RIGHT
+      bit_offset: 0
+      bit_size: 4
+    - name: LEFT
+      bit_offset: 4
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_R_OFFSETCAL_DEBUG_LANE4_OFFSETCAL_ERRCAL:
+  description: ''
+  fields:
+    - name: RIGHT
+      bit_offset: 0
+      bit_size: 4
+    - name: LEFT
+      bit_offset: 4
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_PLL_STARTUP_CFG_0_PLL_RST:
+  description: ''
+  fields:
+    - name: TIME
+      bit_offset: 0
+      bit_size: 10
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_PLL_STARTUP_CFG_1_PLL_GEAR_SHIFT:
+  description: ''
+  fields:
+    - name: TIME
+      bit_offset: 0
+      bit_size: 10
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_PLL_STARTUP_CFG_2_PLL_LOCK_DET:
+  description: ''
+  fields:
+    - name: TIME
+      bit_offset: 0
+      bit_size: 10
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_TX_HIBERNATE_CFG_0_HIBERNATE:
+  description: ''
+  fields:
+    - name: EXIT
+      bit_offset: 0
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_IOCTRL_RW_AFE_LANE0_CTRL_2_0_OA_LANE0_SPARE:
+  description: ''
+  fields:
+    - name: IN
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_TRIO0_0_DESERIALIZER_DATA_EN_DELAY:
+  description: ''
+  fields:
+    - name: THRESH
+      bit_offset: 0
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_TRIO0_0_DESERIALIZER_DIV_EN_DELAY:
+  description: ''
+  fields:
+    - name: THRESH
+      bit_offset: 3
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_TRIO0_0_DESERIALIZER_DIV_EN_DELAY_DEASS:
+  description: ''
+  fields:
+    - name: THRESH
+      bit_offset: 6
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_TRIO0_0_POST_RECEIVED_RESET:
+  description: ''
+  fields:
+    - name: THRESH
+      bit_offset: 9
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_TRIO0_1_POST_DET_DELAY:
+  description: ''
+  fields:
+    - name: THRESH
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_TRIO0_2_DESERIALIZER_EN_DELAY_DEASS:
+  description: ''
+  fields:
+    - name: THRESH
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_IOCTRL_RW_AFE_LANE1_CTRL_2_0_OA_LANE1_SPARE:
+  description: ''
+  fields:
+    - name: IN
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_TRIO1_0_DESERIALIZER_DATA_EN_DELAY:
+  description: ''
+  fields:
+    - name: THRESH
+      bit_offset: 0
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_TRIO1_0_DESERIALIZER_DIV_EN_DELAY:
+  description: ''
+  fields:
+    - name: THRESH
+      bit_offset: 3
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_TRIO1_0_DESERIALIZER_DIV_EN_DELAY_DEASS:
+  description: ''
+  fields:
+    - name: THRESH
+      bit_offset: 6
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_TRIO1_0_POST_RECEIVED_RESET:
+  description: ''
+  fields:
+    - name: THRESH
+      bit_offset: 9
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_TRIO1_1_POST_DET_DELAY:
+  description: ''
+  fields:
+    - name: THRESH
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_TRIO1_2_DESERIALIZER_EN_DELAY_DEASS:
+  description: ''
+  fields:
+    - name: THRESH
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_IOCTRL_RW_AFE_LANE2_CTRL_2_0_OA_LANE2_SPARE:
+  description: ''
+  fields:
+    - name: IN
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_TRIO2_0_DESERIALIZER_DATA_EN_DELAY:
+  description: ''
+  fields:
+    - name: THRESH
+      bit_offset: 0
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_TRIO2_0_DESERIALIZER_DIV_EN_DELAY:
+  description: ''
+  fields:
+    - name: THRESH
+      bit_offset: 3
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_TRIO2_0_DESERIALIZER_DIV_EN_DELAY_DEASS:
+  description: ''
+  fields:
+    - name: THRESH
+      bit_offset: 6
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_TRIO2_0_POST_RECEIVED_RESET:
+  description: ''
+  fields:
+    - name: THRESH
+      bit_offset: 9
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_TRIO2_1_POST_DET_DELAY:
+  description: ''
+  fields:
+    - name: THRESH
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_TRIO2_2_DESERIALIZER_EN_DELAY_DEASS:
+  description: ''
+  fields:
+    - name: THRESH
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_IOCTRL_RW_AFE_LANE3_CTRL_2_0_OA_LANE3_SPARE:
+  description: ''
+  fields:
+    - name: IN
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_IOCTRL_RW_AFE_LANE4_CTRL_2_0_OA_LANE4_SPARE:
+  description: ''
+  fields:
+    - name: IN
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_0_DPHY_PREAMBLE_EN:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_1_OCLA_DATA:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 0
+      bit_size: 9
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_2_OCLA_DATA:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_3_OCLA_CLK:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 0
+      bit_size: 9
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_4_OCLA_CLK:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_5_INPUT_SAMPLING:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_5_DTB:
+  description: ''
+  fields:
+    - name: SELECT
+      bit_offset: 1
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_5_HSRX_DPHY_DLL_EN:
+  description: ''
+  fields:
+    - name: DRV
+      bit_offset: 9
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_5_WORD_CLK_SEL:
+  description: ''
+  fields:
+    - name: DLANE
+      bit_offset: 10
+      bit_size: 2
+    - name: CLANE
+      bit_offset: 12
+      bit_size: 2
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_6_DESERIALIZER_DIV_EN_DELAY_THRESH:
+  description: ''
+  fields:
+    - name: D
+      bit_offset: 0
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_6_DESERIALIZER_EN_DEASS_COUNT_THRESH:
+  description: ''
+  fields:
+    - name: D
+      bit_offset: 3
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_7_LANE0_HSRX_WORD_CLK_SEL_GATING:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 2
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_7_LANE1_HSRX_WORD_CLK_SEL_GATING:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 2
+      bit_size: 2
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_7_LANE2_HSRX_WORD_CLK_SEL_GATING:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 4
+      bit_size: 2
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_7_LANE3_HSRX_WORD_CLK_SEL_GATING:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 6
+      bit_size: 2
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_7_LANE4_HSRX_WORD_CLK_SEL_GATING:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 8
+      bit_size: 2
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_8_LANE0_HSRX_WORD_CLK_GATING_OVR:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+    - name: VAL
+      bit_offset: 1
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_8_LANE1_HSRX_WORD_CLK_GATING_OVR:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 2
+      bit_size: 1
+    - name: VAL
+      bit_offset: 3
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_8_LANE2_HSRX_WORD_CLK_GATING_OVR:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 4
+      bit_size: 1
+    - name: VAL
+      bit_offset: 5
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_8_LANE3_HSRX_WORD_CLK_GATING_OVR:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 6
+      bit_size: 1
+    - name: VAL
+      bit_offset: 7
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_8_LANE4_HSRX_WORD_CLK_GATING_OVR:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 8
+      bit_size: 1
+    - name: VAL
+      bit_offset: 9
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_9_LP_DCO_CLK_GATING_OVR:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+    - name: VAL
+      bit_offset: 1
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_9_LP_DCO_CLK_SEL_GATING:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 2
+      bit_size: 2
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_9_HSTXLB_DCO_CLK_GATING_OVR:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 4
+      bit_size: 1
+    - name: VAL
+      bit_offset: 5
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_9_HSTXLB_DCO_CLK_SEL_GATING:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 6
+      bit_size: 2
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_10_LANE0_CDROSC_CLK_SEL_GATING:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 2
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_10_LANE2_CDROSC_CLK_SEL_GATING:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 2
+      bit_size: 2
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_10_LANE3_CDROSC_CLK_SEL_GATING:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 4
+      bit_size: 2
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_11_LANE0_CDROSC_CLK_GATING_OVR:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+    - name: VAL
+      bit_offset: 1
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_11_LANE2_CDROSC_CLK_GATING_OVR:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 2
+      bit_size: 1
+    - name: VAL
+      bit_offset: 3
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_11_LANE3_CDROSC_CLK_GATING_OVR:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 4
+      bit_size: 1
+    - name: VAL
+      bit_offset: 5
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_12_LANE0_DDL_OSC_SEL_GATING:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 2
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_12_LANE1_DDL_OSC_SEL_GATING:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 2
+      bit_size: 2
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_12_LANE2_DDL_OSC_SEL_GATING:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 4
+      bit_size: 2
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_12_LANE3_DDL_OSC_SEL_GATING:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 6
+      bit_size: 2
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_12_LANE4_DDL_OSC_SEL_GATING:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 8
+      bit_size: 2
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_13_LANE0_DDL_OSC_GATING_OVR:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+    - name: VAL
+      bit_offset: 1
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_13_LANE1_DDL_OSC_GATING_OVR:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 2
+      bit_size: 1
+    - name: VAL
+      bit_offset: 3
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_13_LANE2_DDL_OSC_GATING_OVR:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 4
+      bit_size: 1
+    - name: VAL
+      bit_offset: 5
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_13_LANE3_DDL_OSC_GATING_OVR:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 6
+      bit_size: 1
+    - name: VAL
+      bit_offset: 7
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_13_LANE4_DDL_OSC_GATING_OVR:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 8
+      bit_size: 1
+    - name: VAL
+      bit_offset: 9
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_14_LANE0_HSTX_WORD_CLK_SEL_GATING:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 2
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_14_LANE1_HSTX_WORD_CLK_SEL_GATING:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 2
+      bit_size: 2
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_14_LANE2_HSTX_WORD_CLK_SEL_GATING:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 4
+      bit_size: 2
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_14_LANE3_HSTX_WORD_CLK_SEL_GATING:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 6
+      bit_size: 2
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_14_LANE4_HSTX_WORD_CLK_SEL_GATING:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 8
+      bit_size: 2
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_15_LANE0_HSTX_WORD_CLK_GATING_OVR:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+    - name: VAL
+      bit_offset: 1
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_15_LANE1_HSTX_WORD_CLK_GATING_OVR:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 2
+      bit_size: 1
+    - name: VAL
+      bit_offset: 3
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_15_LANE2_HSTX_WORD_CLK_GATING_OVR:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 4
+      bit_size: 1
+    - name: VAL
+      bit_offset: 5
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_15_LANE3_HSTX_WORD_CLK_GATING_OVR:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 6
+      bit_size: 1
+    - name: VAL
+      bit_offset: 7
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_RW_COMMON_15_LANE4_HSTX_WORD_CLK_GATING_OVR:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 8
+      bit_size: 1
+    - name: VAL
+      bit_offset: 9
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_ANACTRL_RW_COMMON_ANACTRL_0_CB_DSK_CLK_MODE:
+  description: ''
+  fields:
+    - name: CFG
+      bit_offset: 0
+      bit_size: 2
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_ANACTRL_RW_COMMON_ANACTRL_0_CB_LP_DCO_EN:
+  description: ''
+  fields:
+    - name: DLY
+      bit_offset: 2
+      bit_size: 6
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_ANACTRL_RW_COMMON_ANACTRL_0_CB_LP_DCO_CLK_EN:
+  description: ''
+  fields:
+    - name: DLY
+      bit_offset: 8
+      bit_size: 6
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_ANACTRL_RW_COMMON_ANACTRL_0_CB_CHOP_CLK_DIV:
+  description: ''
+  fields:
+    - name: SEL
+      bit_offset: 14
+      bit_size: 2
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_ANACTRL_RW_COMMON_ANACTRL_1_CB_LP_DCO_CLK_EN:
+  description: ''
+  fields:
+    - name: DLY
+      bit_offset: 0
+      bit_size: 6
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_ANACTRL_RW_COMMON_ANACTRL_1_HSRX:
+  description: ''
+  fields:
+    - name: DLY
+      bit_offset: 6
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_ANACTRL_RW_COMMON_ANACTRL_3_HSTX_DIV_EN_CNTR:
+  description: ''
+  fields:
+    - name: DLY
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_ANACTRL_RW_COMMON_ANACTRL_3_HIBERNATE:
+  description: ''
+  fields:
+    - name: DLY
+      bit_offset: 8
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_COMMON_RW_DESKEW_FINE_MEM_DESKEW_FINE_MEM:
+  description: ''
+  fields:
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 3
+    - name: ADDR
+      bit_offset: 3
+      bit_size: 7
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_COMMON_RW_DESKEW_FINE_MEM_DESKEW_FINE_MEM_WR:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 10
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_COMMON_R_DESKEW_FINE_MEM_DESKEW_FINE_MEM:
+  description: ''
+  fields:
+    - name: VALUE
+      bit_offset: 0
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_DPHY_LANE0_LBERT_1_LBERT_PG_USER:
+  description: ''
+  fields:
+    - name: PATTERN
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_R_DPHY_LANE0_LBERT_0_LBERT_PM_ERROR:
+  description: ''
+  fields:
+    - name: COUNTER
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_R_DPHY_LANE0_LBERT_1_LBERT_PG:
+  description: ''
+  fields:
+    - name: ENABLED
+      bit_offset: 0
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_DPHY_LANE0_SPARE_DPHY_LANE_0:
+  description: ''
+  fields:
+    - name: SPARE
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_DPHY_LANE1_LBERT_1_LBERT_PG_USER:
+  description: ''
+  fields:
+    - name: PATTERN
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_R_DPHY_LANE1_LBERT_0_LBERT_PM_ERROR:
+  description: ''
+  fields:
+    - name: COUNTER
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_R_DPHY_LANE1_LBERT_1_LBERT_PG:
+  description: ''
+  fields:
+    - name: ENABLED
+      bit_offset: 0
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_DPHY_LANE1_SPARE_DPHY_LANE_1:
+  description: ''
+  fields:
+    - name: SPARE
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_DPHY_LANE2_LBERT_1_LBERT_PG_USER:
+  description: ''
+  fields:
+    - name: PATTERN
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_R_DPHY_LANE2_LBERT_0_LBERT_PM_ERROR:
+  description: ''
+  fields:
+    - name: COUNTER
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_R_DPHY_LANE2_LBERT_1_LBERT_PG:
+  description: ''
+  fields:
+    - name: ENABLED
+      bit_offset: 0
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_DPHY_LANE2_SPARE_DPHY_LANE_2:
+  description: ''
+  fields:
+    - name: SPARE
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_DPHY_LANE3_LBERT_1_LBERT_PG_USER:
+  description: ''
+  fields:
+    - name: PATTERN
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_R_DPHY_LANE3_LBERT_0_LBERT_PM_ERROR:
+  description: ''
+  fields:
+    - name: COUNTER
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_R_DPHY_LANE3_LBERT_1_LBERT_PG:
+  description: ''
+  fields:
+    - name: ENABLED
+      bit_offset: 0
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_PPI_RW_DPHY_LANE3_SPARE_DPHY_LANE_3:
+  description: ''
+  fields:
+    - name: SPARE
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_CFG_0_CFG_0_LP_PIN_SWAP:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_CFG_0_CFG_0_HS_PIN_SWAP:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 1
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_CFG_0_LOOPBACK_MODE:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 2
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_CFG_1_CFG_1_PREAMBLE_EN:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_CFG_1_CFG_1_BACKWARDS_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 1
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_CFG_1_CFG_1_DESKEW_SUPPORTED:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 2
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_CFG_1_CFG_1_SOT_DETECTION:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 3
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_CFG_2_CFG_2:
+  description: ''
+  fields:
+    - name: SPARE
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_LP_0_LP_0_TTAGET:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_LP_0_LP_0_TTASURE:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 4
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_LP_0_LP_0_TTAGO:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 8
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_LP_0_LP_0_ITMINRX:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 12
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_LP_1_LP_1_ERRCONTENTION_THRES:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_LP_1_LP_1_LPTX_PON_TIMER:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 8
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_R_LP_0_LP_0:
+  description: ''
+  fields:
+    - name: HSACTIVERX
+      bit_offset: 0
+      bit_size: 1
+    - name: RXHSRQST
+      bit_offset: 1
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_R_LP_1_LP_1_STATE:
+  description: ''
+  fields:
+    - name: BTA
+      bit_offset: 0
+      bit_size: 4
+    - name: LPRX
+      bit_offset: 4
+      bit_size: 4
+    - name: LPTX
+      bit_offset: 8
+      bit_size: 5
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_R_HS_TX_0_STATE:
+  description: ''
+  fields:
+    - name: DHSTX
+      bit_offset: 0
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_R_HS_TX_0_STATE_DCO:
+  description: ''
+  fields:
+    - name: DHSTX
+      bit_offset: 4
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_HS_RX_0_HS_RX_0_TCLKSETTLE:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_HS_RX_0_HS_RX_0_THSSETTLE:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 8
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_HS_RX_1_HS_RX_1_FILTER_SIZE_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_HS_RX_1_HS_RX_1_FILTER_SIZE_SKEWCAL:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 8
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_HS_RX_2_HS_RX_2_LATENCY_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_HS_RX_2_HS_RX_2_LATENCY_SKEWCAL:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 3
+      bit_size: 2
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_HS_RX_2_HS_RX_2_JUMP2STEPS_SKEWCAL:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 5
+      bit_size: 2
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_HS_RX_2_HS_RX_2_POLARITY_SKEWCAL:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 7
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_HS_RX_2_HS_RX_2_RECAL_SKEWCAL:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 8
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_HS_RX_2_HS_RX_2_WINDOW_SIZE_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 9
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_HS_RX_2_HS_RX_2_UPDATE_SETTINGS_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 13
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_HS_RX_2_HS_RX_2_UPDATE_SETTINGS_SKEWCAL:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 14
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_HS_RX_2_HS_RX_2_IGNORE_ALTERNCAL:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 15
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_HS_RX_3_HS_RX_3_STEP_SIZE_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_HS_RX_3_HS_RX_3_FJUMP_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 3
+      bit_size: 6
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_HS_RX_3_HS_RX_3_SHIFT_STEP_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 9
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_HS_RX_3_HS_RX_3_SHRINK_STEP_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 12
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_HS_RX_3_HS_RX_3_ROUNDUP_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 15
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_HS_RX_4_HS_RX_4_MAX_ITERATIONS_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_HS_RX_5_HS_RX_5_DDL_LEFT_INIT:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_HS_RX_5_HS_RX_5_DDL_MID_INIT:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 8
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_HS_RX_6_HS_RX_6_DDL_RIGHT_INIT:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_HS_RX_6_HS_RX_6_MIN_EYE_OPENING_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 8
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_HS_RX_8_HS_RX_8_FILTER_DITHERING_EN:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_HS_RX_8_HS_RX_8_START_DELAY:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 1
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_R_HS_RX_0:
+  description: ''
+  fields:
+    - name: DESKEWCALDONE
+      bit_offset: 0
+      bit_size: 1
+    - name: DESKEWCALFAILED
+      bit_offset: 1
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_R_HS_RX_0_DESKEW_CAL:
+  description: ''
+  fields:
+    - name: STATUS
+      bit_offset: 2
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_R_HS_RX_1:
+  description: ''
+  fields:
+    - name: DESKEWCALTIME
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_R_HS_RX_2_DESKEW:
+  description: ''
+  fields:
+    - name: STATE
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_R_HS_RX_3_DESKEW_PREV:
+  description: ''
+  fields:
+    - name: ACTION
+      bit_offset: 0
+      bit_size: 4
+    - name: RESULT
+      bit_offset: 4
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_R_HS_RX_3_DESKEW_CURR:
+  description: ''
+  fields:
+    - name: ACTION
+      bit_offset: 5
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_R_HS_RX_3_DESKEW_FAILED:
+  description: ''
+  fields:
+    - name: LEFT
+      bit_offset: 9
+      bit_size: 1
+    - name: RIGHT
+      bit_offset: 10
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_R_HS_RX_3_DESKEW_ALL:
+  description: ''
+  fields:
+    - name: DIFF
+      bit_offset: 11
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_R_HS_RX_4_EDGE1POINTER:
+  description: ''
+  fields:
+    - name: SKEWCAL
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_R_HS_RX_4_EDGE2POINTER:
+  description: ''
+  fields:
+    - name: SKEWCAL
+      bit_offset: 8
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_HS_TX_0_HS_TX_0_THSTRAIL:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_HS_TX_1_HS_TX_1_THSZERO:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_HS_TX_2_HS_TX_2_TCLKPRE:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_HS_TX_4_HS_TX_4_TLPX_DCO:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_HS_TX_5_HS_TX_5_THSTRAIL_DCO:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_HS_TX_6_HS_TX_6_TLP11END_DCO:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_HS_TX_8_HS_TX_8_TCLKPOST:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_HS_TX_9_HS_TX_9_THSPRPR_DCO:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_HS_TX_10_HS_TX_10_TLP11INIT_DCO:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_HS_TX_11_HS_TX_11_TPREAMBLE:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_0_RW_HS_TX_12_HS_TX_12_THSEXIT_DCO:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_CFG_0_CFG_0_LP_PIN_SWAP:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_CFG_0_CFG_0_HS_PIN_SWAP:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 1
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_CFG_0_LOOPBACK_MODE:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 2
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_CFG_1_CFG_1_PREAMBLE_EN:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_CFG_1_CFG_1_BACKWARDS_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 1
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_CFG_1_CFG_1_DESKEW_SUPPORTED:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 2
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_CFG_1_CFG_1_SOT_DETECTION:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 3
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_CFG_2_CFG_2:
+  description: ''
+  fields:
+    - name: SPARE
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_LP_0_LP_0_TTAGET:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_LP_0_LP_0_TTASURE:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 4
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_LP_0_LP_0_TTAGO:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 8
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_LP_0_LP_0_ITMINRX:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 12
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_LP_1_LP_1_ERRCONTENTION_THRES:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_LP_1_LP_1_LPTX_PON_TIMER:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 8
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_R_LP_0_LP_0:
+  description: ''
+  fields:
+    - name: HSACTIVERX
+      bit_offset: 0
+      bit_size: 1
+    - name: RXHSRQST
+      bit_offset: 1
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_R_LP_1_LP_1_STATE:
+  description: ''
+  fields:
+    - name: BTA
+      bit_offset: 0
+      bit_size: 4
+    - name: LPRX
+      bit_offset: 4
+      bit_size: 4
+    - name: LPTX
+      bit_offset: 8
+      bit_size: 5
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_R_HS_TX_0_STATE:
+  description: ''
+  fields:
+    - name: DHSTX
+      bit_offset: 0
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_R_HS_TX_0_STATE_DCO:
+  description: ''
+  fields:
+    - name: DHSTX
+      bit_offset: 4
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_HS_RX_0_HS_RX_0_TCLKSETTLE:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_HS_RX_0_HS_RX_0_THSSETTLE:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 8
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_HS_RX_1_HS_RX_1_FILTER_SIZE_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_HS_RX_1_HS_RX_1_FILTER_SIZE_SKEWCAL:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 8
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_HS_RX_2_HS_RX_2_LATENCY_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_HS_RX_2_HS_RX_2_LATENCY_SKEWCAL:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 3
+      bit_size: 2
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_HS_RX_2_HS_RX_2_JUMP2STEPS_SKEWCAL:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 5
+      bit_size: 2
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_HS_RX_2_HS_RX_2_POLARITY_SKEWCAL:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 7
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_HS_RX_2_HS_RX_2_RECAL_SKEWCAL:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 8
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_HS_RX_2_HS_RX_2_WINDOW_SIZE_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 9
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_HS_RX_2_HS_RX_2_UPDATE_SETTINGS_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 13
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_HS_RX_2_HS_RX_2_UPDATE_SETTINGS_SKEWCAL:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 14
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_HS_RX_2_HS_RX_2_IGNORE_ALTERNCAL:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 15
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_HS_RX_3_HS_RX_3_STEP_SIZE_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_HS_RX_3_HS_RX_3_FJUMP_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 3
+      bit_size: 6
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_HS_RX_3_HS_RX_3_SHIFT_STEP_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 9
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_HS_RX_3_HS_RX_3_SHRINK_STEP_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 12
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_HS_RX_3_HS_RX_3_ROUNDUP_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 15
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_HS_RX_4_HS_RX_4_MAX_ITERATIONS_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_HS_RX_5_HS_RX_5_DDL_LEFT_INIT:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_HS_RX_5_HS_RX_5_DDL_MID_INIT:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 8
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_HS_RX_6_HS_RX_6_DDL_RIGHT_INIT:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_HS_RX_6_HS_RX_6_MIN_EYE_OPENING_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 8
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_HS_RX_8_HS_RX_8_FILTER_DITHERING_EN:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_HS_RX_8_HS_RX_8_START_DELAY:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 1
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_R_HS_RX_0:
+  description: ''
+  fields:
+    - name: DESKEWCALDONE
+      bit_offset: 0
+      bit_size: 1
+    - name: DESKEWCALFAILED
+      bit_offset: 1
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_R_HS_RX_0_DESKEW_CAL:
+  description: ''
+  fields:
+    - name: STATUS
+      bit_offset: 2
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_R_HS_RX_1:
+  description: ''
+  fields:
+    - name: DESKEWCALTIME
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_R_HS_RX_2_DESKEW:
+  description: ''
+  fields:
+    - name: STATE
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_R_HS_RX_3_DESKEW_PREV:
+  description: ''
+  fields:
+    - name: ACTION
+      bit_offset: 0
+      bit_size: 4
+    - name: RESULT
+      bit_offset: 4
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_R_HS_RX_3_DESKEW_CURR:
+  description: ''
+  fields:
+    - name: ACTION
+      bit_offset: 5
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_R_HS_RX_3_DESKEW_FAILED:
+  description: ''
+  fields:
+    - name: LEFT
+      bit_offset: 9
+      bit_size: 1
+    - name: RIGHT
+      bit_offset: 10
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_R_HS_RX_3_DESKEW_ALL:
+  description: ''
+  fields:
+    - name: DIFF
+      bit_offset: 11
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_R_HS_RX_4_EDGE1POINTER:
+  description: ''
+  fields:
+    - name: SKEWCAL
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_R_HS_RX_4_EDGE2POINTER:
+  description: ''
+  fields:
+    - name: SKEWCAL
+      bit_offset: 8
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_HS_TX_0_HS_TX_0_THSTRAIL:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_HS_TX_1_HS_TX_1_THSZERO:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_HS_TX_2_HS_TX_2_TCLKPRE:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_HS_TX_4_HS_TX_4_TLPX_DCO:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_HS_TX_5_HS_TX_5_THSTRAIL_DCO:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_HS_TX_6_HS_TX_6_TLP11END_DCO:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_HS_TX_8_HS_TX_8_TCLKPOST:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_HS_TX_9_HS_TX_9_THSPRPR_DCO:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_HS_TX_10_HS_TX_10_TLP11INIT_DCO:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_HS_TX_11_HS_TX_11_TPREAMBLE:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_1_RW_HS_TX_12_HS_TX_12_THSEXIT_DCO:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_CFG_0_CFG_0_LP_PIN_SWAP:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_CFG_0_CFG_0_HS_PIN_SWAP:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 1
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_CFG_0_LOOPBACK_MODE:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 2
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_CFG_1_CFG_1_PREAMBLE_EN:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_CFG_1_CFG_1_BACKWARDS_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 1
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_CFG_1_CFG_1_DESKEW_SUPPORTED:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 2
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_CFG_1_CFG_1_SOT_DETECTION:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 3
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_CFG_2_CFG_2:
+  description: ''
+  fields:
+    - name: SPARE
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_LP_0_LP_0_TTAGET:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_LP_0_LP_0_TTASURE:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 4
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_LP_0_LP_0_TTAGO:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 8
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_LP_0_LP_0_ITMINRX:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 12
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_LP_1_LP_1_ERRCONTENTION_THRES:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_LP_1_LP_1_LPTX_PON_TIMER:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 8
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_R_LP_0_LP_0:
+  description: ''
+  fields:
+    - name: HSACTIVERX
+      bit_offset: 0
+      bit_size: 1
+    - name: RXHSRQST
+      bit_offset: 1
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_R_LP_1_LP_1_STATE:
+  description: ''
+  fields:
+    - name: BTA
+      bit_offset: 0
+      bit_size: 4
+    - name: LPRX
+      bit_offset: 4
+      bit_size: 4
+    - name: LPTX
+      bit_offset: 8
+      bit_size: 5
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_R_HS_TX_0_STATE:
+  description: ''
+  fields:
+    - name: DHSTX
+      bit_offset: 0
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_R_HS_TX_0_STATE_DCO:
+  description: ''
+  fields:
+    - name: DHSTX
+      bit_offset: 4
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_HS_RX_0_HS_RX_0_TCLKSETTLE:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_HS_RX_0_HS_RX_0_THSSETTLE:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 8
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_HS_RX_1_HS_RX_1_FILTER_SIZE_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_HS_RX_1_HS_RX_1_FILTER_SIZE_SKEWCAL:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 8
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_HS_RX_2_HS_RX_2_LATENCY_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_HS_RX_2_HS_RX_2_LATENCY_SKEWCAL:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 3
+      bit_size: 2
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_HS_RX_2_HS_RX_2_JUMP2STEPS_SKEWCAL:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 5
+      bit_size: 2
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_HS_RX_2_HS_RX_2_POLARITY_SKEWCAL:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 7
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_HS_RX_2_HS_RX_2_RECAL_SKEWCAL:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 8
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_HS_RX_2_HS_RX_2_WINDOW_SIZE_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 9
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_HS_RX_2_HS_RX_2_UPDATE_SETTINGS_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 13
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_HS_RX_2_HS_RX_2_UPDATE_SETTINGS_SKEWCAL:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 14
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_HS_RX_2_HS_RX_2_IGNORE_ALTERNCAL:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 15
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_HS_RX_3_HS_RX_3_STEP_SIZE_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_HS_RX_3_HS_RX_3_FJUMP_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 3
+      bit_size: 6
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_HS_RX_3_HS_RX_3_SHIFT_STEP_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 9
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_HS_RX_3_HS_RX_3_SHRINK_STEP_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 12
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_HS_RX_3_HS_RX_3_ROUNDUP_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 15
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_HS_RX_4_HS_RX_4_MAX_ITERATIONS_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_HS_RX_5_HS_RX_5_DDL_LEFT_INIT:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_HS_RX_5_HS_RX_5_DDL_MID_INIT:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 8
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_HS_RX_6_HS_RX_6_DDL_RIGHT_INIT:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_HS_RX_6_HS_RX_6_MIN_EYE_OPENING_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 8
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_HS_RX_8_HS_RX_8_FILTER_DITHERING_EN:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_HS_RX_8_HS_RX_8_START_DELAY:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 1
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_R_HS_RX_0:
+  description: ''
+  fields:
+    - name: DESKEWCALDONE
+      bit_offset: 0
+      bit_size: 1
+    - name: DESKEWCALFAILED
+      bit_offset: 1
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_R_HS_RX_0_DESKEW_CAL:
+  description: ''
+  fields:
+    - name: STATUS
+      bit_offset: 2
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_R_HS_RX_1:
+  description: ''
+  fields:
+    - name: DESKEWCALTIME
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_R_HS_RX_2_DESKEW:
+  description: ''
+  fields:
+    - name: STATE
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_R_HS_RX_3_DESKEW_PREV:
+  description: ''
+  fields:
+    - name: ACTION
+      bit_offset: 0
+      bit_size: 4
+    - name: RESULT
+      bit_offset: 4
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_R_HS_RX_3_DESKEW_CURR:
+  description: ''
+  fields:
+    - name: ACTION
+      bit_offset: 5
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_R_HS_RX_3_DESKEW_FAILED:
+  description: ''
+  fields:
+    - name: LEFT
+      bit_offset: 9
+      bit_size: 1
+    - name: RIGHT
+      bit_offset: 10
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_R_HS_RX_3_DESKEW_ALL:
+  description: ''
+  fields:
+    - name: DIFF
+      bit_offset: 11
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_R_HS_RX_4_EDGE1POINTER:
+  description: ''
+  fields:
+    - name: SKEWCAL
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_R_HS_RX_4_EDGE2POINTER:
+  description: ''
+  fields:
+    - name: SKEWCAL
+      bit_offset: 8
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_HS_TX_0_HS_TX_0_THSTRAIL:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_HS_TX_1_HS_TX_1_THSZERO:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_HS_TX_2_HS_TX_2_TCLKPRE:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_HS_TX_4_HS_TX_4_TLPX_DCO:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_HS_TX_5_HS_TX_5_THSTRAIL_DCO:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_HS_TX_6_HS_TX_6_TLP11END_DCO:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_HS_TX_8_HS_TX_8_TCLKPOST:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_HS_TX_9_HS_TX_9_THSPRPR_DCO:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_HS_TX_10_HS_TX_10_TLP11INIT_DCO:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_HS_TX_11_HS_TX_11_TPREAMBLE:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_2_RW_HS_TX_12_HS_TX_12_THSEXIT_DCO:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_CFG_0_CFG_0_LP_PIN_SWAP:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_CFG_0_CFG_0_HS_PIN_SWAP:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 1
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_CFG_0_LOOPBACK_MODE:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 2
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_CFG_1_CFG_1_PREAMBLE_EN:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_CFG_1_CFG_1_BACKWARDS_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 1
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_CFG_1_CFG_1_DESKEW_SUPPORTED:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 2
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_CFG_1_CFG_1_SOT_DETECTION:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 3
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_CFG_2_CFG_2:
+  description: ''
+  fields:
+    - name: SPARE
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_LP_0_LP_0_TTAGET:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_LP_0_LP_0_TTASURE:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 4
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_LP_0_LP_0_TTAGO:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 8
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_LP_0_LP_0_ITMINRX:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 12
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_LP_1_LP_1_ERRCONTENTION_THRES:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_LP_1_LP_1_LPTX_PON_TIMER:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 8
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_R_LP_0_LP_0:
+  description: ''
+  fields:
+    - name: HSACTIVERX
+      bit_offset: 0
+      bit_size: 1
+    - name: RXHSRQST
+      bit_offset: 1
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_R_LP_1_LP_1_STATE:
+  description: ''
+  fields:
+    - name: BTA
+      bit_offset: 0
+      bit_size: 4
+    - name: LPRX
+      bit_offset: 4
+      bit_size: 4
+    - name: LPTX
+      bit_offset: 8
+      bit_size: 5
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_R_HS_TX_0_STATE:
+  description: ''
+  fields:
+    - name: DHSTX
+      bit_offset: 0
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_R_HS_TX_0_STATE_DCO:
+  description: ''
+  fields:
+    - name: DHSTX
+      bit_offset: 4
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_HS_RX_0_HS_RX_0_TCLKSETTLE:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_HS_RX_0_HS_RX_0_THSSETTLE:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 8
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_HS_RX_1_HS_RX_1_FILTER_SIZE_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_HS_RX_1_HS_RX_1_FILTER_SIZE_SKEWCAL:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 8
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_HS_RX_2_HS_RX_2_LATENCY_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_HS_RX_2_HS_RX_2_LATENCY_SKEWCAL:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 3
+      bit_size: 2
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_HS_RX_2_HS_RX_2_JUMP2STEPS_SKEWCAL:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 5
+      bit_size: 2
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_HS_RX_2_HS_RX_2_POLARITY_SKEWCAL:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 7
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_HS_RX_2_HS_RX_2_RECAL_SKEWCAL:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 8
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_HS_RX_2_HS_RX_2_WINDOW_SIZE_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 9
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_HS_RX_2_HS_RX_2_UPDATE_SETTINGS_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 13
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_HS_RX_2_HS_RX_2_UPDATE_SETTINGS_SKEWCAL:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 14
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_HS_RX_2_HS_RX_2_IGNORE_ALTERNCAL:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 15
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_HS_RX_3_HS_RX_3_STEP_SIZE_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_HS_RX_3_HS_RX_3_FJUMP_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 3
+      bit_size: 6
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_HS_RX_3_HS_RX_3_SHIFT_STEP_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 9
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_HS_RX_3_HS_RX_3_SHRINK_STEP_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 12
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_HS_RX_3_HS_RX_3_ROUNDUP_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 15
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_HS_RX_4_HS_RX_4_MAX_ITERATIONS_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_HS_RX_5_HS_RX_5_DDL_LEFT_INIT:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_HS_RX_5_HS_RX_5_DDL_MID_INIT:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 8
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_HS_RX_6_HS_RX_6_DDL_RIGHT_INIT:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_HS_RX_6_HS_RX_6_MIN_EYE_OPENING_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 8
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_HS_RX_8_HS_RX_8_FILTER_DITHERING_EN:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_HS_RX_8_HS_RX_8_START_DELAY:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 1
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_R_HS_RX_0:
+  description: ''
+  fields:
+    - name: DESKEWCALDONE
+      bit_offset: 0
+      bit_size: 1
+    - name: DESKEWCALFAILED
+      bit_offset: 1
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_R_HS_RX_0_DESKEW_CAL:
+  description: ''
+  fields:
+    - name: STATUS
+      bit_offset: 2
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_R_HS_RX_1:
+  description: ''
+  fields:
+    - name: DESKEWCALTIME
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_R_HS_RX_2_DESKEW:
+  description: ''
+  fields:
+    - name: STATE
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_R_HS_RX_3_DESKEW_PREV:
+  description: ''
+  fields:
+    - name: ACTION
+      bit_offset: 0
+      bit_size: 4
+    - name: RESULT
+      bit_offset: 4
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_R_HS_RX_3_DESKEW_CURR:
+  description: ''
+  fields:
+    - name: ACTION
+      bit_offset: 5
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_R_HS_RX_3_DESKEW_FAILED:
+  description: ''
+  fields:
+    - name: LEFT
+      bit_offset: 9
+      bit_size: 1
+    - name: RIGHT
+      bit_offset: 10
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_R_HS_RX_3_DESKEW_ALL:
+  description: ''
+  fields:
+    - name: DIFF
+      bit_offset: 11
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_R_HS_RX_4_EDGE1POINTER:
+  description: ''
+  fields:
+    - name: SKEWCAL
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_R_HS_RX_4_EDGE2POINTER:
+  description: ''
+  fields:
+    - name: SKEWCAL
+      bit_offset: 8
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_HS_TX_0_HS_TX_0_THSTRAIL:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_HS_TX_1_HS_TX_1_THSZERO:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_HS_TX_2_HS_TX_2_TCLKPRE:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_HS_TX_4_HS_TX_4_TLPX_DCO:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_HS_TX_5_HS_TX_5_THSTRAIL_DCO:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_HS_TX_6_HS_TX_6_TLP11END_DCO:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_HS_TX_8_HS_TX_8_TCLKPOST:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_HS_TX_9_HS_TX_9_THSPRPR_DCO:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_HS_TX_10_HS_TX_10_TLP11INIT_DCO:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_HS_TX_11_HS_TX_11_TPREAMBLE:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_3_RW_HS_TX_12_HS_TX_12_THSEXIT_DCO:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_CFG_0_CFG_0_LP_PIN_SWAP:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_CFG_0_CFG_0_HS_PIN_SWAP:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 1
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_CFG_0_LOOPBACK_MODE:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 2
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_CFG_1_CFG_1_PREAMBLE_EN:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_CFG_1_CFG_1_BACKWARDS_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 1
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_CFG_1_CFG_1_DESKEW_SUPPORTED:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 2
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_CFG_1_CFG_1_SOT_DETECTION:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 3
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_CFG_2_CFG_2:
+  description: ''
+  fields:
+    - name: SPARE
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_LP_0_LP_0_TTAGET:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_LP_0_LP_0_TTASURE:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 4
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_LP_0_LP_0_TTAGO:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 8
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_LP_0_LP_0_ITMINRX:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 12
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_LP_1_LP_1_ERRCONTENTION_THRES:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_LP_1_LP_1_LPTX_PON_TIMER:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 8
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_R_LP_0_LP_0:
+  description: ''
+  fields:
+    - name: HSACTIVERX
+      bit_offset: 0
+      bit_size: 1
+    - name: RXHSRQST
+      bit_offset: 1
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_R_LP_1_LP_1_STATE:
+  description: ''
+  fields:
+    - name: BTA
+      bit_offset: 0
+      bit_size: 4
+    - name: LPRX
+      bit_offset: 4
+      bit_size: 4
+    - name: LPTX
+      bit_offset: 8
+      bit_size: 5
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_R_HS_TX_0_STATE:
+  description: ''
+  fields:
+    - name: DHSTX
+      bit_offset: 0
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_R_HS_TX_0_STATE_DCO:
+  description: ''
+  fields:
+    - name: DHSTX
+      bit_offset: 4
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_RX_0_HS_RX_0_TCLKSETTLE:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_RX_0_HS_RX_0_THSSETTLE:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 8
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_RX_1_HS_RX_1_FILTER_SIZE_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_RX_1_HS_RX_1_FILTER_SIZE_SKEWCAL:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 8
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_RX_2_HS_RX_2_LATENCY_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_RX_2_HS_RX_2_LATENCY_SKEWCAL:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 3
+      bit_size: 2
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_RX_2_HS_RX_2_JUMP2STEPS_SKEWCAL:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 5
+      bit_size: 2
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_RX_2_HS_RX_2_POLARITY_SKEWCAL:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 7
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_RX_2_HS_RX_2_RECAL_SKEWCAL:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 8
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_RX_2_HS_RX_2_WINDOW_SIZE_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 9
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_RX_2_HS_RX_2_UPDATE_SETTINGS_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 13
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_RX_2_HS_RX_2_UPDATE_SETTINGS_SKEWCAL:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 14
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_RX_2_HS_RX_2_IGNORE_ALTERNCAL:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 15
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_RX_3_HS_RX_3_STEP_SIZE_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_RX_3_HS_RX_3_FJUMP_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 3
+      bit_size: 6
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_RX_3_HS_RX_3_SHIFT_STEP_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 9
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_RX_3_HS_RX_3_SHRINK_STEP_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 12
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_RX_3_HS_RX_3_ROUNDUP_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 15
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_RX_4_HS_RX_4_MAX_ITERATIONS_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_RX_5_HS_RX_5_DDL_LEFT_INIT:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_RX_5_HS_RX_5_DDL_MID_INIT:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 8
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_RX_6_HS_RX_6_DDL_RIGHT_INIT:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_RX_6_HS_RX_6_MIN_EYE_OPENING_DESKEW:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 8
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_RX_7_HS_RX_7_TCLKMISS:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_RX_7_HS_RX_7_INVORDER_RX:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 8
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_RX_7_HS_RX_7_INITIAL_CALIBRATION:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 9
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_RX_7_HS_RX_7_THSEXIT_MIN:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 10
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_RX_7_HS_RX_7_DESKEW_CNF:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 11
+      bit_size: 2
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_RX_7_HS_RX_7_DESKEW_AUTO_ALGO_SEL:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 13
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_RX_7_HS_RX_7_DESKEW_REARM_INITIAL:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 14
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_RX_8_HS_RX_8_FILTER_DITHERING_EN:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_RX_8_HS_RX_8_START_DELAY:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 1
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_R_HS_RX_0:
+  description: ''
+  fields:
+    - name: DESKEWCALDONE
+      bit_offset: 0
+      bit_size: 1
+    - name: DESKEWCALFAILED
+      bit_offset: 1
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_R_HS_RX_0_DESKEW_CAL:
+  description: ''
+  fields:
+    - name: STATUS
+      bit_offset: 2
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_R_HS_RX_1:
+  description: ''
+  fields:
+    - name: DESKEWCALTIME
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_R_HS_RX_2_DESKEW:
+  description: ''
+  fields:
+    - name: STATE
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_R_HS_RX_3_DESKEW_PREV:
+  description: ''
+  fields:
+    - name: ACTION
+      bit_offset: 0
+      bit_size: 4
+    - name: RESULT
+      bit_offset: 4
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_R_HS_RX_3_DESKEW_CURR:
+  description: ''
+  fields:
+    - name: ACTION
+      bit_offset: 5
+      bit_size: 4
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_R_HS_RX_3_DESKEW_FAILED:
+  description: ''
+  fields:
+    - name: LEFT
+      bit_offset: 9
+      bit_size: 1
+    - name: RIGHT
+      bit_offset: 10
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_R_HS_RX_3_DESKEW_ALL:
+  description: ''
+  fields:
+    - name: DIFF
+      bit_offset: 11
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_R_HS_RX_4_EDGE1POINTER:
+  description: ''
+  fields:
+    - name: SKEWCAL
+      bit_offset: 0
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_R_HS_RX_4_EDGE2POINTER:
+  description: ''
+  fields:
+    - name: SKEWCAL
+      bit_offset: 8
+      bit_size: 8
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_TX_0_HS_TX_0_THSTRAIL:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_TX_1_HS_TX_1_THSZERO:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_TX_2_HS_TX_2_TCLKPRE:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_TX_4_HS_TX_4_TLPX_DCO:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_TX_5_HS_TX_5_THSTRAIL_DCO:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_TX_6_HS_TX_6_TLP11END_DCO:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_TX_8_HS_TX_8_TCLKPOST:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_TX_9_HS_TX_9_THSPRPR_DCO:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_TX_10_HS_TX_10_TLP11INIT_DCO:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_TX_11_HS_TX_11_TPREAMBLE:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_DLANE_CLK_RW_HS_TX_12_HS_TX_12_THSEXIT_DCO:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 16
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_CLANE_0_RW_CFG_0_CFG_0_LP_PIN_SWAP:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_CLANE_0_RW_CFG_0_CFG_0_HS_PIN_SWAP:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 3
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_CLANE_0_RW_CFG_0_CFG_0_HS_ORDER_SWAP:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 4
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_CLANE_0_RW_CFG_0_CFG_0_HS_DECODE_SWAP:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 5
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_CLANE_0_RW_CFG_0_CFG_0_HS_ALIGNER_SWAP:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 6
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_CLANE_0_RW_CFG_0_CFG_0_HS_SYNC_DET_SWAP:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 7
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_CLANE_0_RW_CFG_0_CFG_0_ALP_ENABLE:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 8
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_CLANE_0_RW_CFG_0_CFG_0_SWAP_ENCODE:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 9
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_CLANE_0_RW_CFG_0_LOOPBACK_MODE:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 10
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_CLANE_0_RW_HS_TX_6_HS_TX_6_PROGSEQSYMB10:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_CLANE_0_RW_HS_TX_6_HS_TX_6_PROGSEQSYMB11:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 3
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_CLANE_0_RW_HS_TX_6_HS_TX_6_PROGSEQSYMB12:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 6
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_CLANE_0_RW_HS_TX_6_HS_TX_6_PROGSEQSYMB13:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 9
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_CLANE_0_RW_HS_TX_6_HS_TX_6_PIN_SWAP:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 12
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_CLANE_1_RW_CFG_0_CFG_0_LP_PIN_SWAP:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_CLANE_1_RW_CFG_0_CFG_0_HS_PIN_SWAP:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 3
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_CLANE_1_RW_CFG_0_CFG_0_HS_ORDER_SWAP:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 4
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_CLANE_1_RW_CFG_0_CFG_0_HS_DECODE_SWAP:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 5
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_CLANE_1_RW_CFG_0_CFG_0_HS_ALIGNER_SWAP:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 6
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_CLANE_1_RW_CFG_0_CFG_0_HS_SYNC_DET_SWAP:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 7
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_CLANE_1_RW_CFG_0_CFG_0_ALP_ENABLE:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 8
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_CLANE_1_RW_CFG_0_CFG_0_SWAP_ENCODE:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 9
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_CLANE_1_RW_CFG_0_LOOPBACK_MODE:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 10
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_CLANE_1_RW_HS_TX_6_HS_TX_6_PROGSEQSYMB10:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_CLANE_1_RW_HS_TX_6_HS_TX_6_PROGSEQSYMB11:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 3
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_CLANE_1_RW_HS_TX_6_HS_TX_6_PROGSEQSYMB12:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 6
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_CLANE_1_RW_HS_TX_6_HS_TX_6_PROGSEQSYMB13:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 9
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_CLANE_1_RW_HS_TX_6_HS_TX_6_PIN_SWAP:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 12
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_CLANE_2_RW_CFG_0_CFG_0_LP_PIN_SWAP:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_CLANE_2_RW_CFG_0_CFG_0_HS_PIN_SWAP:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 3
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_CLANE_2_RW_CFG_0_CFG_0_HS_ORDER_SWAP:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 4
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_CLANE_2_RW_CFG_0_CFG_0_HS_DECODE_SWAP:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 5
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_CLANE_2_RW_CFG_0_CFG_0_HS_ALIGNER_SWAP:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 6
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_CLANE_2_RW_CFG_0_CFG_0_HS_SYNC_DET_SWAP:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 7
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_CLANE_2_RW_CFG_0_CFG_0_ALP_ENABLE:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 8
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_CLANE_2_RW_CFG_0_CFG_0_SWAP_ENCODE:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 9
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_CLANE_2_RW_CFG_0_LOOPBACK_MODE:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 10
+      bit_size: 1
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_CLANE_2_RW_HS_TX_6_HS_TX_6_PROGSEQSYMB10:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 0
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_CLANE_2_RW_HS_TX_6_HS_TX_6_PROGSEQSYMB11:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 3
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_CLANE_2_RW_HS_TX_6_HS_TX_6_PROGSEQSYMB12:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 6
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_CLANE_2_RW_HS_TX_6_HS_TX_6_PROGSEQSYMB13:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 9
+      bit_size: 3
+fieldset/DISPLAY_MIPI_DSI_PHY_CORE_DIG_CLANE_2_RW_HS_TX_6_HS_TX_6_PIN_SWAP:
+  description: ''
+  fields:
+    - name: REG
+      bit_offset: 12
+      bit_size: 3

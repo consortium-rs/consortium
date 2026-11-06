@@ -1,0 +1,79 @@
+block/SCALER:
+  description: ''
+  items:
+    - name: LU
+      byte_offset: 0
+      fieldset: SCALER_LU
+    - name: LOCKS
+      byte_offset: 4
+      fieldset: SCALER_LOCKS
+    - name: STATCON
+      byte_offset: 8
+      fieldset: SCALER_STATCON
+    - name: SETUP1
+      byte_offset: 12
+      fieldset: SCALER_SETUP1
+    - name: SETUP2
+      byte_offset: 16
+      fieldset: SCALER_SETUP2
+    - name: CONTR
+      byte_offset: 20
+      fieldset: SCALER_CONTR
+fieldset/SCALER_LU:
+  description: ''
+  fields:
+    - name: LkUn
+      bit_offset: 0
+      bit_size: 32
+fieldset/SCALER_LOCKS:
+  description: ''
+  fields:
+    - name: LkSus
+      bit_offset: 0
+      bit_size: 1
+      description: LockStatus
+    - name: PriSt
+      bit_offset: 4
+      bit_size: 1
+      description: LockStatus
+    - name: FreezeS
+      bit_offset: 8
+      bit_size: 1
+      description: PrivilegeStatus
+fieldset/SCALER_STATCON:
+  description: ''
+  fields:
+    - name: ShdEn
+      bit_offset: 0
+      bit_size: 1
+      description: ShdEn
+fieldset/SCALER_SETUP1:
+  description: ''
+  fields:
+    - name: scalefac
+      bit_offset: 0
+      bit_size: 20
+      description: scale_factor
+fieldset/SCALER_SETUP2:
+  description: ''
+  fields:
+    - name: phaseoff
+      bit_offset: 0
+      bit_size: 21
+      description: phase_offset
+fieldset/SCALER_CONTR:
+  description: ''
+  fields:
+    - name: mode
+      bit_offset: 0
+      bit_size: 1
+    - name: scalemod
+      bit_offset: 4
+      bit_size: 1
+    - name: filmode
+      bit_offset: 8
+      bit_size: 1
+    - name: outpsize
+      bit_offset: 16
+      bit_size: 14
+      description: output_size

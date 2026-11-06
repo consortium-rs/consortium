@@ -1,0 +1,196 @@
+block/AUDMIX:
+  description: ''
+  items:
+    - name: CTR
+      byte_offset: 512
+      fieldset: AUDMIX_CTR
+    - name: STR
+      byte_offset: 516
+      fieldset: AUDMIX_STR
+    - name: ATCR0
+      byte_offset: 520
+      fieldset: AUDMIX_ATCR0
+    - name: ATIVAL0
+      byte_offset: 524
+      fieldset: AUDMIX_ATIVAL0
+    - name: ATSTPUP0
+      byte_offset: 528
+      fieldset: AUDMIX_ATSTPUP0
+    - name: ATSTPDN0
+      byte_offset: 532
+      fieldset: AUDMIX_ATSTPDN0
+    - name: ATSTPTGT0
+      byte_offset: 536
+      fieldset: AUDMIX_ATSTPTGT0
+    - name: ATTNVAL0
+      byte_offset: 540
+      fieldset: AUDMIX_ATTNVAL0
+    - name: ATSTP0
+      byte_offset: 544
+      fieldset: AUDMIX_ATSTP0
+    - name: ATCR1
+      byte_offset: 552
+      fieldset: AUDMIX_ATCR1
+    - name: ATIVAL1
+      byte_offset: 556
+      fieldset: AUDMIX_ATIVAL1
+    - name: ATSTPUP1
+      byte_offset: 560
+      fieldset: AUDMIX_ATSTPUP1
+    - name: ATSTPDN1
+      byte_offset: 564
+      fieldset: AUDMIX_ATSTPDN1
+    - name: ATSTPTGT1
+      byte_offset: 568
+      fieldset: AUDMIX_ATSTPTGT1
+    - name: ATTNVAL1
+      byte_offset: 572
+      fieldset: AUDMIX_ATTNVAL1
+    - name: ATSTP1
+      byte_offset: 576
+      fieldset: AUDMIX_ATSTP1
+fieldset/AUDMIX_CTR:
+  description: ''
+  fields:
+    - name: MIXCLK
+      bit_offset: 0
+      bit_size: 1
+    - name: OUTSRC
+      bit_offset: 1
+      bit_size: 2
+    - name: OUTWIDTH
+      bit_offset: 3
+      bit_size: 3
+    - name: OUTCKPOL
+      bit_offset: 6
+      bit_size: 1
+    - name: MASKRTDF
+      bit_offset: 7
+      bit_size: 1
+    - name: MASKCKDF
+      bit_offset: 8
+      bit_size: 1
+    - name: SYNCMODE
+      bit_offset: 9
+      bit_size: 1
+    - name: SYNCSRC
+      bit_offset: 10
+      bit_size: 1
+fieldset/AUDMIX_STR:
+  description: ''
+  fields:
+    - name: RATEDIFF
+      bit_offset: 0
+      bit_size: 1
+    - name: CLKDIFF
+      bit_offset: 1
+      bit_size: 1
+    - name: MIXSTAT
+      bit_offset: 2
+      bit_size: 2
+fieldset/AUDMIX_ATCR0_AT:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+    - name: UPDN
+      bit_offset: 1
+      bit_size: 1
+fieldset/AUDMIX_ATCR0:
+  description: ''
+  fields:
+    - name: ATSTPDIV
+      bit_offset: 2
+      bit_size: 12
+      description: Step Divider
+fieldset/AUDMIX_ATIVAL0:
+  description: ''
+  fields:
+    - name: ATINTVAL
+      bit_offset: 0
+      bit_size: 18
+fieldset/AUDMIX_ATSTPUP0:
+  description: ''
+  fields:
+    - name: ATSTEPUP
+      bit_offset: 0
+      bit_size: 18
+fieldset/AUDMIX_ATSTPDN0:
+  description: ''
+  fields:
+    - name: ATSTEPDN
+      bit_offset: 0
+      bit_size: 18
+fieldset/AUDMIX_ATSTPTGT0:
+  description: ''
+  fields:
+    - name: ATSTPTG
+      bit_offset: 0
+      bit_size: 18
+fieldset/AUDMIX_ATTNVAL0:
+  description: ''
+  fields:
+    - name: ATCURVAL
+      bit_offset: 0
+      bit_size: 18
+fieldset/AUDMIX_ATSTP0:
+  description: ''
+  fields:
+    - name: STPCTR
+      bit_offset: 0
+      bit_size: 18
+      description: Step Counter Value
+fieldset/AUDMIX_ATCR1_AT:
+  description: ''
+  fields:
+    - name: EN
+      bit_offset: 0
+      bit_size: 1
+    - name: UPDN
+      bit_offset: 1
+      bit_size: 1
+fieldset/AUDMIX_ATCR1:
+  description: ''
+  fields:
+    - name: ATSTPDIV
+      bit_offset: 2
+      bit_size: 12
+      description: Step Divider
+fieldset/AUDMIX_ATIVAL1:
+  description: ''
+  fields:
+    - name: ATINTVAL
+      bit_offset: 0
+      bit_size: 18
+fieldset/AUDMIX_ATSTPUP1:
+  description: ''
+  fields:
+    - name: ATSTEPUP
+      bit_offset: 0
+      bit_size: 18
+fieldset/AUDMIX_ATSTPDN1:
+  description: ''
+  fields:
+    - name: ATSTEPDN
+      bit_offset: 0
+      bit_size: 18
+fieldset/AUDMIX_ATSTPTGT1:
+  description: ''
+  fields:
+    - name: ATSTPTG
+      bit_offset: 0
+      bit_size: 18
+fieldset/AUDMIX_ATTNVAL1:
+  description: ''
+  fields:
+    - name: ATCURVAL
+      bit_offset: 0
+      bit_size: 18
+fieldset/AUDMIX_ATSTP1:
+  description: ''
+  fields:
+    - name: STPCTR
+      bit_offset: 0
+      bit_size: 18
+      description: Step Counter Value

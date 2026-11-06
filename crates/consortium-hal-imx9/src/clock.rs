@@ -1,6 +1,6 @@
 //! Peripheral clock gates (CCM LPCG) the controller core opens for itself.
 //!
-//! On i.MX 95 the System Manager owns every clock, so this module is inert there
+//! On i.MX 95 and i.MX 952 the System Manager owns every clock, so this module is inert there
 //! ([`lpcg`] is `None` for every peripheral). On i.MX 93 there is no System
 //! Manager: Linux's CCM driver owns the gates, and its `clk_disable_unused`
 //! closes every one without a kernel consumer at boot. A peripheral the CM33
