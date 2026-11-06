@@ -27,7 +27,7 @@ use std::sync::{
 };
 use std::task::{RawWaker, RawWakerVTable, Waker};
 
-use consortium_ipc::{Chan, Doorbell};
+use crate::{Chan, Doorbell};
 
 use super::*;
 

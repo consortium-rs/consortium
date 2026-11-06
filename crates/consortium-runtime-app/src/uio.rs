@@ -42,8 +42,8 @@ use std::{
 use tokio::io::unix::AsyncFd;
 use uio::UioError;
 
+use consortium_core::{Region, UncachedRegion};
 use consortium_ipc_transport_memory::{DescriptorError, RegionSharedMemoryTransportable};
-use consortium_shared_memory::{Region, UncachedRegion};
 
 use crate::irq::{Service, Services, irq_loop};
 

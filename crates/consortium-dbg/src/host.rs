@@ -5,7 +5,7 @@
 //! does not perform any mapping itself.
 #![cfg(feature = "host")]
 
-use consortium_shared_memory::descriptor::DescriptorHeaderError;
+use consortium_core::descriptor::DescriptorHeaderError;
 
 use crate::descriptor::{DESCRIPTOR_SIZE, Descriptor, MAGIC, VERSION};
 

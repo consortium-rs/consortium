@@ -41,7 +41,7 @@ use core::sync::atomic::{AtomicBool, AtomicU32, Ordering};
 
 use consortium_hal_stm32mp2::Interrupt;
 use consortium_hal_stm32mp2::interrupts::__INTERRUPTS;
-use consortium_ipc_transport_memory::bell::ipcc::registers::{base, offsets};
+use consortium_core::bell::ipcc::registers::{base, offsets};
 use cortex_m::peripheral::NVIC;
 use embassy_time::{Duration, Instant, Timer};
 

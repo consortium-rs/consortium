@@ -21,8 +21,8 @@ use consortium_codec::{Codec, CodecFor};
 use core::marker::PhantomData;
 use core::ops::Deref;
 
+use crate::Chan;
 use crate::ack::AckSendTransport;
-use crate::chan::Chan;
 use crate::transport::{RecvTransport, SendTransport, TransportError};
 
 /// Channel direction marker ([`Tx`] or [`Rx`]).

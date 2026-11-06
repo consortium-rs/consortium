@@ -7,7 +7,7 @@ application and firmware code actually calls.
 This is the _abstraction_ crate. It contains no hardware access, no allocation, and
 no runtime. Concrete links live in sibling crates
 (`consortium-ipc-transport-memory`, `consortium-ipc-transport-uart*`), concrete
-signaling lives in the `consortium-ipc-doorbell-*` crates, and concrete
+signaling lives in `consortium-core`, and concrete
 serialization lives in `consortium-codec`.
 
 ## Architecture

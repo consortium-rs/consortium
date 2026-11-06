@@ -264,8 +264,8 @@ impl Transceiver {
     fn region_ty(&self, core: VisibleCore) -> TokenStream {
         match (core, self.region.cache) {
             (VisibleCore::Ap, _) => quote::quote! { ::consortium_runtime_app::uio::UioRegion },
-            (_, false) => quote::quote! { ::consortium_shared_memory::regions::UncachedRegion },
-            (_, true) => quote::quote! { ::consortium_shared_memory::regions::CachedRegion },
+            (_, false) => quote::quote! { ::consortium_core::regions::UncachedRegion },
+            (_, true) => quote::quote! { ::consortium_core::regions::CachedRegion },
         }
     }
 
@@ -475,7 +475,7 @@ impl DoorbellMeta {
             }
         );
         (
-            quote::quote! { ::consortium_ipc_transport_memory::bell::#module },
+            quote::quote! { ::consortium_core::bell::#module },
             format_ident!("{name}Doorbell"),
             side_ident,
         )
@@ -502,7 +502,7 @@ impl DoorbellMeta {
         let (module, _, side_ident) = self.idents(side);
         let model = format_ident!("{}", self.r#type.to_string());
         quote::quote! {
-            ::consortium_ipc_transport_memory::bell::service_interrupt::<
+            ::consortium_core::bell::service_interrupt::<
                 #module::#model<::consortium_ipc::#side_ident, #id>
             >();
         }
@@ -931,7 +931,7 @@ mod tests {
         };
 
         let tokens = doorbell.as_path(DoorbellRingerSide::Primary).to_string();
-        assert!(tokens.contains(":: consortium_ipc_transport_memory :: bell :: mu :: MuDoorbell"));
+        assert!(tokens.contains(":: consortium_core :: bell :: mu :: MuDoorbell"));
         assert!(tokens.contains(":: consortium_ipc :: Primary"));
         assert!(tokens.contains("7usize"));
     }
@@ -944,9 +944,7 @@ mod tests {
         };
 
         let tokens = doorbell.as_path(DoorbellRingerSide::Secondary).to_string();
-        assert!(
-            tokens.contains(":: consortium_ipc_transport_memory :: bell :: hsem :: HsemDoorbell")
-        );
+        assert!(tokens.contains(":: consortium_core :: bell :: hsem :: HsemDoorbell"));
         assert!(tokens.contains(":: consortium_ipc :: Secondary"));
         assert!(tokens.contains("1usize"));
     }

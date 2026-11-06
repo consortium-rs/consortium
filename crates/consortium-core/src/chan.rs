@@ -97,6 +97,7 @@ mod tests {
         type Error = &'static str;
         fn validate(id: u8) -> Result<Chan, Self::Error> {
             if id < 16 {
+                // SAFETY: test-only id; `Chan` places no invariant on its value beyond the validator's.
                 Ok(unsafe { Chan::new_unchecked(id) })
             } else {
                 Err("channel id out of range")
@@ -106,24 +107,28 @@ mod tests {
 
     #[test]
     fn new_unchecked_stores_id() {
+        // SAFETY: test-only id; `Chan` places no invariant on its value beyond the validator's.
         let ch = unsafe { Chan::new_unchecked(5) };
         assert_eq!(ch.id(), 5);
     }
 
     #[test]
     fn new_unchecked_zero() {
+        // SAFETY: test-only id; `Chan` places no invariant on its value beyond the validator's.
         let ch = unsafe { Chan::new_unchecked(0) };
         assert_eq!(ch.id(), 0);
     }
 
     #[test]
     fn new_unchecked_max() {
+        // SAFETY: test-only id; `Chan` places no invariant on its value beyond the validator's.
         let ch = unsafe { Chan::new_unchecked(255) };
         assert_eq!(ch.id(), 255);
     }
 
     #[test]
     fn from_chan_gives_inner_byte() {
+        // SAFETY: test-only id; `Chan` places no invariant on its value beyond the validator's.
         let ch = unsafe { Chan::new_unchecked(7) };
         assert_eq!(u8::from(ch), 7);
     }
@@ -144,8 +149,11 @@ mod tests {
 
     #[test]
     fn chan_equality() {
+        // SAFETY: test-only id; `Chan` places no invariant on its value beyond the validator's.
         let a = unsafe { Chan::new_unchecked(3) };
+        // SAFETY: test-only id; `Chan` places no invariant on its value beyond the validator's.
         let b = unsafe { Chan::new_unchecked(3) };
+        // SAFETY: test-only id; `Chan` places no invariant on its value beyond the validator's.
         let c = unsafe { Chan::new_unchecked(4) };
         assert_eq!(a, b);
         assert_ne!(a, c);
@@ -153,6 +161,7 @@ mod tests {
 
     #[test]
     fn chan_is_copy() {
+        // SAFETY: test-only id; `Chan` places no invariant on its value beyond the validator's.
         let a = unsafe { Chan::new_unchecked(1) };
         let b = a; // copy
         assert_eq!(a.id(), b.id());

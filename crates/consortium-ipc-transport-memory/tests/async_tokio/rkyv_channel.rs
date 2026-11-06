@@ -3,11 +3,11 @@ use crate::codec_support::{
 };
 use crate::common::doorbell::HostDoorbell;
 use consortium_codec::{CodecFor, RkyvCodec};
+use consortium_core::UncachedRegion;
 use consortium_ipc::{Chan, Channel, Primary, Rx, Tx};
 use consortium_ipc_transport_memory::{
     ChannelLayout, RX_UPDATED_ID_OFFSET, SharedMemoryTransport, channel_table_entry_offset, slot,
 };
-use consortium_shared_memory::UncachedRegion;
 
 #[test]
 fn rkyv_channel_sends_archived_message_over_shared_memory_transport() {

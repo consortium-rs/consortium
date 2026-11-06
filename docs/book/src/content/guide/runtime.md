@@ -112,7 +112,7 @@ Hardware crates never install interrupt vectors themselves. Instead, generated f
 code emits a private `__consortium_vectors` module holding every vector the manifest
 implies, each forwarding to the owning crate's service entry point:
 
-- IPCC RX, MU, and HSEM: `consortium_ipc_transport_memory::bell::service_interrupt::<H>()`,
+- IPCC RX, MU, and HSEM: `consortium_core::bell::service_interrupt::<H>()`,
   where `H` is the block's register model (`bell::ipcc::Ipcc<S, N>`, `bell::mu::Mu<S, N>`,
   `bell::hsem::Hsem<S, 1>`); and
 - the time driver: the chip HAL's `timer_driver::on_timer_interrupt()` (TIM2 on

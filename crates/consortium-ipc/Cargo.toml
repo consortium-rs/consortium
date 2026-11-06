@@ -30,6 +30,7 @@ rust-version.workspace = true
 
 [dependencies]
 consortium-codec      = { path = "../consortium-codec", version = "0.5.0" }
+consortium-core       = { path = "../consortium-core", version = "0.5.0" }
 consortium-ipc-macros = { path = "../consortium-ipc-macros", version = "0.5.0" }
 consortium-log        = { path = "../consortium-log", version = "0.5.0" }
 defmt                 = { optional = true, version = "1" }
@@ -41,6 +42,6 @@ trybuild = "1"
 [features]
 alloc   = []
 futures = []
-std     = ["alloc", "futures", "tracing"]
+std     = ["alloc", "consortium-core/std", "futures", "tracing"]
 tracing = ["consortium-log/tracing"]
-defmt   = ["consortium-codec/defmt", "consortium-log/defmt", "dep:defmt"]
+defmt   = ["consortium-codec/defmt", "consortium-core/defmt", "consortium-log/defmt", "dep:defmt"]

@@ -21,7 +21,7 @@ use embedded_hal::digital::{Error as HalError, ErrorKind};
 /// Wraps the pin's [`embedded_hal::digital::ErrorKind`] into a stable,
 /// address-space-independent type that is `Send + Sync + 'static` and
 /// implements [`core::error::Error`], as required by
-/// [`consortium_ipc::Doorbell::Error`]. The underlying pin error may not
+/// [`crate::Doorbell::Error`]. The underlying pin error may not
 /// satisfy those bounds directly, so we collapse it to its portable `kind()`.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct GpioError(pub ErrorKind);

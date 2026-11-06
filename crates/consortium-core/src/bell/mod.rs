@@ -78,7 +78,7 @@ use core::{
     task::{Context, Poll},
 };
 
-use consortium_ipc::{Chan, ChanValidate, Doorbell, MaybeSend};
+use crate::{Chan, ChanValidate, Doorbell, MaybeSend};
 use consortium_log::{debug, trace};
 
 /// Error reported by a Type-A doorbell.

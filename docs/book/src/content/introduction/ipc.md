@@ -66,7 +66,7 @@ Current hardware bindings cover STM32 HSEM/IPCC, i.MX MU, and GPIO signaling.
 
 ## Memory visibility
 
-`consortium-shared-memory` makes cache behavior part of the region type:
+`consortium-core` makes cache behavior part of the region type:
 
 - `UncachedRegion` models a non-cacheable mapping and uses no-op maintenance; and
 - `CachedRegion` performs AArch64 or Cortex-M7 data-cache maintenance.

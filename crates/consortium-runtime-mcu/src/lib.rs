@@ -121,6 +121,9 @@ pub use consortium_dbg as dbg;
 pub use consortium_ipc_transport_fdcan;
 
 #[cfg(feature = "ipc-shm")]
+pub use consortium_core;
+
+#[cfg(feature = "ipc-shm")]
 pub use consortium_ipc_transport_memory;
 
 #[cfg(feature = "ipc-uart")]

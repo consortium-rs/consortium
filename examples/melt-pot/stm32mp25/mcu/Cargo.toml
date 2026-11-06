@@ -42,9 +42,11 @@ consortium-codec = { default-features = false, features = [
 consortium-ipc = { default-features = false, path = "../../../../crates/consortium-ipc", version = "0.5.0" }
 consortium-ipc-transport-memory = { default-features = false, features = [
   "defmt",
-  "stm32mp25x",
 ], path = "../../../../crates/consortium-ipc-transport-memory", version = "0.5.0" }
-consortium-shared-memory = { path = "../../../../crates/consortium-shared-memory", version = "0.5.0" }
+consortium-core = { features = [
+  "defmt",
+  "stm32mp25x",
+], path = "../../../../crates/consortium-core", version = "0.5.0" }
 consortium-runtime-mcu = { default-features = false, features = [
   "defmt",
   "macros",

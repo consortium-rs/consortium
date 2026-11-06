@@ -3,13 +3,13 @@ use std::sync::{
     atomic::{AtomicUsize, Ordering},
 };
 
+use consortium_core::descriptor::DescriptorHeader;
+use consortium_core::{Region, UncachedRegion};
 use consortium_ipc_transport_memory::{
     ChannelDirection, ChannelLayout, DescState, MAGIC, RX_UPDATED_ID_OFFSET,
     RegionSharedMemoryTransportable, VERSION, channel_table_entry_offset, slot, slot_offset,
     slot_stride,
 };
-use consortium_shared_memory::descriptor::DescriptorHeader;
-use consortium_shared_memory::{Region, UncachedRegion};
 
 pub const MTU: usize = 64;
 pub const SLOT_SIZE: usize = slot::SLOT_HEADER + MTU;

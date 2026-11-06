@@ -164,7 +164,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-codec"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "consortium-log",
  "defmt",
@@ -173,19 +173,33 @@ dependencies = [
 ]
 
 [[package]]
+name = "consortium-core"
+version = "0.5.0"
+dependencies = [
+ "atomic-waker",
+ "bitfield 0.20.0",
+ "consortium-hal-stm32mp2",
+ "consortium-log",
+ "cortex-m",
+ "critical-section",
+ "defmt",
+ "thiserror",
+]
+
+[[package]]
 name = "consortium-dbg"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "bitflags 2.13.2",
+ "consortium-core",
  "consortium-log",
- "consortium-shared-memory",
  "defmt",
  "thiserror",
 ]
 
 [[package]]
 name = "consortium-hal"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "cortex-m",
  "critical-section",
@@ -193,8 +207,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "consortium-hal-imx9"
+version = "0.5.0"
+dependencies = [
+ "consortium-hal",
+ "consortium-pac-imx9",
+ "critical-section",
+ "embassy-hal-internal",
+]
+
+[[package]]
 name = "consortium-hal-stm32mp2"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "consortium-hal",
  "consortium-log",
@@ -209,9 +233,10 @@ dependencies = [
 
 [[package]]
 name = "consortium-ipc"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "consortium-codec",
+ "consortium-core",
  "consortium-ipc-macros",
  "consortium-log",
  "defmt",
@@ -219,14 +244,14 @@ dependencies = [
 
 [[package]]
 name = "consortium-ipc-macros"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "consortium-ipc-macros-impl",
 ]
 
 [[package]]
 name = "consortium-ipc-macros-impl"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "consortium-macros-helpers",
  "proc-macro2",
@@ -236,7 +261,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-ipc-transport-fdcan"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "consortium-ipc",
  "consortium-log",
@@ -247,15 +272,12 @@ dependencies = [
 
 [[package]]
 name = "consortium-ipc-transport-memory"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
- "atomic-waker",
- "bitfield 0.20.0",
  "consortium-codec",
- "consortium-hal-stm32mp2",
+ "consortium-core",
  "consortium-ipc",
  "consortium-log",
- "consortium-shared-memory",
  "crc32fast",
  "critical-section",
  "defmt",
@@ -267,9 +289,11 @@ dependencies = [
 
 [[package]]
 name = "consortium-ipc-transport-uart"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "cobs 0.5.1",
+ "consortium-hal-imx9",
+ "consortium-hal-stm32mp2",
  "consortium-ipc",
  "consortium-log",
  "crc32fast",
@@ -280,7 +304,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-log"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "consortium-log-macros",
  "defmt",
@@ -288,7 +312,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-log-macros"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -297,14 +321,22 @@ dependencies = [
 
 [[package]]
 name = "consortium-macros-helpers"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "syn 3.0.9",
 ]
 
 [[package]]
+name = "consortium-pac-imx9"
+version = "0.5.0"
+dependencies = [
+ "cortex-m",
+ "defmt",
+]
+
+[[package]]
 name = "consortium-pac-stm32mp2"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "cortex-m",
  "cortex-m-rt",
@@ -312,14 +344,14 @@ dependencies = [
 
 [[package]]
 name = "consortium-runtime-macros"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "consortium-runtime-macros-impl",
 ]
 
 [[package]]
 name = "consortium-runtime-macros-impl"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "consortium-macros-helpers",
  "proc-macro2",
@@ -329,7 +361,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-runtime-mcu"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "consortium-ipc-transport-fdcan",
  "consortium-ipc-transport-memory",
@@ -345,18 +377,9 @@ dependencies = [
 
 [[package]]
 name = "consortium-runtime-sys"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "bindgen",
-]
-
-[[package]]
-name = "consortium-shared-memory"
-version = "0.4.0"
-dependencies = [
- "cortex-m",
- "defmt",
- "thiserror",
 ]
 
 [[package]]
@@ -804,7 +827,7 @@ dependencies = [
 
 [[package]]
 name = "melt-pot-shared"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "consortium-ipc",
  "serde",
@@ -812,15 +835,15 @@ dependencies = [
 
 [[package]]
 name = "melt-pot-stm32mp25-mcu"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "consortium-codec",
+ "consortium-core",
  "consortium-dbg",
  "consortium-hal-stm32mp2",
  "consortium-ipc",
  "consortium-ipc-transport-memory",
  "consortium-runtime-mcu",
- "consortium-shared-memory",
  "cortex-m",
  "cortex-m-rt",
  "defmt",

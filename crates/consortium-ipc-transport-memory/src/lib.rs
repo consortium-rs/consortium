@@ -23,16 +23,16 @@
 //! [`Connect`] over a window of memory both cores can address, using a
 //! [`Doorbell`] for wakeups because shared memory on its own cannot notify anybody.
 //!
-//! Memory primitives come from `consortium-shared-memory` ([`Region`] and its cache
-//! semantics, the descriptor header). Hardware signaling comes from the Type-A
-//! doorbells in [`bell`] (IPCC, MU, HSEM); GPIO stays in `consortium-ipc-doorbell-gpio`.
+//! Both primitives come from `consortium-core`: memory ([`Region`] and its cache
+//! semantics, the descriptor header) and signaling (the [`Doorbell`] trait, the
+//! Type-A bells in `consortium_core::bell` (IPCC, MU, HSEM), and the GPIO doorbell).
 //! What this crate adds is the protocol.
 //!
 //! [`SendTransport`]: consortium_ipc::SendTransport
 //! [`RecvTransport`]: consortium_ipc::RecvTransport
 //! [`Connect`]: consortium_ipc::Connect
 //! [`Doorbell`]: consortium_ipc::Doorbell
-//! [`Region`]: consortium_shared_memory::Region
+//! [`Region`]: consortium_core::Region
 //!
 //! # Layout
 //!
@@ -42,7 +42,7 @@
 //!
 //! ```text
 //! 0x00  ┌────────────────────────────────┐
-//!       │ header: "CIPC", version        │  consortium-shared-memory
+//!       │ header: "CIPC", version        │  consortium-core
 //!       │ num_channels, updated ids      │
 //!       │ tx/rx_transfer_size            │
 //!       │ state (DescState)              │
@@ -109,7 +109,7 @@
 //! [`Primary`]: consortium_ipc::Primary
 //! [`Secondary`]: consortium_ipc::Secondary
 //! [`Side`]: consortium_ipc::Side
-//! [`UncachedRegion`]: consortium_shared_memory::UncachedRegion
+//! [`UncachedRegion`]: consortium_core::UncachedRegion
 //!
 //! # Example
 //!
@@ -202,11 +202,10 @@
 //! | `std`                            | `alloc`, Tokio support, UIO errors, `tracing` logs |
 //! | `alloc`                          | link `alloc` through `consortium-ipc`             |
 //! | `defmt`                          | route protocol tracing to `defmt`; derive `Format` |
-//! | `stm32mp21x` / `23x` / `25x`     | select the STM32MP2 chip; enables `bell::ipcc` (and `bell::hsem` on 23x/25x) |
-//! | `mimx93` / `mimx95`              | select the i.MX 9 chip; enables `bell::mu`        |
 //!
-//! The transport itself is generic over any [`Doorbell`] and needs none of them; the
-//! chip features only bring in the Type-A bells and their chip HAL.
+//! The transport is generic over any [`Doorbell`] and has no chip features. The
+//! Type-A bells and their chip HAL are selected on `consortium-core` instead
+//! (`mimx93`/`mimx95`, `stm32mp21x`/`23x`/`25x`).
 //!
 //! # Testing
 //!
@@ -225,11 +224,6 @@
 
 #[cfg(feature = "alloc")]
 extern crate alloc;
-
-/// Type-A doorbells: the generic [`BellA`](bell::BellA) over a per-block
-/// [`BellHw`](bell::BellHw) register model, and the blocks themselves behind their chip
-/// features (IPCC, MU, HSEM).
-pub mod bell;
 
 mod descriptor;
 mod endpoint;
@@ -276,8 +270,8 @@ pub use error::{DescriptorError, Error};
 /// These functions are `unsafe` and take a raw slot pointer: they perform no bounds
 /// checks and assume the caller resolved the slot from a validated channel-table
 /// entry. Cache maintenance is *not* their job — the transport calls
-/// [`Region::flush`](consortium_shared_memory::Region::flush) before ringing and
-/// [`invalidate`](consortium_shared_memory::Region::invalidate) after waking.
+/// [`Region::flush`](consortium_core::Region::flush) before ringing and
+/// [`invalidate`](consortium_core::Region::invalidate) after waking.
 /// Prefer [`SharedMemoryTransport`], which does all of that; this module is exposed
 /// for tests and for tooling that inspects a live window.
 pub mod slot {

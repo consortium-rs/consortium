@@ -17,9 +17,9 @@ re-exports `peripherals` and `Peripherals` from it, so the singletons land at
 
 The bindings are feature-gated to match the module they bind into, so a HAL
 built with `default-features = false` still compiles. Doorbell peripherals (MU,
-HSEM, IPCC) are deliberately absent: their drivers live in the
-`consortium-ipc-doorbell-*` crates, which depend on the HAL, so those crates
-bind the singletons themselves rather than inverting the dependency.
+HSEM, IPCC) are deliberately absent: their drivers live in `consortium-core`'s
+`bell` module, which depends on the HAL, so it binds the singletons itself
+rather than inverting the dependency.
 
 Run from the repository root:
 

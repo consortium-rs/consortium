@@ -18,7 +18,7 @@
 //! `bell::tests`; these check that each `BellHw` operation hits the right register
 //! for both line kinds.
 
-use consortium_ipc::{Chan, Primary, Secondary};
+use crate::{Chan, Primary, Secondary};
 
 use super::registers::offsets;
 use super::*;
@@ -157,7 +157,7 @@ fn asserted_packs_gi_below_rf_and_disarm_all_splits_them() {
 #[cfg(feature = "std")]
 #[test]
 fn service_masks_gi_and_rf_lines_before_the_wait_acknowledges() {
-    use consortium_ipc::Doorbell;
+    use crate::Doorbell;
     use core::future::Future;
     use core::task::{Context, Poll};
 
@@ -189,7 +189,7 @@ fn service_masks_gi_and_rf_lines_before_the_wait_acknowledges() {
 fn distinct_lines_keep_distinct_wakers() {
     extern crate std;
 
-    use consortium_ipc::Doorbell;
+    use crate::Doorbell;
     use core::future::Future;
     use core::sync::atomic::{AtomicUsize, Ordering};
     use core::task::{Context, Poll, RawWaker, RawWakerVTable, Waker};

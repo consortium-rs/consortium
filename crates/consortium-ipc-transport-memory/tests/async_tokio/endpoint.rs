@@ -1,12 +1,12 @@
 use crate::common::doorbell::HostDoorbell;
 use crate::transport_support::REGION_LEN;
 use consortium_codec::PostcardCodec;
+use consortium_core::UncachedRegion;
 use consortium_ipc::Chan;
 use consortium_ipc_transport_memory::{
     Endpoint, Primary, Secondary, SharedMemoryTransport, Transceiver, channels, impl_channel,
     install,
 };
-use consortium_shared_memory::UncachedRegion;
 use serde::{Deserialize, Serialize};
 
 const MTU: usize = 64;

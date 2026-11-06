@@ -1,9 +1,9 @@
 use crate::common::doorbell::HostDoorbell;
+use consortium_core::UncachedRegion;
 use consortium_ipc::{Chan, Connect, RecvTransport, SendTransport};
 use consortium_ipc_transport_memory::{
     DescriptorLayout, Primary, Secondary, SharedMemoryTransport, get_state,
 };
-use consortium_shared_memory::UncachedRegion;
 
 const MTU: usize = 64;
 const REGION_LEN: usize = 0x800;

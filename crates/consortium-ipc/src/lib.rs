@@ -22,7 +22,7 @@
 //! call, and the marker types that keep a message meaningful on both sides of a
 //! core boundary. It performs no hardware access, no allocation, and hosts no
 //! executor; concrete links live in `consortium-ipc-transport-*`, concrete
-//! signaling in `consortium-ipc-doorbell-*`, and serialization in
+//! signaling in `consortium-core`, and serialization in
 //! `consortium-codec`.
 //!
 //! # Architecture
@@ -103,25 +103,23 @@
 extern crate alloc;
 
 pub(crate) mod ack;
-pub(crate) mod chan;
 pub(crate) mod channel;
 pub(crate) mod connect;
-pub(crate) mod doorbell;
-pub(crate) mod future;
 pub(crate) mod sealed;
-pub(crate) mod side;
 pub(crate) mod transceiver;
 pub(crate) mod transport;
 pub(crate) mod wire;
 
+// The signaling vocabulary lives in `consortium-core`, below every subsystem that
+// signals another core; IPC re-exports it so its trait stack reads as one API.
+pub use consortium_core::{
+    Chan, ChanValidate, Doorbell, MaybeSend, Primary, Secondary, Side, Tertiary,
+};
+
 pub use {
     ack::AckSendTransport,
-    chan::{Chan, ChanValidate},
     channel::{Channel, ChannelError, Direction, ReceivedMessage, Rx, Tx},
     connect::Connect,
-    doorbell::Doorbell,
-    future::MaybeSend,
-    side::{Primary, Secondary, Side, Tertiary},
     transceiver::Transceiver,
     transport::{RecvTransport, SendTransport, TransportError},
     wire::IpcSafe,

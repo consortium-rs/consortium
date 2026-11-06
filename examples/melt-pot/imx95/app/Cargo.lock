@@ -247,7 +247,7 @@ dependencies = [
 
 [[package]]
 name = "cogcore"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "cogcore-sys",
  "gio",
@@ -257,7 +257,7 @@ dependencies = [
 
 [[package]]
 name = "cogcore-sys"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "bindgen",
  "cc",
@@ -276,7 +276,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-cfg-common"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "serde",
  "uuid",
@@ -284,7 +284,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-codec"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "consortium-log",
  "postcard",
@@ -292,12 +292,25 @@ dependencies = [
 ]
 
 [[package]]
+name = "consortium-core"
+version = "0.5.0"
+dependencies = [
+ "atomic-waker",
+ "bitfield 0.20.0",
+ "consortium-hal-imx9",
+ "consortium-log",
+ "cortex-m",
+ "critical-section",
+ "thiserror",
+]
+
+[[package]]
 name = "consortium-dbg"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "bitflags 2.13.2",
+ "consortium-core",
  "consortium-log",
- "consortium-shared-memory",
  "defmt",
  "defmt-decoder",
  "defmt-parser",
@@ -306,7 +319,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-hal"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "cortex-m",
  "critical-section",
@@ -315,7 +328,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-hal-imx9"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "consortium-hal",
  "consortium-pac-imx9",
@@ -325,7 +338,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-hmi"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "serde",
  "serde_json",
@@ -333,7 +346,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-hmi-webkit"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "cogcore",
  "consortium-hmi",
@@ -344,23 +357,24 @@ dependencies = [
 
 [[package]]
 name = "consortium-ipc"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "consortium-codec",
+ "consortium-core",
  "consortium-ipc-macros",
  "consortium-log",
 ]
 
 [[package]]
 name = "consortium-ipc-macros"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "consortium-ipc-macros-impl",
 ]
 
 [[package]]
 name = "consortium-ipc-macros-impl"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "consortium-macros-helpers",
  "proc-macro2",
@@ -370,15 +384,12 @@ dependencies = [
 
 [[package]]
 name = "consortium-ipc-transport-memory"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
- "atomic-waker",
- "bitfield 0.20.0",
  "consortium-codec",
- "consortium-hal-imx9",
+ "consortium-core",
  "consortium-ipc",
  "consortium-log",
- "consortium-shared-memory",
  "crc32fast",
  "critical-section",
  "embassy-hal-internal",
@@ -390,7 +401,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-log"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "consortium-log-macros",
  "tracing",
@@ -398,7 +409,7 @@ dependencies = [
 
 [[package]]
 name = "consortium-log-macros"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -407,28 +418,28 @@ dependencies = [
 
 [[package]]
 name = "consortium-macros-helpers"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "syn 3.0.9",
 ]
 
 [[package]]
 name = "consortium-pac-imx9"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "cortex-m",
 ]
 
 [[package]]
 name = "consortium-runtime-app"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
+ "consortium-core",
  "consortium-dbg",
  "consortium-ipc",
  "consortium-ipc-transport-memory",
  "consortium-log",
  "consortium-runtime-macros",
- "consortium-shared-memory",
  "libc",
  "thiserror",
  "tokio",
@@ -439,14 +450,14 @@ dependencies = [
 
 [[package]]
 name = "consortium-runtime-macros"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "consortium-runtime-macros-impl",
 ]
 
 [[package]]
 name = "consortium-runtime-macros-impl"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "consortium-macros-helpers",
  "proc-macro2",
@@ -455,16 +466,8 @@ dependencies = [
 ]
 
 [[package]]
-name = "consortium-shared-memory"
-version = "0.4.0"
-dependencies = [
- "cortex-m",
- "thiserror",
-]
-
-[[package]]
 name = "consortium-tee"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "consortium-codec",
  "consortium-log",
@@ -476,14 +479,14 @@ dependencies = [
 
 [[package]]
 name = "consortium-tee-macros"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "consortium-tee-macros-impl",
 ]
 
 [[package]]
 name = "consortium-tee-macros-impl"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "consortium-macros-helpers",
  "heck",
@@ -1042,14 +1045,14 @@ dependencies = [
 
 [[package]]
 name = "melt-pot-imx95-app"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "consortium-codec",
+ "consortium-core",
  "consortium-hmi-webkit",
  "consortium-ipc",
  "consortium-ipc-transport-memory",
  "consortium-runtime-app",
- "consortium-shared-memory",
  "consortium-tee",
  "glib",
  "melt-pot-imx95-ta",
@@ -1062,7 +1065,7 @@ dependencies = [
 
 [[package]]
 name = "melt-pot-imx95-ta"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "consortium-cfg-common",
  "consortium-tee",
@@ -1072,7 +1075,7 @@ dependencies = [
 
 [[package]]
 name = "melt-pot-shared"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "consortium-ipc",
  "serde",

@@ -1660,8 +1660,8 @@ mod tests {
         assert!(tokens.contains("fn MU1_B ()"), "{tokens}");
         assert!(
             tokens.contains(
-                ":: consortium_ipc_transport_memory :: bell :: service_interrupt :: < :: \
-                 consortium_ipc_transport_memory :: bell :: mu :: Mu < :: consortium_ipc :: \
+                ":: consortium_core :: bell :: service_interrupt :: < :: \
+                 consortium_core :: bell :: mu :: Mu < :: consortium_ipc :: \
                  Secondary , 1usize > > ()"
             ),
             "{tokens}"

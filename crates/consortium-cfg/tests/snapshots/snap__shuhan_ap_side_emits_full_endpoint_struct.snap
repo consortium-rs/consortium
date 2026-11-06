@@ -4,14 +4,12 @@ expression: items(tokens)
 ---
 ::consortium_ipc_transport_memory::channels!(PING, PONG);
 ::consortium_ipc_transport_memory::impl_channel!(
-    PING, ::consortium_ipc::Primary,
-    ::consortium_ipc_transport_memory::bell::ipcc::IpccDoorbell <
+    PING, ::consortium_ipc::Primary, ::consortium_core::bell::ipcc::IpccDoorbell <
     ::consortium_ipc::Primary, 1usize >, ::consortium_runtime_app::uio::UioRegion,
     ::shared::Ping, ::shared::Pong, ::consortium_codec::PostcardCodec, 256usize,
 );
 ::consortium_ipc_transport_memory::impl_channel!(
-    PONG, ::consortium_ipc::Primary,
-    ::consortium_ipc_transport_memory::bell::ipcc::IpccDoorbell <
+    PONG, ::consortium_ipc::Primary, ::consortium_core::bell::ipcc::IpccDoorbell <
     ::consortium_ipc::Primary, 2usize >, ::consortium_runtime_app::uio::UioRegion,
     ::shared::Telemetry, ::shared::Command, ::consortium_codec::RkyvCodec < 512usize >,
     512usize,
@@ -30,7 +28,7 @@ fn __consortium_install_channels(
         // SAFETY: the base is the UIO-mapped doorbell register window,
         // resolved from the validated Consortium hardware database.
         let doorbell = unsafe {
-            ::consortium_ipc_transport_memory::bell::ipcc::IpccDoorbell::<
+            ::consortium_core::bell::ipcc::IpccDoorbell::<
                 ::consortium_ipc::Primary,
                 1usize,
             >::new_mapped(uio[0usize].mmap(2usize)?)
@@ -66,7 +64,7 @@ fn __consortium_install_channels(
         // SAFETY: the base is the UIO-mapped doorbell register window,
         // resolved from the validated Consortium hardware database.
         let doorbell = unsafe {
-            ::consortium_ipc_transport_memory::bell::ipcc::IpccDoorbell::<
+            ::consortium_core::bell::ipcc::IpccDoorbell::<
                 ::consortium_ipc::Primary,
                 2usize,
             >::new_mapped(uio[2usize].mmap(0usize)?)

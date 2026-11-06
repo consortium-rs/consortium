@@ -52,9 +52,9 @@
 use crate::transport::RegionSharedMemoryTransportable;
 use crate::utils::{rv_u8, rv_u32, wv_u8, wv_u32};
 use crate::{Error, SharedMemoryTransport};
+use consortium_core::descriptor::{DescriptorHeader, DescriptorMagic};
 use consortium_ipc::{Chan, Doorbell, Secondary};
 use consortium_ipc::{Primary, Side};
-use consortium_shared_memory::descriptor::{DescriptorHeader, DescriptorMagic};
 use core::sync::atomic::Ordering;
 
 pub const CHANNEL_NUM_MAX: usize = 16;

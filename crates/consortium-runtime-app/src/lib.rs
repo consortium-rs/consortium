@@ -137,6 +137,8 @@ pub mod log {
 #[cfg(all(target_os = "linux", feature = "dbg", feature = "ipc-shm"))]
 pub mod dbg_console;
 
+#[cfg(all(target_os = "linux", feature = "ipc-shm"))]
+pub use consortium_core;
 #[cfg(all(target_os = "linux", feature = "ipc"))]
 pub use consortium_ipc as ipc;
 #[cfg(all(target_os = "linux", feature = "ipc-shm"))]

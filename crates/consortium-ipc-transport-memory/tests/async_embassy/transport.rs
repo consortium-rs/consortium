@@ -9,13 +9,13 @@ use std::{
     task::{Context, Poll, Waker},
 };
 
+use consortium_core::UncachedRegion;
+use consortium_core::descriptor::DescriptorHeader;
 use consortium_ipc::{Chan, Doorbell, MaybeSend, RecvTransport};
 use consortium_ipc_transport_memory::{
     ChannelDirection, ChannelLayout, DescState, MAGIC, Primary, RX_UPDATED_ID_OFFSET,
     SharedMemoryTransport, VERSION, channel_table_entry_offset, slot, slot_offset, slot_stride,
 };
-use consortium_shared_memory::UncachedRegion;
-use consortium_shared_memory::descriptor::DescriptorHeader;
 use embassy_executor::Executor;
 use embassy_futures::yield_now;
 use embassy_sync::{blocking_mutex::raw::NoopRawMutex, signal::Signal};

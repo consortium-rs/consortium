@@ -367,12 +367,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "cast"
-version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "37b2a672a2cb129a2e41c10b1224bb368f9f37a2b16b612598138befd7b37eb5"
-
-[[package]]
 name = "cbor-edn"
 version = "0.0.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -604,6 +598,7 @@ version = "0.5.0"
 dependencies = [
  "consortium-cfg-common",
  "consortium-codec",
+ "consortium-core",
  "consortium-data",
  "consortium-dts",
  "consortium-hal-imx9",
@@ -612,7 +607,6 @@ dependencies = [
  "consortium-ipc-transport-memory",
  "consortium-log",
  "consortium-runtime-app",
- "consortium-shared-memory",
  "insta",
  "prettyplease",
  "proc-macro2",
@@ -668,6 +662,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "consortium-core"
+version = "0.5.0"
+dependencies = [
+ "atomic-waker",
+ "bitfield 0.20.0",
+ "consortium-hal-imx9",
+ "consortium-hal-stm32mp2",
+ "consortium-log",
+ "cortex-m",
+ "critical-section",
+ "defmt",
+ "embedded-hal 1.0.0",
+ "thiserror 2.0.21",
+]
+
+[[package]]
 name = "consortium-data"
 version = "0.5.0"
 dependencies = [
@@ -683,8 +693,8 @@ name = "consortium-dbg"
 version = "0.5.0"
 dependencies = [
  "bitflags 2.13.2",
+ "consortium-core",
  "consortium-log",
- "consortium-shared-memory",
  "cortex-m",
  "defmt",
  "defmt-decoder",
@@ -809,22 +819,12 @@ name = "consortium-ipc"
 version = "0.5.0"
 dependencies = [
  "consortium-codec",
+ "consortium-core",
  "consortium-ipc-macros",
  "consortium-log",
  "defmt",
  "futures",
  "trybuild",
-]
-
-[[package]]
-name = "consortium-ipc-doorbell-gpio"
-version = "0.5.0"
-dependencies = [
- "atomic-waker",
- "consortium-ipc",
- "defmt",
- "embedded-hal 1.0.0",
- "linux-embedded-hal",
 ]
 
 [[package]]
@@ -874,13 +874,10 @@ name = "consortium-ipc-transport-memory"
 version = "0.5.0"
 dependencies = [
  "atomic-waker",
- "bitfield 0.20.0",
  "consortium-codec",
- "consortium-hal-imx9",
- "consortium-hal-stm32mp2",
+ "consortium-core",
  "consortium-ipc",
  "consortium-log",
- "consortium-shared-memory",
  "crc32fast",
  "critical-section",
  "defmt",
@@ -974,6 +971,7 @@ dependencies = [
 name = "consortium-runtime-app"
 version = "0.5.0"
 dependencies = [
+ "consortium-core",
  "consortium-dbg",
  "consortium-ffi",
  "consortium-hmi",
@@ -982,7 +980,6 @@ dependencies = [
  "consortium-log",
  "consortium-ort",
  "consortium-runtime-macros",
- "consortium-shared-memory",
  "consortium-tee",
  "libc",
  "thiserror 2.0.21",
@@ -1015,6 +1012,7 @@ dependencies = [
 name = "consortium-runtime-mcu"
 version = "0.5.0"
 dependencies = [
+ "consortium-core",
  "consortium-dbg",
  "consortium-ipc",
  "consortium-ipc-transport-fdcan",
@@ -1038,15 +1036,6 @@ name = "consortium-runtime-sys"
 version = "0.5.0"
 dependencies = [
  "bindgen",
-]
-
-[[package]]
-name = "consortium-shared-memory"
-version = "0.5.0"
-dependencies = [
- "cortex-m",
- "defmt",
- "thiserror 2.0.21",
 ]
 
 [[package]]
@@ -2035,17 +2024,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "gpio-cdev"
-version = "0.6.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "09831ec59b80be69e75d29cf36e16afbbe5fd1af9c1bf4689ad91c77db5aa6a6"
-dependencies = [
- "bitflags 2.13.2",
- "libc",
- "nix 0.27.1",
-]
-
-[[package]]
 name = "hash32"
 version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2127,18 +2105,6 @@ name = "hexfloat2"
 version = "0.1.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "befe65164a090041cdf6e0d21a0ec3198d856fbfe2b76e324a073e790bb49f8c"
-
-[[package]]
-name = "i2cdev"
-version = "0.6.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9b940f7497c4f95b863b21cd34c3737b53a67d80d94cf29055d7f7eeca6ffdb4"
-dependencies = [
- "bitflags 2.13.2",
- "byteorder",
- "libc",
- "nix 0.26.4",
-]
 
 [[package]]
 name = "iana-time-zone"
@@ -2328,24 +2294,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "linux-embedded-hal"
-version = "0.5.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c54d3532c66df7cc711f1419e4ca28086dddb94fbe9f99be436ca520f907951f"
-dependencies = [
- "cast",
- "embedded-hal 1.0.0",
- "embedded-hal-nb",
- "gpio-cdev",
- "i2cdev",
- "nb 1.1.0",
- "nix 0.31.3",
- "serialport",
- "spidev",
- "sysfs_gpio",
-]
-
-[[package]]
 name = "linux-raw-sys"
 version = "0.4.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2484,15 +2432,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "memoffset"
-version = "0.6.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5aa361d4faea93603064a027415f07bd8e1d5c88c9fbf68bf56a285428fd79ce"
-dependencies = [
- "autocfg",
-]
-
-[[package]]
 name = "minimal-lexical"
 version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2621,48 +2560,12 @@ dependencies = [
 
 [[package]]
 name = "nix"
-version = "0.23.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8f3790c00a0150112de0f4cd161e3d7fc4b2d8a5542ffc35f099a2562aecb35c"
-dependencies = [
- "bitflags 1.3.2",
- "cc",
- "cfg-if",
- "libc",
- "memoffset",
-]
-
-[[package]]
-name = "nix"
 version = "0.26.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "598beaf3cc6fdd9a5dfb1630c2800c7acd31df7aaf0f565796fba2b53ca1af1b"
 dependencies = [
  "bitflags 1.3.2",
  "cfg-if",
- "libc",
-]
-
-[[package]]
-name = "nix"
-version = "0.27.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2eb04e9c688eff1c89d72b407f168cf79bb9e867a9d3323ed6c01519eb9cc053"
-dependencies = [
- "bitflags 2.13.2",
- "cfg-if",
- "libc",
-]
-
-[[package]]
-name = "nix"
-version = "0.29.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "71e2746dc3a24dd78b3cfcb7be93368c6de9963d30f43a6a73998a9cf4b17b46"
-dependencies = [
- "bitflags 2.13.2",
- "cfg-if",
- "cfg_aliases",
  "libc",
 ]
 
@@ -4060,17 +3963,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "spidev"
-version = "0.7.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4f611021817865236902d15bdf8d729b0bd232141b568d56bb88409a8dc27397"
-dependencies = [
- "bitflags 2.13.2",
- "libc",
- "nix 0.29.0",
-]
-
-[[package]]
 name = "spin"
 version = "0.9.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4126,15 +4018,6 @@ dependencies = [
  "proc-macro2",
  "quote",
  "unicode-ident",
-]
-
-[[package]]
-name = "sysfs_gpio"
-version = "0.6.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e8808c55bc926565c62ef7838bcaa8add51585236803e2bdfa1472e3a3ab5e17"
-dependencies = [
- "nix 0.23.2",
 ]
 
 [[package]]

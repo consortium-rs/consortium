@@ -438,13 +438,16 @@ fn app_cargo(project: &Project, chip: &ChipProfile, vars: &Vars) -> String {
         src.dep("consortium-ipc", "features = [\"std\"]"),
         src.dep(
             "consortium-ipc-transport-memory",
-            &format!("default-features = false, features = [\"std\", \"{feature}\"]"),
+            "default-features = false, features = [\"std\"]",
         ),
         src.dep(
             "consortium-runtime-app",
             &format!("features = [\"{feature}\"]"),
         ),
-        src.dep("consortium-shared-memory", ""),
+        src.dep(
+            "consortium-core",
+            &format!("features = [\"std\", \"{feature}\"]"),
+        ),
     ];
     if project.tee {
         deps.push(String::new());
@@ -529,13 +532,16 @@ fn mcu_cargo(project: &Project, chip: &ChipProfile, vars: &Vars) -> String {
         src.dep("consortium-ipc", "default-features = false"),
         src.dep(
             "consortium-ipc-transport-memory",
-            &format!("default-features = false, features = [\"defmt\", \"{feature}\"]"),
+            "default-features = false, features = [\"defmt\"]",
         ),
         src.dep(
             "consortium-runtime-mcu",
             "default-features = false, features = [\"defmt\", \"macros\"]",
         ),
-        src.dep("consortium-shared-memory", ""),
+        src.dep(
+            "consortium-core",
+            &format!("features = [\"defmt\", \"{feature}\"]"),
+        ),
         "# The chip is named here rather than left to arrive transitively, so no".to_string(),
         "# dependency's default chip can sneak in beside it.".to_string(),
         src.dep(

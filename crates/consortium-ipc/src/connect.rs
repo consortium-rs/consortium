@@ -68,7 +68,7 @@
 //!   memory, say) discharge that obligation in their constructor; `connect`
 //!   then relies on the invariant already established there.
 
-use crate::future::MaybeSend;
+use crate::MaybeSend;
 use crate::transport::TransportError;
 
 /// A transport that must rendezvous with its remote peer before carrying

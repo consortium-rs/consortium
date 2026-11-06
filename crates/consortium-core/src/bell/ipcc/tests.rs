@@ -23,7 +23,7 @@ use core::{
     task::{Context, Poll},
 };
 
-use consortium_ipc::{Chan, Doorbell, Primary, Secondary};
+use crate::{Chan, Doorbell, Primary, Secondary};
 
 use super::registers::{
     cr::{ChannelRegister, ControlRegister, StatusSetClearRegister},

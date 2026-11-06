@@ -3,11 +3,11 @@ use crate::transport_support::{
     CountingRegion, MTU, REGION_LEN, SLOT_STRIDE, channel, init_descriptor_with_channels,
     init_two_channel_descriptor,
 };
+use consortium_core::UncachedRegion;
 use consortium_ipc::{Chan, Primary, SendTransport};
 use consortium_ipc_transport_memory::{
     ChannelDirection, ChannelLayout, Error, SharedMemoryTransport, channel_table_entry_offset, slot,
 };
-use consortium_shared_memory::UncachedRegion;
 
 #[test]
 fn send_returns_no_channel_when_all_tx_slots_are_unconsumed() {

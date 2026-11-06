@@ -51,17 +51,17 @@
 //! `consortium-cfg` generates. Naming the bank lets the vector read `CnISR` and mask
 //! exactly the semaphores that fired, like every other Type-A bell.
 //!
-//! [`Primary`]: consortium_ipc::Primary
-//! [`Secondary`]: consortium_ipc::Secondary
-//! [`Tertiary`]: consortium_ipc::Tertiary
+//! [`Primary`]: crate::Primary
+//! [`Secondary`]: crate::Secondary
+//! [`Tertiary`]: crate::Tertiary
 //! [`BellA::new_mapped`]: super::BellA::new_mapped
 
 pub mod registers;
 
 use core::marker::PhantomData;
 
+use crate::Side;
 use consortium_hal_stm32mp2::{Peri, PeripheralType};
-use consortium_ipc::Side;
 
 use self::registers::{
     base,

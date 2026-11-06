@@ -22,7 +22,7 @@
 //! ```
 
 use bitflags::bitflags;
-use consortium_shared_memory::descriptor::{DescriptorHeader, DescriptorMagic};
+use consortium_core::descriptor::{DescriptorHeader, DescriptorMagic};
 
 use crate::packet::{PACKET_HEADER_SIZE, Packet};
 use crate::utils::{rv_u16, wv_u16};

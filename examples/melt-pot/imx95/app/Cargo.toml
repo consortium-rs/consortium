@@ -45,11 +45,13 @@ consortium-codec = { features = [
 consortium-ipc = { features = [
   "std",
 ], path = "../../../../crates/consortium-ipc", version = "0.5.0" }
-consortium-ipc-transport-memory = { features = [
-  "mimx95",
+consortium-ipc-transport-memory = { default-features = false, features = [
   "std",
 ], path = "../../../../crates/consortium-ipc-transport-memory", version = "0.5.0" }
-consortium-shared-memory = { path = "../../../../crates/consortium-shared-memory", version = "0.5.0" }
+consortium-core = { features = [
+  "mimx95",
+  "std",
+], path = "../../../../crates/consortium-core", version = "0.5.0" }
 consortium-runtime-app = { features = [
   "mimx95",
 ], path = "../../../../crates/consortium-runtime-app", version = "0.5.0" }
