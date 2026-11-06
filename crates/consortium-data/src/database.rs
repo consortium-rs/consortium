@@ -20,6 +20,7 @@
 pub use consortium_cfg_common::database::*;
 
 use crate::error::DataError;
+use crate::family::{matches, normalize};
 
 /// A chip-family database bundled into the binary, paired with the part-number
 /// prefix that selects it.
@@ -59,8 +60,10 @@ const DATABASES: &[Embedded] = &[
 
 /// Resolves and parses the chip-family database for a chip part number.
 ///
-/// The lookup is a case-insensitive prefix match: `stm32mp257fak3` resolves to
-/// the `stm32mp25` family. Common i.MX aliases (`imx95`, `imx93`) are accepted
+/// The lookup is a case-insensitive family match: `stm32mp257fak3` resolves to
+/// the `stm32mp25` family. A part number of another die that only shares a
+/// prefix, such as an i.MX 952 `mimx9529…`, matches nothing (see
+/// `crate::family`). Common i.MX aliases (`imx95`, `imx93`) are accepted
 /// in addition to the canonical `mimx*` names.
 ///
 /// # Errors
@@ -71,21 +74,11 @@ pub fn load(chip: &str) -> Result<ChipDatabase, DataError> {
     let needle = normalize(chip);
     let entry = DATABASES
         .iter()
-        .find(|entry| needle.starts_with(entry.prefix))
+        .find(|entry| matches(&needle, entry.prefix))
         .ok_or_else(|| DataError::UnknownChip(chip.to_string()))?;
 
     serde_yaml::from_str(entry.yaml)
         .map_err(|err| DataError::DatabaseParse(chip.to_string(), err.to_string()))
-}
-
-/// Lowercases the part number and rewrites `imx` aliases to the `mimx`
-/// database prefix.
-fn normalize(chip: &str) -> String {
-    let lowered = chip.to_ascii_lowercase();
-    match lowered.strip_prefix("imx") {
-        Some(rest) => format!("mimx{rest}"),
-        None => lowered,
-    }
 }
 
 #[cfg(test)]
@@ -130,6 +123,25 @@ mod tests {
         assert_eq!(load("mimx9596xvt").unwrap().name, "MIMX95");
         assert_eq!(load("mimx9352").unwrap().name, "MIMX93");
         assert_eq!(load("imx93").unwrap().name, "MIMX93");
+    }
+
+    /// i.MX 952 and i.MX 937 are separate dies whose part numbers merely start
+    /// with `mimx95`/`mimx93`; resolving them to those families would hand them
+    /// the wrong memory map.
+    #[test]
+    fn rejects_other_dies_sharing_an_imx_prefix() {
+        for chip in [
+            "mimx9529avzxn",
+            "mimx9522",
+            "imx952",
+            "mimx9375",
+            "mimx9371xxvtx",
+        ] {
+            assert!(
+                matches!(load(chip), Err(DataError::UnknownChip(_))),
+                "{chip} should not resolve"
+            );
+        }
     }
 
     #[test]

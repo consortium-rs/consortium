@@ -63,6 +63,7 @@
 pub mod chipmap;
 pub mod database;
 mod error;
+mod family;
 pub mod signal;
 
 pub use error::DataError;
