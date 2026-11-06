@@ -13,7 +13,7 @@ extern crate self as optee_utee;
 
 include!("support/optee_utee_mock.rs");
 
-use std::sync::atomic::{AtomicU32, Ordering};
+use std::cell::Cell;
 
 use alloc::vec::Vec;
 use consortium_codec::{Codec, CodecFor};
@@ -70,15 +70,22 @@ fn encode(config: &Config) -> Vec<u8> {
     buf[..len].to_vec()
 }
 
-static CALLS: AtomicU32 = AtomicU32::new(0);
+// Per thread, not a `static` atomic: libtest runs tests in parallel threads, and
+// several of them call `read_config`. A shared counter let another test's call land
+// between `mismatched_layout_is_rejected_before_the_handler_runs`'s two reads and fail
+// it at random. Each test runs on its own thread and the handler is invoked on that
+// thread, so a thread-local count is exactly that test's calls.
+thread_local! {
+    static CALLS: Cell<u32> = const { Cell::new(0) };
+}
 
 fn calls() -> u32 {
-    CALLS.load(Ordering::SeqCst)
+    CALLS.with(Cell::get)
 }
 
 #[tee_command(codec = StrictCodec)]
 fn read_config(slot: u32) -> Config {
-    CALLS.fetch_add(1, Ordering::SeqCst);
+    CALLS.with(|calls| calls.set(calls.get() + 1));
     Config {
         id: slot as u8,
         limit: 500,
