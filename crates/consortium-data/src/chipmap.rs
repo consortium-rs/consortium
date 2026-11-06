@@ -284,7 +284,7 @@ fn parse_hex(value: &str) -> Option<u32> {
 }
 
 /// Lowercases the part number and rewrites `imx` aliases to the `mimx` prefix.
-fn normalize(chip: &str) -> String {
+pub(crate) fn normalize(chip: &str) -> String {
     let lowered = chip.to_ascii_lowercase();
     match lowered.strip_prefix("imx") {
         Some(rest) => format!("mimx{rest}"),

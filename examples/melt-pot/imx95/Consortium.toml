@@ -82,9 +82,9 @@ build   = "website/dist"
 [peripheral.lpspi1]
 owner    = "cm7"
 secure   = false
-pin.miso = "PA6"
-pin.mosi = "PA7"
-pin.sck  = "PA5"
+pin.sin  = "SAI1_TXC"
+pin.sout = "SAI1_RXD0"
+pin.sck  = "SAI1_TXD0"
 
 # CM7-owned GPIO port for a status heartbeat. `consortium build` bakes the
 # RGPIO2 base into `consortium.gen.rs` and hands back a ready `gpio2` handle.
@@ -100,5 +100,5 @@ owner     = "cm7"
 secure    = false
 clock     = 24000000
 frequency = 100000
-pin.sda   = "PB0"
-pin.scl   = "PB1"
+pin.sda   = "I2C1_SDA"
+pin.scl   = "I2C1_SCL"

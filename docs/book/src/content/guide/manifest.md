@@ -128,8 +128,8 @@ owner     = "cm7"
 secure    = false
 clock     = 24000000
 frequency = 100000
-pin.sda   = "PB0"
-pin.scl   = "PB1"
+pin.sda   = "I2C1_SDA"
+pin.scl   = "I2C1_SCL"
 ```
 
 Controller-owned peripherals become uppercase singleton fields under the generated
@@ -137,6 +137,15 @@ Controller-owned peripherals become uppercase singleton fields under the generat
 current generated singleton path supports non-secure peripherals; `secure = true` is
 rejected. Required clocks, frequencies, pins, and interrupt metadata depend on the
 driver and chip database.
+
+`pin.<signal> = "<pad>"` uses the vendor's names on both sides: the signal as the
+datasheet's alternate-function table spells it after the instance (`sda`, `tx`; i.MX
+LPSPI has `sin`/`sout`, not `miso`/`mosi`), and the pad as the vendor names it
+(`PA2` on STM32MP2, `I2C1_SDA` or `UART1_RXD` on i.MX). Validation checks that the
+pad can carry `<INSTANCE>_<SIGNAL>`, that it is bonded out in the package your
+`[profile] chip` part number implies (`stm32mp257fak3` is the VFBGA424 part; a shorter
+chip name skips this check), and that no pad is assigned twice. The error for a pad
+that cannot carry the signal lists the pads that can.
 
 ### Optional `[tee]` and `[hmi]`
 
@@ -153,7 +162,8 @@ constraints:
 - chip-visible processors, peripherals, and doorbells;
 - doorbell channel bounds and duplicate use;
 - shared and debug region bounds, overlap, and MPU alignment;
-- endpoint presence and peripheral ownership; and
+- endpoint presence and peripheral ownership;
+- peripheral pin assignments against the chip's pin-mux data; and
 - HMI engine/backend combinations.
 
 Treat validation failures as contract errors. Fix the manifest or chip data instead of

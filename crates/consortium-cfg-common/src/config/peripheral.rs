@@ -36,7 +36,14 @@ pub struct Peripheral {
     /// I2C bring-up; ignored by GPIO.
     #[serde(default)]
     pub clock: Option<u32>,
-    /// Signal-to-pin assignments (e.g. `sda = "PB0"`), keyed by signal name.
+    /// Signal-to-pad assignments, keyed by the vendor's signal name and valued
+    /// by the vendor's pad name: `sda = "PA2"` on STM32MP2 (`I2C1_SDA` on PA2),
+    /// `sin = "UART1_RXD"` on i.MX 95 (`LPSPI2_SIN` on pad `UART1_RXD`).
+    ///
+    /// Validated against the chip's signal map (`consortium_data::signal`): the
+    /// pad must carry `<NAME>_<SIGNAL>`, must be bonded out in the package that
+    /// `[profile] chip` names (when the part number is specific enough to name
+    /// one), and may be assigned only once across the manifest.
     #[serde(default)]
     pub pin: HashMap<String, String>,
 }

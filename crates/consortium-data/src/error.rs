@@ -34,4 +34,10 @@ pub enum DataError {
         core: String,
         detail: String,
     },
+
+    #[error("no pin-mux/DMA signal map is bundled for chip '{0}'")]
+    SignalMapUnavailable(String),
+
+    #[error("failed to parse the signal map for chip '{chip}': {detail}")]
+    SignalMapParse { chip: String, detail: String },
 }

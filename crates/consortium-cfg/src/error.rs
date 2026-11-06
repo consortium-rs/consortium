@@ -63,6 +63,49 @@ pub enum CfgError {
         chip: String,
     },
 
+    #[error(
+        "peripheral '{peripheral}' pin '{signal}': no pad on chip '{chip}' carries \
+         {function}. Pin keys are the signal names from the datasheet's alternate-function \
+         table (e.g. `tx`, `sda`, `mosi`)"
+    )]
+    PinSignalUnknown {
+        peripheral: String,
+        signal: String,
+        function: String,
+        chip: String,
+    },
+
+    #[error(
+        "peripheral '{peripheral}' pin '{signal}' = \"{pad}\": that pad cannot carry \
+         {function}. Pads that can: {allowed}"
+    )]
+    PinCannotCarry {
+        peripheral: String,
+        signal: String,
+        pad: String,
+        function: String,
+        allowed: String,
+    },
+
+    #[error(
+        "peripheral '{peripheral}' pin '{signal}' = \"{pad}\": pad is not bonded out in \
+         chip '{chip}''s {package} package"
+    )]
+    PinNotInPackage {
+        peripheral: String,
+        signal: String,
+        pad: String,
+        package: String,
+        chip: String,
+    },
+
+    #[error("pad \"{pad}\" is assigned twice: to {first} and to {second}")]
+    PinConflict {
+        pad: String,
+        first: String,
+        second: String,
+    },
+
     #[error("IPC channel endpoint '{0}' names core '{1}', which is not visible on chip '{2}'")]
     IpcEndpointNotVisible(String, String, String),
 

@@ -17,10 +17,12 @@
 //! Static chip data for the Consortium project, embedded at compile time.
 //!
 //! This crate owns the chip-family databases (`database/memory/*.yaml`), the
-//! generated per-core chip dumps (`database/chip/*.json`), and the extracted
-//! peripheral register definitions (`database/peri/`).
+//! generated per-core chip dumps (`database/chip/*.json`), the generated
+//! per-family pin-mux/DMA-request maps (`database/signal/*.json`), and the
+//! extracted peripheral register definitions (`database/peri/`).
 //! It also owns the resolvers that turn a `[profile] chip` part number into a
-//! parsed [`database::ChipDatabase`] or a per-core [`chipmap::ChipMap`].
+//! parsed [`database::ChipDatabase`], a per-core [`chipmap::ChipMap`], or a
+//! per-family [`signal::SignalMap`].
 //!
 //! # Why it is embedded rather than read from disk
 //!
@@ -35,6 +37,7 @@
 //! | ------------ | ---------------------------- | ------------------------------------ |
 //! | [`database`] | `database/memory/*.yaml`      | What does this chip *family* offer — coprocessors, memory regions and aliases, peripherals, doorbells? |
 //! | [`chipmap`]  | `database/chip/*.json`        | What can *one core* reach — peripheral MMIO bases and NVIC numbers? |
+//! | [`signal`]   | `database/signal/*.json`      | Which *pads* can carry a peripheral signal, how is each muxed, which packages bond it out, and which DMA request does it raise? |
 //!
 //! The split between the first two matters. A family database says the chip *has* an
 //! LPUART2; a chip map says *this core* can see it. Because there is one JSON file
@@ -60,5 +63,6 @@
 pub mod chipmap;
 pub mod database;
 mod error;
+pub mod signal;
 
 pub use error::DataError;

@@ -144,13 +144,14 @@ do not add an `#[allow]`.
 
 ## Third-party content and licenses
 
-Two crates redistribute vendor material and carry compound SPDX expressions
+Three crates redistribute vendor material and carry compound SPDX expressions
 instead of inheriting the workspace `Apache-2.0`:
 
-| Crate                    | License                       | Vendored content                                  |
-| ------------------------ | ----------------------------- | ------------------------------------------------- |
-| `cogcore-sys`            | `Apache-2.0 AND MIT`          | `vendor/include/` Cog sources                     |
-| `consortium-runtime-sys` | `Apache-2.0 AND BSD-3-Clause` | `include/rsc_table.h` (Texas Instruments, Google) |
+| Crate                    | License                       | Vendored content                                                     |
+| ------------------------ | ----------------------------- | -------------------------------------------------------------------- |
+| `cogcore-sys`            | `Apache-2.0 AND MIT`          | `vendor/include/` Cog sources                                        |
+| `consortium-runtime-sys` | `Apache-2.0 AND BSD-3-Clause` | `include/rsc_table.h` (Texas Instruments, Google)                    |
+| `consortium-data`        | `Apache-2.0 AND BSD-3-Clause` | `database/signal/` from ST and NXP pin/DMA data; notices in `NOTICE` |
 
 Linux device-tree sources are not packaged. `csti build --linux` reads the selected
 board sources and includes directly from the user's kernel checkout.

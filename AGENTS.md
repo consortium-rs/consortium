@@ -518,13 +518,21 @@ Current top-level schema:
   logical UI viewport and defaults to `480` × `272`; the builder passes these
   dimensions to the Pocket runtime.
 - `[peripheral.<name>]` contains `owner`, `secure`, optional `frequency`, optional
-  `clock`, and optional pin declarations.
+  `clock`, and optional `pin.<signal> = "<pad>"` declarations. Keys are the vendor's
+  signal names (`sda`, `tx`; NXP LPSPI uses `sin`/`sout`, not `miso`/`mosi`) and
+  values the vendor's pad names (`PA2`, `UART1_RXD`). `Session` checks them against
+  `consortium_data::signal`: the pad must carry `<NAME>_<SIGNAL>`, be bonded out in the
+  package the `[profile] chip` part number implies (`stm32mp257fak3` is VFBGA424; a
+  shorter chip name skips this), and be assigned once.
 
 `Session::from_toml` parses the manifest, resolves `[profile] chip` through embedded
 hardware databases, and validates doorbell availability, visible parties, channel
 bounds, duplicate doorbell channels, region bounds/overlap/MPU alignment, debug regions,
-and peripheral owners. `consortium-data` carries generated per-core chip maps,
-peripheral descriptions, and memory databases. Linux DTS sources are never bundled.
+peripheral owners, and peripheral pin assignments. `consortium-data` carries generated
+per-core chip maps, per-family signal maps (`signal`: pads, mux, packages, DMA
+requests), peripheral descriptions, and memory databases. Its signal data derives from
+ST/NXP BSD-3-Clause sources, so the crate is `Apache-2.0 AND BSD-3-Clause` with a
+`NOTICE`. Linux DTS sources are never bundled.
 
 `consortium-cfg` includes lowering, portable/Linux codegen, debug-console and peripheral
 bring-up codegen, UIO/Kconfig generation, vendor-tree DTS merge/overlay rendering,
