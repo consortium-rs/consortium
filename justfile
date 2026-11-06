@@ -6,7 +6,7 @@ a32_target := "armv7-unknown-linux-gnueabihf"
 rv32imc_target := "riscv32imc-unknown-none-elf"
 rv32imac_target := "riscv32imac-unknown-none-elf"
 rv32imafcp_target := "riscv32imafc-unknown-none-elf"
-lint_crates := "consortium-builder consortium-cfg csti consortium-codec consortium-codec-macros consortium-codec-macros-impl consortium-dbg consortium-dts consortium-ffi consortium-hal-imx9 consortium-hal-stm32mp2 consortium-core consortium-ipc consortium-ipc-macros consortium-ipc-macros-impl consortium-ipc-transport-fdcan consortium-ipc-transport-fdcan-embedded consortium-ipc-transport-memory consortium-ipc-transport-uart consortium-ort consortium-runtime-mcu consortium-tee-macros consortium-tee-macros-impl melt-pot-shared"
+lint_crates := "consortium-builder consortium-cfg csti consortium-codec consortium-codec-macros consortium-codec-macros-impl consortium-dbg consortium-dts consortium-ffi consortium-hal-imx9 consortium-hal-stm32mp2 consortium-core consortium-ipc consortium-ipc-macros consortium-ipc-macros-impl consortium-ipc-transport-fdcan consortium-ipc-transport-fdcan-embedded consortium-ipc-transport-memory consortium-ipc-transport-uart consortium-ort consortium-pmi consortium-pmi-scmi consortium-runtime-mcu consortium-tee-macros consortium-tee-macros-impl melt-pot-shared"
 rust_tools := "taplo-cli typos-cli cargo-deny cargo-expand cargo-insta cargo-shear"
 ls_lint_version := "2.3.1"
 
@@ -78,7 +78,7 @@ setup-chiptool:
 build:
     cargo build
 
-# Run tests. With args: `just test ipc host`, `just test hmi host`, `just test tee host`, `just test cfg host`, `just test dbg host`, `just test codec host`.
+# Run tests. With args: `just test ipc host`, `just test hmi host`, `just test tee host`, `just test cfg host`, `just test dbg host`, `just test codec host`, `just test pmi host`.
 test area="" scope="":
     @case "{{ area }}:{{ scope }}" in \
         ":") cargo test ;; \
@@ -96,7 +96,8 @@ test area="" scope="":
         "cfg:"|"cfg:host") just test-cfg-host ;; \
         "dbg:"|"dbg:host") just test-dbg-host ;; \
         "codec:"|"codec:host") just test-codec-host ;; \
-        *) echo "Error: unknown test scope '{{ area }} {{ scope }}'"; echo "Try: just test ipc host | a64 | a32 | m8 | m7, just test hmi host | a64 | a32, just test tee host | a64 | a32, just test cfg host, just test dbg host, or just test codec host"; exit 1 ;; \
+        "pmi:"|"pmi:host") just test-pmi-host ;; \
+        *) echo "Error: unknown test scope '{{ area }} {{ scope }}'"; echo "Try: just test ipc host | a64 | a32 | m8 | m7, just test hmi host | a64 | a32, just test tee host | a64 | a32, just test cfg host, just test dbg host, just test codec host, or just test pmi host"; exit 1 ;; \
     esac
 
 # Run tests for a specific crate (e.g. `just test-crate ipc`)
@@ -470,6 +471,19 @@ test-dbg-host:
 test-codec-host:
     cargo test -p consortium-codec --features postcard,prost,rkyv,alloc
     cargo test -p consortium-codec-macros-impl
+
+# Run host-side platform-management tests: the provider traits and the SCMI agent
+# against its scripted fake platform.
+test-pmi-host:
+    cargo test -p consortium-pmi
+    cargo test -p consortium-pmi-scmi
+    cargo test -p consortium-pmi-scmi --features std
+
+# Type-check the PMI crates for the controller cores.
+check-pmi-m:
+    cargo check -p consortium-pmi-scmi --target {{ m8_target }}
+    cargo check -p consortium-pmi-scmi --target {{ m7_target }}
+    cargo check -p consortium-pmi-scmi --target {{ m7_target }} --features defmt
 
 # ── RISC-V (rv32imc) ────────────────────────────────────────────────────────
 
