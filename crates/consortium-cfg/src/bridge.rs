@@ -17,7 +17,7 @@
 //! Lowers a validated [`Session`] into the `components` IR.
 //!
 //! The IR types in [`crate::components`] each own their own code generation
-//! ([`ShuHan::initialize`](crate::components::ipc_shm::ShuHan::initialize),
+//! ([`ShmNode::initialize`](crate::components::ipc_shm::ShmNode::initialize),
 //! [`BellA::nvic_enable`](crate::components::bella::BellA::nvic_enable),
 //! [`ToUio::to_uio`]). This module builds those structs from the parsed
 //! `Consortium.toml` plus its resolved chip database, so the builder can drive
@@ -47,7 +47,7 @@ use consortium_cfg_common::database::{
 use crate::components::address::{Address, ApAddress};
 use crate::components::bella::{BellA, HardwareDoorbell};
 use crate::components::dbg::{DebugLogs, DebugRing, ElfLocation};
-use crate::components::ipc_shm::{Channel, DoorbellMeta, DoorbellRingerSide, ShuHan, Transceiver};
+use crate::components::ipc_shm::{Channel, DoorbellMeta, DoorbellRingerSide, ShmNode, Transceiver};
 use crate::components::irq::InterruptLine;
 use crate::components::memory_to_uio::SharedWindow;
 use crate::components::peripheral::{PeripheralInstance, PeripheralKind, Peripherals};
@@ -64,12 +64,12 @@ use crate::{Session, error::CfgError};
 /// The `components` IR lowered from a [`Session`].
 ///
 /// Built once per session and shared across target cores; the codegen entry
-/// points ([`ShuHan::initialize`], [`BellA::nvic_enable`]) select the relevant
+/// points ([`ShmNode::initialize`], [`BellA::nvic_enable`]) select the relevant
 /// core at emit time.
 #[derive(Debug, Clone)]
 pub struct LoweredIr {
     /// Every IPC transceiver, one per `[[ipc.channel]]`.
-    pub shuhan: ShuHan,
+    pub ipc_shm: ShmNode,
     /// Every distinct hardware doorbell, carrying per-core IRQ maps.
     pub bella: BellA,
     /// Linux UIO devices, named for their DTS node. Index 0 is the aggregate
@@ -102,13 +102,13 @@ impl LoweredIr {
     pub fn empty_with_uio(uio: Vec<(String, UioDevice)>) -> Self {
         use crate::components::bella::BellA;
         use crate::components::dbg::DebugLogs;
-        use crate::components::ipc_shm::ShuHan;
+        use crate::components::ipc_shm::ShmNode;
         use crate::components::peripheral::Peripherals;
         use consortium_cfg_common::config::DbgMode;
         use std::collections::HashMap;
 
         Self {
-            shuhan: ShuHan::new(Vec::new()),
+            ipc_shm: ShmNode::new(Vec::new()),
             bella: BellA { bells: Vec::new() },
             uio,
             dbg: DebugLogs::new(HashMap::new(), DbgMode::default()),
@@ -138,7 +138,7 @@ impl LoweredIr {
 
         // A core only constructs the transceivers it participates in.
         let participating: Vec<_> = self
-            .shuhan
+            .ipc_shm
             .transceivers()
             .iter()
             .filter(|t| t.channel_primary.0 == core || t.channel_secondary.0 == core)
@@ -152,7 +152,7 @@ impl LoweredIr {
             .map(Vec::as_slice)
             .unwrap_or_default();
         let endpoints = crate::components::ipc_shm::initialize_instances(
-            &ShuHan::new(participating.clone()),
+            &ShmNode::new(participating.clone()),
             core,
             &uio_ident,
             ty_crate,
@@ -167,7 +167,7 @@ impl LoweredIr {
             // programs the MPU and NVIC before constructing the endpoints.
             VisibleCore::Mcore(name) => {
                 let doorbells =
-                    ShuHan::new(participating.clone()).doorbell_singletons(core, available);
+                    ShmNode::new(participating.clone()).doorbell_singletons(core, available);
                 return self.controller_init(core, name, &participating, endpoints, doorbells);
             }
             // Other controller families (Cortex-R, RISC-V) have no Cortex-M
@@ -926,7 +926,7 @@ impl Session {
         let core_peripherals =
             Self::lower_core_peripherals(&self.config.profile.chip, &transceivers, &peripherals);
         Ok(LoweredIr {
-            shuhan: ShuHan::new(transceivers),
+            ipc_shm: ShmNode::new(transceivers),
             bella,
             uio,
             dbg: DebugLogs::new(dbg_rings, self.config.dbg.mode),
@@ -1421,7 +1421,7 @@ mod tests {
     }
 
     fn transceiver<'a>(ir: &'a LoweredIr, name: &str) -> &'a Transceiver {
-        ir.shuhan
+        ir.ipc_shm
             .transceivers()
             .iter()
             .find(|t| t.name == name)
@@ -1901,14 +1901,14 @@ mod tests {
         let ty_crate: syn::Path = syn::parse_str("::shared").unwrap();
 
         let tokens = crate::components::ipc_shm::initialize_instances(
-            &ir.shuhan,
+            &ir.ipc_shm,
             VisibleCore::Ap,
             &uio,
             &ty_crate,
             &ir.peripherals.hal_crate,
             &[],
         );
-        syn::parse_file(&tokens.to_string()).expect("lowered ShuHan is valid Rust");
+        syn::parse_file(&tokens.to_string()).expect("lowered ShmNode is valid Rust");
 
         // The full AP resource entry point must parse as a complete module.
         let ap = ir.initialize(VisibleCore::Ap, &ty_crate);

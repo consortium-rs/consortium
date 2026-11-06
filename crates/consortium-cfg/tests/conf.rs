@@ -62,7 +62,7 @@ fn ty_crate() -> syn::Path {
 fn cores(ir: &LoweredIr) -> Vec<VisibleCore> {
     let mut seen: BTreeMap<String, VisibleCore> = BTreeMap::new();
     let mut has_ap = false;
-    for t in ir.shuhan.transceivers() {
+    for t in ir.ipc_shm.transceivers() {
         for (core, _) in [&t.channel_primary, &t.channel_secondary] {
             if *core == VisibleCore::Ap {
                 has_ap = true;

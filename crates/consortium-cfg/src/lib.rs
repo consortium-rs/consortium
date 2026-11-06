@@ -29,7 +29,7 @@
 //! ```text
 //! Consortium.toml
 //!   └─ session   parse + resolve the chip database + validate       → Session
-//!        └─ bridge    lower into the components IR                  → ShuHan, BellA, …
+//!        └─ bridge    lower into the components IR                  → ShmNode, BellA, …
 //!             └─ components   each IR node generates its own output
 //!                  ├─ Rust tokens ─ render ─→ src/consortium.gen.rs
 //!                  ├─ DTS nodes   ────────→ merged tree or .dtso

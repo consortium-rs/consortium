@@ -15,7 +15,7 @@ UIO ids, or the doorbell wiring by hand.
 ```text
 Consortium.toml
   └─ session   parse + resolve the chip database + validate       → Session
-       └─ bridge    lower into the components IR                  → ShuHan, BellA, …
+       └─ bridge    lower into the components IR                  → ShmNode, BellA, …
             └─ components   each IR node generates its own output
                  ├─ Rust tokens ─ render ─→ src/consortium.gen.rs
                  ├─ DTS nodes   ────────→ merged tree or .dtso
@@ -71,7 +71,7 @@ one place: three separate outputs have to agree on them.
 ## The components IR
 
 Codegen is deliberately **not** centralised. Each IR type emits its own output
-(`ShuHan::initialize`, `BellA::nvic_enable`, `ToUio::to_uio`), so a new component adds
+(`ShmNode::initialize`, `BellA::nvic_enable`, `ToUio::to_uio`), so a new component adds
 a module rather than a branch in a shared emitter.
 
 | Module          | Emits                                                                      |

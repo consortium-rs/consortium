@@ -7,7 +7,7 @@
 //! carveouts, and NVIC enables.
 //!
 //! Codegen is deliberately *not* centralised. Each IR type emits its own output —
-//! [`ShuHan::initialize`](ipc_shm::ShuHan::initialize),
+//! [`ShmNode::initialize`](ipc_shm::ShmNode::initialize),
 //! [`BellA::nvic_enable`](bella::BellA::nvic_enable),
 //! [`ToUio::to_uio`](uio::ToUio::to_uio) — so a new component adds a module rather
 //! than a branch in a shared emitter.
