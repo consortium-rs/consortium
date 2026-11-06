@@ -26,6 +26,7 @@
 use std::collections::HashMap;
 
 use crate::error::DataError;
+use crate::family::{matches, normalize};
 
 /// A chip dump bundled into the binary, paired with the family prefix and core
 /// name that select it.
@@ -207,7 +208,7 @@ impl ChipMap {
 /// Resolve and parse the per-core chip map for a chip part number and core name.
 ///
 /// `chip` is the `[profile] chip` part number; `core` is the coprocessor name
-/// (e.g. `cm7`). The lookup is a case-insensitive family-prefix match, with the
+/// (e.g. `cm7`). The lookup is a case-insensitive family match, with the
 /// `imx*` aliases rewritten to the `mimx*` prefixes, mirroring the chip-family
 /// database.
 ///
@@ -220,7 +221,7 @@ pub fn load(chip: &str, core: &str) -> Result<ChipMap, DataError> {
     let core_key = core.to_ascii_lowercase();
     let entry = CHIPS
         .iter()
-        .find(|entry| needle.starts_with(entry.family) && entry.core == core_key)
+        .find(|entry| matches(&needle, entry.family) && entry.core == core_key)
         .ok_or_else(|| DataError::ChipMapUnavailable {
             chip: chip.to_string(),
             core: core.to_string(),
@@ -283,15 +284,6 @@ fn parse_hex(value: &str) -> Option<u32> {
     u32::from_str_radix(digits, 16).ok()
 }
 
-/// Lowercases the part number and rewrites `imx` aliases to the `mimx` prefix.
-pub(crate) fn normalize(chip: &str) -> String {
-    let lowered = chip.to_ascii_lowercase();
-    match lowered.strip_prefix("imx") {
-        Some(rest) => format!("mimx{rest}"),
-        None => lowered,
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -312,6 +304,19 @@ mod tests {
         let gpioa = map.peripheral("GPIOA").expect("GPIOA should exist");
         assert_eq!(gpioa.kind(), "gpio");
         assert!(map.contains_peripheral("i2c1"));
+    }
+
+    /// An i.MX 952 CM7 shares IP names with the i.MX 95 CM7 but not their
+    /// addresses (its LPUART3–8, CAN2/3, and MU7/8 all move), so it must not
+    /// pick up the i.MX 95 map.
+    #[test]
+    fn rejects_imx952_and_imx937_cores() {
+        for chip in ["mimx9529avzxn", "mimx9375"] {
+            assert!(
+                matches!(load(chip, "cm7"), Err(DataError::ChipMapUnavailable { .. })),
+                "{chip} cm7 should not resolve"
+            );
+        }
     }
 
     #[test]

@@ -34,8 +34,8 @@
 
 use std::collections::HashMap;
 
-use crate::chipmap::normalize;
 use crate::error::DataError;
+use crate::family::{matches, normalize};
 
 /// A signal database bundled into the binary, with the family prefix that
 /// selects it.
@@ -267,7 +267,7 @@ impl SignalMap {
 
 /// Resolve and parse the signal map for a chip part number.
 ///
-/// The lookup is the same case-insensitive family-prefix match as
+/// The lookup is the same case-insensitive family match as
 /// [`crate::chipmap::load`], with `imx*` rewritten to `mimx*`.
 ///
 /// # Errors
@@ -278,7 +278,7 @@ pub fn load(chip: &str) -> Result<SignalMap, DataError> {
     let needle = normalize(chip);
     let entry = FAMILIES
         .iter()
-        .find(|entry| needle.starts_with(entry.family))
+        .find(|entry| matches(&needle, entry.family))
         .ok_or_else(|| DataError::SignalMapUnavailable(chip.to_string()))?;
     let parse_err = |detail: String| DataError::SignalMapParse {
         chip: chip.to_string(),
@@ -381,6 +381,16 @@ mod tests {
             let map = load(chip).unwrap_or_else(|err| panic!("{chip}: {err}"));
             assert!(!map.signals().is_empty(), "{chip} has no signals");
             assert!(!map.dma_requests().is_empty(), "{chip} has no DMA requests");
+        }
+    }
+
+    #[test]
+    fn rejects_other_dies_sharing_an_imx_prefix() {
+        for chip in ["mimx9529avzxn", "mimx9375"] {
+            assert!(
+                matches!(load(chip), Err(DataError::SignalMapUnavailable(_))),
+                "{chip} should not resolve"
+            );
         }
     }
 
