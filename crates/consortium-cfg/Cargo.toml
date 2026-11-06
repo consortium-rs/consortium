@@ -65,18 +65,15 @@ consortium-hal-stm32mp2 = { default-features = false, features = [
   "stm32mp25x",
   "time-driver-gp-tim",
 ], path = "../consortium-hal-stm32mp2" }
-consortium-ipc = { path = "../consortium-ipc" }
-# Generated code names the Type-A bells under `bell::{ipcc,mu,hsem}`, which the
-# transport exposes only with a chip of each family selected.
-consortium-ipc-transport-memory = { features = [
-  "mimx95",
-  "stm32mp25x",
-], path = "../consortium-ipc-transport-memory" }
-consortium-shared-memory = { path = "../consortium-shared-memory" }
-insta = "1"
-rkyv = { default-features = false, features = ["alloc", "bytecheck"], version = "0.8.16" }
-serde = { features = ["derive"], version = "1.0.228" }
-trybuild = "1"
+# Generated code names the Type-A bells under `bell::{ipcc,mu,hsem}`, which core
+# exposes only with a chip of each family selected.
+consortium-core                 = { features = ["mimx95", "std", "stm32mp25x"], path = "../consortium-core" }
+consortium-ipc                  = { path = "../consortium-ipc" }
+consortium-ipc-transport-memory = { path = "../consortium-ipc-transport-memory" }
+insta                           = "1"
+rkyv                            = { default-features = false, features = ["alloc", "bytecheck"], version = "0.8.16" }
+serde                           = { features = ["derive"], version = "1.0.228" }
+trybuild                        = "1"
 
 # The AP/Linux-side generated code targets `consortium-runtime-app`, which is
 # gated to `target_os = "linux"`; the UI test only emits + compiles those files

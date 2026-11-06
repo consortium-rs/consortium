@@ -18,7 +18,7 @@
 //! `bell::tests`; these check the lock/unlock ring and that each interrupt operation
 //! hits this bank's registers.
 
-use consortium_ipc::{Chan, Doorbell, Primary, Secondary, Tertiary};
+use crate::{Chan, Doorbell, Primary, Secondary, Tertiary};
 
 use super::registers::{cr::SemaphoreRegister, offsets};
 use super::*;

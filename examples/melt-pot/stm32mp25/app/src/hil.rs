@@ -44,7 +44,7 @@ use std::sync::Arc;
 use std::sync::atomic::{AtomicBool, AtomicU32, Ordering};
 use std::time::{Duration, Instant};
 
-use consortium_ipc_transport_memory::bell::ipcc::registers::offsets;
+use consortium_core::bell::ipcc::registers::offsets;
 use consortium_runtime_app::log::{error, info, warn};
 use consortium_runtime_app::uio::UioDevice;
 

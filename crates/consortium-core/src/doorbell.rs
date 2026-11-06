@@ -50,8 +50,7 @@ pub trait Doorbell {
     /// Doorbell covers multiple channels (e.g. MU has 4).
     ///
     /// The returned future is an opaque `impl Future` (RPITIT), matching
-    /// [`SendTransport`](crate::SendTransport) and
-    /// [`RecvTransport`](crate::RecvTransport): implementations may be plain
+    /// `consortium-ipc`'s `SendTransport` and `RecvTransport`: implementations may be plain
     /// `async fn`s or hand-rolled named futures with their own `Drop`-time
     /// disarming. It borrows `self`, so callers must hold it somewhere that is
     /// dropped before the doorbell — an `.await` in an `async` body does this

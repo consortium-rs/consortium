@@ -2,12 +2,12 @@ use crate::common::doorbell::HostDoorbell;
 use crate::transport_support::{
     HostUncachedTransportRx, HostUncachedTransportTx, MTU, REGION_LEN, init_two_channel_descriptor,
 };
+use consortium_core::UncachedRegion;
 use consortium_ipc::{Chan, RecvTransport, SendTransport};
 use consortium_ipc_transport_memory::{
     ChannelLayout, Primary, RX_UPDATED_ID_OFFSET, Secondary, SharedMemoryTransport,
     channel_table_entry_offset, slot,
 };
-use consortium_shared_memory::UncachedRegion;
 
 /// Demonstrate that `split()` produces two independent halves that can coexist
 /// in the same scope. With a combined [`SharedMemoryTransport`] the borrow

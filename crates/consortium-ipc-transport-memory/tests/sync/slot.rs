@@ -1,8 +1,8 @@
+use consortium_core::UncachedRegion;
 use consortium_ipc_transport_memory::slot::{
     self, FLAG_ACK_REQUESTED, FLAG_CONSUMED, FLAG_INTEGRITY_ERROR, FLAG_VALID, ReadOutcome,
     SLOT_HEADER,
 };
-use consortium_shared_memory::UncachedRegion;
 
 fn flags(slot: &[u8]) -> u32 {
     u32::from_le_bytes(slot[4..8].try_into().expect("slot flag bytes"))

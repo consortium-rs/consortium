@@ -15,7 +15,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 //! The transport trait family and related types.
-use crate::future::MaybeSend;
+use crate::MaybeSend;
 
 /// Provides the `Error` associated type shared by [`SendTransport`] and [`RecvTransport`].
 pub trait TransportError {

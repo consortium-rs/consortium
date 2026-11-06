@@ -17,7 +17,7 @@
 //! NXP i.MX Messaging Unit (MU) register model.
 //!
 //! An MU instance offers two independent signaling mechanisms, packed into the one
-//! flat channel space [`Doorbell`](consortium_ipc::Doorbell) expects:
+//! flat channel space [`Doorbell`](crate::Doorbell) expects:
 //!
 //! | Channel | Line                               | Registers                         |
 //! | ------- | ---------------------------------- | --------------------------------- |
@@ -58,16 +58,16 @@
 //! [`service_interrupt::<Mu<S, N>>()`](super::service_interrupt), which
 //! `consortium-cfg` generates.
 //!
-//! [`Primary`]: consortium_ipc::Primary
-//! [`Secondary`]: consortium_ipc::Secondary
+//! [`Primary`]: crate::Primary
+//! [`Secondary`]: crate::Secondary
 //! [`BellA::new_mapped`]: super::BellA::new_mapped
 
 pub mod registers;
 
 use core::marker::PhantomData;
 
+use crate::Side;
 use consortium_hal_imx9::{Peri, PeripheralType};
-use consortium_ipc::Side;
 
 use self::registers::{
     base,
@@ -121,8 +121,8 @@ pub enum MuLine {
 
 /// A chip-HAL peripheral singleton naming one MU register window.
 pub trait Instance: PeripheralType {
-    /// The window this singleton names: [`Primary`](consortium_ipc::Primary) for
-    /// MUA, [`Secondary`](consortium_ipc::Secondary) for MUB.
+    /// The window this singleton names: [`Primary`](crate::Primary) for
+    /// MUA, [`Secondary`](crate::Secondary) for MUB.
     type Side: Side;
     /// 1-based MU instance number.
     const INSTANCE: usize;
@@ -147,7 +147,7 @@ macro_rules! impl_mu {
 #[cfg(feature = "mimx95")]
 mod bindings {
     use super::Instance;
-    use consortium_ipc::{Primary, Secondary};
+    use crate::{Primary, Secondary};
 
     impl_mu!(MU5_MUA, Primary, 5);
     impl_mu!(MU7_MUB, Secondary, 7);
@@ -157,7 +157,7 @@ mod bindings {
 #[cfg(all(feature = "mimx93", not(feature = "mimx95")))]
 mod bindings {
     use super::Instance;
-    use consortium_ipc::{Primary, Secondary};
+    use crate::{Primary, Secondary};
 
     impl_mu!(MU1_MUA, Primary, 1);
     impl_mu!(MU1_MUB, Secondary, 1);

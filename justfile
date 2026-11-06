@@ -6,7 +6,7 @@ a32_target := "armv7-unknown-linux-gnueabihf"
 rv32imc_target := "riscv32imc-unknown-none-elf"
 rv32imac_target := "riscv32imac-unknown-none-elf"
 rv32imafcp_target := "riscv32imafc-unknown-none-elf"
-lint_crates := "consortium-builder consortium-cfg csti consortium-codec consortium-codec-macros consortium-codec-macros-impl consortium-dbg consortium-dts consortium-ffi consortium-hal-imx9 consortium-hal-stm32mp2 consortium-ipc consortium-ipc-doorbell-gpio consortium-ipc-macros consortium-ipc-macros-impl consortium-ipc-transport-fdcan consortium-ipc-transport-fdcan-embedded consortium-ipc-transport-memory consortium-ipc-transport-uart consortium-ort consortium-runtime-mcu consortium-tee-macros consortium-tee-macros-impl melt-pot-shared"
+lint_crates := "consortium-builder consortium-cfg csti consortium-codec consortium-codec-macros consortium-codec-macros-impl consortium-dbg consortium-dts consortium-ffi consortium-hal-imx9 consortium-hal-stm32mp2 consortium-core consortium-ipc consortium-ipc-macros consortium-ipc-macros-impl consortium-ipc-transport-fdcan consortium-ipc-transport-fdcan-embedded consortium-ipc-transport-memory consortium-ipc-transport-uart consortium-ort consortium-runtime-mcu consortium-tee-macros consortium-tee-macros-impl melt-pot-shared"
 rust_tools := "taplo-cli typos-cli cargo-deny cargo-expand cargo-insta cargo-shear"
 ls_lint_version := "2.3.1"
 
@@ -120,6 +120,8 @@ cargo-lint:
         cargo clippy -p "$crate" --all-targets -- -D warnings || exit 1; \
     done
     cargo clippy -p consortium-runtime-app --no-default-features --features mimx9x,stm32mp25x --all-targets -- -D warnings
+    cargo clippy -p consortium-core --features std,gpio,mimx95 --all-targets -- -D warnings
+    cargo clippy -p consortium-core --features std,stm32mp25x --all-targets -- -D warnings
     cargo clippy -p consortium-tee --no-default-features --features ta --all-targets -- -D warnings
 
 # Lint JavaScript and TypeScript through Vite+
@@ -367,7 +369,7 @@ test-tee-a32:
 check-ipc-m8:
     cargo check -p consortium-ipc --target {{ m8_target }}
     cargo check -p consortium-ipc-transport-memory --target {{ m8_target }} --no-default-features
-    cargo check -p consortium-ipc-transport-memory --target {{ m8_target }} --no-default-features --features mimx93
+    cargo check -p consortium-core --target {{ m8_target }} --features mimx93
     cargo check -p consortium-ipc-transport-fdcan --target {{ m8_target }} --no-default-features
     cargo check -p consortium-ipc-transport-fdcan-embedded --target {{ m8_target }} --features stm32mp25x
     cargo check -p consortium-ipc-transport-fdcan-embedded --target {{ m8_target }} --features mimx93
@@ -378,12 +380,12 @@ check-ipc-m8:
     cargo check -p consortium-runtime-mcu --target {{ m8_target }} --no-default-features --features ipc-shm,mimx93
     cargo check -p consortium-runtime-mcu --target {{ m8_target }} --no-default-features --features ipc-uart
     cargo check -p consortium-runtime-mcu --target {{ m8_target }} --no-default-features --features ipc-fdcan
-    cargo check -p consortium-ipc-transport-memory --target {{ m8_target }} --no-default-features --features stm32mp25x
+    cargo check -p consortium-core --target {{ m8_target }} --features stm32mp25x
 
 build-ipc-m8:
     cargo build -p consortium-ipc --release --target {{ m8_target }}
     cargo build -p consortium-ipc-transport-memory --release --target {{ m8_target }} --no-default-features
-    cargo build -p consortium-ipc-transport-memory --release --target {{ m8_target }} --no-default-features --features mimx93
+    cargo build -p consortium-core --release --target {{ m8_target }} --features mimx93
     cargo build -p consortium-ipc-transport-fdcan --release --target {{ m8_target }} --no-default-features
     cargo build -p consortium-ipc-transport-fdcan-embedded --release --target {{ m8_target }} --features stm32mp25x
     cargo build -p consortium-ipc-transport-fdcan-embedded --release --target {{ m8_target }} --features mimx93
@@ -391,7 +393,7 @@ build-ipc-m8:
     cargo build -p consortium-ipc-transport-uart --release --target {{ m8_target }} --no-default-features --features stm32mp25x
     cargo build -p consortium-ipc-transport-uart --release --target {{ m8_target }} --no-default-features --features mimx93
     cargo build -p consortium-runtime-mcu --release --target {{ m8_target }}
-    cargo build -p consortium-ipc-transport-memory --release --target {{ m8_target }} --no-default-features --features stm32mp25x
+    cargo build -p consortium-core --release --target {{ m8_target }} --features stm32mp25x
 
 # Compile M-core IPC crates for thumbv8. Unit tests are not runnable on the host.
 test-ipc-m8: check-ipc-m8
@@ -408,8 +410,8 @@ check-ipc-m7:
     cargo check -p consortium-runtime-mcu --target {{ m7_target }}
     cargo check -p consortium-runtime-mcu --target {{ m7_target }} --no-default-features --features ipc-uart
     cargo check -p consortium-runtime-mcu --target {{ m7_target }} --no-default-features --features ipc-fdcan
-    cargo check -p consortium-ipc-transport-memory --target {{ m7_target }} --no-default-features --features stm32mp25x
-    cargo check -p consortium-ipc-transport-memory --target {{ m7_target }} --no-default-features --features mimx95
+    cargo check -p consortium-core --target {{ m7_target }} --features stm32mp25x
+    cargo check -p consortium-core --target {{ m7_target }} --features mimx95
     # i.MX 952 (compile-level): the chip-glue transports, plus every HAL driver,
     # since no transport pulls in the ADC/DMA/timer/watchdog modules. There is no
     # `transport-memory` line until its MU doorbell lands with the reference manual.
@@ -425,8 +427,8 @@ build-ipc-m7:
     cargo build -p consortium-ipc-transport-uart --release --target {{ m7_target }} --no-default-features
     cargo build -p consortium-ipc-transport-uart --release --target {{ m7_target }} --no-default-features --features mimx95
     cargo build -p consortium-runtime-mcu --release --target {{ m7_target }}
-    cargo build -p consortium-ipc-transport-memory --release --target {{ m7_target }} --no-default-features --features stm32mp25x
-    cargo build -p consortium-ipc-transport-memory --release --target {{ m7_target }} --no-default-features --features mimx95
+    cargo build -p consortium-core --release --target {{ m7_target }} --features stm32mp25x
+    cargo build -p consortium-core --release --target {{ m7_target }} --features mimx95
     cargo build -p consortium-ipc-transport-fdcan-embedded --release --target {{ m7_target }} --no-default-features --features mimx952
     cargo build -p consortium-ipc-transport-uart --release --target {{ m7_target }} --no-default-features --features mimx952
 
@@ -438,10 +440,11 @@ test-ipc-host:
     cargo test -p consortium-ipc --features std
     cargo test -p consortium-ipc-transport-memory
     cargo test -p consortium-ipc-transport-memory --no-default-features --test async_atomic_waker_test
-    cargo test -p consortium-ipc-transport-memory --features stm32mp25x --lib
-    cargo test -p consortium-ipc-transport-memory --features mimx95 --lib
-    cargo test -p consortium-ipc-transport-memory --features mimx93 --lib
-    cargo test -p consortium-ipc-transport-memory --no-default-features --features mimx95 --lib
+    cargo test -p consortium-core --features std,stm32mp25x --lib
+    cargo test -p consortium-core --features std,mimx95 --lib
+    cargo test -p consortium-core --features std,mimx93 --lib
+    cargo test -p consortium-core --features mimx95 --lib
+    cargo test -p consortium-core --features std,gpio --lib
     cargo test -p consortium-ipc-transport-fdcan
     cargo test -p consortium-ipc-transport-fdcan --no-default-features
     cargo test -p consortium-ipc-transport-uart

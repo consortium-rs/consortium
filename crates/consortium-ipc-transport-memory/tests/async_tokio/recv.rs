@@ -5,12 +5,12 @@ use crate::transport_support::{
     CountingRegion, MTU, REGION_LEN, SLOT_STRIDE, channel, init_descriptor_with_channels,
     init_two_channel_descriptor,
 };
+use consortium_core::UncachedRegion;
 use consortium_ipc::{Chan, Doorbell, Primary, RecvTransport};
 use consortium_ipc_transport_memory::{
     ChannelDirection, ChannelLayout, RX_UPDATED_ID_OFFSET, SharedMemoryTransport,
     channel_table_entry_offset, slot,
 };
-use consortium_shared_memory::UncachedRegion;
 use futures::{pin_mut, poll};
 
 #[test]

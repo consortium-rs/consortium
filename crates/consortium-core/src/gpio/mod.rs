@@ -1,4 +1,3 @@
-#![cfg_attr(not(feature = "std"), no_std)]
 // Copyright 2026 Ethan Wu
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +14,7 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-//! GPIO-based doorbell for Consortium IPC.
+//! GPIO-based doorbell (feature `gpio`).
 //!
 //! This doorbell uses a general-purpose GPIO output pin to signal events between
 //! processors. Unlike hardware semaphores (HSEM) or message units (MU), GPIO
@@ -44,7 +43,7 @@
 //! # When to reach for this
 //!
 //! GPIO is the fallback, not the default. Prefer a real IPC peripheral —
-//! IPCC (`consortium_ipc_transport_memory::bell::ipcc`) on STM32MP2, MU (`bell::mu`) on
+//! IPCC ([`bell::ipcc`](crate::bell)) on STM32MP2, MU (`bell::mu`) on
 //! i.MX 9 — whenever the two cores share one. GPIO earns its place when they do
 //! not: two separate chips on one board, a core whose IPC peripheral is assigned
 //! to another security domain, or a bring-up spike where a spare pin is faster to
@@ -110,8 +109,8 @@ use core::{
     task::{Context, Poll},
 };
 
+use crate::{Chan, Doorbell, MaybeSend};
 use atomic_waker::AtomicWaker;
-use consortium_ipc::{Chan, Doorbell, MaybeSend};
 use embedded_hal::digital::OutputPin;
 
 mod error;

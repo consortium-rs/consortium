@@ -7,13 +7,13 @@ use std::{
 };
 
 use atomic_waker::AtomicWaker;
+use consortium_core::UncachedRegion;
+use consortium_core::descriptor::DescriptorHeader;
 use consortium_ipc::{Chan, Doorbell, MaybeSend, RecvTransport};
 use consortium_ipc_transport_memory::{
     ChannelDirection, ChannelLayout, DescState, MAGIC, RX_UPDATED_ID_OFFSET, SharedMemoryTransport,
     VERSION, channel_table_entry_offset, slot, slot_offset, slot_stride,
 };
-use consortium_shared_memory::UncachedRegion;
-use consortium_shared_memory::descriptor::DescriptorHeader;
 use futures::{pin_mut, task::noop_waker_ref};
 
 const MTU: usize = 64;

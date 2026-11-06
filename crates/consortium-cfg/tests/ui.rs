@@ -64,7 +64,7 @@ fn render_items(tokens: TokenStream) -> String {
 fn cores(ir: &LoweredIr) -> Vec<VisibleCore> {
     let mut seen: BTreeMap<String, VisibleCore> = BTreeMap::new();
     let mut has_ap = false;
-    for t in ir.shuhan.transceivers() {
+    for t in ir.ipc_shm.transceivers() {
         for (core, _) in [&t.channel_primary, &t.channel_secondary] {
             if *core == VisibleCore::Ap {
                 has_ap = true;
@@ -86,7 +86,7 @@ fn cores(ir: &LoweredIr) -> Vec<VisibleCore> {
 /// carries it, across every transceiver in the manifest.
 fn message_types(ir: &LoweredIr) -> BTreeMap<String, Codec> {
     let mut types = BTreeMap::new();
-    for t in ir.shuhan.transceivers() {
+    for t in ir.ipc_shm.transceivers() {
         types.insert(t.channel_primary.1.type_name.clone(), t.codec);
         types.insert(t.channel_secondary.1.type_name.clone(), t.codec);
     }

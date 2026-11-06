@@ -11,37 +11,12 @@ anybody.
 
 The pieces it does **not** own:
 
-| Concern                                     | Crate                          |
-| ------------------------------------------- | ------------------------------ |
-| Trait stack, typed channels                 | `consortium-ipc`               |
-| `Region`, cache semantics, header magic     | `consortium-shared-memory`     |
-| GPIO wakeups                                | `consortium-ipc-doorbell-gpio` |
-| Window addresses, validation, bring-up code | `consortium-cfg`               |
-
-The Type-A doorbells — IPCC, MU, and HSEM — live here, under `bell`.
-
-## Type-A doorbells (`bell`)
-
-IPCC, MU, and HSEM differ in which registers they poke, not in how a wait must be
-driven, and that protocol is easy to get subtly wrong. `bell` writes it once:
-
-```text
-BellA<H>      Doorbell impl: fence + ring, raw-status pending, LineWait
-LineWait<H>   the one wait future, with its Drop-time disarm
-service       ISR core: read asserted lines, mask them, then wake
-H: BellHw     per block: ring, raw status, ack, arm/disarm, waker table
-```
-
-A block implements only the `unsafe trait BellHw` register model — its channel count,
-the id-to-line mapping, and the register operations. Bounds
-checks, channel validation (`Chan::new::<IpccDoorbell<S, N>>(id)`), fences, critical
-sections, waker registration, and the `std` `Notify` re-subscription belong to the
-generic. The blocks are `bell::ipcc` (`IpccDoorbell<S, N> = BellA<Ipcc<S, N>>`),
-`bell::mu` (`MuDoorbell<S, N> = BellA<Mu<S, N>>`, GI and RF lines), and the frozen
-`bell::hsem` (`HsemDoorbell<S, 1> = BellA<Hsem<S, 1>>`, prefer IPCC). Firmware vectors
-forward to `bell::service_interrupt::<H>()` with the block's register model,
-which `consortium-cfg` generates; on Linux, bind `BellA::service_interrupt` with
-`UioDevice::bind_service`.
+| Concern                                        | Crate             |
+| ---------------------------------------------- | ----------------- |
+| Trait stack, typed channels                    | `consortium-ipc`  |
+| `Region`, cache semantics, header magic        | `consortium-core` |
+| Doorbells: Type-A bells (IPCC, MU, HSEM), GPIO | `consortium-core` |
+| Window addresses, validation, bring-up code    | `consortium-cfg`  |
 
 ## Layout
 
@@ -50,7 +25,7 @@ channel table; each entry points at a slot elsewhere in the same window.
 
 ```text
 0x00  ┌────────────────────────────────┐
-      │ header: "CIPC", version        │  from consortium-shared-memory
+      │ header: "CIPC", version        │  from consortium-core
       │ num_channels, updated ids      │
       │ tx/rx_transfer_size            │
       │ state (DescState)              │

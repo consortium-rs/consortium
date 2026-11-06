@@ -1,23 +1,27 @@
-# consortium-shared-memory
+# consortium-core
 
-Shared-memory building blocks for Consortium: memory regions with explicit cache
-semantics, and the descriptor header every Consortium shared-memory structure
-begins with.
+The cross-core primitives every Consortium subsystem builds on: memory regions with
+explicit cache semantics, the descriptor header every Consortium shared-memory
+structure begins with, and doorbells.
 
 `no_std`, no allocation, no protocol.
 
 ## Scope
 
-This crate answers two narrow questions that several subsystems need answered the
-same way:
+This crate answers three narrow questions that several subsystems need answered
+the same way:
 
 1. **How is this window mapped, and what does it cost to make a write visible to
    another core?** — the `Region` trait and its implementations.
 2. **Whose structure is this, and what version?** — the `descriptor` header.
+3. **How does one core wake another?** — the `Doorbell` trait with its `Chan` and
+   `Side` vocabulary, the Type-A hardware bells in `bell` (IPCC, MU, HSEM), and the
+   GPIO doorbell in `gpio`.
 
 Protocol lives one level up. `consortium-ipc-transport-memory` owns the `CIPC`
-descriptor, channel table, and slot protocol; `consortium-dbg` owns `CDBG` and its
-log rings. Both share what is defined here.
+descriptor, channel table, and slot protocol (region + doorbell); `consortium-dbg`
+owns `CDBG` and its log rings (region only). `consortium-ipc` re-exports the
+doorbell vocabulary as part of its trait stack.
 
 ## Regions and coherency
 
@@ -99,7 +103,7 @@ borrowed.
 ## Example
 
 ```rust,ignore
-use consortium_shared_memory::{CachedRegion, Region};
+use consortium_core::{CachedRegion, Region};
 
 // SAFETY: `base` is a 64 KiB controller-side window mapped cacheably, aligned
 // to cache lines, and nothing else aliases it for the lifetime of this region.
@@ -114,11 +118,46 @@ region.invalidate();
 read_payload(&region);
 ```
 
+## Doorbells
+
+`Doorbell` is the signaling primitive: a synchronous `ring` and an async `wait`, each
+on a `Chan`. `Side` names which window or bank of a block this core drives, which is
+not necessarily the role the transport above it plays. No doorbell installs
+`#[interrupt]` handlers.
+
+### Type-A doorbells (`bell`)
+
+IPCC, MU, and HSEM differ in which registers they poke, not in how a wait must be
+driven, and that protocol is easy to get subtly wrong. `bell` writes it once:
+
+```text
+BellA<H>      Doorbell impl: fence + ring, raw-status pending, LineWait
+LineWait<H>   the one wait future, with its Drop-time disarm
+service       ISR core: read asserted lines, mask them, then wake
+H: BellHw     per block: ring, raw status, ack, arm/disarm, waker table
+```
+
+A block implements only the `unsafe trait BellHw` register model — its channel count,
+the id-to-line mapping, and the register operations. Bounds
+checks, channel validation (`Chan::new::<IpccDoorbell<S, N>>(id)`), fences, critical
+sections, and waker registration belong to the
+generic. The blocks are `bell::ipcc` (`IpccDoorbell<S, N> = BellA<Ipcc<S, N>>`),
+`bell::mu` (`MuDoorbell<S, N> = BellA<Mu<S, N>>`, GI and RF lines), and the frozen
+`bell::hsem` (`HsemDoorbell<S, 1> = BellA<Hsem<S, 1>>`, prefer IPCC). Firmware vectors
+forward to `bell::service_interrupt::<H>()` with the block's register model,
+which `consortium-cfg` generates; on Linux, bind `BellA::service_interrupt` with
+`UioDevice::bind_service`.
+
 ## Features
 
-| Feature | Effect                                                                                             |
-| ------- | -------------------------------------------------------------------------------------------------- |
-| `defmt` | Derive `defmt::Format` on the descriptor error and magic types, for firmware builds that log them. |
+| Feature                                    | Effect                                                                                           |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| `std`                                      | `MaybeSend` requires `Send`; bells take the `std` interrupt path and log through `tracing`.      |
+| `defmt`                                    | Derive `defmt::Format` on descriptor, bell, and GPIO errors; require it of `Doorbell::Error`.    |
+| `bell`                                     | The generic Type-A bell protocol. Implied by every chip feature; off by default (no CAS needed). |
+| `gpio`                                     | The single-channel GPIO doorbell, generic over any `embedded-hal` output pin.                    |
+| `mimx93` / `mimx95`                        | The i.MX 9 MU bell (`bell::mu`). Mutually exclusive.                                             |
+| `stm32mp21x` / `stm32mp23x` / `stm32mp25x` | The STM32MP2 IPCC bell (`bell::ipcc`), plus HSEM (`bell::hsem`) on MP23/MP25.                    |
 
 ## License
 

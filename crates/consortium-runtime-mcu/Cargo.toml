@@ -43,24 +43,25 @@ defmt = [
   "consortium-log/defmt",
   "dep:defmt",
 ]
-mimx93 = ["consortium-ipc-transport-memory?/mimx93", "mimx9x"]
-mimx95 = ["consortium-ipc-transport-memory?/mimx95", "mimx9x"]
+mimx93 = ["consortium-core?/mimx93", "mimx9x"]
+mimx95 = ["consortium-core?/mimx95", "mimx9x"]
 mimx9x = []
 ipc = ["ipc-shm"]
 # Wired FDCAN transport (segmented over CAN frames), an alternative to shared
 # memory. Chip glue lives in `consortium-ipc-transport-fdcan-embedded`.
 ipc-fdcan = ["dep:consortium-ipc", "dep:consortium-ipc-transport-fdcan"]
-ipc-shm   = ["dep:consortium-ipc", "dep:consortium-ipc-transport-memory"]
+ipc-shm   = ["dep:consortium-core", "dep:consortium-ipc", "dep:consortium-ipc-transport-memory"]
 # Wired UART transport (COBS/CRC-framed), an alternative to shared memory.
 ipc-uart   = ["dep:consortium-ipc", "dep:consortium-ipc-transport-uart"]
-stm32mp21x = ["consortium-ipc-transport-memory?/stm32mp21x"]
-stm32mp23x = ["consortium-ipc-transport-memory?/stm32mp23x"]
-stm32mp25x = ["consortium-ipc-transport-memory?/stm32mp25x"]
+stm32mp21x = ["consortium-core?/stm32mp21x"]
+stm32mp23x = ["consortium-core?/stm32mp23x"]
+stm32mp25x = ["consortium-core?/stm32mp25x"]
 # Compatibility alias for the previous STM32MP2 default. New code should use
 # the chip-family features above so STM32MP21 can select IPCC without HSEM.
 stm32mp2xx = ["stm32mp25x"]
 
 [dependencies]
+consortium-core = { default-features = false, optional = true, path = "../consortium-core", version = "0.5.0" }
 consortium-ipc = { default-features = false, optional = true, path = "../consortium-ipc", version = "0.5.0" }
 consortium-log = { default-features = false, path = "../consortium-log", version = "0.5.0" }
 consortium-dbg = { default-features = false, features = [

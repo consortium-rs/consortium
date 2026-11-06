@@ -54,16 +54,16 @@
 //! [`service_interrupt::<Ipcc<S, N>>()`](super::service_interrupt), which
 //! `consortium-cfg` generates.
 //!
-//! [`Primary`]: consortium_ipc::Primary
-//! [`Secondary`]: consortium_ipc::Secondary
+//! [`Primary`]: crate::Primary
+//! [`Secondary`]: crate::Secondary
 //! [`BellA::new_mapped`]: super::BellA::new_mapped
 
 pub mod registers;
 
 use core::marker::PhantomData;
 
+use crate::Side;
 use consortium_hal_stm32mp2::{Peri, PeripheralType};
-use consortium_ipc::Side;
 
 use self::registers::{
     base,
@@ -139,7 +139,7 @@ impl<S: Side, const N: usize> IpccDoorbell<S, N> {
 /// in one bank. IPCC connects two processors, so [`Tertiary`] is rejected at compile
 /// time.
 ///
-/// [`Tertiary`]: consortium_ipc::Tertiary
+/// [`Tertiary`]: crate::Tertiary
 pub struct Ipcc<S: Side, const N: usize> {
     base: usize,
     _side: PhantomData<S>,

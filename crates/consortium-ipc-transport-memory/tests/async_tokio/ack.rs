@@ -6,11 +6,11 @@
 //! exist on hardware.
 use std::time::Duration;
 
+use consortium_core::UncachedRegion;
 use consortium_ipc::{AckSendTransport, Chan, Connect, RecvTransport, SendTransport};
 use consortium_ipc_transport_memory::{
     DescriptorLayout, Error, Primary, Secondary, SharedMemoryTransport, required_region_len, slot,
 };
-use consortium_shared_memory::UncachedRegion;
 
 use crate::common::doorbell::LinedDoorbell;
 use crate::transport_support::MTU;

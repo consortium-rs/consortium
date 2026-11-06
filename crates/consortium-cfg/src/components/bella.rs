@@ -354,13 +354,13 @@ mod tests {
         // Each instance forwards with its own number, and no MMIO base appears
         // in generated code: the register model derives the window.
         assert!(tokens[0].contains(
-            ":: consortium_ipc_transport_memory :: bell :: service_interrupt :: < :: \
-             consortium_ipc_transport_memory :: bell :: ipcc :: Ipcc < :: consortium_ipc :: \
+            ":: consortium_core :: bell :: service_interrupt :: < :: \
+             consortium_core :: bell :: ipcc :: Ipcc < :: consortium_ipc :: \
              Secondary , 1usize > > ()"
         ));
         assert!(tokens[1].contains("fn IPCC2_RX ()"));
         assert!(tokens[1].contains(
-            ":: consortium_ipc_transport_memory :: bell :: ipcc :: Ipcc < :: consortium_ipc :: \
+            ":: consortium_core :: bell :: ipcc :: Ipcc < :: consortium_ipc :: \
              Secondary , 2usize >"
         ));
     }
@@ -385,8 +385,8 @@ mod tests {
 
         assert!(tokens.contains("fn HSEM ()"));
         assert!(tokens.contains(
-            ":: consortium_ipc_transport_memory :: bell :: service_interrupt :: < :: \
-             consortium_ipc_transport_memory :: bell :: hsem :: Hsem < :: consortium_ipc :: \
+            ":: consortium_core :: bell :: service_interrupt :: < :: \
+             consortium_core :: bell :: hsem :: Hsem < :: consortium_ipc :: \
              Secondary , 1usize > > ()"
         ));
     }
@@ -409,8 +409,8 @@ mod tests {
 
         assert!(tokens.contains("fn MU7_B ()"));
         assert!(tokens.contains(
-            ":: consortium_ipc_transport_memory :: bell :: service_interrupt :: < :: \
-             consortium_ipc_transport_memory :: bell :: mu :: Mu < :: consortium_ipc :: \
+            ":: consortium_core :: bell :: service_interrupt :: < :: \
+             consortium_core :: bell :: mu :: Mu < :: consortium_ipc :: \
              Secondary , 7usize > > ()"
         ));
     }

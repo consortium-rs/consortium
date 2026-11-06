@@ -21,16 +21,16 @@ mod shared {
 
 ::consortium_ipc_transport_memory::channels!(SENSOR, LP);
 ::consortium_ipc_transport_memory::impl_channel!(
-    SENSOR, ::consortium_ipc::Primary,
-    ::consortium_ipc_transport_memory::bell::mu::MuDoorbell < ::consortium_ipc::Primary,
-    1usize >, ::consortium_runtime_app::uio::UioRegion, crate ::shared::SensorData, crate
-    ::shared::MotionControl, ::consortium_codec::PostcardCodec, 128usize,
+    SENSOR, ::consortium_ipc::Primary, ::consortium_core::bell::mu::MuDoorbell <
+    ::consortium_ipc::Primary, 1usize >, ::consortium_runtime_app::uio::UioRegion, crate
+    ::shared::SensorData, crate ::shared::MotionControl,
+    ::consortium_codec::PostcardCodec, 128usize,
 );
 ::consortium_ipc_transport_memory::impl_channel!(
-    LP, ::consortium_ipc::Primary,
-    ::consortium_ipc_transport_memory::bell::mu::MuDoorbell < ::consortium_ipc::Primary,
-    2usize >, ::consortium_runtime_app::uio::UioRegion, crate ::shared::LowPowerData,
-    crate ::shared::PowerControl, ::consortium_codec::RkyvCodec < 128usize >, 128usize,
+    LP, ::consortium_ipc::Primary, ::consortium_core::bell::mu::MuDoorbell <
+    ::consortium_ipc::Primary, 2usize >, ::consortium_runtime_app::uio::UioRegion, crate
+    ::shared::LowPowerData, crate ::shared::PowerControl, ::consortium_codec::RkyvCodec <
+    128usize >, 128usize,
 );
 fn __consortium_install_channels(
     uio: &[::std::sync::Arc<::consortium_runtime_app::uio::UioDevice>],
@@ -46,7 +46,7 @@ fn __consortium_install_channels(
         // SAFETY: the base is the UIO-mapped doorbell register window,
         // resolved from the validated Consortium hardware database.
         let doorbell = unsafe {
-            ::consortium_ipc_transport_memory::bell::mu::MuDoorbell::<
+            ::consortium_core::bell::mu::MuDoorbell::<
                 ::consortium_ipc::Primary,
                 1usize,
             >::new_mapped(uio[3usize].mmap(0usize)?)
@@ -82,7 +82,7 @@ fn __consortium_install_channels(
         // SAFETY: the base is the UIO-mapped doorbell register window,
         // resolved from the validated Consortium hardware database.
         let doorbell = unsafe {
-            ::consortium_ipc_transport_memory::bell::mu::MuDoorbell::<
+            ::consortium_core::bell::mu::MuDoorbell::<
                 ::consortium_ipc::Primary,
                 2usize,
             >::new_mapped(uio[2usize].mmap(0usize)?)

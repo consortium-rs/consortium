@@ -31,7 +31,7 @@
 //! It rides in the same single flags store that publishes `FLAG_VALID`, so it adds no
 //! ordering constraint, and the receiver reports it back through [`ReadOutcome`] so the
 //! transport can ring the ack line for exactly the messages that asked for one.
-use consortium_shared_memory::Region;
+use consortium_core::Region;
 
 use crate::utils::{rv_u32, wv_u32};
 

@@ -43,14 +43,13 @@ consortium-codec = { features = [
 consortium-ipc = { features = [
   "std",
 ], path = "../../../../crates/consortium-ipc", version = "0.5.0" }
-# `default-features = false` is load-bearing: the doorbell's default is
-# `mimx95`, and cargo would unify it with the `mimx93` selected below into a
-# both-chips build, which the crate rejects with a `compile_error!`.
-consortium-ipc-transport-memory = { features = [
-  "mimx93",
+consortium-ipc-transport-memory = { default-features = false, features = [
   "std",
 ], path = "../../../../crates/consortium-ipc-transport-memory", version = "0.5.0" }
-consortium-shared-memory = { path = "../../../../crates/consortium-shared-memory", version = "0.5.0" }
+consortium-core = { features = [
+  "mimx93",
+  "std",
+], path = "../../../../crates/consortium-core", version = "0.5.0" }
 consortium-runtime-app = { features = [
   "mimx93",
 ], path = "../../../../crates/consortium-runtime-app", version = "0.5.0" }

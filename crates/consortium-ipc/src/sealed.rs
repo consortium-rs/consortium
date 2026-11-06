@@ -17,17 +17,13 @@
 //! Sealing primitive for marker traits.
 //!
 //! [`Sealed`] is only implemented for the types defined inside this crate.
-//! Because [`crate::side::Side`] and [`crate::channel::Direction`] require
-//! `Sealed` as a supertrait, downstream crates can use those marker traits as
-//! bounds but cannot implement them for their own types.
+//! Because [`crate::channel::Direction`] requires `Sealed` as a supertrait,
+//! downstream crates can use it as a bound but cannot implement it for their
+//! own types. ([`crate::Side`] is sealed the same way in `consortium-core`.)
 
-/// Private supertrait used to seal [`crate::side::Side`] and
-/// [`crate::channel::Direction`] against external implementations.
+/// Private supertrait used to seal [`crate::channel::Direction`] against
+/// external implementations.
 pub trait Sealed {}
-
-impl Sealed for crate::side::Primary {}
-impl Sealed for crate::side::Secondary {}
-impl Sealed for crate::side::Tertiary {}
 
 impl Sealed for crate::channel::Tx {}
 impl Sealed for crate::channel::Rx {}

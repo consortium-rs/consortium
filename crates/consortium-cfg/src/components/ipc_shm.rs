@@ -6,7 +6,7 @@
 //! - a [`Channel`] per direction, carrying its validated doorbell channel id and the
 //!   message type name;
 //! - a [`Transceiver`] pairing two channels over one shared window;
-//! - a [`ShuHan`] aggregating every transceiver on a core; [`initialize_instances`]
+//! - a [`ShmNode`] aggregating every transceiver on a core; [`initialize_instances`]
 //!   emits channel markers, instance metadata, and transport installation.
 //!
 //! # Doorbell ownership across transceivers
@@ -75,21 +75,21 @@ fn codec_path(codec: Codec, scratch: u32) -> TokenStream {
 /// Generates channel singleton markers, their instance bindings, and the
 /// transport installer called by generated `init`.
 pub fn initialize_instances(
-    shuhan: &ShuHan,
+    node: &ShmNode,
     core: VisibleCore,
     uio_ident: &Ident,
     ty_crate: &Path,
     hal_crate: &str,
     available: &[String],
 ) -> TokenStream {
-    let (doorbell_params, sources) = shuhan.doorbell_sources(core, available);
-    let markers = shuhan
+    let (doorbell_params, sources) = node.doorbell_sources(core, available);
+    let markers = node
         .transceivers
         .iter()
         .map(|t| Ident::new(&t.name.to_ascii_uppercase(), Span::call_site()))
         .collect::<Vec<_>>();
 
-    let instance_impls = shuhan
+    let instance_impls = node
         .transceivers
         .iter()
         .zip(markers.iter())
@@ -140,7 +140,7 @@ pub fn initialize_instances(
         })
         .collect::<Vec<_>>();
 
-    let installs = shuhan
+    let installs = node
         .transceivers
         .iter()
         .zip(sources.iter())
@@ -264,8 +264,8 @@ impl Transceiver {
     fn region_ty(&self, core: VisibleCore) -> TokenStream {
         match (core, self.region.cache) {
             (VisibleCore::Ap, _) => quote::quote! { ::consortium_runtime_app::uio::UioRegion },
-            (_, false) => quote::quote! { ::consortium_shared_memory::regions::UncachedRegion },
-            (_, true) => quote::quote! { ::consortium_shared_memory::regions::CachedRegion },
+            (_, false) => quote::quote! { ::consortium_core::regions::UncachedRegion },
+            (_, true) => quote::quote! { ::consortium_core::regions::CachedRegion },
         }
     }
 
@@ -475,7 +475,7 @@ impl DoorbellMeta {
             }
         );
         (
-            quote::quote! { ::consortium_ipc_transport_memory::bell::#module },
+            quote::quote! { ::consortium_core::bell::#module },
             format_ident!("{name}Doorbell"),
             side_ident,
         )
@@ -502,7 +502,7 @@ impl DoorbellMeta {
         let (module, _, side_ident) = self.idents(side);
         let model = format_ident!("{}", self.r#type.to_string());
         quote::quote! {
-            ::consortium_ipc_transport_memory::bell::service_interrupt::<
+            ::consortium_core::bell::service_interrupt::<
                 #module::#model<::consortium_ipc::#side_ident, #id>
             >();
         }
@@ -628,13 +628,14 @@ fn doorbell_param(singleton: &Ident) -> Ident {
     format_ident!("__db_{}", singleton.to_string().to_lowercase())
 }
 
-/// SHared Memory Unified, Hardware abstraction node.
+/// The shared-memory IPC node: every transceiver one core takes part in, lowered
+/// together into that core's channel markers, endpoint instances, and doorbell wiring.
 #[derive(Debug, Clone)]
-pub struct ShuHan {
+pub struct ShmNode {
     transceivers: Vec<Transceiver>,
 }
 
-impl ShuHan {
+impl ShmNode {
     /// Builds a node from its transceivers.
     pub fn new(transceivers: Vec<Transceiver>) -> Self {
         Self { transceivers }
@@ -931,7 +932,7 @@ mod tests {
         };
 
         let tokens = doorbell.as_path(DoorbellRingerSide::Primary).to_string();
-        assert!(tokens.contains(":: consortium_ipc_transport_memory :: bell :: mu :: MuDoorbell"));
+        assert!(tokens.contains(":: consortium_core :: bell :: mu :: MuDoorbell"));
         assert!(tokens.contains(":: consortium_ipc :: Primary"));
         assert!(tokens.contains("7usize"));
     }
@@ -944,9 +945,7 @@ mod tests {
         };
 
         let tokens = doorbell.as_path(DoorbellRingerSide::Secondary).to_string();
-        assert!(
-            tokens.contains(":: consortium_ipc_transport_memory :: bell :: hsem :: HsemDoorbell")
-        );
+        assert!(tokens.contains(":: consortium_core :: bell :: hsem :: HsemDoorbell"));
         assert!(tokens.contains(":: consortium_ipc :: Secondary"));
         assert!(tokens.contains("1usize"));
     }

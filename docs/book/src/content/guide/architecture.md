@@ -29,14 +29,15 @@ rejected at the system boundary rather than discovered during board bring-up.
 
 ## Layers
 
-| Layer         | Main crates                                                                           | Responsibility                                                    |
-| ------------- | ------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| Contracts     | `consortium-codec`, `consortium-ipc`, `consortium-tee`, `consortium-hmi`              | Portable types and traits shared by runtimes                      |
-| Mechanisms    | `consortium-ipc-transport-*`, `consortium-ipc-doorbell-*`, `consortium-shared-memory` | Byte movement, signaling, framing, and cache visibility           |
-| Hardware      | `consortium-hal-*`, `consortium-pac-*`                                                | Peripheral ownership and chip-specific register access            |
-| Configuration | `consortium-cfg-common`, `consortium-cfg`, `consortium-data`                          | Schema, chip databases, validation, lowering, and code generation |
-| Runtime       | `consortium-runtime-app`, `consortium-runtime-mcu`                                    | Linux and firmware integration around generated code              |
-| Build         | `consortium-builder`, `csti`                                                          | Compile, post-process, stage, and hand off artifacts              |
+| Layer         | Main crates                                                              | Responsibility                                                    |
+| ------------- | ------------------------------------------------------------------------ | ----------------------------------------------------------------- |
+| Contracts     | `consortium-codec`, `consortium-ipc`, `consortium-tee`, `consortium-hmi` | Portable types and traits shared by runtimes                      |
+| Mechanisms    | `consortium-ipc-transport-*`                                             | Byte movement and framing                                         |
+| Core          | `consortium-core`                                                        | Shared-memory regions, cache visibility, and doorbell signaling   |
+| Hardware      | `consortium-hal-*`, `consortium-pac-*`                                   | Peripheral ownership and chip-specific register access            |
+| Configuration | `consortium-cfg-common`, `consortium-cfg`, `consortium-data`             | Schema, chip databases, validation, lowering, and code generation |
+| Runtime       | `consortium-runtime-app`, `consortium-runtime-mcu`                       | Linux and firmware integration around generated code              |
+| Build         | `consortium-builder`, `csti`                                             | Compile, post-process, stage, and hand off artifacts              |
 
 The core IPC and codec crates are `no_std` by default. Linux-only concerns such as UIO,
 remoteproc, and host-side debug decoding stay in `consortium-runtime-app`; firmware

@@ -1,10 +1,10 @@
 use core::{future::Future, marker::PhantomData, task::Poll};
 
+use consortium_core::{CachedRegion, Region, UncachedRegion};
 use consortium_ipc::{
     AckSendTransport, Chan, Connect, Doorbell, MaybeSend, Primary, RecvTransport, Secondary,
     SendTransport, Side, TransportError,
 };
-use consortium_shared_memory::{CachedRegion, Region, UncachedRegion};
 
 use crate::{
     descriptor::{
@@ -16,7 +16,7 @@ use crate::{
     utils::rv_u8,
 };
 
-pub trait RegionSharedMemoryTransportable: consortium_shared_memory::region::Region {}
+pub trait RegionSharedMemoryTransportable: consortium_core::region::Region {}
 
 impl RegionSharedMemoryTransportable for CachedRegion {}
 impl RegionSharedMemoryTransportable for UncachedRegion {}

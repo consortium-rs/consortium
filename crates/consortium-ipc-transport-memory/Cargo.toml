@@ -35,40 +35,22 @@ default = ["std"]
 # `std` path routes the same call sites to `tracing` instead. `defmt`'s macros
 # expand to literal `defmt::` paths, so the crate must depend on `defmt`
 # directly as well as through the facade.
-defmt = [
-  "consortium-ipc/defmt",
-  "consortium-log/defmt",
-  "consortium-shared-memory/defmt",
-  "dep:defmt",
-]
-# i.MX 9 chip selection: forwarded to the chip HAL, whose MU singletons, clock gates,
-# and PAC the `bell::mu` register model binds to. Mutually exclusive.
-mimx93 = ["consortium-hal-imx9/mimx93", "dep:consortium-hal-imx9"]
-mimx95 = ["consortium-hal-imx9/mimx95", "dep:consortium-hal-imx9"]
-std    = ["alloc", "consortium-log/tracing", "dep:uio"]
-# STM32MP2 chip selection: forwarded to the chip HAL, whose IPCC/HSEM singletons and
-# PAC the `bell::ipcc` and `bell::hsem` register models bind to (HSEM is absent on MP21).
-stm32mp21x = ["consortium-hal-stm32mp2/stm32mp21x", "dep:consortium-hal-stm32mp2"]
-stm32mp23x = ["consortium-hal-stm32mp2/stm32mp23x", "dep:consortium-hal-stm32mp2"]
-stm32mp25x = ["consortium-hal-stm32mp2/stm32mp25x", "dep:consortium-hal-stm32mp2"]
+defmt = ["consortium-core/defmt", "consortium-ipc/defmt", "consortium-log/defmt", "dep:defmt"]
+std   = ["alloc", "consortium-core/std", "consortium-log/tracing", "dep:uio"]
 
 [dependencies]
-atomic-waker             = "1.1.2"
-bitfield                 = "0.20"
-consortium-codec         = { default-features = false, path = "../consortium-codec", version = "0.5.0" }
-consortium-ipc           = { default-features = false, path = "../consortium-ipc", version = "0.5.0" }
-consortium-hal-stm32mp2  = { default-features = false, optional = true, path = "../consortium-hal-stm32mp2", version = "0.5.0" }
-consortium-hal-imx9      = { default-features = false, optional = true, path = "../consortium-hal-imx9", version = "0.5.0" }
-consortium-log           = { default-features = false, path = "../consortium-log", version = "0.5.0" }
-consortium-shared-memory = { path = "../consortium-shared-memory", version = "0.5.0" }
-critical-section         = "1.2.0"
-crc32fast                = { default-features = false, version = "1.5.0" }
-defmt                    = { optional = true, version = "1.1.0" }
-embassy-hal-internal     = "0.5.0"
-num_enum                 = { default-features = false, version = "0.7.3" }
-pin-project              = { version = "1.1.11" }
-thiserror                = { default-features = false, version = "2.0" }
-uio                      = { optional = true, version = "0.6.0" }
+consortium-codec     = { default-features = false, path = "../consortium-codec", version = "0.5.0" }
+consortium-ipc       = { default-features = false, path = "../consortium-ipc", version = "0.5.0" }
+consortium-log       = { default-features = false, path = "../consortium-log", version = "0.5.0" }
+consortium-core      = { path = "../consortium-core", version = "0.5.0" }
+critical-section     = "1.2.0"
+crc32fast            = { default-features = false, version = "1.5.0" }
+defmt                = { optional = true, version = "1.1.0" }
+embassy-hal-internal = "0.5.0"
+num_enum             = { default-features = false, version = "0.7.3" }
+pin-project          = { version = "1.1.11" }
+thiserror            = { default-features = false, version = "2.0" }
+uio                  = { optional = true, version = "0.6.0" }
 
 [dev-dependencies]
 atomic-waker = "1.1.2"
@@ -78,7 +60,7 @@ consortium-codec = { features = [
   "prost",
   "rkyv",
 ], path = "../consortium-codec" }
-# The no_std-shaped `bell` unit tests run `critical_section::with` on the host.
+# The endpoint singletons run `critical_section::with` on the host in tests.
 critical-section = { features = ["std"], version = "1.2.0" }
 embassy-executor = { default-features = false, features = [
   "executor-thread",
@@ -98,8 +80,6 @@ tokio = { features = ["macros", "net", "rt", "sync", "time"], version = "1" }
 # ARMv6-M (the STM32MP25 CM0+) has no compare-and-swap, so route `atomic-waker`
 # through `portable-atomic` there. The fallback is the binary's choice:
 # `consortium-runtime-mcu` enables portable-atomic's `critical-section` feature.
-[target.'cfg(not(target_has_atomic = "ptr"))'.dependencies]
-atomic-waker = { features = ["portable-atomic"], version = "1.1.2" }
 
 [lints]
 workspace = true

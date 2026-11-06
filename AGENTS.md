@@ -7,9 +7,12 @@ crate sources and manifests over relying on older docs, examples, or design note
 
 The current implementation centers on explicit cross-core contracts:
 
-- `consortium-ipc` defines typed channels, transport traits, side markers, doorbells,
-  and `IpcSafe`.
-  - `consortium-ipc-transport-memory` owns the descriptor/slot shared-memory transport. Doorbell crates bind hardware signaling to the transport layer.
+- `consortium-core` owns the primitives below every subsystem: shared-memory regions,
+  the descriptor header, and doorbells (the `Doorbell` trait, `Chan`, `Side`, the
+  Type-A bells, and the GPIO doorbell).
+- `consortium-ipc` defines typed channels, transport traits, and `IpcSafe`, and
+  re-exports core's doorbell vocabulary.
+  - `consortium-ipc-transport-memory` owns the descriptor/slot shared-memory transport.
   - `consortium-ipc-transport-uart` provides COBS/CRC-framed wired IPC for embedded and Unix
     serial backends.
   - `consortium-ipc-transport-fdcan` provides segmented wired IPC over CAN frames, with
@@ -90,10 +93,10 @@ A-core, TEE, HMI, UIO, Cog, WebKit, and Yocto/OpenSTLinux flows are Linux/SDK or
 
 | Area            | Crates                                                                                                                                                                                                                            |
 | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Core            | `consortium-core` (regions, descriptor header, `Doorbell`/`Chan`/`Side`, Type-A bells, GPIO doorbell)                                                                                                                             |
 | Core IPC        | `consortium-ipc`, `consortium-ipc-macros`, `consortium-ipc-macros-impl`                                                                                                                                                           |
 | Codecs          | `consortium-codec`, `consortium-codec-macros`, `consortium-codec-macros-impl`                                                                                                                                                     |
-| Transports      | `consortium-shared-memory`, `consortium-ipc-transport-memory`, `consortium-ipc-transport-uart*`, `consortium-ipc-transport-fdcan*`                                                                                                |
-| Doorbells       | `consortium-ipc-transport-memory::bell` (IPCC, MU, HSEM), `consortium-ipc-doorbell-gpio`                                                                                                                                          |
+| Transports      | `consortium-ipc-transport-memory`, `consortium-ipc-transport-uart*`, `consortium-ipc-transport-fdcan*`                                                                                                                            |
 | Configuration   | `consortium-cfg-common`, `consortium-cfg`, `consortium-dts`, `consortium-data`                                                                                                                                                    |
 | HAL/PAC         | `consortium-hal`, `consortium-hal-imx9`, `consortium-hal-stm32mp2`, `consortium-pac-imx9`, `consortium-pac-stm32mp2`                                                                                                              |
 | Macro helpers   | `consortium-macros-helpers`                                                                                                                                                                                                       |
@@ -248,7 +251,7 @@ instance; i.MX9 still has one receive mailbox, so a burst can overrun it.
 
 Shared memory is split across two crates:
 
-- `consortium-shared-memory` defines the `Region` trait and concrete `UncachedRegion`
+- `consortium-core` defines the `Region` trait and concrete `UncachedRegion`
   and `CachedRegion` types. `UncachedRegion` represents a non-cacheable mapping;
   `CachedRegion` performs AArch64 or Cortex-M7 data-cache maintenance.
 - `consortium-ipc-transport-memory` defines the `CIPC` descriptor layout, channel table,
@@ -311,11 +314,12 @@ Prefer extending these heap-backed or fake-doorbell tests before requiring hardw
 ### Doorbells
 
 Doorbells provide wakeup/signaling and should keep MMIO safety invariants documented.
-There are two kinds:
+All of them live in `consortium-core`, below IPC, so any subsystem that signals another
+core (IPC, and SCMI-style platform management) uses the same bells. There are two kinds:
 
-- **Type-A bells** — IPCC, MU, and (frozen) HSEM — live in
-  `consortium-ipc-transport-memory::bell`, behind the transport's chip features.
-- **`consortium-ipc-doorbell-gpio`** is a single-channel GPIO doorbell. Both paths wait
+- **Type-A bells** — IPCC, MU, and (frozen) HSEM — live in `consortium_core::bell`,
+  behind core's chip features (`mimx93`/`mimx95`, `stm32mp21x`/`23x`/`25x`).
+- **`consortium_core::gpio`** (feature `gpio`) is a single-channel GPIO doorbell. Both paths wait
   on a `GpioSignal` (a pending flag plus one `AtomicWaker`) that the application wakes
   from whatever observes the edge: its IRQ handler on firmware, a `bind_service` closure
   on Linux.

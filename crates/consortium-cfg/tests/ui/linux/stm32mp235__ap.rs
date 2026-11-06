@@ -13,8 +13,7 @@ mod shared {
 
 ::consortium_ipc_transport_memory::channels!(SENSOR);
 ::consortium_ipc_transport_memory::impl_channel!(
-    SENSOR, ::consortium_ipc::Primary,
-    ::consortium_ipc_transport_memory::bell::ipcc::IpccDoorbell <
+    SENSOR, ::consortium_ipc::Primary, ::consortium_core::bell::ipcc::IpccDoorbell <
     ::consortium_ipc::Primary, 1usize >, ::consortium_runtime_app::uio::UioRegion, crate
     ::shared::SensorData, crate ::shared::MotionControl,
     ::consortium_codec::PostcardCodec, 128usize,
@@ -33,7 +32,7 @@ fn __consortium_install_channels(
         // SAFETY: the base is the UIO-mapped doorbell register window,
         // resolved from the validated Consortium hardware database.
         let doorbell = unsafe {
-            ::consortium_ipc_transport_memory::bell::ipcc::IpccDoorbell::<
+            ::consortium_core::bell::ipcc::IpccDoorbell::<
                 ::consortium_ipc::Primary,
                 1usize,
             >::new_mapped(uio[2usize].mmap(0usize)?)

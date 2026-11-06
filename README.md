@@ -52,9 +52,10 @@ and then generated**:
   compiles, generates, and stages a whole system from `Consortium.toml`.
 - **IPC** — `consortium-ipc` typed channels, transceivers, transport traits, and the
   `Connect` rendezvous, carried over a shared-memory transport
-  (`consortium-shared-memory`, `consortium-ipc-transport-memory`), a COBS/CRC-framed
-  UART transport, or a segmenting FDCAN transport, with hardware doorbells for STM32
-  HSEM and IPCC, i.MX MU, and GPIO.
+  (`consortium-ipc-transport-memory`), a COBS/CRC-framed UART transport, or a
+  segmenting FDCAN transport.
+- **Core** — `consortium-core` shared-memory regions with explicit cache semantics,
+  the descriptor header, and doorbells: STM32 IPCC and HSEM, i.MX MU, and GPIO.
 - **TEE** — `consortium-tee` OP-TEE contracts: `TeeParam` conversion between Rust values
   and TEE value/memref slots, codec-backed serialized parameters, and derive macros
   shared by the client-application and trusted-application sides.

@@ -11,4 +11,4 @@ crate's README; these chapters record the reasoning and proposals behind them.
   layering has not.
 
 The register model of each doorbell — IPCC, MU, and HSEM — is documented on its
-`consortium-ipc-transport-memory::bell` module, next to the shared wait protocol.
+`consortium_core::bell` module, next to the shared wait protocol.

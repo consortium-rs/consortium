@@ -12,7 +12,7 @@ fn _generated() {
         // SAFETY: the base is the UIO-mapped doorbell register window,
         // resolved from the validated Consortium hardware database.
         let doorbell = unsafe {
-            ::consortium_ipc_transport_memory::bell::ipcc::IpccDoorbell::<
+            ::consortium_core::bell::ipcc::IpccDoorbell::<
                 ::consortium_ipc::Primary,
                 1usize,
             >::new_mapped(uio[0usize].mmap(2usize)?)

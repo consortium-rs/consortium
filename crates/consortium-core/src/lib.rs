@@ -14,22 +14,28 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-#![no_std]
+#![cfg_attr(not(feature = "std"), no_std)]
 
-//! Shared-memory building blocks for Consortium: memory regions with explicit
-//! cache semantics, and the descriptor header every Consortium shared-memory
-//! structure begins with.
+//! The cross-core primitives every Consortium subsystem builds on: shared memory
+//! regions, the descriptor header, and doorbells.
 //!
-//! This crate deliberately knows nothing about IPC. It answers two narrow
-//! questions that several subsystems need answered the same way:
+//! On a heterogeneous SoC, two cores that share a window of memory need exactly
+//! two things before they can agree on anything: a way to make writes visible to
+//! each other, and a way to say "look now". This crate owns both, and no protocol
+//! on top of them:
 //!
 //! 1. *How is this window mapped, and what does it cost to make a write visible
 //!    to another core?* — the [`Region`] trait and its implementations.
 //! 2. *Whose structure is this, and what version?* — the [`descriptor`] header.
+//! 3. *How does one core wake another?* — the [`Doorbell`] trait, its [`Chan`] and
+//!    [`Side`] vocabulary, the Type-A hardware bells in `bell` (IPCC, MU, HSEM,
+//!    behind their chip features), and the GPIO doorbell (feature `gpio`).
 //!
-//! Protocol lives one level up: `consortium-ipc-transport-memory` owns the `CIPC`
-//! descriptor, channel table, and slot protocol; `consortium-dbg` owns `CDBG` and
-//! its log rings. Both share the header and the regions defined here.
+//! Protocol lives one level up, and each subsystem combines these pieces its own
+//! way: `consortium-ipc-transport-memory` owns the `CIPC` descriptor and slot
+//! protocol (region + doorbell), `consortium-dbg` owns `CDBG` and its log rings
+//! (region only), and `consortium-ipc` re-exports the doorbell vocabulary as part
+//! of its trait stack.
 //!
 //! # Regions and coherency
 //!
@@ -77,16 +83,51 @@
 //! parse", and [`descriptor::DescriptorMagic::check`] turns each of those into a distinct
 //! error rather than a generic parse failure.
 //!
+//! # Doorbells
+//!
+//! [`Doorbell`] is the signaling primitive: a synchronous `ring` and an async
+//! `wait`, each on a [`Chan`]. A Type-A bell is one protocol written once in
+//! `bell` over a per-block register model (`bell::BellHw`); read that module's
+//! documentation before changing any block. [`Side`] names which window or bank of
+//! a block this core drives, which is not necessarily the role a transport above
+//! it plays.
+//!
 //! # Features
 //!
-//! - `defmt` — derive `defmt::Format` on the descriptor error and magic types, for
-//!   firmware builds that surface them through `defmt` logging.
+//! - `std` — makes [`MaybeSend`] require `Send` and selects the `std` bell
+//!   interrupt path (`BellA::service_interrupt`).
+//! - `defmt` — derive `defmt::Format` on the descriptor, bell and GPIO error types,
+//!   and require it of every [`Doorbell::Error`].
+//! - `bell` — the generic Type-A bell protocol (`bell::BellA`, `bell::BellHw`). Every
+//!   chip feature implies it; it is off otherwise so a plain IPC build needs no atomic
+//!   compare-and-swap.
+//! - `gpio` — the single-channel GPIO doorbell (`gpio`).
+//! - `mimx93` / `mimx95` — the i.MX 9 MU bell (`bell::mu`). Mutually exclusive.
+//! - `stm32mp21x` / `stm32mp23x` / `stm32mp25x` — the STM32MP2 IPCC bell
+//!   (`bell::ipcc`), plus HSEM (`bell::hsem`) on MP23/MP25.
 
+#[cfg(all(test, not(feature = "std")))]
+extern crate std;
+
+#[cfg(feature = "bell")]
+pub mod bell;
 pub mod descriptor;
+#[cfg(feature = "gpio")]
+pub mod gpio;
 pub mod region;
 pub mod regions;
 
+mod chan;
+mod doorbell;
+mod future;
+mod sealed;
+mod side;
+
 pub use {
+    chan::{Chan, ChanValidate},
+    doorbell::Doorbell,
+    future::MaybeSend,
     region::Region,
     regions::{CachedRegion, UncachedRegion},
+    side::{Primary, Secondary, Side, Tertiary},
 };

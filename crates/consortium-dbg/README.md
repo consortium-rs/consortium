@@ -43,7 +43,7 @@ the host side needs a decoder and the matching binary.
 | `panic`      | Optional `#[panic_handler]` that records a crash in the ring.         |
 
 The descriptor header (`CDBG` magic + version) comes from
-`consortium-shared-memory`, the same header `consortium-ipc-transport-memory` uses
+`consortium-core`, the same header `consortium-ipc-transport-memory` uses
 for `CIPC` — so a misconfigured base address produces a clear "wrong structure"
 error rather than garbage.
 

@@ -21,7 +21,7 @@
 //! [`AckSendTransport`] itself, since this module is not public.
 //!
 //! [`SendTransport`]: crate::SendTransport
-use crate::future::MaybeSend;
+use crate::MaybeSend;
 use crate::transport::TransportError;
 
 /// A [`SendTransport`](crate::SendTransport) that can also wait for the peer to take the

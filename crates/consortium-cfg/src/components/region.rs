@@ -47,9 +47,9 @@ impl Region {
         let address = self.address.memory_lookup(core, uio_ident);
         let length = proc_macro2::Literal::usize_suffixed(self.length as usize);
         let region_identifier = if self.cache {
-            quote::quote! { ::consortium_shared_memory::regions::CachedRegion }
+            quote::quote! { ::consortium_core::regions::CachedRegion }
         } else {
-            quote::quote! { ::consortium_shared_memory::regions::UncachedRegion }
+            quote::quote! { ::consortium_core::regions::UncachedRegion }
         };
         quote::quote! {
             unsafe { #region_identifier::new((#address) as *mut u8, #length) }
@@ -107,7 +107,7 @@ mod tests {
 
         let controller = region.initialize(cm7, &uio).to_string();
         let ap = region.initialize(VisibleCore::Ap, &uio).to_string();
-        assert!(controller.contains(":: consortium_shared_memory :: regions :: CachedRegion"));
+        assert!(controller.contains(":: consortium_core :: regions :: CachedRegion"));
         assert!(ap.contains(":: consortium_runtime_app :: uio :: UioRegion"));
     }
 }

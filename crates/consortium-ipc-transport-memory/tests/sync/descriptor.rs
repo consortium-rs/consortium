@@ -5,16 +5,16 @@ use std::{
     task::{Context, Poll},
 };
 
+use consortium_core::{
+    UncachedRegion,
+    descriptor::{DescriptorHeader, DescriptorHeaderError, DescriptorMagic},
+};
 use consortium_ipc::{Chan, Doorbell, MaybeSend, Primary, Secondary};
 use consortium_ipc_transport_memory::{
     CHANNEL_NUM_MAX, ChannelDirection, ChannelLayout, DESCRIPTOR_LENGTH, DescState, Descriptor,
     DescriptorError, DescriptorLayout, Error, FLAG_CHAN_ACK_CAPABLE, SLOT_ALIGNMENT,
     SharedMemoryTransport, VERSION, channel_table_entry_offset, descriptor_complete, get_state,
     set_state, slot, slot_offset, slot_stride,
-};
-use consortium_shared_memory::{
-    UncachedRegion,
-    descriptor::{DescriptorHeader, DescriptorHeaderError, DescriptorMagic},
 };
 use futures::executor::block_on;
 
