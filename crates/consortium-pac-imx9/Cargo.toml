@@ -18,8 +18,8 @@ defmt = ["dep:defmt"]
 # table, whose handlers request a system reset (SRC SRSR `CM33_REQUEST`), so
 # the first interrupt reboots the SoC. Point VTOR (and MSP) at our own table on
 # reset, as the NXP SDK's `Reset_Handler` does.
-mimx93  = ["cortex-m-rt?/set-sp", "cortex-m-rt?/set-vtor"]
-mimx95  = []
+mimx93 = ["cortex-m-rt?/set-sp", "cortex-m-rt?/set-vtor"]
+mimx95 = []
 # i.MX 952: its own die and memory map (not an i.MX 95 variant).
 mimx952 = []
 rt      = ["cortex-m-rt/device", "dep:cortex-m-rt"]
