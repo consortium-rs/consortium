@@ -37,34 +37,34 @@ block/DDRDBG:
       byte_offset: 56
       description: DDRDBG DFI error mask register
       fieldset: DDRDBG_DFI_ERROR_MSK
-    - name: DDR34_AC_SWIZZLE_ADD3_0
+    - name: DDR34_AC_SWIZZLE_0
       byte_offset: 256
       description: DDRDBG DDR34 AC swizzle ADD3_0 register
-      fieldset: DDRDBG_DDR34_AC_SWIZZLE_ADD3_0
-    - name: DDR34_AC_SWIZZLE_ADD7_4
+      fieldset: DDRDBG_DDR34_AC_SWIZZLE_0
+    - name: DDR34_AC_SWIZZLE_1
       byte_offset: 260
       description: DDRDBG DDR34 AC swizzle ADD7_4 register
-      fieldset: DDRDBG_DDR34_AC_SWIZZLE_ADD7_4
-    - name: DDR34_AC_SWIZZLE_ADD11_8
+      fieldset: DDRDBG_DDR34_AC_SWIZZLE_1
+    - name: DDR34_AC_SWIZZLE_2
       byte_offset: 264
       description: DDRDBG DDR34 AC swizzle ADD11_8 register
-      fieldset: DDRDBG_DDR34_AC_SWIZZLE_ADD11_8
-    - name: DDR34_AC_SWIZZLE_ADD15_12
+      fieldset: DDRDBG_DDR34_AC_SWIZZLE_2
+    - name: DDR34_AC_SWIZZLE_3
       byte_offset: 268
       description: DDRDBG DDR34 AC swizzle ADD15_12 register
-      fieldset: DDRDBG_DDR34_AC_SWIZZLE_ADD15_12
-    - name: DDR34_AC_SWIZZLE_BK2_0_ACTN
+      fieldset: DDRDBG_DDR34_AC_SWIZZLE_3
+    - name: DDR34_AC_SWIZZLE_4
       byte_offset: 272
       description: DDRDBG DDR34 AC swizzle BK2 0 ACTN register
-      fieldset: DDRDBG_DDR34_AC_SWIZZLE_BK2_0_ACTN
-    - name: DDR34_AC_SWIZZLE_RASN_CASN_BG1_0
+      fieldset: DDRDBG_DDR34_AC_SWIZZLE_4
+    - name: DDR34_AC_SWIZZLE_5
       byte_offset: 276
       description: DDRDBG DDR34 AC swizzle RASN CASN BG1_0 register
-      fieldset: DDRDBG_DDR34_AC_SWIZZLE_RASN_CASN_BG1_0
-    - name: DDR34_AC_SWIZZLE_WEN
+      fieldset: DDRDBG_DDR34_AC_SWIZZLE_5
+    - name: DDR34_AC_SWIZZLE_6
       byte_offset: 280
       description: DDRDBG DDR34 AC swizzle WEN register
-      fieldset: DDRDBG_DDR34_AC_SWIZZLE_WEN
+      fieldset: DDRDBG_DDR34_AC_SWIZZLE_6
 fieldset/DDRDBG_LP_DISABLE:
   description: ''
   fields:
@@ -176,7 +176,7 @@ fieldset/DDRDBG_DFI_ERROR_MSK:
       bit_size: 1
       description: Interrupt linked to dfi_error1 is masked. Clears the interrupt
         linked with dfi_error1.
-fieldset/DDRDBG_DDR34_AC_SWIZZLE_ADD3_0:
+fieldset/DDRDBG_DDR34_AC_SWIZZLE_0:
   description: ''
   fields:
     - name: DDR34_AC_SWIZZLING_ADD0
@@ -195,7 +195,7 @@ fieldset/DDRDBG_DDR34_AC_SWIZZLE_ADD3_0:
       bit_offset: 24
       bit_size: 5
       description: Remapping input bit on add3 DDRPHYC input at the DFI interface.
-fieldset/DDRDBG_DDR34_AC_SWIZZLE_ADD7_4:
+fieldset/DDRDBG_DDR34_AC_SWIZZLE_1:
   description: ''
   fields:
     - name: DDR34_AC_SWIZZLING_ADD4
@@ -214,7 +214,7 @@ fieldset/DDRDBG_DDR34_AC_SWIZZLE_ADD7_4:
       bit_offset: 24
       bit_size: 5
       description: Remapping input bit on add7 DDRPHYC input at the DFI interface.
-fieldset/DDRDBG_DDR34_AC_SWIZZLE_ADD11_8:
+fieldset/DDRDBG_DDR34_AC_SWIZZLE_2:
   description: ''
   fields:
     - name: DDR34_AC_SWIZZLING_ADD8
@@ -233,7 +233,7 @@ fieldset/DDRDBG_DDR34_AC_SWIZZLE_ADD11_8:
       bit_offset: 24
       bit_size: 5
       description: Remapping input bit on add11 DDRPHYC input at the DFI interface.
-fieldset/DDRDBG_DDR34_AC_SWIZZLE_ADD15_12:
+fieldset/DDRDBG_DDR34_AC_SWIZZLE_3:
   description: ''
   fields:
     - name: DDR34_AC_SWIZZLING_ADD12
@@ -252,7 +252,7 @@ fieldset/DDRDBG_DDR34_AC_SWIZZLE_ADD15_12:
       bit_offset: 24
       bit_size: 5
       description: Remapping input bit on add15 DDRPHYC input at the DFI interface.
-fieldset/DDRDBG_DDR34_AC_SWIZZLE_BK2_0_ACTN:
+fieldset/DDRDBG_DDR34_AC_SWIZZLE_4:
   description: ''
   fields:
     - name: DDR34_AC_SWIZZLING_ACTN
@@ -271,7 +271,7 @@ fieldset/DDRDBG_DDR34_AC_SWIZZLE_BK2_0_ACTN:
       bit_offset: 24
       bit_size: 5
       description: Remapping input bit on bk2 DDRPHYC input at the DFI interface.
-fieldset/DDRDBG_DDR34_AC_SWIZZLE_RASN_CASN_BG1_0:
+fieldset/DDRDBG_DDR34_AC_SWIZZLE_5:
   description: ''
   fields:
     - name: DDR34_AC_SWIZZLING_BG0
@@ -290,7 +290,7 @@ fieldset/DDRDBG_DDR34_AC_SWIZZLE_RASN_CASN_BG1_0:
       bit_offset: 24
       bit_size: 5
       description: Remapping input bit on rasn DDRPHYC input at the DFI interface.
-fieldset/DDRDBG_DDR34_AC_SWIZZLE_WEN:
+fieldset/DDRDBG_DDR34_AC_SWIZZLE_6:
   description: ''
   fields:
     - name: DDR34_AC_SWIZZLING_WEN

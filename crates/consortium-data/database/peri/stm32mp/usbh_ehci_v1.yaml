@@ -4,45 +4,369 @@ block/USBH_EHCI:
     - name: HCCAPBASE
       byte_offset: 0
       description: Capability Register
+      fieldset: USBH_EHCI_HCCAPBASE
     - name: HCSPARAMS
       byte_offset: 4
       description: Structural Parameter Register
+      fieldset: USBH_EHCI_HCSPARAMS
     - name: HCCPARAMS
       byte_offset: 8
       description: Capability Parameter Register
+      fieldset: USBH_EHCI_HCCPARAMS
     - name: USBCMD
       byte_offset: 16
       description: USB Command Register
+      fieldset: USBH_EHCI_USBCMD
     - name: USBSTS
       byte_offset: 20
       description: USB Status Register
+      fieldset: USBH_EHCI_USBSTS
     - name: USBINTR
       byte_offset: 24
       description: USB Interrupt Enable Register
+      fieldset: USBH_EHCI_USBINTR
     - name: FRINDEX
       byte_offset: 28
       description: USB Frame Index Register
+      fieldset: USBH_EHCI_FRINDEX
     - name: CTRLDSSEGMENT
       byte_offset: 32
       description: Control Data Structure Selector Register
+      fieldset: USBH_EHCI_CTRLDSSEGMENT
     - name: PERIODICLISTBASE
       byte_offset: 36
       description: Periodic Frame List Base Address Register
+      fieldset: USBH_EHCI_PERIODICLISTBASE
     - name: ASYNCLISTADDR
       byte_offset: 40
       description: Asynchronous List Address Register
+      fieldset: USBH_EHCI_ASYNCLISTADDR
     - name: CONFIGFLAG
       byte_offset: 80
       description: Configure Flag Register
+      fieldset: USBH_EHCI_CONFIGFLAG
     - name: PORTSC
       byte_offset: 84
       array:
         len: 1
         stride: 4
       description: Port Status and Control Register
+      fieldset: USBH_EHCI_PORTSC
     - name: INSNREG
       byte_offset: 148
       array:
         len: 7
         stride: 4
       description: Implementation Register
+fieldset/USBH_EHCI_HCCAPBASE:
+  description: ''
+  fields:
+    - name: CAPLENGTH
+      bit_offset: 0
+      bit_size: 7
+      description: Capability Register Length
+    - name: HCIVERSION
+      bit_offset: 16
+      bit_size: 16
+      description: Host Controller Interface Version
+fieldset/USBH_EHCI_HCSPARAMS:
+  description: ''
+  fields:
+    - name: N_PORTS
+      bit_offset: 0
+      bit_size: 4
+      description: Number of Ports
+    - name: PPC
+      bit_offset: 4
+      bit_size: 1
+      description: Port Power Control
+    - name: PRR
+      bit_offset: 7
+      bit_size: 1
+      description: Port Routing Rules
+    - name: N_PCC
+      bit_offset: 8
+      bit_size: 4
+      description: Number of Ports per Companion Controller
+    - name: N_CC
+      bit_offset: 12
+      bit_size: 4
+      description: Number of Companion Controller
+    - name: P_INDICATOR
+      bit_offset: 16
+      bit_size: 1
+      description: Port Indicators
+    - name: DPN
+      bit_offset: 20
+      bit_size: 4
+      description: Debug Port Number
+fieldset/USBH_EHCI_HCCPARAMS:
+  description: ''
+  fields:
+    - name: SFAC
+      bit_offset: 0
+      bit_size: 1
+      description: 64-bit Addressing Capability
+    - name: PFLF
+      bit_offset: 1
+      bit_size: 1
+      description: Programmable Frame List Flag
+    - name: ASPC
+      bit_offset: 2
+      bit_size: 1
+      description: Asynchronous Schedule Park Capability
+    - name: ISO
+      bit_offset: 4
+      bit_size: 4
+      description: Isochronous Scheduling Threshold
+    - name: EECP
+      bit_offset: 8
+      bit_size: 8
+      description: EHCI Extended Capabilities Pointer
+    - name: LPM
+      bit_offset: 17
+      bit_size: 1
+      description: Link Power Management Capability
+    - name: PPCE
+      bit_offset: 18
+      bit_size: 1
+      description: Per-Port Change Event Capability
+    - name: HCCPARAMS32FPC
+      bit_offset: 19
+      bit_size: 1
+      description: 32-Frame Periodic List Capability
+fieldset/USBH_EHCI_USBCMD:
+  description: ''
+  fields:
+    - name: RS
+      bit_offset: 0
+      bit_size: 1
+      description: Run/Stop
+    - name: HCRESET
+      bit_offset: 1
+      bit_size: 1
+      description: Host Controller Reset
+    - name: FLS
+      bit_offset: 2
+      bit_size: 2
+      description: Frame List Size
+    - name: PSE
+      bit_offset: 4
+      bit_size: 1
+      description: Periodic Schedule Enable
+    - name: ASE
+      bit_offset: 5
+      bit_size: 1
+      description: Asynchronous Schedule Enable
+    - name: IAA
+      bit_offset: 6
+      bit_size: 1
+      description: Interrupt on Async Advance Doorbell
+    - name: LHCRESET
+      bit_offset: 7
+      bit_size: 1
+      description: Light Host Controller Reset (OPTIONAL)
+    - name: ASPMC
+      bit_offset: 8
+      bit_size: 2
+      description: Asynchronous Schedule Park Mode Count (OPTIONAL)
+    - name: ASPME
+      bit_offset: 11
+      bit_size: 1
+      description: Asynchronous Schedule Park Mode Enable (OPTIONAL)
+    - name: ITC
+      bit_offset: 16
+      bit_size: 8
+      description: Interrupt Threshold Control
+    - name: HIRD
+      bit_offset: 24
+      bit_size: 4
+      description: Host-Initiated Resume Duration
+fieldset/USBH_EHCI_USBSTS:
+  description: ''
+  fields:
+    - name: USBINT
+      bit_offset: 0
+      bit_size: 1
+      description: USB Interrupt (USBINT)
+    - name: USBERRINT
+      bit_offset: 1
+      bit_size: 1
+      description: USB Error Interrupt (USBERRINT)
+    - name: PCD
+      bit_offset: 2
+      bit_size: 1
+      description: Port Change Detect
+    - name: FLR
+      bit_offset: 3
+      bit_size: 1
+      description: Frame List Rollover
+    - name: HSE
+      bit_offset: 4
+      bit_size: 1
+      description: Host System Error
+    - name: IAA
+      bit_offset: 5
+      bit_size: 1
+      description: Interrupt on Async Advance
+    - name: HCH
+      bit_offset: 12
+      bit_size: 1
+      description: HCHalted
+    - name: RECL
+      bit_offset: 13
+      bit_size: 1
+      description: Reclamation
+    - name: PSS
+      bit_offset: 14
+      bit_size: 1
+      description: Periodic Schedule Status
+    - name: ASS
+      bit_offset: 15
+      bit_size: 1
+      description: Asynchronous Schedule Status
+fieldset/USBH_EHCI_USBINTR:
+  description: ''
+  fields:
+    - name: USBIE
+      bit_offset: 0
+      bit_size: 1
+      description: USB Interrupt Enable
+    - name: USBEIE
+      bit_offset: 1
+      bit_size: 1
+      description: USB Error Interrupt Enable
+    - name: PCIE
+      bit_offset: 2
+      bit_size: 1
+      description: Port Change Interrupt Enable
+    - name: FLRE
+      bit_offset: 3
+      bit_size: 1
+      description: Frame List Rollover Enable
+    - name: HSEE
+      bit_offset: 4
+      bit_size: 1
+      description: Host System Error Enable
+    - name: IAAE
+      bit_offset: 5
+      bit_size: 1
+      description: Interrupt on Async Advance Enable
+fieldset/USBH_EHCI_FRINDEX:
+  description: ''
+  fields:
+    - name: FRAMEINDEX
+      bit_offset: 0
+      bit_size: 14
+      description: Frame Index
+fieldset/USBH_EHCI_CTRLDSSEGMENT:
+  description: ''
+  fields:
+    - name: SEGMENT
+      bit_offset: 0
+      bit_size: 32
+      description: Control Data Structure Segment
+fieldset/USBH_EHCI_PERIODICLISTBASE:
+  description: ''
+  fields:
+    - name: BASEADDR
+      bit_offset: 12
+      bit_size: 20
+      description: Base Address (Low)
+fieldset/USBH_EHCI_ASYNCLISTADDR:
+  description: ''
+  fields:
+    - name: LPL
+      bit_offset: 5
+      bit_size: 27
+      description: Link Pointer Low (LPL)
+fieldset/USBH_EHCI_CONFIGFLAG:
+  description: ''
+  fields:
+    - name: CF
+      bit_offset: 0
+      bit_size: 1
+      description: Configure Flag (CF)
+fieldset/USBH_EHCI_PORTSC:
+  description: ''
+  fields:
+    - name: CCS
+      bit_offset: 0
+      bit_size: 1
+      description: Current Connect Status
+    - name: CSC
+      bit_offset: 1
+      bit_size: 1
+      description: Connect Status Change
+    - name: PED
+      bit_offset: 2
+      bit_size: 1
+      description: Port Enabled/Disabled
+    - name: PEC
+      bit_offset: 3
+      bit_size: 1
+      description: Port Enable/Disable Change
+    - name: OCA
+      bit_offset: 4
+      bit_size: 1
+      description: Over-current Active
+    - name: OCC
+      bit_offset: 5
+      bit_size: 1
+      description: Over-current Change
+    - name: FPR
+      bit_offset: 6
+      bit_size: 1
+      description: Force Port Resume
+    - name: SUSP
+      bit_offset: 7
+      bit_size: 1
+      description: Suspend
+    - name: PR
+      bit_offset: 8
+      bit_size: 1
+      description: Port Reset
+    - name: SUSPEND_L1
+      bit_offset: 9
+      bit_size: 1
+      description: Suspend using L1
+    - name: LS
+      bit_offset: 10
+      bit_size: 2
+      description: Line Status
+    - name: PP
+      bit_offset: 12
+      bit_size: 1
+      description: Port Power
+    - name: PO
+      bit_offset: 13
+      bit_size: 1
+      description: Port Owner
+    - name: PIC
+      bit_offset: 14
+      bit_size: 2
+      description: Port Indicator Control
+    - name: PTC
+      bit_offset: 16
+      bit_size: 4
+      description: Port Test Control
+    - name: WKCNNT_E
+      bit_offset: 20
+      bit_size: 1
+      description: Wake on Connect Enable
+    - name: WKDSCNNT_E
+      bit_offset: 21
+      bit_size: 1
+      description: Wake on Disconnect Enable
+    - name: WKOC_E
+      bit_offset: 22
+      bit_size: 1
+      description: Wake on Over-current Enable
+    - name: SUSPEND_STATUS
+      bit_offset: 23
+      bit_size: 2
+      description: Suspend Status
+    - name: DEVICE_ADDR
+      bit_offset: 25
+      bit_size: 7
+      description: Device Address
