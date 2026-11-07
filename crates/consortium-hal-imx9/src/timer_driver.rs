@@ -425,19 +425,18 @@ pub fn on_timer_interrupt() {
     DRIVER.on_interrupt();
 }
 
-/// LPIT1's functional clock on the reference boards.
+/// LPIT1's functional clock on the reference boards: 400/3 MHz on every family.
 ///
-/// - i.MX 95: the 24 MHz AON/root timer domain, as the System Manager leaves it.
-/// - i.MX 952: taken to match i.MX 95 (same System Manager, LPIT1 at the same AON
-///   address); not yet confirmed on hardware or against a reference manual.
 /// - i.MX 93: `bus_aon_root`, which Linux's CCM driver sets up as
 ///   `sys_pll_pfd1` (800 MHz) / 2 (`sys_pll_pfd1_div2`) / 3 = 400/3 MHz
 ///   (FRDM-i.MX93 `clk_summary`; Linux prints it rounded up as 133333334).
-#[cfg(all(feature = "mimx93", not(feature = "mimx95")))]
+/// - i.MX 95: the System Manager clocks LPIT1 from the 133 MHz bus/AON root, not
+///   the 24 MHz oscillator. Measured on the FRDM-i.MX95 (`mx95frdmrpmsg` SM
+///   config, November 2026): with a 24 MHz rate assumed, a 1 s `Timer` elapsed
+///   in 0.180 s of wall time, i.e. 24 MHz / 0.18 = 400/3 MHz.
+/// - i.MX 952: taken to match i.MX 95 (same System Manager, LPIT1 at the same AON
+///   address); not yet confirmed on hardware or against a reference manual.
 pub const LPIT1_RATE: Rate = Rate::ratio(400_000_000, 3);
-/// LPIT1's functional clock on the reference boards (see the i.MX 93 variant).
-#[cfg(not(all(feature = "mimx93", not(feature = "mimx95"))))]
-pub const LPIT1_RATE: Rate = Rate::hz(24_000_000);
 
 /// Bring up the conventional i.MX9 Embassy time driver (LPIT1) and route its
 /// interrupt line.
