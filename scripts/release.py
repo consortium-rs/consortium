@@ -30,7 +30,7 @@ DEPENDENCY_TABLES = {"dependencies", "build-dependencies", "dev-dependencies"}
 RELEASE_PACKAGES = {
     ("windows-latest", "x86_64-pc-windows-msvc", "zip"),
     ("windows-11-arm", "aarch64-pc-windows-msvc", "zip"),
-    ("macos-14", "aarch64-apple-darwin", "tgz"),
+    ("macos-latest", "aarch64-apple-darwin", "tgz"),
     ("ubuntu-latest", "x86_64-unknown-linux-gnu", "tgz"),
     ("ubuntu-24.04-arm", "aarch64-unknown-linux-gnu", "tgz"),
 }
