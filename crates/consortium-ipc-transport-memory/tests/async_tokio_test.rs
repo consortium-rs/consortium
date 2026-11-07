@@ -30,3 +30,5 @@ mod rkyv_channel;
 mod send;
 #[path = "async_tokio/split.rs"]
 mod split;
+#[path = "async_tokio/try_transport.rs"]
+mod try_transport;

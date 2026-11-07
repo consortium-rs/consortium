@@ -21,9 +21,9 @@ use consortium_codec::{Codec, CodecFor};
 use core::marker::PhantomData;
 use core::ops::Deref;
 
+use crate::AckSendTransport;
 use crate::Chan;
-use crate::ack::AckSendTransport;
-use crate::transport::{RecvTransport, SendTransport, TransportError};
+use crate::{RecvTransport, SendTransport, TransportError};
 
 /// Channel direction marker ([`Tx`] or [`Rx`]).
 ///
@@ -352,11 +352,11 @@ mod tests {
         fail_recv: bool,
     }
 
-    impl crate::transport::TransportError for MockTransport {
+    impl crate::TransportError for MockTransport {
         type Error = TransportError;
     }
 
-    impl crate::transport::SendTransport for MockTransport {
+    impl crate::SendTransport for MockTransport {
         async fn send(&mut self, data: &[u8]) -> Result<(), Self::Error> {
             if self.fail_send {
                 return Err(TransportError::Send);
@@ -371,7 +371,7 @@ mod tests {
         }
     }
 
-    impl crate::transport::RecvTransport for MockTransport {
+    impl crate::RecvTransport for MockTransport {
         async fn recv(&mut self, buf: &mut [u8]) -> Result<usize, Self::Error> {
             if self.fail_recv {
                 return Err(TransportError::Recv);

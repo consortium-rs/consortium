@@ -1,6 +1,9 @@
-use core::{future::Future, marker::PhantomData, task::Poll};
+use core::{future::Future, marker::PhantomData};
 
-use consortium_core::{CachedRegion, Region, UncachedRegion};
+use consortium_core::{
+    CachedRegion, Region, TryError, TryRecvTransport, TrySendTransport, UncachedRegion,
+    wait::{self, Readiness},
+};
 use consortium_ipc::{
     AckSendTransport, Chan, Connect, Doorbell, MaybeSend, Primary, RecvTransport, Secondary,
     SendTransport, Side, TransportError,
@@ -170,12 +173,15 @@ fn acquire_tx_slot<S: Side, D: Doorbell, R: Region>(
     })
 }
 
-/// Fire-and-forget send: claim a slot, write it, ring, return.
-fn send_bytes<S: Side, D: Doorbell, R: Region>(
+/// One non-waiting send: claim a slot, write it, ring.
+///
+/// Every TX slot still holding an untaken message is [`TryError::WouldBlock`]: depth
+/// is one frame per direction, so the peer is reported rather than queued behind.
+fn try_send_bytes<S: Side, D: Doorbell, R: Region>(
     link: &Link<D, R>,
     tx: &TxState,
     data: &[u8],
-) -> Result<(), Error<D>> {
+) -> Result<(), TryError<Error<D>>> {
     let slot_base = match acquire_tx_slot::<S, D, R>(link, data)? {
         Acquire::Ready { slot, channel_id } => {
             consortium_log::trace!(
@@ -186,16 +192,44 @@ fn send_bytes<S: Side, D: Doorbell, R: Region>(
             );
             slot
         }
-        // Depth is one frame per direction and this path never waits, so a peer that has
-        // not consumed the previous message is reported rather than queued behind.
-        Acquire::Full { .. } => return Err(Error::NoChannel),
+        Acquire::Full { .. } => return Err(TryError::WouldBlock),
     };
 
     // SAFETY: `slot_base` points to a valid, capacity-checked slot.
     unsafe { slot::write(slot_base, data, false) };
 
     link.region.flush();
-    link.doorbell.ring(tx.ch).map_err(Error::Doorbell)
+    link.doorbell.ring(tx.ch).map_err(Error::Doorbell)?;
+    Ok(())
+}
+
+/// Fire-and-forget send: [`try_send_bytes`], with an occupied slot reported as
+/// [`Error::NoChannel`] — the `SendTransport` contract has no "would block".
+fn send_bytes<S: Side, D: Doorbell, R: Region>(
+    link: &Link<D, R>,
+    tx: &TxState,
+    data: &[u8],
+) -> Result<(), Error<D>> {
+    try_send_bytes::<S, D, R>(link, tx, data).map_err(|error| match error {
+        TryError::WouldBlock => Error::NoChannel,
+        TryError::Fail(error) => error,
+    })
+}
+
+/// One non-waiting receive: a single [`scan_once`] pass.
+///
+/// A slot caught mid-update ([`Scan::Retry`]) is also [`TryError::WouldBlock`]: the
+/// caller is to try again, which is all a retry asks for.
+fn try_recv_bytes<S: Side, D: Doorbell, R: Region>(
+    link: &Link<D, R>,
+    rx: &RxState,
+    buf: &mut [u8],
+) -> Result<usize, TryError<Error<D>>> {
+    match scan_once::<S, D, R>(link, rx, buf) {
+        Scan::Delivered(n) => Ok(n),
+        Scan::Failed(error) => Err(TryError::Fail(error)),
+        Scan::Retry | Scan::Empty => Err(TryError::WouldBlock),
+    }
 }
 
 /// Outcome of one pass over the channel table.
@@ -325,104 +359,20 @@ fn scan_once<S: Side, D: Doorbell, R: Region>(
     Scan::Retry
 }
 
-/// Hand control back to the executor once, then resume.
+/// Wait on `ch` until `check` reports [`Readiness::Ready`].
 ///
-/// Used where a wait loop must not park — it has work to redo immediately but
-/// must not starve other tasks by spinning.
-fn yield_now() -> impl Future<Output = ()> {
-    let mut yielded = false;
-    core::future::poll_fn(move |cx| {
-        if yielded {
-            Poll::Ready(())
-        } else {
-            yielded = true;
-            cx.waker().wake_by_ref();
-            Poll::Pending
-        }
-    })
-}
-
-/// What one readiness check in [`park_until`] found.
-enum Step<T> {
-    /// The condition holds; resolve with this value.
-    Done(T),
-    /// Nothing yet; park on the doorbell until the peer rings.
-    Park,
-    /// Shared memory is mid-update; yield once and check again without parking, so
-    /// this never waits on an unrelated doorbell edge.
-    Yield,
-}
-
-/// Wait on `ch` until `check` reports [`Step::Done`].
-///
-/// This is the one implementation of the wait protocol every path shares (receive,
-/// and both phases of an acknowledged send), and its ordering is load-bearing:
-/// `check` runs, then the wait future is created and polled **once** through
-/// `poll_fn` to register the waker, then `check` runs again, and only then does the
-/// caller park. A doorbell whose fan-out stores no permit (`notify_waiters`, and
-/// every hardware doorbell) drops an edge delivered between a check and the
-/// registration, so re-checking after arming is what turns that race into a
-/// guaranteed delivery. Awaiting the wait future directly would register and park
-/// in one step, leaving no point at which to re-check.
-///
-/// Spurious wakes are harmless: readiness is decided from shared memory, never from
-/// the edge itself.
-///
-/// Takes `&mut Link` rather than `&Link` purely so the returned future is `Send`
-/// whenever the link is: a `Link` holds a raw pointer and is not `Sync`. For the
-/// same reason `check` is handed the link on each pass instead of closing over its
-/// region or base pointer, and nothing derived from it is held across an `await`.
+/// The protocol — check, arm, re-check, park — is
+/// [`consortium_core::wait::park_until`]'s, shared with every other doorbell-driven
+/// transport; this only fixes the context to the [`Link`]. It takes `&mut Link`
+/// rather than `&Link` so the returned future is `Send` whenever the link is: a
+/// `Link` holds a raw pointer and is not `Sync`. For the same reason `check` is
+/// handed the link on each pass instead of closing over its region or base pointer.
 async fn park_until<D: Doorbell, R: Region, T>(
     link: &mut Link<D, R>,
     ch: Chan,
-    mut check: impl FnMut(&Link<D, R>) -> Result<Step<T>, Error<D>>,
+    check: impl FnMut(&Link<D, R>) -> Result<Readiness<T>, Error<D>>,
 ) -> Result<T, Error<D>> {
-    loop {
-        let step = check(&*link)?;
-        match step {
-            Step::Done(value) => return Ok(value),
-            Step::Yield => {
-                yield_now().await;
-                continue;
-            }
-            Step::Park => {}
-        }
-
-        consortium_log::trace!("park: nothing ready, arming doorbell wait on {:?}", ch);
-        let mut wait = core::pin::pin!(link.doorbell.wait(ch));
-        let armed = core::future::poll_fn(|cx| Poll::Ready(wait.as_mut().poll(cx))).await;
-
-        // The wait future lives to the end of this iteration and no longer.
-        // Dropping it on completion is what keeps a later stray doorbell from
-        // resolving a stale wait.  It also runs the doorbell's `Drop`, which for
-        // the MMIO doorbells disarms the line without acknowledging its status.
-        let step = check(&*link)?;
-        match step {
-            Step::Done(value) => return Ok(value),
-            Step::Yield => {
-                yield_now().await;
-                continue;
-            }
-            Step::Park => {}
-        }
-
-        match armed {
-            // The peer rang before we subscribed and the re-check still found nothing.
-            // The future is spent, so start over — after a yield, so a doorbell that
-            // keeps firing without changing memory cannot starve the executor.
-            Poll::Ready(fired) => {
-                consortium_log::trace!("park: doorbell had already fired on {:?}", ch);
-                fired.map_err(Error::Doorbell)?;
-                yield_now().await;
-            }
-            // Waker is registered; park until the peer rings.
-            Poll::Pending => {
-                consortium_log::trace!("park: parking on {:?}", ch);
-                wait.as_mut().await.map_err(Error::Doorbell)?;
-                consortium_log::trace!("park: doorbell fired on {:?}", ch);
-            }
-        }
-    }
+    wait::park_until(link, |link| &link.doorbell, ch, Error::Doorbell, check).await
 }
 
 /// Receive one message, parking on the doorbell until a slot is readable.
@@ -434,10 +384,10 @@ async fn recv_bytes<S: Side, D: Doorbell, R: Region>(
     consortium_log::trace!("recv: waiting for doorbell on channel {:?}", rx.ch);
     park_until(link, rx.ch, |link| {
         Ok(match scan_once::<S, D, R>(link, rx, &mut *buf) {
-            Scan::Delivered(n) => Step::Done(n),
+            Scan::Delivered(n) => Readiness::Ready(n),
             Scan::Failed(error) => return Err(error),
-            Scan::Retry => Step::Yield,
-            Scan::Empty => Step::Park,
+            Scan::Retry => Readiness::Yield,
+            Scan::Empty => Readiness::Park,
         })
     })
     .await
@@ -477,8 +427,8 @@ async fn send_acked_bytes<S: Side, D: Doorbell, R: Region>(
     // `NoChannel` just as `send` would, leaving the retry to the caller.
     let channel_id = park_until(link, ch_ack_rx, |link| {
         match acquire_tx_slot::<S, D, R>(link, data)? {
-            Acquire::Ready { channel_id, .. } => Ok(Step::Done(channel_id)),
-            Acquire::Full { all_acked: true } => Ok(Step::Park),
+            Acquire::Ready { channel_id, .. } => Ok(Readiness::Ready(channel_id)),
+            Acquire::Full { all_acked: true } => Ok(Readiness::Park),
             Acquire::Full { all_acked: false } => Err(Error::NoChannel),
         }
     })
@@ -512,9 +462,9 @@ async fn send_acked_bytes<S: Side, D: Doorbell, R: Region>(
             return Err(Error::PeerIntegrityError);
         }
         Ok(if flags & slot::FLAG_CONSUMED != 0 {
-            Step::Done(())
+            Readiness::Ready(())
         } else {
-            Step::Park
+            Readiness::Park
         })
     })
     .await
@@ -822,6 +772,56 @@ impl<S: Side, D: Doorbell + Send, R: RegionSharedMemoryTransportable + Send> Ack
         data: &[u8],
     ) -> impl Future<Output = Result<(), Self::Error>> + MaybeSend {
         send_acked_bytes::<S, D, R>(&mut self.link, &self.tx, data)
+    }
+}
+
+// The non-waiting pair. No `Send` bounds: nothing here is held across an `await`.
+
+impl<S: Side, D: Doorbell, R: RegionSharedMemoryTransportable> TrySendTransport
+    for SharedMemoryTransport<S, D, R>
+{
+    fn try_send(&mut self, frame: &[u8]) -> Result<(), TryError<Self::Error>> {
+        try_send_bytes::<S, D, R>(&self.link, &self.tx, frame)
+    }
+
+    fn max_send_size(&self) -> usize {
+        self.tx.mtu as usize
+    }
+}
+
+impl<S: Side, D: Doorbell, R: RegionSharedMemoryTransportable> TrySendTransport
+    for SharedMemoryTransportTx<S, D, R>
+{
+    fn try_send(&mut self, frame: &[u8]) -> Result<(), TryError<Self::Error>> {
+        try_send_bytes::<S, D, R>(&self.link, &self.tx, frame)
+    }
+
+    fn max_send_size(&self) -> usize {
+        self.tx.mtu as usize
+    }
+}
+
+impl<S: Side, D: Doorbell, R: RegionSharedMemoryTransportable> TryRecvTransport
+    for SharedMemoryTransport<S, D, R>
+{
+    fn try_recv(&mut self, buf: &mut [u8]) -> Result<usize, TryError<Self::Error>> {
+        try_recv_bytes::<S, D, R>(&self.link, &self.rx, buf)
+    }
+
+    fn max_recv_size(&self) -> usize {
+        self.rx.mtu as usize
+    }
+}
+
+impl<S: Side, D: Doorbell, R: RegionSharedMemoryTransportable> TryRecvTransport
+    for SharedMemoryTransportRx<S, D, R>
+{
+    fn try_recv(&mut self, buf: &mut [u8]) -> Result<usize, TryError<Self::Error>> {
+        try_recv_bytes::<S, D, R>(&self.link, &self.rx, buf)
+    }
+
+    fn max_recv_size(&self) -> usize {
+        self.rx.mtu as usize
     }
 }
 

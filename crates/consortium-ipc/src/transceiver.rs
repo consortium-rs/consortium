@@ -18,9 +18,9 @@
 
 use consortium_codec::CodecFor;
 
-use crate::ack::AckSendTransport;
-use crate::transport::{RecvTransport, SendTransport};
+use crate::AckSendTransport;
 use crate::{Channel, ChannelError, ReceivedMessage, Rx, Tx};
+use crate::{RecvTransport, SendTransport};
 
 /// A typed, multidirectional endpoint pairing a send half and a receive half.
 ///

@@ -18,16 +18,18 @@
 //! Core inter-processor communication primitives for Consortium.
 //!
 //! This crate is the abstraction layer that every Consortium link is built from.
-//! It defines the trait stack, the typed endpoints application and firmware code
-//! call, and the marker types that keep a message meaningful on both sides of a
-//! core boundary. It performs no hardware access, no allocation, and hosts no
-//! executor; concrete links live in `consortium-ipc-transport-*`, concrete
-//! signaling in `consortium-core`, and serialization in
-//! `consortium-codec`.
+//! It defines the typed endpoints application and firmware code call and the
+//! marker types that keep a message meaningful on both sides of a core boundary,
+//! and re-exports the transport and doorbell traits beneath them. It performs no
+//! hardware access, no allocation, and hosts no executor; concrete links live in
+//! `consortium-ipc-transport-*`, serialization in `consortium-codec`, and the
+//! transport and doorbell traits themselves in `consortium-core` — below IPC, so
+//! that SCMI and the debug ring share them.
 //!
 //! # Architecture
 //!
-//! Five traits compose into two user-facing types:
+//! Five traits (the first three defined in `consortium-core` and re-exported here)
+//! compose into two user-facing types:
 //!
 //! ```text
 //!   Doorbell                       wake the remote processor (no data)
@@ -81,7 +83,10 @@
 //! # Implementing a transport
 //!
 //! Implement [`TransportError`] to name the error type, then [`SendTransport`]
-//! and/or [`RecvTransport`].
+//! and/or [`RecvTransport`]. A transport that hands a frame over in one
+//! non-waiting step (a shared-memory slot) should also implement
+//! [`TrySendTransport`] / [`TryRecvTransport`], and can then build its async
+//! halves on `consortium_core::wait::park_until`.
 //! Implement [`Connect`] when a peer must agree before traffic flows, using
 //! `Params = ()` if nothing is negotiated. Report honest `max_send_size` /
 //! `max_recv_size`: callers size their scratch buffers from them. If the link owns
@@ -102,26 +107,23 @@
 #[cfg(feature = "alloc")]
 extern crate alloc;
 
-pub(crate) mod ack;
 pub(crate) mod channel;
-pub(crate) mod connect;
 pub(crate) mod sealed;
 pub(crate) mod transceiver;
-pub(crate) mod transport;
 pub(crate) mod wire;
 
-// The signaling vocabulary lives in `consortium-core`, below every subsystem that
-// signals another core; IPC re-exports it so its trait stack reads as one API.
+// The signaling and transport vocabulary lives in `consortium-core`, below every
+// subsystem that talks to another core (IPC, SCMI, the debug ring); IPC re-exports it
+// so its trait stack reads as one API.
 pub use consortium_core::{
-    Chan, ChanValidate, Doorbell, MaybeSend, Primary, Secondary, Side, Tertiary,
+    AckSendTransport, Chan, ChanValidate, Connect, Doorbell, MaybeSend, Primary, RecvTransport,
+    Secondary, SendTransport, Side, Tertiary, TransportError, TryError, TryRecvTransport,
+    TrySendTransport,
 };
 
 pub use {
-    ack::AckSendTransport,
     channel::{Channel, ChannelError, Direction, ReceivedMessage, Rx, Tx},
-    connect::Connect,
     transceiver::Transceiver,
-    transport::{RecvTransport, SendTransport, TransportError},
     wire::IpcSafe,
 };
 
