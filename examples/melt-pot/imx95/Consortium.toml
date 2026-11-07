@@ -10,8 +10,9 @@
 chip = "mimx9596xvt"
 # Development board whose device tree the Linux device tree is built on. Its full
 # file stem is matched against the vendor DTS database; omit it to build on the
-# generic `imx95.dtsi` instead.
-devkit      = "imx95-19x19-evk"
+# generic `imx95.dtsi` instead. FRDM-i.MX95 (15x15); see
+# `Consortium.bringup.toml` for what this board needs from its BSP.
+devkit      = "imx95-15x15-frdm"
 shared      = "../shared"
 deploy_root = "/opt/consortium"
 # sysroot     = "/workspace/imx-yocto-bsp/build/tmp/sysroots"
@@ -28,12 +29,15 @@ workspace = "nested"
 [dts]
 # mode  = "merge"        # or "overlay"
 
-# Optional per-field overrides inherit the recommended i.MX95 CM7 DDR defaults.
-# [remoteproc.cm7]
-# vector = { origin = 0x80000000, length = 0x00001000 }
-# flash = { origin = 0x80001000, length = 0x007ff000, reserve = true }
-# shmem = { origin = 0x88220000, length = 0x00004000, reserve = true }
-# ram   = { origin = 0x80800000, length = 0x00800000, reserve = true }
+# The CM7 runs from TCM, as in `Consortium.bringup.toml` (the two share
+# `mcu/memory.x`): the FRDM's rpmsg System Manager config lets Linux write the
+# M7 TCM but not the chip default's DDR code carveout. On an EVK, whose rpmsg
+# config grants that DDR, drop this table to inherit the DDR defaults
+# (vector 0x80000000, flash 0x80001000, ram 0x80800000, all reserved).
+[remoteproc.cm7]
+vector = { length = 0x00001000, origin = 0x00000000, reserve = false }
+flash  = { length = 0x0003F000, origin = 0x00001000, reserve = false }
+ram    = { length = 0x00040000, origin = 0x20000000, reserve = false }
 
 # Mandatory SHMEM follows NXP's `m_rsc_tbl_in_dram` region and owns
 # `.resource_table`.
@@ -47,16 +51,18 @@ cm7   = "./mcu"
 [dbg]
 mode = "auto"
 
-# defmt ring for the CM7, in OCRAM (see the mimx95 chip database), just above
-# the IPC region below.
+# defmt ring for the CM7, just above the IPC region below. The System Manager
+# grants the M7 no OCRAM, so both live in the DDR window it shares with Linux
+# (see the mimx95 chip database), clear of NXP's vring/vdev/resource-table
+# reservations at 0x88000000..0x88221000.
 [dbg.cm7]
-memory = { base = 0x00484000, length = 0x2000 }
+memory = { base = 0x88304000, length = 0x2000 }
 mtu    = 64
 
 # One shared descriptor + slots for the sensor channel, signalled over MU7.
-# The region lives in OCRAM (base 0x00480000 in the mimx95 chip database); the
-# CM7 reaches it through the raw physical base and the CA55 maps the same
-# memory through its UIO device.
+# The region lives in shared DDR; DDR takes no SRAM alias, so the CM7 uses the
+# physical base as written and the CA55 maps the same memory through its UIO
+# device.
 [[ipc.channel]]
 name          = "sensor"
 doorbell      = "mu7"
@@ -65,7 +71,7 @@ primary       = "linux"
 secondary     = "cm7"
 party.linux   = { chan = 6, type = "Command" }
 party.cm7     = { chan = 7, type = "SensorReading" }
-config.memory = { base = 0x00480000, length = 0x4000 }
+config.memory = { base = 0x88300000, length = 0x4000 }
 mtu           = 128
 
 [tee]
@@ -79,6 +85,11 @@ debug   = "http://127.0.0.1:5173/"
 source  = "website"
 build   = "website/dist"
 
+# The peripherals below exercise codegen. On NXP's stock System Manager
+# configurations they are not the M7's: LPI2C1 is the SM's PMIC bus and
+# LPSPI1/GPIO2 belong to Linux, so a board run needs an SM config that grants
+# them (or M7-owned instances such as LPI2C4/LPUART3). The HIL bring-up
+# manifest (Consortium.bringup.toml) uses none.
 [peripheral.lpspi1]
 owner    = "cm7"
 secure   = false

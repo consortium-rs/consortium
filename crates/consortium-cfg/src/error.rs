@@ -166,7 +166,19 @@ pub enum CfgError {
     },
 
     #[error(
-        "[memory.{region}] spans {base:#x}..{end:#x}, which is not contained in any SRAM region of chip '{chip}'. \
+        "[memory.{region}] lies in chip '{chip}' memory region '{window}', which core '{core}' cannot access \
+         (accessible to: {visible}); move it to a region every core using it can reach"
+    )]
+    RegionNotVisible {
+        region: String,
+        window: String,
+        core: String,
+        visible: String,
+        chip: String,
+    },
+
+    #[error(
+        "[memory.{region}] spans {base:#x}..{end:#x}, which is not contained in any memory region of chip '{chip}'. \
          Check the SRAM memory map in the TRM ({trm}) p. {pages}"
     )]
     RegionOutOfBounds {

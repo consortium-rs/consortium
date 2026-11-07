@@ -115,19 +115,47 @@ pub struct MemoryAlias {
     pub secure: bool,
 }
 
+/// A memory window shared-memory channels and debug rings may be placed in.
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct MemoryRegion {
     pub name: String,
     pub r#type: MemoryRegionType,
     pub base: u32,
     pub length: u32,
+    /// Cores that may access the window. On a chip whose access control is
+    /// owned by a System Manager (i.MX 95), this is what the vendor's reference
+    /// configurations grant, not what the bus fabric could reach.
     pub visible: Vec<VisibleCore>,
+}
+
+impl MemoryRegion {
+    /// Exclusive end address.
+    pub const fn end(&self) -> u64 {
+        self.base as u64 + self.length as u64
+    }
+
+    /// Whether `[base, base + length)` lies entirely inside this window.
+    pub const fn contains(&self, base: u32, length: u32) -> bool {
+        base >= self.base && base as u64 + length as u64 <= self.end()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum MemoryRegionType {
+    /// On-chip SRAM. Addresses are canonical offsets; each core reaches the
+    /// window through its security world's [`MemoryAlias`].
     Sram,
+    /// External DRAM. Addresses are physical and identical for every core:
+    /// [`MemoryAlias`] offsets do not apply.
+    Dram,
+}
+
+impl MemoryRegionType {
+    /// Whether a [`MemoryAlias`] offset is added to addresses in this window.
+    pub const fn aliased(self) -> bool {
+        matches!(self, Self::Sram)
+    }
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]

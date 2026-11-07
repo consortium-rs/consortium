@@ -708,7 +708,7 @@ impl Session {
             // controllers, aliased to that party's world.
             let region_cp =
                 controller_bases([primary_party, secondary_party], memory.base, |secure| {
-                    memory_alias(&self.database, secure)
+                    memory_alias(&self.database, memory.base, secure)
                 });
             let doorbell_cp = controller_doorbell_bases(
                 db_doorbell,
@@ -775,7 +775,7 @@ impl Session {
                 mtu: channel.mtu,
                 codec: channel.codec,
                 region: Region {
-                    r#type: MemoryRegionType::Sram,
+                    r#type: memory_type(&self.database, memory.base),
                     cache: channel.cache(),
                     address: region_address,
                     length: memory.length,
@@ -795,11 +795,10 @@ impl Session {
         // is offset by the non-secure alias. The final `uioN` ids are fixed by
         // the memory-order sort after the dbg device is appended.
         let mut uio = Vec::new();
-        let region_alias = memory_alias(&self.database, false);
         consortium_log::trace!("lowering {} shared-memory regions to UIO", regions.len());
         if let Some(mut device) = regions.as_slice().to_uio()? {
             for window in &mut device.mmap {
-                window.0 += region_alias;
+                window.0 += memory_alias(&self.database, window.0, false);
             }
             uio.push(("ipc-shm".to_string(), device));
         }
@@ -826,7 +825,6 @@ impl Session {
         // core), so each logger embeds its ring through the non-secure SRAM
         // alias, matching both the firmware's own view of memory and Linux's
         // (Linux is non-secure too, so the AP maps the same physical address).
-        let dbg_alias = memory_alias(&self.database, false);
 
         // The AP maps every dbg ring through one aggregate `dbg-shm` UIO device,
         // appended after the IPC/doorbell devices. Sort by core name so the mmap
@@ -839,6 +837,7 @@ impl Session {
         let mut dbg_windows = Vec::new();
         let mut dbg_rings = HashMap::new();
         for (mmap_id, (core, entry)) in dbg_cores.into_iter().enumerate() {
+            let dbg_alias = memory_alias(&self.database, entry.memory.base, false);
             let base = u64::from(entry.memory.base) + u64::from(dbg_alias);
             dbg_windows.push((base as u32, entry.memory.length));
             dbg_rings.insert(
@@ -1335,9 +1334,25 @@ fn party_secure(party: Party) -> bool {
     }
 }
 
-/// The SRAM-region alias offset for the given security world, or `0` if the chip
-/// declares none.
-fn memory_alias(database: &ChipDatabase, secure: bool) -> u32 {
+/// The type of the chip memory region holding `base`. Validation has already
+/// placed every window inside one; `Sram` is only the fallback for code paths
+/// that run on an unvalidated session.
+fn memory_type(database: &ChipDatabase, base: u32) -> MemoryRegionType {
+    database
+        .memory
+        .regions
+        .iter()
+        .find(|region| region.contains(base, 0))
+        .map_or(MemoryRegionType::Sram, |region| region.r#type)
+}
+
+/// The alias offset a core in the given security world adds to `base`: the
+/// chip's memory alias for SRAM windows, `0` for DRAM (which every core
+/// addresses physically) or when the chip declares no alias.
+fn memory_alias(database: &ChipDatabase, base: u32, secure: bool) -> u32 {
+    if !memory_type(database, base).aliased() {
+        return 0;
+    }
     database
         .memory
         .aliases
@@ -1412,6 +1427,38 @@ mod tests {
     fn cm0p() -> VisibleCore {
         VisibleCore::Mcore(McoreName::Cm0p)
     }
+
+    fn cm7() -> VisibleCore {
+        VisibleCore::Mcore(McoreName::Cm7)
+    }
+
+    /// An i.MX 95 Linux + CM7 pair whose channel and debug ring sit in the DDR
+    /// window the System Manager grants both.
+    const IMX95_DDR: &str = r#"
+        [profile]
+        chip = "mimx9596xvt"
+        shared = "./shared"
+        deploy_root = "/opt/consortium"
+
+        [endpoints]
+        linux = "./app"
+        cm7   = "./firmware"
+
+        [dbg.cm7]
+        memory = { base = 0x88300000, length = 0x2000 }
+        mtu    = 64
+
+        [[ipc.channel]]
+        name          = "sensor"
+        doorbell      = "mu7"
+        pattern       = "memory"
+        primary       = "linux"
+        secondary     = "cm7"
+        party.linux   = { chan = 6, type = "SensorData" }
+        party.cm7     = { chan = 7, type = "MotionControl" }
+        config.memory = { base = 0x88304000, length = 0x4000 }
+        mtu           = 128
+    "#;
 
     fn lowered() -> LoweredIr {
         Session::from_toml(STM32)
@@ -1590,38 +1637,40 @@ mod tests {
         assert_eq!(sensor.doorbell_address.cp[&cm33()], 0x4423_0000);
     }
 
-    /// The i.MX 95 CM33 likewise reaches MU1 through MUB — the window offset
+    /// The i.MX 95 CM7 likewise reaches MU7 through MUB — the window offset
     /// must apply to it, or it is handed Linux's half of the block.
     #[test]
     fn imx95_controller_doorbell_base_is_its_own_window() {
-        let manifest = r#"
-            [profile]
-            chip = "mimx9596xvt"
-            shared = "./shared"
-            deploy_root = "/opt/consortium"
-
-            [endpoints]
-            linux = "./app"
-            cm33  = "./firmware"
-
-            [[ipc.channel]]
-            name          = "sensor"
-            doorbell      = "mu1"
-            pattern       = "memory"
-            primary       = "linux"
-            secondary     = "cm33"
-            party.linux   = { chan = 0, type = "SensorData" }
-            party.cm33    = { chan = 1, type = "MotionControl" }
-            config.memory = { base = 0x00488000, length = 0x4000 }
-            mtu           = 128
-        "#;
-        let ir = Session::from_toml(manifest).unwrap().lower().unwrap();
+        let ir = Session::from_toml(IMX95_DDR).unwrap().lower().unwrap();
         let sensor = transceiver(&ir, "sensor");
         assert_eq!(
             sensor.doorbell_window,
             (DoorbellRingerSide::Primary, DoorbellRingerSide::Secondary)
         );
-        assert_eq!(sensor.doorbell_address.cp[&cm33()], 0x4423_0000);
+        assert_eq!(sensor.doorbell_address.cp[&cm7()], 0x4244_0000);
+    }
+
+    /// i.MX 95 shares DDR, which every core addresses physically: neither the
+    /// CM7's embedded base, the debug ring, nor Linux's UIO windows may take the
+    /// SRAM alias (`0x2000_0000`), or both sides land 512 MiB off the window.
+    #[test]
+    fn dram_windows_take_no_memory_alias() {
+        let ir = Session::from_toml(IMX95_DDR).unwrap().lower().unwrap();
+        let sensor = transceiver(&ir, "sensor");
+        assert_eq!(sensor.region.r#type, MemoryRegionType::Dram);
+        assert_eq!(sensor.region.address.cp[&cm7()], 0x8830_4000);
+
+        let mmap = |device: &str| {
+            ir.uio
+                .iter()
+                .find(|(name, _)| name == device)
+                .unwrap_or_else(|| panic!("{device} uio device"))
+                .1
+                .mmap
+                .clone()
+        };
+        assert_eq!(mmap("ipc-shm"), vec![(0x8830_4000, 0x4000)]);
+        assert_eq!(mmap("dbg-shm"), vec![(0x8830_0000, 0x2000)]);
     }
 
     /// The generated vector must name the same window it forwards.
@@ -1960,7 +2009,7 @@ mod tests {
             secondary = "cm7"
             party.linux = { chan = 0, type = "Ping" }
             party.cm7 = { chan = 1, type = "Pong" }
-            config.memory = { base = 0x00488000, length = 0x4000 }
+            config.memory = { base = 0x88300000, length = 0x4000 }
             config.cache = true
             mtu = 128
 
@@ -1972,7 +2021,7 @@ mod tests {
             secondary = "cm7"
             party.linux = { chan = 2, type = "Ping" }
             party.cm7 = { chan = 3, type = "Pong" }
-            config.memory = { base = 0x0048c000, length = 0x4000 }
+            config.memory = { base = 0x88304000, length = 0x4000 }
             mtu = 128
         "#;
         let ir = Session::from_toml(manifest).unwrap().lower().unwrap();

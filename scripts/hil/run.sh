@@ -3,28 +3,35 @@
 #
 # melt-pot bring-up HIL, run on the board as root:
 #
-#   sh run.sh <imx93|stm32mp25> [dist-dir]
+#   sh run.sh <imx93|imx95|stm32mp25> [dist-dir]
 #
-# Loads the CM33 firmware through remoteproc, runs the A-core application for
+# Loads the M-core firmware through remoteproc, runs the A-core application for
 # DURATION seconds (default 15), then checks the `HIL A<n>` / `HIL M<n>` stage
 # lines both binaries print. The binaries do the real checking and print a
 # trace when a stage stalls; this script only loads, runs and summarizes.
 #
 # dist-dir is the copied `dist-bringup/` tree (default: the current directory),
-# holding firmware/cm33.elf and app/<application>.
+# holding firmware/<core>.elf and app/<application>.
+#
+# imx95 needs the System Manager's `rpmsg` configuration in the boot image
+# (imx-sm configs/other/mx95frdmrpmsg.cfg on the FRDM,
+# mx95evkrpmsg.cfg on the EVK): the stock one gives Linux no right
+# to boot the M7, so `start` fails with a permission error from SCMI LMM.
 
 set -u
 
 BOARD="${1:-}"
 DIST="${2:-.}"
 DURATION="${DURATION:-15}"
-FW_NAME=consortium-cm33.elf
-
+# CORES lists the remoteproc names the core may carry: NXP's linux-imx reports
+# `imx-rproc`, mainline the device-tree node name.
 case "$BOARD" in
-  stm32mp25) CORE=m33; APP=melt-pot-stm32mp25-app; IPC_BASE=0x20064000 ;;
-  imx93) CORE=imx-rproc; APP=melt-pot-imx93-app; IPC_BASE=0x20480000 ;;
-  *) echo "usage: sh run.sh <imx93|stm32mp25> [dist-dir]" >&2; exit 2 ;;
+  stm32mp25) CORES=m33; FW=cm33; APP=melt-pot-stm32mp25-app; IPC_BASE=0x20064000 ;;
+  imx93) CORES="imx-rproc remoteproc-cm33"; FW=cm33; APP=melt-pot-imx93-app; IPC_BASE=0x20480000 ;;
+  imx95) CORES="imx-rproc remoteproc-cm7"; FW=cm7; APP=melt-pot-imx95-app; IPC_BASE=0x88300000 ;;
+  *) echo "usage: sh run.sh <imx93|imx95|stm32mp25> [dist-dir]" >&2; exit 2 ;;
 esac
+FW_NAME="consortium-$FW.elf"
 
 LOG="/tmp/hil-$BOARD-$(date +%Y%m%d-%H%M%S).log"
 die() { echo "FAIL: $*" >&2; exit 1; }
@@ -35,12 +42,13 @@ killall "$APP" 2>/dev/null && sleep 1
 
 RPROC=""
 for r in /sys/class/remoteproc/remoteproc*; do
-  [ "$(cat "$r/name" 2>/dev/null)" = "$CORE" ] && RPROC="$r"
+  name="$(cat "$r/name" 2>/dev/null)"
+  for c in $CORES; do [ "$name" = "$c" ] && RPROC="$r" && CORE="$c"; done
 done
-[ -n "$RPROC" ] || die "no remoteproc named '$CORE' (is the tailored DTB booted?)"
+[ -n "$RPROC" ] || die "no remoteproc named any of '$CORES' (is the tailored DTB booted?)"
 [ "$(cat "$RPROC/state")" = offline ] || echo stop > "$RPROC/state"
 
-# The CM33 never clears the IPC window: a descriptor left by the previous run
+# The M-core never clears the IPC window: a descriptor left by the previous run
 # would let it skip this run's handshake. The application zeroes the window
 # again when it maps it.
 echo "== Clear the stale IPC descriptor at $IPC_BASE"
@@ -54,9 +62,9 @@ else
   echo "   no devmem2/devmem/memtool: skipped (a stale descriptor can make M6 fail)"
 fi
 
-echo "== Load $DIST/firmware/cm33.elf on $(basename "$RPROC") ($CORE)"
-[ -r "$DIST/firmware/cm33.elf" ] || die "$DIST/firmware/cm33.elf not found"
-cp "$DIST/firmware/cm33.elf" "/lib/firmware/$FW_NAME" || die "copy to /lib/firmware failed"
+echo "== Load $DIST/firmware/$FW.elf on $(basename "$RPROC") ($CORE)"
+[ -r "$DIST/firmware/$FW.elf" ] || die "$DIST/firmware/$FW.elf not found"
+cp "$DIST/firmware/$FW.elf" "/lib/firmware/$FW_NAME" || die "copy to /lib/firmware failed"
 echo "$FW_NAME" > "$RPROC/firmware"
 mark="$(dmesg | wc -l)"
 echo start > "$RPROC/state"

@@ -19,7 +19,11 @@ defmt = ["dep:defmt"]
 # the first interrupt reboots the SoC. Point VTOR (and MSP) at our own table on
 # reset, as the NXP SDK's `Reset_Handler` does.
 mimx93 = ["cortex-m-rt?/set-sp", "cortex-m-rt?/set-vtor"]
-mimx95 = []
+# The i.MX 95 CM7 is started by the System Manager at the reset vector Linux
+# hands it over SCMI, which should leave VTOR on our table already. Setting both
+# anyway is cheap and removes the dependency on that: NXP's M7 startup code
+# writes VTOR itself too.
+mimx95 = ["cortex-m-rt?/set-sp", "cortex-m-rt?/set-vtor"]
 # i.MX 952: its own die and memory map (not an i.MX 95 variant).
 mimx952 = []
 rt      = ["cortex-m-rt/device", "dep:cortex-m-rt"]
