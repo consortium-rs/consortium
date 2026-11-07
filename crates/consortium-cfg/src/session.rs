@@ -69,6 +69,9 @@ impl Session {
         self.validate_memory()?;
         self.validate_ipc()?;
         self.validate_dbg()?;
+        // After IPC and dbg, so an unknown core or a doorbell party the chip
+        // lacks reports as that rather than as a window the core cannot reach.
+        self.validate_memory_access()?;
         self.validate_remoteproc()?;
 
         for (name, peripheral) in &self.config.peripheral {
@@ -434,13 +437,19 @@ impl Session {
         Ok(())
     }
 
-    /// Validates shared-memory regions: each must have a non-zero length, lie
-    /// entirely within one of the chip's SRAM regions, and not overlap another.
-    fn validate_memory(&self) -> Result<(), CfgError> {
+    /// Every shared-memory window in the manifest, with its cache policy and the
+    /// cores that access it.
+    fn shared_windows(&self) -> Vec<(String, MemoryRegion, bool, Vec<VisibleCore>)> {
         let mut regions = Vec::new();
 
+        // A debug ring is written by its core and drained by the AP.
         for (core, entry) in &self.config.dbg.cores {
-            regions.push((format!("dbg.{core}"), entry.memory, false));
+            regions.push((
+                format!("dbg.{core}"),
+                entry.memory,
+                false,
+                vec![*core, VisibleCore::Ap],
+            ));
         }
 
         for (index, channel) in self.config.ipc.channels.iter().enumerate() {
@@ -449,17 +458,25 @@ impl Session {
                     format!("ipc.channel[{index}].config.memory"),
                     memory,
                     channel.cache(),
+                    vec![channel.primary.core(), channel.secondary.core()],
                 ));
             }
         }
+        regions
+    }
 
-        for (name, region, cache) in &regions {
+    /// Validates shared-memory regions: each must have a non-zero length, lie
+    /// entirely within one of the chip's memory regions, and not overlap another.
+    fn validate_memory(&self) -> Result<(), CfgError> {
+        let regions = self.shared_windows();
+
+        for (name, region, cache, _) in &regions {
             self.validate_memory_region(name, *region, *cache)?;
         }
 
-        for (left_index, (left_name, left, _)) in regions.iter().enumerate() {
+        for (left_index, (left_name, left, _, _)) in regions.iter().enumerate() {
             let left_end = left.base + left.length;
-            for (right_name, right, _) in regions.iter().skip(left_index + 1) {
+            for (right_name, right, _, _) in regions.iter().skip(left_index + 1) {
                 let right_end = right.base + right.length;
                 if left.base < right_end && right.base < left_end {
                     consortium_log::trace!(
@@ -552,19 +569,71 @@ impl Session {
             }
         }
 
-        let contained = self.database.memory.regions.iter().any(|sram| {
-            let sram_base = sram.base;
-            let sram_end = sram_base + sram.length;
-            region.base >= sram_base && end <= sram_end
-        });
+        let contained = self
+            .database
+            .memory
+            .regions
+            .iter()
+            .any(|window| window.contains(region.base, region.length));
         if !contained {
             consortium_log::trace!(
-                "region '{}' ({:#x}..{:#x}) not contained in any SRAM window",
+                "region '{}' ({:#x}..{:#x}) not contained in any memory window",
                 name,
                 region.base,
                 end
             );
             return Err(self.region_out_of_bounds(name, region.base, end));
+        }
+
+        Ok(())
+    }
+
+    /// Validates that every core using a shared-memory window may access the
+    /// chip memory region holding it (`visible` in the chip database). On a
+    /// System-Manager-partitioned chip a window outside that grant bus-faults
+    /// on first touch.
+    fn validate_memory_access(&self) -> Result<(), CfgError> {
+        for (name, region, _, cores) in self.shared_windows() {
+            let Some(window) = self
+                .database
+                .memory
+                .regions
+                .iter()
+                .find(|window| window.contains(region.base, region.length))
+            else {
+                // `validate_memory` already rejected it.
+                continue;
+            };
+            self.validate_window_access(&name, window, &cores)?;
+        }
+        Ok(())
+    }
+
+    fn validate_window_access(
+        &self,
+        name: &str,
+        window: &consortium_cfg_common::database::MemoryRegion,
+        cores: &[VisibleCore],
+    ) -> Result<(), CfgError> {
+        if let Some(core) = cores.iter().find(|core| !window.visible.contains(core)) {
+            consortium_log::trace!(
+                "region '{}' lies in '{}', which core '{}' cannot access",
+                name,
+                window.name,
+                core
+            );
+            return Err(CfgError::RegionNotVisible {
+                region: name.to_string(),
+                window: window.name.clone(),
+                core: core.to_string(),
+                visible: window
+                    .visible
+                    .iter()
+                    .map(ToString::to_string)
+                    .collect::<Vec<_>>()
+                    .join(", "),
+                chip: self.config.profile.chip.clone(),
+            });
         }
 
         Ok(())
@@ -685,11 +754,17 @@ mod tests {
 
     const MANIFEST: &str = include_str!("../Consortium.example.stm32mp257.toml");
 
-    fn imx95_cached_manifest(secondary: &str, doorbell: &str, base: u32, length: u32) -> String {
+    fn cached_manifest(
+        chip: &str,
+        secondary: &str,
+        doorbell: &str,
+        base: u32,
+        length: u32,
+    ) -> String {
         format!(
             r#"
                 [profile]
-                chip = "mimx9596xvt"
+                chip = "{chip}"
                 shared = "./shared"
                 deploy_root = "/opt/consortium"
 
@@ -937,7 +1012,7 @@ mod tests {
             secondary = "cm7"
             party.linux = {{ chan = 6, {linux_ack} type = "SensorData" }}
             party.cm7 = {{ chan = 7, {cm7_ack} type = "MotionControl" }}
-            config.memory = {{ base = 0x00488000, length = 0x4000 }}
+            config.memory = {{ base = 0x88300000, length = 0x4000 }}
             config.ack = {ack}
             mtu = 128
         "#
@@ -995,13 +1070,13 @@ mod tests {
 
     #[test]
     fn accepts_cached_non_power_of_two_region() {
-        let manifest = imx95_cached_manifest("cm7", "mu7", 0x0048_8000, 0x6000);
+        let manifest = cached_manifest("mimx9596xvt", "cm7", "mu7", 0x8830_0000, 0x6000);
         Session::from_toml(&manifest).expect("cache-line-aligned cached region should be valid");
     }
 
     #[test]
     fn rejects_region_too_small_for_aligned_slot_pair() {
-        let manifest = imx95_cached_manifest("cm7", "mu7", 0x0048_8000, 0x200);
+        let manifest = cached_manifest("mimx9596xvt", "cm7", "mu7", 0x8830_0000, 0x200);
         let err = Session::from_toml(&manifest).unwrap_err();
         assert!(matches!(
             err,
@@ -1017,15 +1092,15 @@ mod tests {
 
     #[test]
     fn accepts_smallest_cache_aligned_region_for_slot_pair() {
-        let manifest = imx95_cached_manifest("cm7", "mu7", 0x0048_8000, 0x280);
+        let manifest = cached_manifest("mimx9596xvt", "cm7", "mu7", 0x8830_0000, 0x280);
         Session::from_toml(&manifest)
             .expect("0x280 bytes contains both aligned 128-byte-MTU slots");
     }
 
     #[test]
     fn rejects_cached_region_with_partial_cache_line() {
-        for (base, length) in [(0x0048_8000, 0x4020), (0x0048_8020, 0x4000)] {
-            let manifest = imx95_cached_manifest("cm7", "mu7", base, length);
+        for (base, length) in [(0x8830_0000, 0x4020), (0x8830_0020, 0x4000)] {
+            let manifest = cached_manifest("mimx9596xvt", "cm7", "mu7", base, length);
             assert!(matches!(
                 Session::from_toml(&manifest),
                 Err(CfgError::RegionNotCacheAligned { .. })
@@ -1035,10 +1110,59 @@ mod tests {
 
     #[test]
     fn rejects_cached_region_on_cacheless_controller() {
-        let manifest = imx95_cached_manifest("cm33", "mu1", 0x0048_8000, 0x4000);
+        let manifest = cached_manifest("mimx9352", "cm33", "mu1", 0x0048_8000, 0x4000);
         let err = Session::from_toml(&manifest).unwrap_err();
         assert!(matches!(err, CfgError::IpcCacheUnsupported { .. }));
         assert!(err.to_string().contains("cm33"));
+    }
+
+    /// The i.MX 95 System Manager grants the M7 no OCRAM, so a channel placed there
+    /// is rejected before it reaches the board, where it would bus-fault.
+    #[test]
+    fn rejects_a_region_the_controller_cannot_access() {
+        let manifest = r#"
+            [profile]
+            chip = "mimx9596xvt"
+            shared = "./shared"
+            deploy_root = "/opt/consortium"
+
+            [[ipc.channel]]
+            name = "probe"
+            doorbell = "mu7"
+            pattern = "memory"
+            primary = "linux"
+            secondary = "cm7"
+            party.linux = { chan = 0, type = "Ping" }
+            party.cm7 = { chan = 1, type = "Pong" }
+            config.memory = { base = 0x004C0000, length = 0x4000 }
+            mtu = 128
+        "#;
+        let err = Session::from_toml(manifest).unwrap_err();
+        assert!(
+            matches!(&err, CfgError::RegionNotVisible { window, core, .. }
+                if window == "OCRAM" && core == "cm7"),
+            "{err}"
+        );
+    }
+
+    /// A debug ring is drained by the AP, so it needs the AP's access as well as
+    /// its own core's.
+    #[test]
+    fn rejects_a_dbg_ring_the_ap_cannot_drain() {
+        let manifest = r#"
+            [profile]
+            chip = "mimx9596xvt"
+            shared = "./shared"
+            deploy_root = "/opt/consortium"
+
+            [dbg.cm7]
+            memory = { base = 0x004C0000, length = 0x2000 }
+            mtu = 64
+        "#;
+        assert!(matches!(
+            Session::from_toml(manifest),
+            Err(CfgError::RegionNotVisible { .. })
+        ));
     }
 
     /// A region whose base is not aligned to its (power-of-two) size is not

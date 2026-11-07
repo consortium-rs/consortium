@@ -30,9 +30,11 @@ remoteproc:
       read: true
       write: true
       execute: false
+      # The 19x19 EVK device tree reserves exactly 0x1000 here
+      # (`rsc-table@88220000`); a longer window would partially overlap it.
       window:
         origin: 0x88220000
-        length: 0x00004000
+        length: 0x00001000
         reserve: true
     ram:
       origin: 0x80800000
@@ -45,12 +47,27 @@ memory:
       secure: false
     - offset: 0x30000000
       secure: true
+  # Access to memory is granted per logical machine by the System Manager, not
+  # by the bus. `visible` follows NXP's EVK configurations (imx-sm
+  # `configs/mx95evk.cfg` and `configs/other/mx95evkrpmsg.cfg`), which agree on
+  # both windows below.
   regions:
+    # OCRAM is 0x00480000..0x004D8000, but the first 256 KiB belong to the
+    # secure A55 (TF-A) and the M7 has no OCRAM grant at all. Only the top
+    # 96 KiB are open to non-secure Linux.
     - name: OCRAM
       type: sram
-      base: 0x00480000
-      length: 0x00058000
-      visible: [ap, cm33, cm7]
+      base: 0x004C0000
+      length: 0x00018000
+      visible: [ap]
+    # The DDR window both the M7 and non-secure Linux are granted. NXP's EVK
+    # device trees reserve 0x88000000..0x88120000 (vrings and the vdev buffer)
+    # and 0x88220000 (the resource table) inside it; channels go above those.
+    - name: DDR
+      type: dram
+      base: 0x88000000
+      length: 0x02000000
+      visible: [ap, cm7]
 peripheral:
   aliases:
     - address: 0x50000000

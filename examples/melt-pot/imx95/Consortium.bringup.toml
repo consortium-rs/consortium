@@ -1,0 +1,93 @@
+# SPDX-License-Identifier: Apache-2.0
+
+# Bring-up subset of `Consortium.toml`: only the A-core application, the M-core
+# Embassy firmware, the `[dbg]` defmt ring and the `sensor` IPC channel. No TA,
+# no HMI and no `[peripheral.*]` entries, so a HIL run exercises exactly IPC,
+# DBG and system bring-up. Build with `csti build --manifest Consortium.bringup.toml`.
+
+# melt-pot on i.MX95: CA55 Linux application + CM7 real-time firmware.
+#
+# The i.MX95 counterpart of `../imx93/Consortium.bringup.toml`. Two things
+# differ, both because a System Manager (the M33) owns access control and
+# clocks on this SoC:
+#
+# - The board must boot the System Manager's `rpmsg` configuration
+#   (imx-sm `configs/other/mx95frdmrpmsg.cfg`, the `rpmsg` imx-boot variant).
+#   The stock `mx95frdm` config gives Linux no permission to boot the M7's
+#   logical machine, so remoteproc cannot start this firmware.
+# - The firmware runs from the M7's TCM, not DDR: unlike the EVK's rpmsg
+#   config, `mx95frdmrpmsg` grants non-secure Linux the M7 TCM (`M7MIX`) but
+#   not DDR 0x80000000..0x88000000, so the loader could not write a DDR image.
+# - Shared memory is DDR, not OCRAM: the SM grants the M7 no OCRAM.
+
+[profile]
+# The Rust compile targets are looked up from the embedded chip database for
+# this chip (CM7 firmware target and CA55 application target).
+chip = "mimx9596xvt"
+# FRDM-i.MX95 (15x15). Matched against the vendor DTS database by full file
+# stem; see `arch/arm64/boot/dts/freescale/imx95-15x15-frdm.dts`, which carries
+# the vring/vdev/resource-table reservations and enables MU7. Mainline's copy
+# declares no `remoteproc-cm7` node, so build against a kernel tree that does
+# (NXP's linux-imx) or pass `--skip-remoteproc-check`, which leaves the M7
+# unloadable through the rendered tree.
+devkit        = "imx95-15x15-frdm"
+shared        = "../shared"
+deploy_root   = "/opt/consortium"
+sysroot       = "/"
+kernel_recipe = "linux-imx"
+# Each endpoint crate is its own Cargo project with its own `target/` (they are
+# excluded from the repository workspace), so the AP embeds the firmware's debug
+# ELF relative to `CSTI_MCU_PATH`. `unified` would instead expect every endpoint
+# in one Cargo workspace rooted beside this file and read `CSTI_MANIFEST_PATH`.
+workspace = "nested"
+
+[dts]
+# Merge, not overlay: the generated tree must delete `remoteproc-cm7`'s
+# `mboxes`/`mbox-names` (it uses MU7 for RPMsg), and an overlay cannot.
+# mode  = "merge"
+
+# The CM7 runs from TCM (see the profile note above). These are the M7's own
+# addresses, as `imx_rproc_att_imx95_m7` translates them: TCM code at
+# 0x00000000 (system 0x203C0000) and TCM sys at 0x20000000 (system
+# 0x20400000), 256 KiB each. TCM is not DRAM, so nothing is reserved for it.
+# The resource table stays at the chip default, DDR 0x88220000, which the FRDM
+# DTS reserves as `rsc_table`.
+[remoteproc.cm7]
+vector = { length = 0x00001000, origin = 0x00000000, reserve = false }
+flash  = { length = 0x0003F000, origin = 0x00001000, reserve = false }
+ram    = { length = 0x00040000, origin = 0x20000000, reserve = false }
+
+[endpoints]
+# Runtime endpoint name -> crate root. `cm7` is the single remote coprocessor.
+linux = "./app"
+cm7   = "./mcu"
+
+[dbg]
+mode = "auto"
+
+# defmt ring for the CM7, just above the IPC region below.
+[dbg.cm7]
+memory = { base = 0x88304000, length = 0x2000 }
+mtu    = 64
+
+# One shared descriptor + slots for the sensor channel, signalled over MU7
+# (Linux on side A, the CM7 on side B). A BSP that wires MU7 to the CM7
+# remoteproc node as the RPMsg mailbox has those `mboxes` deleted by the
+# generated DTS, so the kernel never drives it alongside us.
+#
+# The region lives in the DDR window both the M7 and non-secure Linux are
+# granted (0x88000000..0x8A000000 in the mimx95 chip database), above NXP's
+# vring/vdev reservations (0x88000000..0x88120000) and resource table
+# (0x88220000). DDR takes no SRAM alias: the CM7 uses this base as written,
+# behind a generated MPU no-cache carve-out, and the CA55 maps the same memory
+# through its UIO device.
+[[ipc.channel]]
+name          = "sensor"
+doorbell      = "mu7"
+pattern       = "memory"
+primary       = "linux"
+secondary     = "cm7"
+party.linux   = { chan = 6, type = "Command" }
+party.cm7     = { chan = 7, type = "SensorReading" }
+config.memory = { base = 0x88300000, length = 0x4000 }
+mtu           = 128

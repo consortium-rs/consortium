@@ -12,20 +12,20 @@ fn __consortium_install_channels(
         channels::SENSOR,
     >({
         let region = ::consortium_runtime_app::uio::UioRegion::zeroed(
-                &uio[0usize],
+                &uio[1usize],
                 0usize,
             )?
-            .keep(uio[2usize].clone());
+            .keep(uio[0usize].clone());
         // SAFETY: the base is the UIO-mapped doorbell register window,
         // resolved from the validated Consortium hardware database.
         let doorbell = unsafe {
             ::consortium_core::bell::mu::MuDoorbell::<
                 ::consortium_ipc::Primary,
                 7usize,
-            >::new_mapped(uio[2usize].mmap(0usize)?)
+            >::new_mapped(uio[0usize].mmap(0usize)?)
         };
         let __service_db = doorbell.clone();
-        uio[2usize]
+        uio[0usize]
             .bind_service(
                 ::std::sync::Arc::new(move || __service_db.service_interrupt()),
             );
@@ -108,12 +108,12 @@ fn init(
         "consortium init: opening {} uio device(s)", 3usize
     );
     let uio = ::std::vec![
-        ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open_named("ipc-shm",
-        541589504u64, false && config.uio_irqs,) ?),
-        ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open_named("dbg-shm",
-        541605888u64, false && config.uio_irqs,) ?),
         ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open_named("mu7",
-        1111687168u64, true && config.uio_irqs,) ?)
+        1111687168u64, true && config.uio_irqs,) ?),
+        ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open_named("ipc-shm",
+        2284847104u64, false && config.uio_irqs,) ?),
+        ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open_named("dbg-shm",
+        2284863488u64, false && config.uio_irqs,) ?)
     ];
     ::consortium_runtime_app::log::trace!("consortium init: installing ipc endpoints");
     __consortium_install_channels(&uio)?;
@@ -124,7 +124,7 @@ fn init(
                 &uio,
                 &[
                     ::consortium_runtime_app::dbg_console::DbgRingSpec {
-                        uio_id: 1,
+                        uio_id: 2,
                         mmap_id: 0,
                         len: 8192,
                         elf_bytes: {

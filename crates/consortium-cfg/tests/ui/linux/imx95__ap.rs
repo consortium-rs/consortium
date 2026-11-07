@@ -22,7 +22,7 @@ mod shared {
 ::consortium_ipc_transport_memory::channels!(LP, SENSOR);
 ::consortium_ipc_transport_memory::impl_channel!(
     LP, ::consortium_ipc::Primary, ::consortium_core::bell::mu::MuDoorbell <
-    ::consortium_ipc::Primary, 1usize >, ::consortium_runtime_app::uio::UioRegion, crate
+    ::consortium_ipc::Primary, 8usize >, ::consortium_runtime_app::uio::UioRegion, crate
     ::shared::LowPowerData, crate ::shared::PowerControl,
     ::consortium_codec::PostcardCodec, 128usize, ack,
 );
@@ -39,20 +39,20 @@ fn __consortium_install_channels(
         channels::LP,
     >({
         let region = ::consortium_runtime_app::uio::UioRegion::zeroed(
-                &uio[1usize],
+                &uio[3usize],
                 0usize,
             )?
-            .keep(uio[3usize].clone());
+            .keep(uio[1usize].clone());
         // SAFETY: the base is the UIO-mapped doorbell register window,
         // resolved from the validated Consortium hardware database.
         let doorbell = unsafe {
             ::consortium_core::bell::mu::MuDoorbell::<
                 ::consortium_ipc::Primary,
-                1usize,
-            >::new_mapped(uio[3usize].mmap(0usize)?)
+                8usize,
+            >::new_mapped(uio[1usize].mmap(0usize)?)
         };
         let __service_db = doorbell.clone();
-        uio[3usize]
+        uio[1usize]
             .bind_service(
                 ::std::sync::Arc::new(move || __service_db.service_interrupt()),
             );
@@ -79,20 +79,20 @@ fn __consortium_install_channels(
         channels::SENSOR,
     >({
         let region = ::consortium_runtime_app::uio::UioRegion::zeroed(
-                &uio[1usize],
+                &uio[3usize],
                 1usize,
             )?
-            .keep(uio[2usize].clone());
+            .keep(uio[0usize].clone());
         // SAFETY: the base is the UIO-mapped doorbell register window,
         // resolved from the validated Consortium hardware database.
         let doorbell = unsafe {
             ::consortium_core::bell::mu::MuDoorbell::<
                 ::consortium_ipc::Primary,
                 7usize,
-            >::new_mapped(uio[2usize].mmap(0usize)?)
+            >::new_mapped(uio[0usize].mmap(0usize)?)
         };
         let __service_db = doorbell.clone();
-        uio[2usize]
+        uio[0usize]
             .bind_service(
                 ::std::sync::Arc::new(move || __service_db.service_interrupt()),
             );
@@ -175,14 +175,14 @@ fn init(
         "consortium init: opening {} uio device(s)", 4usize
     );
     let uio = ::std::vec![
-        ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open_named("dbg-shm",
-        541589504u64, false && config.uio_irqs,) ?),
-        ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open_named("ipc-shm",
-        541605888u64, false && config.uio_irqs,) ?),
         ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open_named("mu7",
         1111687168u64, true && config.uio_irqs,) ?),
-        ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open_named("mu1",
-        1143078912u64, true && config.uio_irqs,) ?)
+        ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open_named("mu8",
+        1114832896u64, true && config.uio_irqs,) ?),
+        ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open_named("dbg-shm",
+        2284847104u64, false && config.uio_irqs,) ?),
+        ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open_named("ipc-shm",
+        2284863488u64, false && config.uio_irqs,) ?)
     ];
     ::consortium_runtime_app::log::trace!("consortium init: installing ipc endpoints");
     __consortium_install_channels(&uio)?;
@@ -193,7 +193,7 @@ fn init(
                 &uio,
                 &[
                     ::consortium_runtime_app::dbg_console::DbgRingSpec {
-                        uio_id: 0,
+                        uio_id: 2,
                         mmap_id: 0,
                         len: 8192,
                         elf_bytes: {
@@ -206,7 +206,7 @@ fn init(
                             );
                             &ELF.0
                         },
-                        label: "cm33",
+                        label: "cm7",
                     },
                 ],
             )?,

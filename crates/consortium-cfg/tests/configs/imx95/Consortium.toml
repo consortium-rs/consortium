@@ -8,19 +8,21 @@ linux = "./app"
 optee = "./ta"
 cm33  = "./firmware"
 
-[dbg.cm33]
-memory = { base = 0x000480000, length = 0x2000 }
+# The SM-managed i.MX 95 grants no OCRAM to the M7, so every shared window
+# lives in the DDR range NXP's System Manager configs give both the M7 and Linux.
+[dbg.cm7]
+memory = { base = 0x88300000, length = 0x2000 }
 mtu    = 64
 
 [[ipc.channel]]
 name          = "lp"
-doorbell      = "mu1"
+doorbell      = "mu8"
 pattern       = "memory"
 primary       = "linux"
-secondary     = "cm33"
+secondary     = "cm7"
 party.linux   = { ack_chan = 0, chan = 4, type = "LowPowerData" }
-party.cm33    = { ack_chan = 1, chan = 5, type = "PowerControl" }
-config.memory = { base = 0x000484000, length = 0x4000 }
+party.cm7     = { ack_chan = 1, chan = 5, type = "PowerControl" }
+config.memory = { base = 0x88304000, length = 0x4000 }
 config.ack    = true
 mtu           = 128
 
@@ -32,7 +34,7 @@ primary       = "linux"
 secondary     = "cm7"
 party.linux   = { chan = 6, type = "SensorData" }
 party.cm7     = { chan = 7, type = "MotionControl" }
-config.memory = { base = 0x000488000, length = 0x4000 }
+config.memory = { base = 0x88308000, length = 0x4000 }
 config.cache  = true
 mtu           = 128
 codec         = "rkyv"

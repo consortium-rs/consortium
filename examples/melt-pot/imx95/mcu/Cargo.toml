@@ -51,9 +51,12 @@ consortium-runtime-mcu = { default-features = false, features = [
   "defmt",
   "macros",
 ], path = "../../../../crates/consortium-runtime-mcu", version = "0.5.0" }
+# Name the chip explicitly, as the i.MX 93 sibling does, rather than rely on
+# the HAL's default being `mimx95`.
 consortium-hal-imx9 = { default-features = false, features = [
   "gpio",
   "i2c",
+  "mimx95",
   "rt",
   "time-driver-lpit",
 ], path = "../../../../crates/consortium-hal-imx9", version = "0.5.0" }
@@ -70,7 +73,6 @@ embassy-executor = { default-features = false, features = [
   "platform-cortex-m",
 ], version = "0.10.0" }
 embassy-time = { default-features = false, features = ["tick-hz-24_000_000"], version = "0.5.1" }
-panic-halt = "1.0"
 
 [profile.dev]
 panic = "abort"

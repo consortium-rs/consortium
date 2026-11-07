@@ -625,7 +625,13 @@ Current top-level schema:
 `Session::from_toml` parses the manifest, resolves `[profile] chip` through embedded
 hardware databases, and validates doorbell availability, visible parties, channel
 bounds, duplicate doorbell channels, region bounds/overlap/MPU alignment, debug regions,
-peripheral owners, and peripheral pin assignments. `consortium-data` carries generated
+peripheral owners, and peripheral pin assignments. Each shared window must also be
+reachable by every core that uses it (both channel parties; a debug ring's core and the
+AP): the memory database's `visible` list per region, which on i.MX 95 follows NXP's
+System Manager grants rather than the bus. Regions are `sram`, reached through the
+chip's security alias, or `dram`, addressed physically by every core. i.MX 95 shares
+DDR `0x88000000..0x8A000000` (the M7 has no OCRAM grant), and the FRDM's rpmsg SM
+config only lets Linux load CM7 firmware into TCM. `consortium-data` carries generated
 per-core chip maps, per-family signal maps (`signal`: pads, mux, packages, DMA
 requests), peripheral descriptions, and memory databases. Its signal data derives from
 ST/NXP BSD-3-Clause sources, so the crate is `Apache-2.0 AND BSD-3-Clause` with a
