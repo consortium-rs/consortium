@@ -26,9 +26,11 @@
 //!   with `reg`.
 //! - [`UioBacking::ReservedMemory`] (shared RAM): each window is carved out of
 //!   system RAM by a `reserved-memory` child node marked `no-map`, and the UIO
-//!   node references those carveouts via `memory-region` rather than `reg`. RAM
-//!   exposed to a coprocessor must be a `no-map` reservation so Linux never maps
-//!   it cacheably or hands it to the page allocator.
+//!   node lists the windows in `reg` *and* references those carveouts via
+//!   `memory-region`. `uio_pdrv_genirq` builds its maps from `reg` alone, so a
+//!   node without it has nothing to `mmap`. RAM exposed to a coprocessor must be
+//!   a `no-map` reservation so Linux never maps it cacheably or hands it to the
+//!   page allocator.
 
 use consortium_dts::utils::irq_method::IrqMethod;
 use consortium_dts::{Cell, Node, Property, Reference};
@@ -56,7 +58,8 @@ pub enum UioBacking {
     #[default]
     Registers,
     /// A RAM carveout: each window becomes a `reserved-memory` child node marked
-    /// `no-map`, and the UIO node references them through `memory-region`.
+    /// `no-map`, and the UIO node lists it in `reg` and references it through
+    /// `memory-region`.
     ReservedMemory,
 }
 
@@ -129,11 +132,12 @@ impl UioDevice {
     /// name the application opens it by), an optional GIC SPI `interrupts` entry
     /// (with an optional `interrupt-parent`), and `status = "okay";`.
     ///
-    /// The windows are described per [`backing`](UioDevice::backing):
-    /// [`UioBacking::Registers`] lists each window inline with `reg`;
-    /// [`UioBacking::ReservedMemory`] instead references the `reserved-memory`
-    /// carveouts (see [`reserved_memory_nodes`](Self::reserved_memory_nodes))
-    /// through `memory-region`.
+    /// Every window is listed inline with `reg`, which is what
+    /// `uio_pdrv_genirq` maps. [`UioBacking::ReservedMemory`] additionally
+    /// references the `reserved-memory` carveouts (see
+    /// [`reserved_memory_nodes`](Self::reserved_memory_nodes)) through
+    /// `memory-region`, tying the device to the `no-map` reservations that keep
+    /// Linux off the same RAM.
     pub fn to_node_with_options(&self, name: impl Into<String>, options: &UioOptions) -> Node {
         let name = name.into();
 
@@ -149,14 +153,18 @@ impl UioDevice {
         node = node.property(Property::string("linux,uio-name", name.clone()));
 
         if !self.mmap.is_empty() {
+            // Every window is listed in `reg`, whatever backs it:
+            // `uio_pdrv_genirq` builds its maps from the device's memory
+            // resources, which come from `reg` alone. A node with only
+            // `memory-region` probes with no maps, so `/dev/uioN` has nothing to
+            // `mmap`.
+            let cells = self
+                .mmap
+                .iter()
+                .flat_map(|(base, length)| reg_cells(*base, *length, options.layout));
+            node = node.property(Property::cells("reg", cells));
             match self.backing {
-                UioBacking::Registers => {
-                    let cells = self
-                        .mmap
-                        .iter()
-                        .flat_map(|(base, length)| reg_cells(*base, *length, options.layout));
-                    node = node.property(Property::cells("reg", cells));
-                }
+                UioBacking::Registers => {}
                 UioBacking::ReservedMemory => {
                     // Reference one carveout phandle per window, in mapping order.
                     let refs = (0..self.mmap.len()).map(|index| {
@@ -449,14 +457,15 @@ mod tests {
     }
 
     #[test]
-    fn reserved_memory_device_references_carveout_not_reg() {
+    fn reserved_memory_device_lists_reg_and_references_carveout() {
         let device = reserved(vec![(0x2040_0000, 0x8000)]);
 
-        // The UIO node references the carveout phandle; no inline `reg`.
+        // `uio_pdrv_genirq` maps `reg` only, so the window is listed inline;
+        // the carveout phandle ties it to its `no-map` reservation.
         let dts = device.to_node("ipc-shm").to_dts();
         assert!(dts.contains("ipc-shm@20400000 {"));
+        assert!(dts.contains("reg = <0x0 0x20400000 0x0 0x8000>;"), "{dts}");
         assert!(dts.contains("memory-region = <&ipc_shm>;"));
-        assert!(!dts.contains("reg ="));
 
         // The carveout node is labeled, sized via `reg`, and `no-map`.
         let nodes = device.reserved_memory_nodes("ipc-shm");
@@ -472,6 +481,11 @@ mod tests {
         let device = reserved(vec![(0x2040_0000, 0x8000), (0x2040_8000, 0x2000)]);
 
         let dts = device.to_node("ipc-shm").to_dts();
+        // One `reg` entry per window, in mapping order: map0, map1.
+        assert!(
+            dts.contains("reg = <0x0 0x20400000 0x0 0x8000 0x0 0x20408000 0x0 0x2000>;"),
+            "{dts}"
+        );
         assert!(dts.contains("memory-region = <&ipc_shm_0 &ipc_shm_1>;"));
 
         let nodes = device.reserved_memory_nodes("ipc-shm");

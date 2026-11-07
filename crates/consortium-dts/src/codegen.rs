@@ -222,16 +222,19 @@ impl Codegen {
         children: &[Node],
         deletions: &[Deletion],
     ) {
-        for property in properties {
-            self.print_property(property);
-        }
-
         // `/delete-property/` and `/delete-node/` are property-level statements
-        // that `dtc` requires *before* any subnode, so they are emitted with the
-        // properties rather than after the children (the parser collects them
-        // separately, losing their original interleaving).
+        // that `dtc` requires *before* any subnode, and it applies a body's
+        // statements in order. The parser collects them separately, losing
+        // their original interleaving, so they go first: an override that
+        // deletes a vendor property and sets its replacement
+        // (`/delete-property/ memory-region; memory-region = <…>;`) must not
+        // delete the value it just set.
         for deletion in deletions {
             self.print_deletion(deletion);
+        }
+
+        for property in properties {
+            self.print_property(property);
         }
 
         let leading = !properties.is_empty() || !deletions.is_empty();
@@ -432,6 +435,26 @@ mod tests {
             .expect("deletion emitted");
         let child = dts.find("touch@41").expect("child emitted");
         assert!(del < child, "deletion must come before the subnode:\n{dts}");
+    }
+
+    #[test]
+    fn deletions_precede_a_replacement_property() {
+        // dtc applies a body in order, so a property deleted after it is set is
+        // gone from the compiled tree.
+        use crate::Deletion;
+        let dts = NodeOverlay::label("cm7")
+            .property(Property::cells(
+                "memory-region",
+                [Cell::reference(Reference::label("rsc_table"))],
+            ))
+            .deletion(Deletion::Property("memory-region".to_string()))
+            .to_dts();
+
+        let del = dts
+            .find("/delete-property/ memory-region;")
+            .expect("deletion emitted");
+        let set = dts.find("memory-region = ").expect("property emitted");
+        assert!(del < set, "deletion must precede the replacement:\n{dts}");
     }
 
     #[test]

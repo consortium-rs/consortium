@@ -33,6 +33,7 @@ reserved-memory {
 ipc-shm@20480000 {
     compatible = "generic-uio";
     linux,uio-name = "ipc-shm";
+    reg = <0x0 0x20480000 0x0 0x4000 0x0 0x20488000 0x0 0x4000>;
     memory-region = <&ipc_shm_0 &ipc_shm_1>;
     status = "okay";
 };
@@ -44,6 +45,7 @@ ipc-shm@20480000 {
 dbg-shm@20484000 {
     compatible = "generic-uio";
     linux,uio-name = "dbg-shm";
+    reg = <0x0 0x20484000 0x0 0x2000>;
     memory-region = <&dbg_shm>;
     status = "okay";
 };
