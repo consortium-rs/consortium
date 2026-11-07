@@ -39,10 +39,12 @@
 #![cfg(feature = "logger")]
 use core::ptr::addr_of_mut;
 
+use consortium_core::{TrySendTransport, UncachedRegion};
 use defmt::{Encoder, Logger, global_logger};
 
 use crate::config;
-use crate::descriptor::{DESCRIPTOR_SIZE, Descriptor, FLAGS_OFFSET, Flags};
+use crate::descriptor::{Descriptor, FLAGS_OFFSET, Flags};
+use crate::ring::RingWriter;
 use crate::utils::wv_u16;
 
 #[global_logger]
@@ -97,24 +99,12 @@ impl ConsortiumLogger {
     /// `base` must point to a writable debug shared-memory region of at least
     /// `size` bytes.
     pub unsafe fn force_init_shared_memory(base: *mut u8, size: u16) {
-        // Clear the ring payload area before parking the cursors. A warm reset
-        // retains SRAM, so stale packet headers (valid magic + `FLAG_VALID`) from
-        // a previous boot survive here. `allocate_write_ptr` treats any slot that
-        // still parses as a valid packet as unread and refuses to overwrite it, so
-        // leaving stale headers behind spuriously latches `Overflow` and drops the
-        // first real frames. Zeroing invalidates every stale header.
-        for offset in DESCRIPTOR_SIZE..size as usize {
-            // SAFETY: the caller guarantees `base` is writable for `size` bytes, so
-            // every `offset < size` is in bounds; a byte volatile store has no
-            // alignment requirement and is valid for the debug SRAM region.
-            #[allow(clippy::multiple_unsafe_ops_per_block)]
-            unsafe {
-                base.add(offset).write_volatile(0)
-            };
-        }
-        // SAFETY: a fresh descriptor parks both cursors at DATA_START and clears
-        // all flags; the caller guarantees `base` is writable for `size` bytes.
-        unsafe { Descriptor::new(size).write_to_raw_ptr(base) };
+        // SAFETY: the caller guarantees `base` is writable for `size` bytes.
+        let region = unsafe { UncachedRegion::new(base, size as usize) };
+        // A region too small to hold one frame is left untouched: there is no ring to
+        // log into, and every later log call then finds no valid descriptor.
+        // SAFETY: the logger is the ring's only writer.
+        let _ = unsafe { RingWriter::init(region) };
     }
 
     /// Initializes the descriptor at `base` when needed and marks the logger as writing.
@@ -184,20 +174,38 @@ impl ConsortiumLogger {
 
     /// Writes one defmt frame payload into the descriptor-backed ring buffer.
     ///
+    /// Goes through [`RingWriter`]'s [`try_send`](TrySendTransport::try_send), after
+    /// validating the descriptor. A frame that does not fit is dropped with
+    /// [`Flags::Overflow`] latched; a ring with [`Flags::Error`] latched is left alone.
+    ///
     /// # Safety
     /// `base` must point to a valid debug shared-memory descriptor region.
     pub unsafe fn write_shared_memory(base: *mut u8, bytes: &[u8]) {
         // SAFETY: the caller guarantees `base` points at a valid descriptor.
-        let descriptor = unsafe { &mut *(base as *mut Descriptor) };
-        if descriptor.flags.contains(Flags::Error) {
-            return;
+        let capacity = unsafe { Descriptor::from_raw_ptr(base) }.capacity;
+        // SAFETY: the caller guarantees the descriptor owns `capacity` bytes at `base`.
+        let region = unsafe { UncachedRegion::new(base, capacity as usize) };
+        // SAFETY: the logger is the ring's only writer.
+        if let Ok(mut ring) = unsafe { RingWriter::attach(region) } {
+            let _ = ring.try_send(bytes);
         }
-        // SAFETY: the caller guarantees the descriptor owns a valid shared-memory region.
-        unsafe {
-            if !descriptor.write_one_frame(base, bytes) {
-                descriptor.flags.insert(Flags::Overflow);
-            }
-        }
+    }
+
+    /// Commit one staged frame to the ring `acquire()` just prepared.
+    ///
+    /// # Safety
+    /// `base`/`size` must be the region `init` recorded, and `acquire()` must have
+    /// run for this frame (it validates or re-initializes the descriptor to `size`).
+    unsafe fn commit(base: *mut u8, size: u16, frame: &[u8]) {
+        // SAFETY: `base`/`size` is the region `init` recorded, whose caller vouched
+        // for it.
+        let region = unsafe { UncachedRegion::new(base, size as usize) };
+        // SAFETY: `acquire()` left a valid descriptor of exactly `size` bytes at
+        // `base`; the logger is the ring's only writer.
+        let mut ring = unsafe { RingWriter::attach_unchecked(region, size) };
+        // Dropped frames latch `Overflow` inside `try_send`; the logger has nowhere
+        // else to report them, and must not log from here.
+        let _ = ring.try_send(frame);
     }
 
     /// Reset the debug ring at `base` to a fresh, empty state and start logging
@@ -252,7 +260,7 @@ unsafe impl Logger for ConsortiumLogger {
     }
 
     unsafe fn release() {
-        let Some((base, _)) = config::region() else {
+        let Some((base, size)) = config::region() else {
             return;
         };
         // SAFETY: `base` is the debug shared-memory region `init` recorded; the
@@ -272,7 +280,7 @@ unsafe impl Logger for ConsortiumLogger {
             } else {
                 let frame =
                     core::slice::from_raw_parts(addr_of_mut!(FRAME) as *const u8, FRAME_LEN);
-                Self::write_shared_memory(base, frame);
+                Self::commit(base, size, frame);
             }
             Self::release_shared_memory(base);
         }

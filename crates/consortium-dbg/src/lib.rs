@@ -40,9 +40,24 @@
 //! | `config`        | The ring base/length `ConsortiumLogger::init` records.          |
 //! | [`descriptor`]  | The `CDBG` descriptor and single-writer/single-reader ring rules.  |
 //! | [`packet`]      | Per-frame envelope inside the ring.                              |
+//! | [`ring`]        | [`RingWriter`](ring::RingWriter) / [`RingReader`](ring::RingReader): the ring as a non-waiting transport. |
 //! | `logger`        | Firmware `#[global_logger]`; encodes and appends.                 |
 //! | `host`          | Host-side validation, draining, and `defmt` decoding.             |
 //! | `panic`         | Optional `#[panic_handler]` that records a crash in the ring.      |
+//!
+//! # The ring as a transport
+//!
+//! The ring is a memory-backed link with no doorbell, so it implements
+//! `consortium-core`'s non-waiting pair, the same base the IPC shared-memory
+//! transport and the SCMI agent build on. [`ring::RingWriter`] is a
+//! `TrySendTransport`: appending a frame never waits, and a full ring is
+//! `TryError::WouldBlock` with `Overflow` latched, which is what lets the
+//! `#[global_logger]` and the panic handler use it. [`ring::RingReader`] is a
+//! `TryRecvTransport` that copies into a caller buffer without allocating; the
+//! host's `HostRing` is built on it. Both are generic over any coherent
+//! `consortium_core::Region` and refuse a cached one: the `CDBG` layout shares
+//! cache lines between writer- and reader-owned fields, so flushes would clobber
+//! each other. The logger maps its ring as an `UncachedRegion`, as it always has.
 //!
 //! # Descriptor discipline
 //!
@@ -108,6 +123,7 @@ pub mod logger;
 pub mod packet;
 #[cfg(feature = "panic-handler")]
 pub mod panic;
+pub mod ring;
 pub mod utils;
 
 #[cfg(all(
