@@ -148,8 +148,8 @@ TrySend/TryRecv  - optional: a frame-atomic hand-off that never waits
 
 The transport traits (everything above except `CodecFor`, `Channel`, and
 `Transceiver`) are defined in `consortium-core` and re-exported by `consortium-ipc`,
-so subsystems below IPC — SCMI, the debug ring — share them without depending on
-it.
+so subsystems below IPC — SCMI (`SmtTransport`), the debug ring (`RingWriter`/
+`RingReader`) — share them without depending on it.
 
 **The non-waiting pair is the common base of every memory-backed link.**
 `TrySendTransport`/`TryRecvTransport` hand one frame over in one synchronous step
@@ -834,9 +834,22 @@ default features are `host` and `logger`; `decode` adds `defmt-decoder` and impl
 `ConsortiumLogger::init(base, len)`; until then (or in a binary that never calls it)
 every log call is a no-op.
 
+The ring is also a Consortium transport: `consortium_dbg::ring::RingWriter<R: Region>`
+implements core's `TrySendTransport` (append a frame, never wait; a full ring is
+`WouldBlock` with `Overflow` latched, a frame that can never fit is
+`RingError::FrameTooLarge`) and `RingReader<R: Region>` implements `TryRecvTransport`
+(copy into a caller buffer, no allocation; a frame longer than the buffer stays unread
+as `RingError::BufferTooSmall`). Both bracket accesses with the region's cache
+maintenance and re-check `capacity` and `read_ptr` on every attempt, since the other
+core can write them. Every frame the logger emits goes through `RingWriter::try_send`
+(over an `UncachedRegion`, as before), and `HostRing` is a `Vec`-returning wrapper over
+`RingReader`, so `Descriptor::try_read_frame` is the one read path. The ring has no
+doorbell: a reader that wants to wait polls or uses `wait::spin_until`. `try_send` must
+not log — it runs inside the `defmt` logger.
+
 Preserve descriptor discipline when changing debug transport behavior. Host-side tests
 cover descriptor initialization, ring read/write behavior, decoding fixtures, and
-overflow/error flags.
+overflow/error flags; `tests/ring.rs` covers the transport view.
 
 The optional panic handler emits an error packet, latches panic status in the debug
 descriptor, then waits with the target architecture's WFI instruction.

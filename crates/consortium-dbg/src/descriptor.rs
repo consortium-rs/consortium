@@ -83,6 +83,23 @@ pub const DESCRIPTOR_SIZE: usize = core::mem::size_of::<Descriptor>();
 /// First byte usable for ring data, i.e. just past the descriptor header.
 /// Both cursors wrap back to this offset rather than to 0.
 const DATA_START: u16 = DESCRIPTOR_SIZE as u16;
+/// Largest payload one frame carries: the packet `len` field is a `u8`.
+pub const MAX_FRAME_LEN: usize = u8::MAX as usize;
+
+/// What [`Descriptor::try_read_frame`] found.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum ReadOutcome {
+    /// Nothing unread in the ring.
+    Empty,
+    /// One frame of this many payload bytes was copied out and consumed.
+    Frame(usize),
+    /// The next frame's payload is `needed` bytes, more than the buffer holds; it
+    /// was left unread.
+    TooSmall {
+        /// The frame's payload length.
+        needed: usize,
+    },
+}
 
 impl Descriptor {
     /// Builds a fresh descriptor for a region of `capacity` total bytes, with
@@ -147,6 +164,75 @@ impl Descriptor {
         unsafe { wv_u16(ptr, FLAGS_OFFSET, self.flags.bits()) };
     }
 
+    /// Copies the next available frame's payload into `buf` and consumes it.
+    ///
+    /// The one read path: [`read_one_frame`](Self::read_one_frame), the host reader,
+    /// and [`RingReader`](crate::ring::RingReader) all go through it. It allocates
+    /// nothing, so it serves `no_std` readers too.
+    ///
+    /// A frame whose payload is longer than `buf` is left in the ring, unconsumed,
+    /// and reported as [`ReadOutcome::TooSmall`] so the caller can retry with a
+    /// larger buffer; one of [`MAX_FRAME_LEN`] bytes always fits.
+    ///
+    /// # Safety
+    /// `base` must point to the start of the shared-memory region owning this descriptor,
+    /// valid for at least `self.capacity` bytes.
+    pub unsafe fn try_read_frame(&mut self, base: *mut u8, buf: &mut [u8]) -> ReadOutcome {
+        // The writer wraps early when a frame does not fit in the tail before
+        // `capacity`, jumping `write_ptr` back to `DATA_START` and leaving a gap
+        // the reader cannot predict from packet lengths alone. When the reader's
+        // linear advance lands in that gap it finds no fresh packet; it must then
+        // follow the writer's wrap to `DATA_START` rather than stall there. At
+        // most one wrap can occur per call, so a single retry suffices.
+        for _ in 0..2 {
+            if self.read_ptr == self.write_ptr {
+                return ReadOutcome::Empty;
+            }
+            // SAFETY: caller guarantees the ring buffer covers `self.read_ptr`.
+            let packet_ptr = unsafe { base.add(self.read_ptr as usize) };
+            // SAFETY: `packet_ptr` points into the shared ring buffer.
+            let frame_header = unsafe { Packet::try_from_raw_ptr(packet_ptr) };
+
+            // A packet that would run past `capacity` was never written by a writer
+            // (it wraps first), so it is stale or corrupt: treat it like a bad header
+            // rather than read past the ring.
+            let in_ring = |header: &Packet| {
+                self.read_ptr as usize + PACKET_HEADER_SIZE + header.len as usize
+                    <= self.capacity as usize
+            };
+            let mut frame_header = match frame_header {
+                Some(header) if header.is_valid() && in_ring(&header) => header,
+                // No fresh frame here. If we are already at `DATA_START` the ring
+                // is genuinely drained (a partially written or stale head); stop.
+                // Otherwise the writer wrapped early — follow it and retry once.
+                _ => {
+                    if self.read_ptr == DATA_START {
+                        return ReadOutcome::Empty;
+                    }
+                    self.read_ptr = DATA_START;
+                    // SAFETY: caller guarantees the descriptor fields are valid and coherent.
+                    unsafe { wv_u16(base, READ_PTR_OFFSET, self.read_ptr) };
+                    continue;
+                }
+            };
+
+            let len = frame_header.len as usize;
+            let Some(payload) = buf.get_mut(..len) else {
+                return ReadOutcome::TooSmall { needed: len };
+            };
+            // SAFETY: `packet_ptr` points to the valid frame described by `frame_header`.
+            unsafe { frame_header.read_payload(packet_ptr, payload) };
+            // SAFETY: `packet_ptr` points to the valid frame described by `frame_header`.
+            unsafe { frame_header.mark_as_consumed(packet_ptr) };
+            // SAFETY: `base` points to the descriptor-owned ring buffer.
+            self.read_ptr = unsafe { self.next_read_ptr(base) };
+            // SAFETY: caller guarantees the descriptor fields are valid and coherent.
+            unsafe { wv_u16(base, READ_PTR_OFFSET, self.read_ptr) };
+            return ReadOutcome::Frame(len);
+        }
+        ReadOutcome::Empty
+    }
+
     /// Reads the next available defmt frame from the circular buffer, returning its payload.
     ///
     /// Returns `None` if no frame is available or if the current frame header is invalid.
@@ -156,49 +242,13 @@ impl Descriptor {
     /// valid for at least `self.capacity` bytes.
     #[cfg(feature = "host")]
     pub unsafe fn read_one_frame(&mut self, base: *mut u8) -> Option<Vec<u8>> {
-        // The writer wraps early when a frame does not fit in the tail before
-        // `capacity`, jumping `write_ptr` back to `DATA_START` and leaving a gap
-        // the reader cannot predict from packet lengths alone. When the reader's
-        // linear advance lands in that gap it finds no fresh packet; it must then
-        // follow the writer's wrap to `DATA_START` rather than stall there. At
-        // most one wrap can occur per call, so a single retry suffices.
-        for _ in 0..2 {
-            if self.read_ptr == self.write_ptr {
-                return None;
-            }
-            // SAFETY: caller guarantees the ring buffer covers `self.read_ptr`.
-            let packet_ptr = unsafe { base.add(self.read_ptr as usize) };
-            // SAFETY: `packet_ptr` points into the shared ring buffer.
-            let frame_header = unsafe { Packet::try_from_raw_ptr(packet_ptr) };
-
-            let mut frame_header = match frame_header {
-                Some(header) if header.is_valid() => header,
-                // No fresh frame here. If we are already at `DATA_START` the ring
-                // is genuinely drained (a partially written or stale head); stop.
-                // Otherwise the writer wrapped early — follow it and retry once.
-                _ => {
-                    if self.read_ptr == DATA_START {
-                        return None;
-                    }
-                    self.read_ptr = DATA_START;
-                    // SAFETY: caller guarantees the descriptor fields are valid and coherent.
-                    unsafe { wv_u16(base, READ_PTR_OFFSET, self.read_ptr) };
-                    continue;
-                }
-            };
-
-            let mut buffer = vec![0u8; frame_header.len as usize];
-            // SAFETY: `packet_ptr` points to the valid frame described by `frame_header`.
-            unsafe { frame_header.read_payload(packet_ptr, &mut buffer) };
-            // SAFETY: `packet_ptr` points to the valid frame described by `frame_header`.
-            unsafe { frame_header.mark_as_consumed(packet_ptr) };
-            // SAFETY: `base` points to the descriptor-owned ring buffer.
-            self.read_ptr = unsafe { self.next_read_ptr(base) };
-            // SAFETY: caller guarantees the descriptor fields are valid and coherent.
-            unsafe { wv_u16(base, READ_PTR_OFFSET, self.read_ptr) };
-            return Some(buffer);
+        let mut buf = [0u8; MAX_FRAME_LEN];
+        // SAFETY: forwarded to the caller.
+        match unsafe { self.try_read_frame(base, &mut buf) } {
+            ReadOutcome::Frame(len) => Some(buf[..len].to_vec()),
+            // A `MAX_FRAME_LEN` buffer holds every frame, so `TooSmall` cannot occur.
+            ReadOutcome::Empty | ReadOutcome::TooSmall { .. } => None,
         }
-        None
     }
 
     /// Drains all available defmt frames from the circular buffer, returning them as a `Vec`.
@@ -226,7 +276,6 @@ impl Descriptor {
     /// # Safety
     /// `base` must point to the start of the shared-memory region owning this descriptor,
     /// valid for at least `self.capacity` bytes.
-    #[cfg(feature = "logger")]
     pub unsafe fn write_one_frame(&mut self, base: *mut u8, frame: &[u8]) -> bool {
         // SAFETY: caller guarantees `base` points to this descriptor`s ring buffer.
         match unsafe { self.allocate_write_ptr(base, frame.len()) } {
@@ -261,9 +310,8 @@ impl Descriptor {
     /// # Safety
     /// `base` must point to this descriptor's ring buffer, valid for at least
     /// `self.capacity` bytes.
-    // Read-path helper shared by the host reader (`read_one_frame`) and the
-    // logger's own drain path, so it must be available whenever either is.
-    #[cfg(any(feature = "host", feature = "logger"))]
+    // Read-path helper shared by every reader (`try_read_frame`) and the logger's
+    // own drain path.
     pub(crate) unsafe fn next_read_ptr(&mut self, base: *const u8) -> u16 {
         // SAFETY: caller guarantees the ring buffer covers `self.read_ptr`.
         let cursor = unsafe { base.add(self.read_ptr as usize) };
@@ -291,7 +339,6 @@ impl Descriptor {
     /// # Safety
     /// `base` must point to this descriptor's ring buffer, valid for at least
     /// `self.capacity` bytes.
-    #[cfg(feature = "logger")]
     pub(crate) unsafe fn allocate_write_ptr(
         &mut self,
         base: *mut u8,
@@ -329,7 +376,6 @@ impl Descriptor {
 
     /// Returns the `write_ptr` value after a packet of `frame_len` payload bytes
     /// is written at `ptr`, wrapping to `DATA_START` at the end of the region.
-    #[cfg(feature = "logger")]
     fn advance_ptr(&self, ptr: u16, frame_len: usize) -> u16 {
         let next_ptr = ptr.wrapping_add((PACKET_HEADER_SIZE + frame_len) as u16);
         if next_ptr >= self.capacity {
