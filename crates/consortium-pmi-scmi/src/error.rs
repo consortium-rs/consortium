@@ -31,6 +31,10 @@ pub enum Error<E> {
     ChannelBusy,
     /// The platform set the channel's error bit instead of answering.
     ChannelError,
+    /// A blocking call's deadline passed before the platform answered. The
+    /// request stays with the platform; the next call reports
+    /// [`ChannelBusy`](Self::ChannelBusy) until it frees the channel.
+    TimedOut,
     /// The exchange broke the protocol.
     Protocol(ProtocolError),
 }
@@ -57,6 +61,13 @@ pub enum ProtocolError {
         /// The length field the platform wrote.
         len: usize,
     },
+    /// A frame handed to the byte-frame transport traits is too short to carry
+    /// its prefix: a sent frame without its header word, or a receive buffer
+    /// without room for the header and status words.
+    FrameTooShort {
+        /// The frame or buffer length.
+        len: usize,
+    },
     /// The request does not fit the channel's payload area.
     RequestTooLarge {
         /// Request payload bytes.
@@ -79,6 +90,7 @@ impl<E: core::fmt::Debug> core::fmt::Display for Error<E> {
             Self::Doorbell(e) => write!(f, "SCMI doorbell failed: {e:?}"),
             Self::ChannelBusy => f.write_str("SCMI channel is still owned by the platform"),
             Self::ChannelError => f.write_str("SCMI platform flagged a channel error"),
+            Self::TimedOut => f.write_str("SCMI platform did not answer before the deadline"),
             Self::Protocol(e) => write!(f, "SCMI protocol violation: {e:?}"),
         }
     }

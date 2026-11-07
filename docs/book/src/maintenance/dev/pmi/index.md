@@ -55,6 +55,13 @@ shared-memory IPC transport into `consortium-core` first.
 - **Completion is a choice.** `Completion::Doorbell(line)` parks on a line the platform
   rings and sets the SMT completion-interrupt flag; `Completion::Poll` spins on the
   free bit, yielding between polls.
+- **The exchange is core's non-waiting pair.** `SmtTransport` implements
+  `consortium-core`'s `TrySendTransport`/`TryRecvTransport` (a busy channel, or a reply
+  not yet written, is `WouldBlock`), and its async and blocking waits are core's
+  `park_until` and `spin_until` over the same attempt — the same pieces the IPC
+  shared-memory transport uses. `Client::blocking_call` is what a synchronous `init()`
+  would drive; it takes a deadline because a blocking call cannot be wrapped in an
+  outer timeout.
 - **Version-dependent layouts are queried, not assumed.** `CLOCK_CONFIG_SET` gained an
   OEM word in clock protocol 3.0; the client asks the clock version once and caches it,
   as Linux does.
