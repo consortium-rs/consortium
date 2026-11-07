@@ -29,8 +29,8 @@ repository.workspace   = true
 rust-version.workspace = true
 
 [dependencies]
-consortium-core = { path = "../consortium-core", version = "0.5.0" }
-consortium-pmi  = { path = "../consortium-pmi", version = "0.5.0" }
+consortium-core = { path = "../consortium-core", version = "0.6.0" }
+consortium-pmi  = { path = "../consortium-pmi", version = "0.6.0" }
 defmt           = { optional = true, version = "1" }
 
 [dev-dependencies]

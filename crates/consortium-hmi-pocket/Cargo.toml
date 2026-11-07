@@ -40,8 +40,8 @@ shell = ["dep:softbuffer", "dep:winit"]
 # `examples/pocket-hmi/package.json` installs (`0.16.0`), so the Rust crates and
 # the bun-built `<app>.js`/`.pak` share one binding generation; bump both together.
 [dependencies]
-consortium-hmi        = { path = "../consortium-hmi", version = "0.5.0" }
-consortium-hmi-input  = { path = "../consortium-hmi-input", version = "0.5.0" }
+consortium-hmi        = { path = "../consortium-hmi", version = "0.6.0" }
+consortium-hmi-input  = { path = "../consortium-hmi-input", version = "0.6.0" }
 pocket-guest-rquickjs = "0.16.0"
 pocket-raster         = "0.16.0"
 pocket-runtime        = "0.16.0"

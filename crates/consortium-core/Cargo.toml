@@ -31,9 +31,9 @@ rust-version.workspace = true
 [dependencies]
 atomic-waker            = { optional = true, version = "1.1.2" }
 bitfield                = { optional = true, version = "0.20" }
-consortium-hal-imx9     = { default-features = false, optional = true, path = "../consortium-hal-imx9", version = "0.5.0" }
-consortium-hal-stm32mp2 = { default-features = false, optional = true, path = "../consortium-hal-stm32mp2", version = "0.5.0" }
-consortium-log          = { default-features = false, path = "../consortium-log", version = "0.5.0" }
+consortium-hal-imx9     = { default-features = false, optional = true, path = "../consortium-hal-imx9", version = "0.6.0" }
+consortium-hal-stm32mp2 = { default-features = false, optional = true, path = "../consortium-hal-stm32mp2", version = "0.6.0" }
+consortium-log          = { default-features = false, path = "../consortium-log", version = "0.6.0" }
 critical-section        = { optional = true, version = "1.2.0" }
 defmt                   = { optional = true, version = "1" }
 embedded-hal            = { optional = true, workspace = true }
