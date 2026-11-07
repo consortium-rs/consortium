@@ -24,6 +24,11 @@ extend-exclude = [
   "target",
 ]
 
+[default]
+# 64-bit hex words, as in the kernel register dumps quoted by the engineering logs
+# (`sp : ffff800082c0ba50`), are not words.
+extend-ignore-re = ["\\b[0-9a-f]{16}\\b"]
+
 [default.extend-identifiers]
 # Hardware serializer/deserializer lanes.
 SerDes = "SerDes"
