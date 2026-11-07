@@ -132,12 +132,15 @@ impl HostRing {
         }
     }
 
-    /// Drains all available packets from the ring, returning them in arrival order.
+    /// Drains the packets that were in the ring when the call began, returning them
+    /// in arrival order.
+    ///
+    /// Bounded by one snapshot of the writer's cursor ([`RingReader::drain`]):
+    /// packets the firmware appends meanwhile are left for the next call, so a
+    /// writer that keeps up with the reader cannot hold the caller here.
     pub fn drain_packets(&mut self) -> Result<Vec<Vec<u8>>, HostError> {
         let mut packets = Vec::new();
-        while let Some(packet) = self.read_packet()? {
-            packets.push(packet);
-        }
+        self.reader.drain(|packet| packets.push(packet.to_vec()))?;
         Ok(packets)
     }
 }

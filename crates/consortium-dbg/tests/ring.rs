@@ -256,3 +256,55 @@ fn the_logger_and_a_ring_reader_agree() {
     let n = reader.try_recv(&mut buf).unwrap();
     assert_eq!(&buf[..n], b"from the logger");
 }
+
+#[test]
+fn both_ends_refuse_a_non_coherent_region() {
+    use consortium_core::CachedRegion;
+    let mut backing = vec![0u8; 256].into_boxed_slice();
+    let base = backing.as_mut_ptr();
+    // SAFETY: `backing` outlives every attempt below.
+    unsafe {
+        assert_eq!(
+            RingWriter::init(CachedRegion::new(base, 256)).err(),
+            Some(RingError::NonCoherentRegion)
+        );
+        // A valid ring is still refused through a cached mapping of it.
+        RingWriter::init(UncachedRegion::new(base, 256)).unwrap();
+        assert_eq!(
+            RingWriter::attach(CachedRegion::new(base, 256)).err(),
+            Some(RingError::NonCoherentRegion)
+        );
+        assert_eq!(
+            RingReader::new(CachedRegion::new(base, 256)).err(),
+            Some(RingError::NonCoherentRegion)
+        );
+    }
+}
+
+#[test]
+fn drain_stops_at_the_frames_present_when_it_began() {
+    let mut r = rig(256);
+    r.writer.try_send(b"one").unwrap();
+    r.writer.try_send(b"two").unwrap();
+
+    let Rig { writer, reader, .. } = &mut r;
+    let mut seen = Vec::new();
+    let drained = reader
+        .drain(|frame| {
+            seen.push(frame.to_vec());
+            // Firmware keeps logging while the host drains.
+            writer.try_send(b"late").unwrap();
+        })
+        .unwrap();
+    assert_eq!(drained, 2);
+    assert_eq!(seen, vec![b"one".to_vec(), b"two".to_vec()]);
+
+    // What arrived mid-drain is still there for the next call.
+    let mut later = Vec::new();
+    assert_eq!(
+        r.reader.drain(|frame| later.push(frame.to_vec())).unwrap(),
+        2
+    );
+    assert_eq!(later, vec![b"late".to_vec(), b"late".to_vec()]);
+    assert_eq!(r.reader.drain(|_| panic!("ring is empty")).unwrap(), 0);
+}

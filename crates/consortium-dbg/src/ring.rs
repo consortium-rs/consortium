@@ -36,10 +36,21 @@
 //!
 //! Both sides keep the ring's descriptor discipline: the writer only writes
 //! `write_ptr`, `capacity`, `flags` and packet data; the reader only writes
-//! `read_ptr` and each packet's consumed bit. Both bracket their accesses with the
-//! region's cache maintenance — invalidate before reading the other side's fields,
-//! flush after writing their own — so a [`CachedRegion`](consortium_core::CachedRegion)
-//! works as well as an [`UncachedRegion`](consortium_core::UncachedRegion).
+//! `read_ptr` and each packet's consumed bit.
+//!
+//! # Coherent regions only
+//!
+//! That discipline holds only on a coherent mapping. The `CDBG` layout packs
+//! writer-owned and reader-owned fields into the same cache lines — `write_ptr`,
+//! `read_ptr` and `flags` sit in one 16-byte descriptor, and each packet's consumed
+//! bit shares a line with writer-owned payload. Cache maintenance cannot keep them
+//! apart: a clean writes back the *whole* line, so each side's flush would overwrite
+//! the other's latest update with its own stale copy. Both ends therefore refuse a
+//! region that reports [`is_coherent`](Region::is_coherent) `false`
+//! ([`RingError::NonCoherentRegion`]), such as a
+//! [`CachedRegion`](consortium_core::CachedRegion). Supporting cached peers would
+//! need the independently written state on separate cache lines — a `CDBG` format
+//! change.
 
 use consortium_core::{
     Region, TransportError, TryError, TryRecvTransport, TrySendTransport,
@@ -100,6 +111,9 @@ pub enum RingError {
     },
     /// The writer latched [`Flags::Error`]; the ring accepts no more frames.
     Faulted,
+    /// The region is not cache-coherent. The `CDBG` layout shares cache lines
+    /// between writer- and reader-owned fields, so it needs a coherent mapping.
+    NonCoherentRegion,
 }
 
 impl core::fmt::Display for RingError {
@@ -123,18 +137,30 @@ impl core::fmt::Display for RingError {
                 write!(f, "a {needed}-byte frame does not fit a {len}-byte buffer")
             }
             Self::Faulted => f.write_str("the ring writer latched an error"),
+            Self::NonCoherentRegion => f.write_str("a CDBG ring needs a cache-coherent region"),
         }
     }
 }
 
 impl core::error::Error for RingError {}
 
+/// Refuse a region whose cache maintenance would let the two sides overwrite each
+/// other's fields (see the module docs).
+fn require_coherent<R: Region>(region: &R) -> Result<(), RingError> {
+    if region.is_coherent() {
+        Ok(())
+    } else {
+        Err(RingError::NonCoherentRegion)
+    }
+}
+
 /// Read and validate the descriptor at the start of `region`.
 ///
-/// Checks the magic, the version, that `capacity` fits the region, and that both
-/// cursors lie in the data area — so every later cursor dereference stays inside
-/// the region.
+/// Checks that the region is coherent, the magic, the version, that `capacity`
+/// fits the region, and that both cursors lie in the data area — so every later
+/// cursor dereference stays inside the region.
 pub(crate) fn validate<R: Region>(region: &R) -> Result<Descriptor, RingError> {
+    require_coherent(region)?;
     let len = region.len();
     if len < DESCRIPTOR_SIZE {
         return Err(RingError::CapacityMismatch {
@@ -142,7 +168,6 @@ pub(crate) fn validate<R: Region>(region: &R) -> Result<Descriptor, RingError> {
             mapped: len,
         });
     }
-    region.invalidate();
     // SAFETY: the region is valid for `len >= DESCRIPTOR_SIZE` bytes.
     let desc = unsafe { Descriptor::from_raw_ptr(base(region)) };
     desc.header.check(MAGIC, VERSION).map_err(|e| match e {
@@ -198,6 +223,7 @@ impl<R: Region> RingWriter<R> {
     /// This must be the ring's only writer for as long as it lives: two writers
     /// would race on `write_ptr` and the packet data.
     pub unsafe fn init(region: R) -> Result<Self, RingError> {
+        require_coherent(&region)?;
         let len = region.len();
         let Ok(capacity) = u16::try_from(len) else {
             return Err(RingError::RegionLength { len });
@@ -217,7 +243,6 @@ impl<R: Region> RingWriter<R> {
         // SAFETY: a fresh descriptor parks both cursors at the data start and clears
         // every flag; `len >= DESCRIPTOR_SIZE` was checked through `max_frame`.
         unsafe { Descriptor::new(capacity).write_to_raw_ptr(base) };
-        region.flush();
         Ok(Self { region, capacity })
     }
 
@@ -254,7 +279,6 @@ impl<R: Region> RingWriter<R> {
 
     /// A point-in-time copy of the descriptor.
     pub fn snapshot(&self) -> Descriptor {
-        self.region.invalidate();
         // SAFETY: the descriptor was validated or written at construction.
         unsafe { Descriptor::from_raw_ptr(base(&self.region)) }
     }
@@ -266,7 +290,6 @@ impl<R: Region> RingWriter<R> {
         desc.flags.insert(Flags::Panic);
         // SAFETY: the flags word is writer-owned and inside the descriptor.
         unsafe { wv_u16(base(&self.region), FLAGS_OFFSET, desc.flags.bits()) };
-        self.region.flush();
     }
 }
 
@@ -289,8 +312,6 @@ impl<R: Region> TransportError for RingWriter<R> {
 impl<R: Region> TrySendTransport for RingWriter<R> {
     fn try_send(&mut self, frame: &[u8]) -> Result<(), TryError<RingError>> {
         let base = base(&self.region);
-        // Observe the reader's consumed bits and `read_ptr`, not a stale line.
-        self.region.invalidate();
         // SAFETY: the descriptor was validated or written at construction.
         let mut desc = unsafe { Descriptor::from_raw_ptr(base) };
         if desc.flags.contains(Flags::Error) {
@@ -307,7 +328,6 @@ impl<R: Region> TrySendTransport for RingWriter<R> {
         // SAFETY: `base` owns this descriptor's ring, `capacity` bytes long and
         // inside the region (checked at construction).
         let wrote = unsafe { desc.write_one_frame(base, frame) };
-        self.region.flush();
         if wrote {
             return Ok(());
         }
@@ -356,9 +376,64 @@ impl<R: Region> RingReader<R> {
 
     /// A point-in-time copy of the descriptor.
     pub fn snapshot(&self) -> Descriptor {
-        self.region.invalidate();
         // SAFETY: the descriptor was validated at construction.
         unsafe { Descriptor::from_raw_ptr(base(&self.region)) }
+    }
+
+    /// A snapshot whose writer-written fields still keep reads inside the region.
+    ///
+    /// The writer owns `capacity` and the reader owns `read_ptr`, but both live in
+    /// memory the other core can write: re-check them on every attempt so a
+    /// misbehaving writer cannot steer a read outside the region.
+    fn checked_snapshot(&self) -> Result<Descriptor, RingError> {
+        let desc = self.snapshot();
+        if desc.capacity as usize > self.region.len() {
+            return Err(RingError::CapacityMismatch {
+                descriptor: desc.capacity,
+                mapped: self.region.len(),
+            });
+        }
+        if (desc.read_ptr as usize) < DESCRIPTOR_SIZE || desc.read_ptr >= desc.capacity {
+            return Err(RingError::PointerOutOfBounds {
+                ptr: desc.read_ptr,
+                capacity: desc.capacity,
+            });
+        }
+        Ok(desc)
+    }
+
+    /// Take every frame that was in the ring when the call began, handing each to
+    /// `on_frame`, and return how many there were.
+    ///
+    /// The batch is bounded by one snapshot of `write_ptr`: frames the writer
+    /// appends while the drain runs wait for the next call. A drain that chased the
+    /// live cursor could run for as long as the writer kept up, starving whatever
+    /// the caller does between drains (decoding, emitting, checking for shutdown).
+    /// Allocation-free; a frame is never longer than
+    /// [`MAX_FRAME_LEN`].
+    pub fn drain(&mut self, mut on_frame: impl FnMut(&[u8])) -> Result<usize, RingError> {
+        let mut desc = self.checked_snapshot()?;
+        let mut buf = [0u8; MAX_FRAME_LEN];
+        let mut frames = 0;
+        loop {
+            // SAFETY: as in `try_recv`. `desc` keeps the snapshot's `write_ptr`, so
+            // the loop stops at the frames that existed when it began; its
+            // `read_ptr` is this reader's own, advanced by each read.
+            match unsafe { desc.try_read_frame(base(&self.region), &mut buf) } {
+                ReadOutcome::Empty => return Ok(frames),
+                ReadOutcome::Frame(len) => {
+                    frames += 1;
+                    on_frame(&buf[..len]);
+                }
+                // A `MAX_FRAME_LEN` buffer holds every frame a writer can produce.
+                ReadOutcome::TooSmall { needed } => {
+                    return Err(RingError::BufferTooSmall {
+                        len: buf.len(),
+                        needed,
+                    });
+                }
+            }
+        }
     }
 }
 
@@ -374,32 +449,13 @@ impl<R: Region> TransportError for RingReader<R> {
 /// always fits.
 impl<R: Region> TryRecvTransport for RingReader<R> {
     fn try_recv(&mut self, buf: &mut [u8]) -> Result<usize, TryError<RingError>> {
-        let mut desc = self.snapshot();
-        // The writer owns `capacity` and the reader owns `read_ptr`, but both live in
-        // memory the other core can write: re-check them on every attempt so a
-        // misbehaving writer cannot steer a read outside the region.
-        if desc.capacity as usize > self.region.len() {
-            return Err(TryError::Fail(RingError::CapacityMismatch {
-                descriptor: desc.capacity,
-                mapped: self.region.len(),
-            }));
-        }
-        if (desc.read_ptr as usize) < DESCRIPTOR_SIZE || desc.read_ptr >= desc.capacity {
-            return Err(TryError::Fail(RingError::PointerOutOfBounds {
-                ptr: desc.read_ptr,
-                capacity: desc.capacity,
-            }));
-        }
-        // SAFETY: `capacity` fits the region and `read_ptr` lies in the data area
-        // (both checked just above); `try_read_frame` refuses any packet that would
-        // run past `capacity`.
-        let outcome = unsafe { desc.try_read_frame(base(&self.region), buf) };
-        match outcome {
+        let mut desc = self.checked_snapshot()?;
+        // SAFETY: `checked_snapshot` confirmed `capacity` fits the region and
+        // `read_ptr` lies in the data area; `try_read_frame` refuses any packet that
+        // would run past `capacity`.
+        match unsafe { desc.try_read_frame(base(&self.region), buf) } {
             ReadOutcome::Empty => Err(TryError::WouldBlock),
-            ReadOutcome::Frame(len) => {
-                self.region.flush();
-                Ok(len)
-            }
+            ReadOutcome::Frame(len) => Ok(len),
             ReadOutcome::TooSmall { needed } => Err(TryError::Fail(RingError::BufferTooSmall {
                 len: buf.len(),
                 needed,

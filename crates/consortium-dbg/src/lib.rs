@@ -54,9 +54,10 @@
 //! `TryError::WouldBlock` with `Overflow` latched, which is what lets the
 //! `#[global_logger]` and the panic handler use it. [`ring::RingReader`] is a
 //! `TryRecvTransport` that copies into a caller buffer without allocating; the
-//! host's `HostRing` is built on it. Both are generic over any
-//! `consortium_core::Region` and do its cache maintenance. The logger itself
-//! still maps its ring as an `UncachedRegion`, as it always has.
+//! host's `HostRing` is built on it. Both are generic over any coherent
+//! `consortium_core::Region` and refuse a cached one: the `CDBG` layout shares
+//! cache lines between writer- and reader-owned fields, so flushes would clobber
+//! each other. The logger maps its ring as an `UncachedRegion`, as it always has.
 //!
 //! # Descriptor discipline
 //!
