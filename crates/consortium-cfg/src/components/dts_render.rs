@@ -307,8 +307,10 @@ const RPROC_MARKERS: &[&str] = &["-cm33", "-cm7", "-cm4", "cortex-m"];
 /// load it: its mailbox wiring is stripped and it is enabled.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct RprocFix {
-    /// The node's label (e.g. `cm33`), used as the override target.
-    pub label: String,
+    /// The override target: the node's label (e.g. `&cm33`) when it has one,
+    /// else its absolute path (mainline's `imx95-19x19-evk.dts` declares
+    /// `remoteproc-cm7` with no label, so it is `&{/remoteproc-cm7}`).
+    pub target: Reference,
     /// Whether the node (or an override of it) carries `mboxes`.
     pub delete_mboxes: bool,
     /// Whether the node (or an override of it) carries `mbox-names`.
@@ -367,9 +369,10 @@ pub fn analyze(files: &[File], ir: &LoweredIr, target_cores: &[String]) -> Analy
             let targets_our_core = target_cores
                 .iter()
                 .any(|core| label.contains(core.as_str()) || node.name.contains(core.as_str()));
-            if is_rproc && targets_our_core && !rprocs.iter().any(|r| r.label == label) {
+            let target = Reference::label(label.to_string());
+            if is_rproc && targets_our_core && !rprocs.iter().any(|r| r.target == target) {
                 rprocs.push(RprocFix {
-                    label: label.to_string(),
+                    target,
                     delete_mboxes: label_has_property(files, label, "mboxes"),
                     delete_mbox_names: label_has_property(files, label, "mbox-names"),
                     delete_memory_region: false,
@@ -412,8 +415,8 @@ fn analyze_remoteproc(
     let mut layouts: Vec<&RemoteprocMemoryLayout> = ir.remoteproc.values().collect();
     layouts.sort_by_key(|layout| layout.core.to_string());
     for layout in layouts {
-        let label = match find_compatible_label(files, &layout.compatible) {
-            Some(label) => label,
+        let target = match find_compatible_target(files, &layout.compatible) {
+            Some(target) => target,
             None if layout.compatible == "st,stm32mp2-m33" && tee_only => {
                 return Err(CfgError::Manifest(
                     "STM32MP remoteproc supports only the non-signed `st,stm32mp2-m33` ELF path; the selected DTS composes the TEE-only remoteproc".into(),
@@ -475,42 +478,88 @@ fn analyze_remoteproc(
             }
         }
 
+        // A BSP whose node already lists every window this layout needs (the
+        // i.MX 95 EVK's `m7_reserved` + `rsc_table`) keeps its own list: it also
+        // carries the vring/vdev-buffer carveouts the firmware's rpmsg vdev is
+        // allocated from, which replacing the list would drop.
+        let bsp_regions = target_memory_regions(files, &target);
+        let refs = match &bsp_regions {
+            Some(bsp) if refs.iter().all(|r| bsp.contains(r)) => Vec::new(),
+            _ => refs,
+        };
+
         analysis.rprocs.push(RprocFix {
-            delete_mboxes: label_has_property(files, &label, "mboxes"),
-            delete_mbox_names: label_has_property(files, &label, "mbox-names"),
+            delete_mboxes: target_has_property(files, &target, "mboxes"),
+            delete_mbox_names: target_has_property(files, &target, "mbox-names"),
             // Only strip the BSP's carveout list when we have our own to install
             // in its place. A layout with nothing to reserve (TCM firmware) would
             // otherwise delete vendor wiring — on i.MX 93 the board's
             // `memory-region` is what points the loader at `rsc_table` — and put
             // nothing back.
             delete_memory_region: !refs.is_empty()
-                && label_has_property(files, &label, "memory-region"),
-            label,
+                && target_has_property(files, &target, "memory-region"),
+            target,
             memory_regions: refs,
         });
     }
     Ok(())
 }
 
-fn find_compatible_label(files: &[File], compatible: &str) -> Option<String> {
-    let mut found = None;
+/// The override target for the first node whose `compatible` lists
+/// `compatible`: its label when it has one, else its absolute path. Overlays
+/// that set the `compatible` resolve to whatever they target.
+fn find_compatible_target(files: &[File], compatible: &str) -> Option<Reference> {
     for file in files {
-        edit::for_each_node(file, |node| {
+        let mut found = None;
+        for_each_node_path(file, &mut |path, node| {
             if found.is_none() && node.compatible().contains(&compatible) {
-                found = node.labels.first().cloned();
+                found = Some(match node.labels.first() {
+                    Some(label) => Reference::label(label.clone()),
+                    None => Reference::Path(path.to_string()),
+                });
             }
         });
         if found.is_none() {
-            found = edit::overlays(file).find_map(|overlay| {
-                overlay
-                    .compatible()
-                    .contains(&compatible)
-                    .then(|| overlay.target_label().map(str::to_owned))
-                    .flatten()
-            });
+            found = edit::overlays(file)
+                .find(|overlay| overlay.compatible().contains(&compatible))
+                .map(|overlay| overlay.target.clone());
+        }
+        if found.is_some() {
+            return found;
         }
     }
-    found
+    None
+}
+
+/// Visits every node of the file's tree with its absolute path (`/`,
+/// `/soc/mailbox@42430000`, …), depth-first.
+fn for_each_node_path<'a>(file: &'a File, visitor: &mut dyn FnMut(&str, &'a Node)) {
+    fn walk<'a>(path: &str, node: &'a Node, visitor: &mut dyn FnMut(&str, &'a Node)) {
+        visitor(path, node);
+        for child in &node.children {
+            let name = match &child.unit_address {
+                Some(unit) => format!("{}@{unit}", child.name),
+                None => child.name.clone(),
+            };
+            let child_path = if path == "/" {
+                format!("/{name}")
+            } else {
+                format!("{path}/{name}")
+            };
+            walk(&child_path, child, visitor);
+        }
+    }
+    for node in edit::root_nodes(file) {
+        walk("/", node, visitor);
+    }
+}
+
+/// `&label` or `&{/path}`, as a diagnostic spells the reference.
+fn reference_text(reference: &Reference) -> String {
+    match reference {
+        Reference::Label(label) => format!("&{label}"),
+        Reference::Path(path) => format!("&{{{path}}}"),
+    }
 }
 
 /// The firmware windows that need a `reserved-memory` carveout, in DTS order.
@@ -693,9 +742,9 @@ pub fn render_overlay(analysis: &Analysis, ir: &LoweredIr) -> (String, Vec<Strin
         .filter(|r| r.delete_mboxes || r.delete_mbox_names)
         .map(|r| {
             format!(
-                "remoteproc node `&{}` needs its `mboxes`/`mbox-names` removed, but an overlay \
+                "remoteproc node `{}` needs its `mboxes`/`mbox-names` removed, but an overlay \
                  cannot delete properties; use `[dts] mode = \"merge\"` so remoteproc loads",
-                r.label
+                reference_text(&r.target)
             )
         })
         .collect();
@@ -706,7 +755,7 @@ pub fn render_overlay(analysis: &Analysis, ir: &LoweredIr) -> (String, Vec<Strin
 /// Builds the label override that strips a remoteproc node's mailbox wiring and
 /// enables it.
 fn rproc_override(fix: &RprocFix) -> NodeOverlay {
-    let mut overlay = NodeOverlay::label(fix.label.clone());
+    let mut overlay = NodeOverlay::new(fix.target.clone());
     if fix.delete_mboxes {
         overlay = overlay.deletion(Deletion::Property("mboxes".to_string()));
     }
@@ -785,6 +834,76 @@ impl WithChildren for Node {
             self = self.child(child);
         }
         self
+    }
+}
+
+/// The `memory-region` references the node `target` names ends up with: its
+/// definition's list, replaced by any later override that sets one. `None` when
+/// nothing sets it or it is not a plain reference list.
+fn target_memory_regions(files: &[File], target: &Reference) -> Option<Vec<Reference>> {
+    /// `<&a &b>` and the vendor spelling `<&a>, <&b>` (a compound of cell
+    /// lists) alike.
+    fn flatten(value: &PropValue) -> Option<Vec<Reference>> {
+        match value {
+            PropValue::Cells(cells) => cells
+                .iter()
+                .map(|cell| match cell {
+                    Cell::Reference(reference) => Some(reference.clone()),
+                    _ => None,
+                })
+                .collect(),
+            PropValue::Reference(reference) => Some(vec![reference.clone()]),
+            PropValue::Compound(parts) => {
+                let mut out = Vec::new();
+                for part in parts {
+                    out.extend(flatten(part)?);
+                }
+                Some(out)
+            }
+            _ => None,
+        }
+    }
+    fn references(property: Option<&Property>) -> Option<Vec<Reference>> {
+        flatten(property?.value.as_ref()?)
+    }
+
+    let mut found = None;
+    for file in files {
+        match target {
+            Reference::Label(label) => {
+                if let Some(node) = edit::find_by_label(file, label) {
+                    found = references(node.get_property("memory-region")).or(found);
+                }
+            }
+            Reference::Path(path) => for_each_node_path(file, &mut |at, node| {
+                if at == path {
+                    found = references(node.get_property("memory-region")).or(found.take());
+                }
+            }),
+        }
+        for overlay in edit::overlays(file) {
+            let targets = overlay.target == *target
+                || matches!(target, Reference::Label(l) if overlay.target_label() == Some(l));
+            if targets {
+                found = references(overlay.get_property("memory-region")).or(found);
+            }
+        }
+    }
+    found
+}
+
+/// Whether the node `target` names carries a property, scanning both its
+/// definition and every override of it across all files.
+fn target_has_property(files: &[File], target: &Reference, property: &str) -> bool {
+    match target {
+        Reference::Label(label) => label_has_property(files, label, property),
+        Reference::Path(path) => files.iter().any(|file| {
+            let mut defined = false;
+            for_each_node_path(file, &mut |at, node| {
+                defined |= at == path && node.has_property(property);
+            });
+            defined || edit::overlays(file).any(|o| o.target == *target && o.has_property(property))
+        }),
     }
 }
 
@@ -938,7 +1057,7 @@ mod tests {
         assert_eq!(analysis.conflicts, vec!["mu7".to_string()]);
         assert_eq!(analysis.rprocs.len(), 1);
         let fix = &analysis.rprocs[0];
-        assert_eq!(fix.label, "cm33");
+        assert_eq!(fix.target, Reference::label("cm33".to_string()));
         assert!(fix.delete_mboxes);
         assert!(fix.delete_mbox_names);
     }
@@ -1138,6 +1257,63 @@ mod tests {
                 .any(|carveout| carveout.name == "cm7-firmware-shmem"
                     && carveout.base == 0x9000_0000)
         );
+    }
+
+    /// Mainline's `imx95-19x19-evk.dts` declares `remoteproc-cm7` with no label
+    /// and a `memory-region` that already lists the firmware windows alongside
+    /// the vring/vdev-buffer carveouts. The node is fixed up by path, its
+    /// mailbox wiring goes, and its carveout list stays as the BSP wrote it.
+    #[test]
+    fn unlabeled_remoteproc_is_fixed_by_path_and_keeps_a_covering_list() {
+        let source = parse_dts(
+            r#"/dts-v1/;
+            / {
+                reserved-memory {
+                    #address-cells = <2>;
+                    #size-cells = <2>;
+                    m7_reserved: memory@80000000 { reg = <0 0x80000000 0 0x1000000>; no-map; };
+                    vdev0vring0: vdev0vring0@88000000 { reg = <0 0x88000000 0 0x8000>; no-map; };
+                    rsc_table: rsc-table@88220000 { reg = <0 0x88220000 0 0x1000>; no-map; };
+                };
+                remoteproc-cm7 {
+                    compatible = "fsl,imx95-cm7";
+                    mboxes = <&mu7 0 1>;
+                    mbox-names = "tx";
+                    memory-region = <&vdev0vring0>, <&rsc_table>, <&m7_reserved>;
+                };
+            };"#,
+        )
+        .unwrap();
+        let ir = crate::Session::from_toml(
+            r#"
+                [profile]
+                chip = "mimx9596xvt"
+                shared = "./shared"
+                deploy_root = "/opt/consortium"
+
+                [endpoints]
+                cm7 = "./mcu"
+
+                [remoteproc.cm7]
+                shmem = { origin = 0x88220000, length = 0x00001000 }
+            "#,
+        )
+        .unwrap()
+        .lower()
+        .unwrap();
+
+        let mut analysis = Analysis::default();
+        analyze_remoteproc(std::slice::from_ref(&source), &ir, &mut analysis, true).unwrap();
+        let fix = &analysis.rprocs[0];
+        assert_eq!(fix.target, Reference::path("/remoteproc-cm7"));
+        assert!(fix.delete_mboxes && fix.delete_mbox_names);
+        assert!(!fix.delete_memory_region);
+        assert!(fix.memory_regions.is_empty());
+        assert!(analysis.carveouts.is_empty());
+
+        let dts = rproc_override(fix).to_dts();
+        assert!(dts.starts_with("&{/remoteproc-cm7} {"), "{dts}");
+        assert!(!dts.contains("memory-region"), "{dts}");
     }
 
     #[test]
