@@ -35,6 +35,13 @@
 //! either a second doorbell line or polling the channel's free bit
 //! ([`Completion`]).
 //!
+//! [`SmtTransport`] packages the window and doorbell as a Consortium transport.
+//! One exchange is `consortium-core`'s non-waiting pair — hand a request over if
+//! the channel is free, read the reply once the platform frees it again — so the
+//! async wait ([`Client::call`]) and the blocking one ([`Client::blocking_call`],
+//! for a synchronous `init()`) are core's `park_until` and `spin_until` over the
+//! same attempt, exactly as the IPC shared-memory transport's are.
+//!
 //! # Layout
 //!
 //! | Module      | Contents                                                    |
@@ -42,6 +49,7 @@
 //! | [`header`]  | The 32-bit message header: message id, type, protocol, token |
 //! | [`status`]  | The status codes a response carries                         |
 //! | [`smt`]     | The SMT channel layout and its volatile accessors           |
+//! | [`transport`] | [`SmtTransport`]: the channel and doorbell as a try transport |
 //! | [`client`]  | [`Client`] and the BASE/CLOCK/PINCTRL/POWER/RESET commands   |
 //!
 //! Only the agent role exists so far. The platform (server) role — a Consortium
@@ -65,6 +73,7 @@ pub mod error;
 pub mod header;
 pub mod smt;
 pub mod status;
+pub mod transport;
 
 pub use {
     client::{Client, Completion},
@@ -72,4 +81,5 @@ pub use {
     header::{MessageHeader, MessageType, ProtocolId},
     smt::{Smt, SmtError},
     status::Status,
+    transport::SmtTransport,
 };

@@ -29,14 +29,16 @@ use std::{
     time::Duration,
 };
 
-use consortium_core::{Chan, Doorbell, MaybeSend, UncachedRegion};
+use consortium_core::{
+    Chan, Doorbell, MaybeSend, TryError, TryRecvTransport, TrySendTransport, UncachedRegion,
+};
 use consortium_pmi::{
     ClockId, ClockProvider, FunctionId, PinConfig, PinId, PinctrlProvider, PowerDomainId,
     PowerProvider, PowerState, ResetId, ResetProvider,
 };
 use consortium_pmi_scmi::{
     Client, Completion, Error, MessageHeader, MessageType, ProtocolError, ProtocolId, Smt,
-    SmtError, Status,
+    SmtError, SmtTransport, Status,
     smt::{
         CHANNEL_STATUS, FLAG_COMPLETION_IRQ, FLAGS, LENGTH, MSG_HEADER, MSG_PAYLOAD, STATUS_ERROR,
         STATUS_FREE,
@@ -132,6 +134,8 @@ enum Reply {
     WrongToken,
     /// Set the channel's error bit.
     ChannelError,
+    /// Take the request and never answer: the channel stays with the platform.
+    Silent,
 }
 
 fn ok(ret: &[u32]) -> Reply {
@@ -193,6 +197,7 @@ fn answer(window: Raw, platform: &Mutex<Platform>) {
             window.put(CHANNEL_STATUS, STATUS_FREE);
         }
         Reply::ChannelError => window.put(CHANNEL_STATUS, STATUS_FREE | STATUS_ERROR),
+        Reply::Silent => return,
     }
     if completion_irq {
         p.completions += 1;
@@ -286,6 +291,18 @@ fn rig_with(len: usize, completion: Completion, replies: Vec<Reply>) -> Rig {
         platform,
         client,
     }
+}
+
+/// A bare transport (no client) over a fresh window, for the frame-trait view.
+fn transport_rig(replies: Vec<Reply>) -> (Window, SmtTransport<UncachedRegion, FakeBell>) {
+    let r = rig(replies);
+    let transport = SmtTransport::new(
+        Smt::new(r.window.region()).unwrap(),
+        r.client.into_parts().1,
+        chan(A2P),
+        Completion::Doorbell(chan(P2A)),
+    );
+    (r.window, transport)
 }
 
 fn rig(replies: Vec<Reply>) -> Rig {
@@ -426,6 +443,154 @@ fn doorbell_completion_waits_for_a_late_platform() {
             .major(),
         1
     );
+}
+
+// ── blocking calls ──────────────────────────────────────────────────────────
+
+/// A deadline `expired` closure: `false` until `after` has elapsed.
+fn deadline(after: Duration) -> impl FnMut() -> bool {
+    let start = std::time::Instant::now();
+    move || start.elapsed() >= after
+}
+
+const BASE_VERSION: u8 = 0x0;
+
+#[test]
+fn blocking_call_answers_without_consulting_the_deadline() {
+    let mut r = rig(vec![ok(&[0x0002_0001])]);
+    let mut out = [0u8; 4];
+    let len = r
+        .client
+        .blocking_call(ProtocolId::BASE, BASE_VERSION, &[], &mut out, || {
+            panic!("an immediate reply never needs the deadline")
+        })
+        .unwrap();
+    assert_eq!(len, 4);
+    assert_eq!(u32::from_le_bytes(out), 0x0002_0001);
+}
+
+#[test]
+fn blocking_call_spins_until_a_late_platform_answers() {
+    for completion in [Completion::Poll, Completion::Doorbell(chan(P2A))] {
+        let mut r = rig_with(128, completion, vec![ok(&[0x0001_0000])]);
+        r.platform.lock().unwrap().delay = Some(Duration::from_millis(20));
+        let mut out = [0u8; 4];
+        r.client
+            .blocking_call(
+                ProtocolId::BASE,
+                BASE_VERSION,
+                &[],
+                &mut out,
+                deadline(Duration::from_secs(5)),
+            )
+            .unwrap();
+        assert_eq!(u32::from_le_bytes(out), 0x0001_0000, "{completion:?}");
+    }
+}
+
+#[test]
+fn blocking_call_times_out_and_leaves_the_channel_busy() {
+    let mut r = rig(vec![Reply::Silent]);
+    let mut budget = 100;
+    let err = r
+        .client
+        .blocking_call(ProtocolId::BASE, BASE_VERSION, &[], &mut [0u8; 4], || {
+            budget -= 1;
+            budget == 0
+        })
+        .unwrap_err();
+    assert!(matches!(err, Error::TimedOut), "{err:?}");
+    assert_eq!(budget, 0);
+
+    // The platform still holds the request, so the next call is refused unsent.
+    let err = block_on(r.client.protocol_version(ProtocolId::BASE)).unwrap_err();
+    assert!(matches!(err, Error::ChannelBusy), "{err:?}");
+    assert_eq!(r.seen().len(), 1);
+}
+
+#[test]
+fn async_and_blocking_calls_share_the_token_sequence() {
+    let mut r = rig(vec![ok(&[1]), ok(&[2])]);
+    block_on(r.client.protocol_version(ProtocolId::BASE)).unwrap();
+    r.client
+        .blocking_call(ProtocolId::BASE, BASE_VERSION, &[], &mut [0u8; 4], || false)
+        .unwrap();
+    let seen = r.seen();
+    assert_eq!(seen[1].header.token(), seen[0].header.token() + 1);
+}
+
+// ── the frame-trait view ────────────────────────────────────────────────────
+
+/// One exchange through nothing but the byte-frame traits, as any code generic
+/// over a try transport would drive it.
+fn exchange<T: TrySendTransport + TryRecvTransport>(
+    transport: &mut T,
+    frame: &[u8],
+    buf: &mut [u8],
+) -> Result<usize, TryError<T::Error>> {
+    transport.try_send(frame)?;
+    transport.try_recv(buf)
+}
+
+#[test]
+fn frames_carry_the_header_then_status_and_return_values() {
+    let (_window, mut transport) = transport_rig(vec![ok(&[0x0003_0000])]);
+    let header = MessageHeader::new(ProtocolId::BASE, BASE_VERSION, MessageType::Command, 5);
+    let mut buf = [0u8; 16];
+
+    let n = exchange(&mut transport, &header.raw().to_le_bytes(), &mut buf).unwrap();
+    assert_eq!(n, 12);
+    assert_eq!(&buf[..4], &header.raw().to_le_bytes());
+    assert_eq!(&buf[4..8], &0i32.to_le_bytes(), "status word");
+    assert_eq!(&buf[8..12], &0x0003_0000u32.to_le_bytes());
+}
+
+#[test]
+fn try_recv_would_block_until_a_request_is_outstanding() {
+    let (_window, mut transport) = transport_rig(vec![]);
+    // The free bit is set, but nothing has been sent: there is no reply to read.
+    assert!(matches!(
+        transport.try_recv(&mut [0u8; 16]),
+        Err(TryError::WouldBlock)
+    ));
+}
+
+#[test]
+fn try_send_would_block_while_the_platform_owns_the_channel() {
+    let (_window, mut transport) = transport_rig(vec![Reply::Silent]);
+    let header = MessageHeader::new(ProtocolId::BASE, BASE_VERSION, MessageType::Command, 0);
+    transport.try_send(&header.raw().to_le_bytes()).unwrap();
+
+    assert!(matches!(
+        transport.try_send(&header.raw().to_le_bytes()),
+        Err(TryError::WouldBlock)
+    ));
+    assert!(matches!(
+        transport.try_recv(&mut [0u8; 16]),
+        Err(TryError::WouldBlock)
+    ));
+}
+
+#[test]
+fn frames_shorter_than_their_prefix_are_refused() {
+    let (_window, mut transport) = transport_rig(vec![ok(&[])]);
+    assert!(matches!(
+        transport.try_send(&[0u8; 3]),
+        Err(TryError::Fail(Error::Protocol(
+            ProtocolError::FrameTooShort { len: 3 }
+        )))
+    ));
+
+    let header = MessageHeader::new(ProtocolId::BASE, BASE_VERSION, MessageType::Command, 0);
+    transport.try_send(&header.raw().to_le_bytes()).unwrap();
+    assert!(matches!(
+        transport.try_recv(&mut [0u8; 7]),
+        Err(TryError::Fail(Error::Protocol(
+            ProtocolError::FrameTooShort { len: 7 }
+        )))
+    ));
+    // The refusal did not consume the reply.
+    assert_eq!(transport.try_recv(&mut [0u8; 8]).unwrap(), 8);
 }
 
 // ── providers ───────────────────────────────────────────────────────────────
