@@ -17,7 +17,7 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 
 //! The cross-core primitives every Consortium subsystem builds on: shared memory
-//! regions, the descriptor header, and doorbells.
+//! regions, the descriptor header, doorbells, and the transport traits.
 //!
 //! On a heterogeneous SoC, two cores that share a window of memory need exactly
 //! two things before they can agree on anything: a way to make writes visible to
@@ -30,11 +30,17 @@
 //! 3. *How does one core wake another?* — the [`Doorbell`] trait, its [`Chan`] and
 //!    [`Side`] vocabulary, the Type-A hardware bells in `bell` (IPCC, MU, HSEM,
 //!    behind their chip features), and the GPIO doorbell (feature `gpio`).
+//! 4. *What does handing a frame to the other core look like?* — the transport
+//!    traits ([`SendTransport`], [`TrySendTransport`], …) and the [`wait`] helpers
+//!    that turn a non-waiting attempt into an async or a blocking one.
 //!
-//! Protocol lives one level up, and each subsystem combines these pieces its own
-//! way: `consortium-ipc-transport-memory` owns the `CIPC` descriptor and slot
-//! protocol (region + doorbell), `consortium-dbg` owns `CDBG` and its log rings
-//! (region only), and `consortium-ipc` re-exports the doorbell vocabulary as part
+//! The transport traits are vocabulary, not protocol: they say what a send or
+//! receive promises, and nothing about the bytes. Protocol lives one level up, and
+//! each subsystem combines these pieces its own way:
+//! `consortium-ipc-transport-memory` owns the `CIPC` descriptor and slot protocol
+//! (region + doorbell), `consortium-pmi-scmi` the SCMI shared-memory channel
+//! (region + doorbell), and `consortium-dbg` `CDBG` and its log rings (region
+//! only). `consortium-ipc` re-exports the doorbell and transport vocabulary as part
 //! of its trait stack.
 //!
 //! # Regions and coherency
@@ -92,6 +98,18 @@
 //! a block this core drives, which is not necessarily the role a transport above
 //! it plays.
 //!
+//! # Transports
+//!
+//! A frame-atomic transport — one whose hand-off either lands a whole frame in a
+//! peer-visible buffer or does nothing — implements [`TrySendTransport`] /
+//! [`TryRecvTransport`], which never wait and report an occupied buffer as
+//! [`TryError::WouldBlock`]. [`wait::park_until`] then gives it an async form
+//! (park on a doorbell line between attempts, with the lost-wakeup ordering every
+//! doorbell needs) and [`wait::spin_until`] a blocking one (spin against a
+//! caller-supplied deadline). The async [`SendTransport`] / [`RecvTransport`],
+//! [`Connect`], and [`AckSendTransport`] are the traits `consortium-ipc`'s channels
+//! are generic over; wired transports implement only those.
+//!
 //! # Features
 //!
 //! - `std` — makes [`MaybeSend`] require `Send` and selects the `std` bell
@@ -116,12 +134,14 @@ pub mod descriptor;
 pub mod gpio;
 pub mod region;
 pub mod regions;
+pub mod wait;
 
 mod chan;
 mod doorbell;
 mod future;
 mod sealed;
 mod side;
+mod transport;
 
 pub use {
     chan::{Chan, ChanValidate},
@@ -130,4 +150,8 @@ pub use {
     region::Region,
     regions::{CachedRegion, UncachedRegion},
     side::{Primary, Secondary, Side, Tertiary},
+    transport::{
+        AckSendTransport, Connect, RecvTransport, SendTransport, TransportError, TryError,
+        TryRecvTransport, TrySendTransport,
+    },
 };

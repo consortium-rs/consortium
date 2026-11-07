@@ -8,10 +8,11 @@ crate sources and manifests over relying on older docs, examples, or design note
 The current implementation centers on explicit cross-core contracts:
 
 - `consortium-core` owns the primitives below every subsystem: shared-memory regions,
-  the descriptor header, and doorbells (the `Doorbell` trait, `Chan`, `Side`, the
-  Type-A bells, and the GPIO doorbell).
-- `consortium-ipc` defines typed channels, transport traits, and `IpcSafe`, and
-  re-exports core's doorbell vocabulary.
+  the descriptor header, doorbells (the `Doorbell` trait, `Chan`, `Side`, the
+  Type-A bells, and the GPIO doorbell), the transport traits (async, non-blocking
+  `Try*`, `Connect`, `AckSendTransport`), and the `wait` helpers over them.
+- `consortium-ipc` defines typed channels and `IpcSafe`, and re-exports core's
+  doorbell and transport vocabulary.
   - `consortium-ipc-transport-memory` owns the descriptor/slot shared-memory transport.
   - `consortium-ipc-transport-uart` provides COBS/CRC-framed wired IPC for embedded and Unix
     serial backends.
@@ -97,7 +98,7 @@ A-core, TEE, HMI, UIO, Cog, WebKit, and Yocto/OpenSTLinux flows are Linux/SDK or
 
 | Area            | Crates                                                                                                                                                                                                                            |
 | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Core            | `consortium-core` (regions, descriptor header, `Doorbell`/`Chan`/`Side`, Type-A bells, GPIO doorbell)                                                                                                                             |
+| Core            | `consortium-core` (regions, descriptor header, `Doorbell`/`Chan`/`Side`, Type-A bells, GPIO doorbell, transport traits, `wait`)                                                                                                   |
 | Core IPC        | `consortium-ipc`, `consortium-ipc-macros`, `consortium-ipc-macros-impl`                                                                                                                                                           |
 | Codecs          | `consortium-codec`, `consortium-codec-macros`, `consortium-codec-macros-impl`                                                                                                                                                     |
 | Transports      | `consortium-ipc-transport-memory`, `consortium-ipc-transport-uart*`, `consortium-ipc-transport-fdcan*`                                                                                                                            |
@@ -142,7 +143,26 @@ Channel<Tx/Rx> - typed directed endpoint over one transport half
 Transceiver    - typed send/receive endpoint built from paired channels
 
 AckSendTransport - optional: a send that resolves once the peer has taken the message
+TrySend/TryRecv  - optional: a frame-atomic hand-off that never waits
 ```
+
+The transport traits (everything above except `CodecFor`, `Channel`, and
+`Transceiver`) are defined in `consortium-core` and re-exported by `consortium-ipc`,
+so subsystems below IPC — SCMI, the debug ring — share them without depending on
+it.
+
+**The non-waiting pair is the common base of every memory-backed link.**
+`TrySendTransport`/`TryRecvTransport` hand one frame over in one synchronous step
+and report an occupied buffer (or an empty one) as `TryError::WouldBlock`, never
+waiting and never truncating, so they are callable from an ISR, a `defmt` logger,
+or a panic handler. A transport implementing them gets its async form from
+`consortium_core::wait::park_until` (check, arm the doorbell line, poll once,
+re-check, park — the one implementation of that ordering) and a blocking form from
+`wait::spin_until`, which takes an `expired` closure because a blocking call cannot
+be wrapped in an outer timeout. `SharedMemoryTransport` implements the pair; its
+async `send` still reports an occupied slot as `Error::NoChannel`. Wired transports
+(UART, FDCAN) do not implement it: a frame longer than the FIFO cannot be handed
+over atomically.
 
 `consortium-ipc` is `no_std` unless `std` is enabled. Its feature shape is small:
 `alloc`, `futures`, and `std = ["alloc", "futures"]`. Keep core traits usable from
@@ -384,7 +404,8 @@ like `SendTransport`/`RecvTransport`. `LineWait` is a named future because its `
 disarms its line on cancel (a `select!` timeout, a dropped `recv`) — **disarm only**,
 never acknowledge, or an unconsumed notification is lost. The trade is that the future
 type is unnameable through the trait, so a receive loop holds it as a local across an
-`.await`. `recv_bytes` in the transport is the worked example, and its ordering is
+`.await`. `consortium_core::wait::park_until` is the one implementation (the
+shared-memory transport drives every wait through it), and its ordering is
 load-bearing — create the wait future, poll it **once** through a `poll_fn` to register
 the waker, re-scan the slots, and only then park on it. Awaiting it directly registers and
 parks in one step, which reopens the lost-wakeup race the `RacyDoorbell` test covers (the
