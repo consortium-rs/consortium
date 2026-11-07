@@ -405,7 +405,8 @@ disarms its line on cancel (a `select!` timeout, a dropped `recv`) — **disarm 
 never acknowledge, or an unconsumed notification is lost. The trade is that the future
 type is unnameable through the trait, so a receive loop holds it as a local across an
 `.await`. `consortium_core::wait::park_until` is the one implementation (the
-shared-memory transport drives every wait through it), and its ordering is
+shared-memory transport and the SCMI agent drive every wait through it), and its
+ordering is
 load-bearing — create the wait future, poll it **once** through a `poll_fn` to register
 the waker, re-scan the slots, and only then park on it. Awaiting it directly registers and
 parks in one step, which reopens the lost-wakeup race the `RacyDoorbell` test covers (the
@@ -439,21 +440,35 @@ must ask over SCMI; RISC-V platforms may answer RPMI. The design note is
 `consortium-pmi-scmi` is the SCMI agent, layered like the spec: `header` (message id
 7:0, type 9:8, protocol 17:10, token 27:18), `status` (0 … −10, plus `Unknown`), `smt`
 (the Shared Memory Transport window over any `Region`: status at 0x04 with free/error
-bits, flags 0x10, length 0x14, header 0x18, payload 0x1c), and `client::Client<R, D>`
-over any `Doorbell`. `Client::call` checks the channel is free (`Error::ChannelBusy`
-otherwise), writes and flushes the request, rings the agent-to-platform line, waits —
-`Completion::Doorbell(line)` parks on a line the platform rings back,
-`Completion::Poll` spins on the free bit — and checks the response echoes the request's
-protocol, message, and token. BASE, CLOCK, PINCTRL, POWER, and RESET are implemented;
+bits, flags 0x10, length 0x14, header 0x18, payload 0x1c), `transport::SmtTransport<R, D>`
+(the window plus doorbell as a Consortium transport), and `client::Client<R, D>` over
+any `Doorbell`. `SmtTransport` is built on core's non-waiting pair:
+`try_send_message` writes a request into a free channel and rings (`WouldBlock` while
+the platform owns it), `try_recv_message` reads the reply once the platform frees the
+channel (`WouldBlock` until then, and with no request outstanding — the free bit alone
+cannot tell "replied" from "nothing sent"). Its waiting forms are core's helpers over
+that attempt: `recv_message` is `park_until` on `Completion::Doorbell(line)` or a
+yield-between-polls loop on `Completion::Poll`, and `blocking_recv_message` is
+`spin_until` with a caller deadline. The message API keeps the header apart from the
+payload so a pinctrl request (up to ~2 KB) is written straight into the window;
+`TrySendTransport`/`TryRecvTransport` are thin adapters viewing the same exchange as one
+`header | payload` frame. `Client::call` builds the header, maps a busy channel to
+`Error::ChannelBusy`, waits through the transport, and checks the response echoes the
+request's protocol, message, and token. `Client::blocking_call` is the same exchange
+for code with no executor; a missed deadline is `Error::TimedOut` and leaves the
+channel busy until the platform frees it. BASE, CLOCK, PINCTRL, POWER, and RESET are
+implemented;
 `CLOCK_CONFIG_SET` queries the clock protocol version once and sends the 12-byte layout
 from 3.0 on, as Linux does. Message ids and payloads were checked against Linux's
 `drivers/firmware/arm_scmi`; keep them checked against a source, not memory.
 
 Not built yet: the i.MX 95 binding (the SM's MU lines and SMT window, from its
 configuration, as a chip-database record with `Session` reserving that MU),
-`consortium-cfg` lowering of clock/pin settings into provider calls (generated MCU
-`init()` is synchronous), the platform/server role, notifications and delayed
-responses, NXP vendor protocols, a register backend, and RPMI.
+`consortium-cfg` lowering of clock/pin settings into calls from the synchronous
+generated MCU `init()` (`blocking_call` is the primitive it would use; the provider
+traits are async and have no blocking form yet), the platform/server role,
+notifications and delayed responses, NXP vendor protocols, a register backend, and
+RPMI.
 
 `tests/fake_server.rs` drives the agent against a scripted platform over a heap-backed
 `UncachedRegion`; extend it before reaching for hardware. Under `defmt`,
