@@ -134,6 +134,7 @@ mod tests {
             ])
             .is_ok()
         );
+        assert!(Cli::try_parse_from(["csti", "new", "demo", "--chip", "mimx9596"]).is_ok());
         assert!(Cli::try_parse_from(["csti", "new", "demo", "--chip", "mimx95"]).is_err());
         assert!(Cli::try_parse_from(["csti", "new", "-i"]).is_ok());
     }

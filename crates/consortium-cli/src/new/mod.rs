@@ -17,7 +17,7 @@
 //! The `new` subcommand: scaffold a Consortium project.
 //!
 //! Writes a `Consortium.toml`, a root Cargo workspace, and the endpoint crates —
-//! the Linux application, the CM33 firmware, and the message types they share —
+//! the Linux application, the real-time firmware, and the message types they share —
 //! wired together over one shared-memory channel and a defmt ring, plus an OP-TEE
 //! trusted application and a Cog/WebKit HMI when asked for. Every choice can come
 //! from flags; `--interactive` prompts for whatever the flags leave open.
@@ -91,7 +91,7 @@ pub fn run(args: NewArgs) -> Result<(), String> {
         root.display()
     );
     println!("  app:      app/ (Linux application)");
-    println!("  firmware: mcu/ (Cortex-M33)");
+    println!("  firmware: mcu/ ({})", project.chip.mcu_name());
     println!("  shared:   shared/ (IPC message types)");
     if project.tee {
         println!("  tee:      ta/ (OP-TEE trusted application)");
@@ -428,7 +428,7 @@ mod tests {
                     .await
                     .unwrap_or_else(|e| panic!("{what}: {e}"));
                 assert_eq!(plan.firmware.len(), 1, "{what}");
-                assert_eq!(plan.firmware[0].config.target, "thumbv8m.main-none-eabihf");
+                assert_eq!(plan.firmware[0].config.target, chip.mcu_target(), "{what}");
                 assert_eq!(plan.ta_skipped.is_some(), tee, "{what}");
             }
         }

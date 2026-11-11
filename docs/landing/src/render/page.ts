@@ -268,7 +268,12 @@ function targets(site: Site): string {
         <div class="chip-cores">${esc(c.cores)}</div>
         <dl class="chip-meta">
           <div><dt>firmware</dt><dd>${esc(c.controller)}</dd></div>
-          <div><dt>doorbell</dt><dd>${esc(c.doorbells)}</dd></div>
+          <div><dt>doorbell</dt><dd>${esc(c.doorbells)}</dd></div>${
+            c.firstHil
+              ? `
+          <div><dt>first HIL</dt><dd><time datetime="${esc(c.firstHil)}">${esc(c.firstHil)}</time></dd></div>`
+              : ''
+          }
         </dl>
         <div class="chip-note">${esc(c.note)}</div>
       </article>`,

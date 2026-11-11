@@ -250,6 +250,19 @@ pub struct BellA<H: BellHw> {
     hw: H,
 }
 
+/// Opaque: a bell is a register window, and its state is what the hardware
+/// says. It exists so errors generic over the doorbell (such as the shared-memory
+/// transport's `Error<D>`, whose derived `Debug` requires `D: Debug`) can be
+/// printed with `{:?}`.
+impl<H: BellHw> core::fmt::Debug for BellA<H> {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        f.debug_struct("BellA")
+            .field("block", &core::any::type_name::<H>())
+            .field("channels", &H::CHANNELS)
+            .finish()
+    }
+}
+
 impl<H: BellHw> BellA<H> {
     /// Create a doorbell over the register window at `base`.
     ///

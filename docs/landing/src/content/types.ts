@@ -121,6 +121,8 @@ export interface Chip {
   support: Support
   /** Label for the support badge, e.g. "Derived from MP25". */
   supportLabel: string
+  /** ISO date of the first full hardware-in-the-loop pass, for verified chips. */
+  firstHil?: string
   note: string
 }
 

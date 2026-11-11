@@ -247,7 +247,7 @@ export const site: Site = {
   targets: {
     id: 'targets',
     title: 'Supported chips & targets',
-    lede: 'STM32MP25 and i.MX 93 are officially supported and tested in hardware. STM32MP23 and STM32MP21 reuse the STM32MP25 support without formal verification, i.MX 95 is still being brought up, and i.MX 94 is planned.',
+    lede: 'STM32MP25, i.MX 93 and i.MX 95 are officially supported and tested in hardware. STM32MP23 and STM32MP21 reuse the STM32MP25 support without formal verification, and i.MX 952, i.MX 937, i.MX 93W and i.MX 94 are planned.',
     chips: [
       {
         name: 'STM32MP25',
@@ -256,6 +256,7 @@ export const site: Site = {
         doorbells: 'IPCC',
         support: 'official',
         supportLabel: 'Verified',
+        firstHil: '2026-07-23',
         note: 'Advanced industrial HMI, AI and multimedia.',
       },
       {
@@ -265,7 +266,18 @@ export const site: Site = {
         doorbells: 'MU',
         support: 'official',
         supportLabel: 'Verified',
+        firstHil: '2026-10-31',
         note: 'Low-power intelligent edge devices.',
+      },
+      {
+        name: 'i.MX 95',
+        cores: 'A55 + M7 + M33 · NPU/GPU/VPU',
+        controller: 'Cortex-M7',
+        doorbells: 'MU',
+        support: 'official',
+        supportLabel: 'Verified',
+        firstHil: '2026-11-07',
+        note: 'High-performance edge AI and multi-camera vision.',
       },
       {
         name: 'STM32MP23',
@@ -286,13 +298,31 @@ export const site: Site = {
         note: 'Cost-sensitive industrial control and gateways.',
       },
       {
-        name: 'i.MX 95',
-        cores: 'A55 + M7 + M33 · NPU/GPU/VPU',
+        name: 'i.MX 952',
+        cores: 'A55 + M7',
         controller: 'Cortex-M7',
         doorbells: 'MU',
-        support: 'in-progress',
-        supportLabel: 'In progress',
-        note: 'High-performance edge AI and multi-camera vision.',
+        support: 'planned',
+        supportLabel: 'Planned',
+        note: '',
+      },
+      {
+        name: 'i.MX 937',
+        cores: 'A55 + M7',
+        controller: 'Cortex-M7',
+        doorbells: 'MU',
+        support: 'planned',
+        supportLabel: 'Planned',
+        note: '',
+      },
+      {
+        name: 'i.MX 93W',
+        cores: 'A55 + M33',
+        controller: 'Cortex-M33',
+        doorbells: 'MU',
+        support: 'planned',
+        supportLabel: 'Planned',
+        note: '',
       },
       {
         name: 'i.MX 94',
@@ -301,12 +331,12 @@ export const site: Site = {
         doorbells: 'MU',
         support: 'planned',
         supportLabel: 'Planned',
-        note: 'Industrial and automotive networking with TSN.',
+        note: '',
       },
     ],
     arch: {
       title: 'Architecture targets',
-      lede: '`aarch64-unknown-linux-gnu` and `thumbv8m.main-none-eabihf` run on real hardware. The other listed targets compile the code, but have not run on a board yet. Dashed targets are not built yet; support is coming.',
+      lede: '`aarch64-unknown-linux-gnu`, `thumbv8m.main-none-eabihf` and `thumbv7em-none-eabihf` run on real hardware. The other listed targets compile the code, but have not run on a board yet. Dashed targets are not built yet; support is coming.',
     },
     groups: [
       {
@@ -322,7 +352,7 @@ export const site: Site = {
         accent: 'accent2',
         targets: [
           { triple: 'thumbv8m.main-none-eabihf', status: 'verified' },
-          { triple: 'thumbv7em-none-eabihf', status: 'compiles' },
+          { triple: 'thumbv7em-none-eabihf', status: 'verified' },
           { triple: 'thumbv6m-none-eabi', status: 'planned' },
         ],
       },
