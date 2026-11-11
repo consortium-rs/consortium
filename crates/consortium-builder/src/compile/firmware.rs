@@ -31,7 +31,9 @@ use tokio::process::Command;
 
 use super::Compiler;
 use crate::compile::env::CstiWorkspace;
-use crate::compile::utils::{elf_path, inject_csti, resolve_cargo, run_command, verify_elf};
+use crate::compile::utils::{
+    elf_path, inject_csti, resolve_cargo, resolve_rustc, run_command, verify_elf,
+};
 use crate::progress::BuildReporter;
 
 /// Error type for firmware compilation.
@@ -314,7 +316,10 @@ impl FirmwareCompiler {
         subcommand: &str,
         reporter: Option<&dyn BuildReporter>,
     ) -> Result<(), FirmwareCompileError> {
-        let cargo = resolve_cargo()
+        let cargo = resolve_cargo(&config.path)
+            .await
+            .map_err(FirmwareCompileError::CargoResolveError)?;
+        let rustc = resolve_rustc(&config.path)
             .await
             .map_err(FirmwareCompileError::CargoResolveError)?;
 
@@ -322,7 +327,8 @@ impl FirmwareCompiler {
         cmd.arg(subcommand)
             .arg("--target")
             .arg(&config.target)
-            .current_dir(&config.path);
+            .current_dir(&config.path)
+            .env("RUSTC", &rustc);
 
         inject_csti(&mut cmd, config.workspace.as_ref());
 

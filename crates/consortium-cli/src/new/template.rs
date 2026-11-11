@@ -19,8 +19,9 @@
 //! Rendering is pure: [`render`] returns relative paths and contents, and the caller
 //! decides where (and whether) to write them. Every project is a `unified` Cargo
 //! workspace — one root `Cargo.toml` whose members are the endpoint crates — with one
-//! `link` shared-memory channel between the Linux application and the CM33 firmware
-//! and a defmt ring for the firmware. TEE and HMI add a crate or a frontend each.
+//! `link` shared-memory channel between the Linux application and the real-time
+//! firmware (a Cortex-M33 or Cortex-M7, per chip) and a defmt ring for the
+//! firmware. TEE and HMI add a crate or a frontend each.
 //!
 //! Templates use `{{key}}` placeholders rather than `format!`, so the Rust and
 //! JavaScript sources below keep their own braces unescaped.
@@ -41,18 +42,33 @@ pub enum Chip {
     /// NXP i.MX 93 MIMX9352 (Cortex-A55 + Cortex-M33), FRDM-i.MX93.
     #[value(name = "mimx9352")]
     Mimx9352,
+    /// NXP i.MX 95 MIMX9596 (Cortex-A55 + Cortex-M7), FRDM-i.MX95.
+    #[value(name = "mimx9596")]
+    Mimx9596,
 }
 
 impl Chip {
     /// Every supported chip, in prompt order.
-    pub const ALL: [Self; 2] = [Self::Stm32mp257f, Self::Mimx9352];
+    pub const ALL: [Self; 3] = [Self::Stm32mp257f, Self::Mimx9352, Self::Mimx9596];
 
     /// A one-line description for prompts and summaries.
     pub fn label(self) -> &'static str {
         match self {
             Self::Stm32mp257f => "STM32MP257F (Cortex-A35 + Cortex-M33, STM32MP257F-DK)",
             Self::Mimx9352 => "MIMX9352 (i.MX 93: Cortex-A55 + Cortex-M33, FRDM-i.MX93)",
+            Self::Mimx9596 => "MIMX9596 (i.MX 95: Cortex-A55 + Cortex-M7, FRDM-i.MX95)",
         }
+    }
+
+    /// The firmware core, e.g. `Cortex-M7`.
+    pub fn mcu_name(self) -> &'static str {
+        self.profile().mcu_name
+    }
+
+    /// The firmware's Rust target.
+    #[cfg(test)]
+    pub fn mcu_target(self) -> &'static str {
+        self.profile().mcu_target
     }
 
     fn profile(self) -> ChipProfile {
@@ -61,6 +77,9 @@ impl Chip {
                 manifest_chip: "stm32mp257fak3",
                 part: "STM32MP257F",
                 ap_core: "Cortex-A35",
+                mcu_core: "cm33",
+                mcu_name: "Cortex-M33",
+                mcu_target: "thumbv8m.main-none-eabihf",
                 devkit: "stm32mp257f-dk",
                 kernel_recipe: "linux-stm32mp",
                 feature: "stm32mp25x",
@@ -74,12 +93,16 @@ impl Chip {
                 hal_crate: "consortium-hal-stm32mp2",
                 hal_features: &["defmt", "rt", "stm32mp25x", "time-driver-gp-tim"],
                 tick_hz: "tick-hz-1_000_000",
-                tcm_constrained: false,
+                tcm: None,
+                remoteproc: None,
             },
             Self::Mimx9352 => ChipProfile {
                 manifest_chip: "mimx9352",
                 part: "MIMX9352",
                 ap_core: "Cortex-A55",
+                mcu_core: "cm33",
+                mcu_name: "Cortex-M33",
+                mcu_target: "thumbv8m.main-none-eabihf",
                 devkit: "imx93-11x11-frdm",
                 kernel_recipe: "linux-imx",
                 feature: "mimx93",
@@ -93,7 +116,33 @@ impl Chip {
                 hal_crate: "consortium-hal-imx9",
                 hal_features: &["defmt", "mimx93", "rt", "time-driver-lpit"],
                 tick_hz: "tick-hz-24_000_000",
-                tcm_constrained: true,
+                tcm: Some("The CM33 runs from 128 KiB of TCM"),
+                remoteproc: None,
+            },
+            Self::Mimx9596 => ChipProfile {
+                manifest_chip: "mimx9596",
+                part: "MIMX9596",
+                ap_core: "Cortex-A55",
+                mcu_core: "cm7",
+                mcu_name: "Cortex-M7",
+                mcu_target: "thumbv7em-none-eabihf",
+                devkit: "imx95-15x15-frdm",
+                kernel_recipe: "linux-imx",
+                feature: "mimx95",
+                doorbell: "mu7",
+                doorbell_note: "MU7 (Linux drives side A, the CM7 side B)",
+                ap_chan: 6,
+                mcu_chan: 7,
+                memory_note: "the DDR window 0x88000000..0x8A000000 that the System\n\
+                              # Manager grants both the CM7 and Linux (the CM7 has no OCRAM),\n\
+                              # above NXP's vring/vdev/resource-table reservations",
+                ipc_base: 0x8830_0000,
+                dbg_base: 0x8830_4000,
+                hal_crate: "consortium-hal-imx9",
+                hal_features: &["defmt", "mimx95", "rt", "time-driver-lpit"],
+                tick_hz: "tick-hz-24_000_000",
+                tcm: Some("The CM7 runs from 256 KiB of TCM"),
+                remoteproc: Some(IMX95_FRDM_REMOTEPROC),
             },
         }
     }
@@ -105,6 +154,11 @@ struct ChipProfile {
     manifest_chip: &'static str,
     part: &'static str,
     ap_core: &'static str,
+    /// The firmware core's endpoint name, as the chip database spells it.
+    mcu_core: &'static str,
+    mcu_name: &'static str,
+    /// The firmware's Rust target.
+    mcu_target: &'static str,
     /// Board DTS file stem in the kernel checkout.
     devkit: &'static str,
     kernel_recipe: &'static str,
@@ -121,13 +175,33 @@ struct ChipProfile {
     hal_features: &'static [&'static str],
     /// The `embassy-time` tick rate matching the HAL's time driver.
     tick_hz: &'static str,
-    /// The CM33 runs from TCM, where an unoptimized firmware does not fit.
-    tcm_constrained: bool,
+    /// Set when the firmware runs from TCM, where an unoptimized build does not
+    /// fit; the text opens the `[profile.dev]` comment.
+    tcm: Option<&'static str>,
+    /// A `[remoteproc.<core>]` table overriding the chip database's load layout.
+    remoteproc: Option<&'static str>,
 }
+
+/// The FRDM-i.MX95's rpmsg System Manager config lets Linux write the CM7's TCM
+/// but not the chip default's DDR code carveout, so the firmware loads into TCM.
+const IMX95_FRDM_REMOTEPROC: &str = "
+# The CM7 runs from its TCM: the FRDM-i.MX95's rpmsg System Manager config
+# (imx-sm `mx95frdmrpmsg`, the `rpmsg` imx-boot variant) lets Linux write the
+# M7 TCM but not the chip default's DDR code carveout. These are the M7's own
+# addresses: TCM code at 0x00000000 and TCM sys at 0x20000000, 256 KiB each.
+# TCM is not DRAM, so nothing is reserved. On an EVK, whose rpmsg config grants
+# that DDR, drop this table to inherit the DDR defaults. Mainline's FRDM tree
+# declares no `remoteproc-cm7` node, so pass `csti build --linux` NXP's
+# linux-imx checkout.
+[remoteproc.cm7]
+vector = { length = 0x00001000, origin = 0x00000000, reserve = false }
+flash  = { length = 0x0003F000, origin = 0x00001000, reserve = false }
+ram    = { length = 0x00040000, origin = 0x20000000, reserve = false }
+";
 
 /// IPC window length; one descriptor plus a 128-byte-MTU slot per direction fits.
 const IPC_LENGTH: u32 = 0x4000;
-/// defmt ring length for the CM33.
+/// defmt ring length for the firmware.
 const DBG_LENGTH: u32 = 0x2000;
 
 /// Where generated crates get the Consortium crates from.
@@ -202,7 +276,7 @@ pub fn render(project: &Project) -> Vec<(PathBuf, String)> {
         file("Consortium.toml", consortium_toml(project, &chip, &vars)),
         file("Cargo.toml", workspace_toml(project, &chip)),
         file(".gitignore", gitignore(project)),
-        file("rust-toolchain.toml", rust_toolchain(project)),
+        file("rust-toolchain.toml", rust_toolchain(project, &chip)),
         file(
             "shared/Cargo.toml",
             vars.fill(SHARED_CARGO).replace(
@@ -248,6 +322,9 @@ impl Vars {
             ("snake", project.name.replace('-', "_")),
             ("part", chip.part.to_string()),
             ("ap_core", chip.ap_core.to_string()),
+            ("mcu_core", chip.mcu_core.to_string()),
+            ("mcu_name", chip.mcu_name.to_string()),
+            ("mcu_target", chip.mcu_target.to_string()),
             ("tee_uuid", project.tee_uuid.clone()),
         ])
     }
@@ -263,7 +340,7 @@ impl Vars {
 
 fn consortium_toml(project: &Project, chip: &ChipProfile, vars: &Vars) -> String {
     let mut out = vars.fill(
-        "# {{name}}: {{ap_core}} Linux application + Cortex-M33 real-time firmware on the
+        "# {{name}}: {{ap_core}} Linux application + {{mcu_name}} real-time firmware on the
 # {{part}}. Generated by `csti new`.
 #
 #   csti fetch                       # download every endpoint's dependencies
@@ -289,12 +366,14 @@ kernel_recipe = \"{recipe}\"
 # Every endpoint crate is a member of the Cargo workspace in `Cargo.toml` beside
 # this file, and builds into its `target/`.
 workspace = \"unified\"
-
+{remoteproc}
 [endpoints]
 # Runtime endpoint name -> crate root.
 linux = \"./app\"
-cm33  = \"./mcu\"
+{mcu_core:<5} = \"./mcu\"
 ",
+        remoteproc = chip.remoteproc.unwrap_or(""),
+        mcu_core = chip.mcu_core,
         chip = chip.manifest_chip,
         devkit = chip.devkit,
         name = project.name,
@@ -310,13 +389,13 @@ cm33  = \"./mcu\"
 # decoded frames to `tracing`; \"interface\" hands back reader handles.
 mode = \"auto\"
 
-# defmt ring for the CM33, just above the IPC window below.
-[dbg.cm33]
+# defmt ring for the {mcu_upper}, just above the IPC window below.
+[dbg.{mcu_core}]
 memory = {{ base = {dbg_base:#010x}, length = {dbg_len:#x} }}
 mtu    = 64
 
 # One shared-memory channel between the application and the firmware, signalled
-# over {doorbell_note}. The window lives in {memory_note}; the CM33 reaches it
+# over {doorbell_note}. The window lives in {memory_note}; the {mcu_upper} reaches it
 # at its physical base and Linux maps it through a UIO device. Each party sends
 # the type listed against it, from the `shared` crate.
 [[ipc.channel]]
@@ -324,12 +403,15 @@ name          = \"link\"
 doorbell      = \"{doorbell}\"
 pattern       = \"memory\"
 primary       = \"linux\"
-secondary     = \"cm33\"
+secondary     = \"{mcu_core}\"
 party.linux   = {{ chan = {ap_chan}, type = \"Command\" }}
-party.cm33    = {{ chan = {mcu_chan}, type = \"Telemetry\" }}
+{party:<13} = {{ chan = {mcu_chan}, type = \"Telemetry\" }}
 config.memory = {{ base = {ipc_base:#010x}, length = {ipc_len:#x} }}
 mtu           = 128
 ",
+        mcu_core = chip.mcu_core,
+        mcu_upper = chip.mcu_core.to_uppercase(),
+        party = format!("party.{}", chip.mcu_core),
         dbg_base = chip.dbg_base,
         dbg_len = DBG_LENGTH,
         doorbell_note = chip.doorbell_note,
@@ -390,14 +472,14 @@ edition = \"2024\"
 version = \"0.1.0\"
 "
     );
-    if chip.tcm_constrained {
-        out.push_str(
+    if let Some(tcm) = chip.tcm {
+        out.push_str(&format!(
             "
-# The CM33 runs from 128 KiB of TCM, where an unoptimized firmware does not fit.
+# {tcm}, where an unoptimized firmware does not fit.
 [profile.dev]
 opt-level = \"s\"
-",
-        );
+"
+        ));
     }
     out.push_str(
         "
@@ -408,14 +490,14 @@ lto = true
     out
 }
 
-fn rust_toolchain(project: &Project) -> String {
+fn rust_toolchain(project: &Project, chip: &ChipProfile) -> String {
     format!(
         "[toolchain]
 channel = \"{}\"
 # The firmware and the Linux application targets.
-targets = [\"aarch64-unknown-linux-gnu\", \"thumbv8m.main-none-eabihf\"]
+targets = [\"aarch64-unknown-linux-gnu\", \"{}\"]
 ",
-        project.toolchain
+        project.toolchain, chip.mcu_target
     )
 }
 
@@ -548,8 +630,10 @@ fn mcu_cargo(project: &Project, chip: &ChipProfile, vars: &Vars) -> String {
             chip.hal_crate,
             &format!("default-features = false, features = [{hal_features}]"),
         ),
-        "# `logger` is the defmt sink behind `[dbg.cm33]`; `panic-handler` reports a panic"
-            .to_string(),
+        format!(
+            "# `logger` is the defmt sink behind `[dbg.{}]`; `panic-handler` reports a panic",
+            chip.mcu_core
+        ),
         "# through the same ring before halting.".to_string(),
         src.dep(
             "consortium-dbg",
@@ -572,7 +656,7 @@ fn mcu_cargo(project: &Project, chip: &ChipProfile, vars: &Vars) -> String {
 # `include!`s (IPC channels, MPU/NVIC and time-driver bring-up) and `memory.x`
 # from `../Consortium.toml`, then post-processes the ELF for Linux remoteproc.
 [package]
-description       = \"{{name}} Cortex-M33 firmware ({{part}})\"
+description       = \"{{name}} {{mcu_name}} firmware ({{part}})\"
 edition.workspace = true
 name              = \"{{name}}-mcu\"
 publish           = false
@@ -669,7 +753,7 @@ pub struct Command {
     pub period_ms: u32,
 }
 
-/// Sent periodically by the CM33 firmware.
+/// Sent periodically by the real-time firmware.
 #[derive(Clone, Copy, Debug, IpcSafe, Deserialize, Serialize)]
 pub struct Telemetry {
     /// Report counter; wraps at `u32::MAX`.
@@ -824,7 +908,7 @@ const MCU_BUILD: &str = "fn main() {
 ";
 
 const MCU_CARGO_CONFIG: &str = "[build]
-target = \"thumbv8m.main-none-eabihf\"
+target = \"{{mcu_target}}\"
 
 [env]
 # defmt drops everything below `error` when DEFMT_LOG is unset. The HAL stays at
@@ -833,7 +917,7 @@ target = \"thumbv8m.main-none-eabihf\"
 DEFMT_LOG = \"info,{{snake}}_mcu=trace\"
 ";
 
-const MCU_MAIN: &str = "//! {{name}} firmware on the {{part}}'s Cortex-M33.
+const MCU_MAIN: &str = "//! {{name}} firmware on the {{part}}'s {{mcu_name}}.
 //!
 //! `consortium.gen.rs`, generated by `csti build` from `../Consortium.toml`, sets up
 //! the defmt ring, MPU, NVIC, doorbell, and Embassy time driver in `init` and

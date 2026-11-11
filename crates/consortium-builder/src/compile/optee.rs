@@ -37,7 +37,7 @@ use uuid::Uuid;
 use super::Compiler;
 use crate::compile::env::CstiWorkspace;
 use crate::compile::utils::{
-    binary_name, elf_path, inject_csti, resolve_cargo, run_command, verify_elf,
+    binary_name, elf_path, inject_csti, resolve_cargo, resolve_rustc, run_command, verify_elf,
 };
 use crate::progress::BuildReporter;
 
@@ -207,7 +207,10 @@ impl OpteeCompiler {
             ));
         }
 
-        let cargo = resolve_cargo()
+        let cargo = resolve_cargo(&config.path)
+            .await
+            .map_err(OpteeCompileError::UtilityError)?;
+        let rustc = resolve_rustc(&config.path)
             .await
             .map_err(OpteeCompileError::UtilityError)?;
 
@@ -228,6 +231,7 @@ impl OpteeCompiler {
             .arg("--target")
             .arg(OPTEE_TARGET)
             .current_dir(&config.path)
+            .env("RUSTC", &rustc)
             .env("TA_DEV_KIT_DIR", &config.ta_dev_kit_dir)
             .env(TEE_UUID_ENV, config.ta_uuid.to_string())
             .env("RUSTFLAGS", "-C panic=abort");

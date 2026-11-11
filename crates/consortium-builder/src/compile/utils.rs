@@ -351,18 +351,26 @@ fn custom_command(env_cmd: Option<String>) -> Result<Option<HmiBuildCommand>, St
     Ok(Some(HmiBuildCommand::Custom(parts)))
 }
 
-/// Resolves upstream cargo or rustc via `rustup which --toolchain stable`.
-pub async fn resolve_rustup(tool: &str) -> Result<String, String> {
+/// Resolves upstream cargo or rustc via `rustup which`, run in `project`.
+///
+/// Running in the project's directory makes rustup pick the toolchain that
+/// project builds with: its `rust-toolchain.toml` pin (which `csti new` writes),
+/// else the host default. The cargo and rustc of one project must come from
+/// the same toolchain, or crates compiled by one cannot be linked by the other
+/// (`E0514`, "compiled by an incompatible version of rustc").
+pub async fn resolve_rustup(tool: &str, project: &Path) -> Result<String, String> {
     let output = Command::new("rustup")
-        .args(["which", "--toolchain", "stable", tool])
+        .args(["which", tool])
+        .current_dir(project)
         .output()
         .await
         .map_err(|e| format!("Failed to run rustup: {}", e))?;
 
     if !output.status.success() {
         return Err(format!(
-            "rustup could not resolve '{}' for the stable toolchain: {}",
+            "rustup could not resolve '{}' for {}: {}",
             tool,
+            project.display(),
             String::from_utf8_lossy(&output.stderr).trim(),
         ));
     }
@@ -421,19 +429,23 @@ pub async fn verify_elf(path: &PathBuf) -> Result<(), String> {
     Ok(())
 }
 
-/// Resolves the cargo binary path, preferring `CONSORTIUM_CARGO` env var over `rustup which`.
-pub async fn resolve_cargo() -> Result<String, String> {
+/// Resolves the cargo binary for the project at `project`, preferring the
+/// `CONSORTIUM_CARGO` env var over `rustup which`.
+pub async fn resolve_cargo(project: &Path) -> Result<String, String> {
     match std::env::var("CONSORTIUM_CARGO") {
         Ok(v) => Ok(v),
-        Err(_) => resolve_rustup("cargo").await,
+        Err(_) => resolve_rustup("cargo", project).await,
     }
 }
 
-/// Resolves the rustc binary path, preferring `CONSORTIUM_RUSTC` env var over `rustup which`.
-pub async fn resolve_rustc() -> Result<String, String> {
+/// Resolves the rustc binary for the project at `project`, preferring the
+/// `CONSORTIUM_RUSTC` env var over `rustup which`. Pass it to cargo as `RUSTC`:
+/// left to the `rustc` proxy on `PATH`, each crate would resolve a toolchain
+/// from its own directory, so registry crates and path crates could disagree.
+pub async fn resolve_rustc(project: &Path) -> Result<String, String> {
     match std::env::var("CONSORTIUM_RUSTC") {
         Ok(v) => Ok(v),
-        Err(_) => resolve_rustup("rustc").await,
+        Err(_) => resolve_rustup("rustc", project).await,
     }
 }
 

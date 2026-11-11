@@ -245,10 +245,10 @@ impl ApplicationCompiler {
     ) -> Result<(), ApplicationCompileError> {
         let sdk = SdkEnv::resolve(config.sysroot.as_deref())?;
 
-        let rustc = resolve_rustc()
+        let rustc = resolve_rustc(&config.path)
             .await
             .map_err(ApplicationCompileError::RustupError)?;
-        let cargo = resolve_cargo()
+        let cargo = resolve_cargo(&config.path)
             .await
             .map_err(ApplicationCompileError::RustupError)?;
 

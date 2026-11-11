@@ -26,8 +26,9 @@
 //! This stage resolves the same project set the build plan does and fetches each
 //! one, so a later `build --offline` finds every input in the local caches:
 //!
-//! 1. `rustup target add` for each distinct triple (a cross build needs the
-//!    target's prebuilt `std`, which `cargo fetch` does not provide);
+//! 1. `rustup target add` for each project's triple, run in that project's
+//!    directory so it lands in the toolchain the project pins (a cross build
+//!    needs the target's prebuilt `std`, which `cargo fetch` does not provide);
 //! 2. `cargo fetch --target <triple>` per Cargo project; and
 //! 3. the frontend's package install (`vp`/`npm`/`bun install`).
 //!
@@ -238,7 +239,7 @@ async fn run_inner(
         let detail = targets.join(" ");
         steps
             .run("Install Rust targets", Some(&detail), async {
-                install_rust_targets(&targets, reporter).await
+                install_rust_targets(&plan.cargo, reporter).await
             })
             .await?;
     }
@@ -274,7 +275,7 @@ async fn cargo_fetch(
     entry: &CargoFetch,
     reporter: Option<&dyn BuildReporter>,
 ) -> Result<(), PipelineError> {
-    let cargo = crate::compile::utils::resolve_cargo()
+    let cargo = crate::compile::utils::resolve_cargo(&entry.path)
         .await
         .map_err(|message| PipelineError::Fetch {
             label: entry.label.clone(),
@@ -306,43 +307,58 @@ async fn cargo_fetch(
     Ok(())
 }
 
-/// Installs the prebuilt standard library for each triple with rustup.
+/// Installs the prebuilt standard library for each project's triple with rustup.
+///
+/// Each `rustup target add` runs in its project's directory, so rustup resolves
+/// the toolchain that project builds with — its `rust-toolchain.toml` pin (which
+/// `csti new` writes), else the host default — rather than one fixed channel. A
+/// project pinned to a channel other than `stable` would otherwise fetch cleanly
+/// and then fail to build with "can't find crate for `core`".
 ///
 /// A host without rustup manages its own toolchain (a Yocto SDK, a distro
 /// rustc), so a missing binary is reported and skipped rather than failing the
 /// run — the subsequent `cargo fetch` steps are still worth doing. A rustup that
 /// *is* present and fails is a real error.
 async fn install_rust_targets(
-    targets: &[String],
+    projects: &[CargoFetch],
     reporter: Option<&dyn BuildReporter>,
 ) -> Result<(), PipelineError> {
-    let mut cmd = Command::new("rustup");
-    cmd.args(["target", "add", "--toolchain", "stable"])
-        .args(targets);
+    for project in projects {
+        let mut cmd = Command::new("rustup");
+        cmd.args(["target", "add", &project.target])
+            .current_dir(&project.path);
 
-    let status = match run_command(&mut cmd, reporter).await {
-        Ok(status) => status,
-        Err(e) if e.kind() == std::io::ErrorKind::NotFound => {
-            eprintln!(
-                "note: rustup not found; skipping `rustup target add {}`. Ensure the \
-                 standard library for these targets is installed by other means.",
-                targets.join(" ")
-            );
-            return Ok(());
-        }
-        Err(e) => {
+        let status = match run_command(&mut cmd, reporter).await {
+            Ok(status) => status,
+            Err(e) if e.kind() == std::io::ErrorKind::NotFound => {
+                eprintln!(
+                    "note: rustup not found; skipping `rustup target add`. Ensure the \
+                     standard library for {} is installed by other means.",
+                    projects
+                        .iter()
+                        .map(|p| p.target.as_str())
+                        .collect::<Vec<_>>()
+                        .join(" ")
+                );
+                return Ok(());
+            }
+            Err(e) => {
+                return Err(PipelineError::RustTarget {
+                    targets: project.target.clone(),
+                    message: e.to_string(),
+                });
+            }
+        };
+
+        if !status.success() {
             return Err(PipelineError::RustTarget {
-                targets: targets.join(" "),
-                message: e.to_string(),
+                targets: project.target.clone(),
+                message: format!(
+                    "`rustup target add` in {} exited with status: {status}",
+                    project.path.display()
+                ),
             });
         }
-    };
-
-    if !status.success() {
-        return Err(PipelineError::RustTarget {
-            targets: targets.join(" "),
-            message: format!("`rustup target add` exited with status: {status}"),
-        });
     }
     Ok(())
 }
