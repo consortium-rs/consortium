@@ -65,8 +65,9 @@ gpio = ["dep:atomic-waker", "dep:embedded-hal"]
 std = ["consortium-log/tracing"]
 # i.MX 9 chip selection: forwarded to the chip HAL, whose MU singletons, clock gates,
 # and PAC the `bell::mu` register model binds to. Mutually exclusive.
-mimx93 = ["bell", "consortium-hal-imx9/mimx93", "dep:consortium-hal-imx9"]
-mimx95 = ["bell", "consortium-hal-imx9/mimx95", "dep:consortium-hal-imx9"]
+mimx93  = ["bell", "consortium-hal-imx9/mimx93", "dep:consortium-hal-imx9"]
+mimx95  = ["bell", "consortium-hal-imx9/mimx95", "dep:consortium-hal-imx9"]
+mimx952 = ["bell", "consortium-hal-imx9/mimx952", "dep:consortium-hal-imx9"]
 # STM32MP2 chip selection: forwarded to the chip HAL, whose IPCC/HSEM singletons and
 # PAC the `bell::ipcc` and `bell::hsem` register models bind to (HSEM is absent on MP21).
 stm32mp21x = ["bell", "consortium-hal-stm32mp2/stm32mp21x", "dep:consortium-hal-stm32mp2"]

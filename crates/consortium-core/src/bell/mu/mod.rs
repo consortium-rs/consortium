@@ -81,18 +81,23 @@ use super::{BellA, BellError, BellHw, LineSet};
 // so this fires when *any* dependent selects the other chip too; diagnosing it here
 // rather than through the HAL's duplicate `mod chip` or the PAC's duplicate
 // `Interrupt` is what makes the error name the actual mistake.
-#[cfg(all(feature = "mimx93", feature = "mimx95"))]
+#[cfg(any(
+    all(feature = "mimx93", feature = "mimx95"),
+    all(feature = "mimx93", feature = "mimx952"),
+    all(feature = "mimx95", feature = "mimx952"),
+))]
 compile_error!(
-    "chip features are mutually exclusive; enable exactly one of: `mimx93`, `mimx95`. \
-     A dependency selecting the non-default chip must set `default-features = false`."
+    "chip features are mutually exclusive; enable exactly one of: `mimx93`, `mimx95`, \
+     `mimx952`. A dependency selecting a non-default chip must set \
+     `default-features = false`."
 );
 
 /// Number of MU instances on the selected chip: eight on i.MX 95, two on i.MX 93.
-#[cfg(feature = "mimx95")]
+#[cfg(any(feature = "mimx95", feature = "mimx952"))]
 pub const MU_INSTANCE_COUNT: usize = 8;
 
 /// Number of MU instances on the selected chip: eight on i.MX 95, two on i.MX 93.
-#[cfg(all(feature = "mimx93", not(feature = "mimx95")))]
+#[cfg(all(feature = "mimx93", not(feature = "mimx95"), not(feature = "mimx952")))]
 pub const MU_INSTANCE_COUNT: usize = 2;
 
 /// General-purpose interrupt (GI) lines per instance, channels `0..MU_GI_CHAN_COUNT`.
@@ -144,7 +149,7 @@ macro_rules! impl_mu {
 // The i.MX95 CM7 reaches MU5 side A and MU7/MU8 side B; the i.MX93 CM33 reaches both
 // windows of MU1/MU2 and drives side B. Both lists come from the per-core dumps that
 // generate the HAL's singletons, so a window this core cannot see has none to pass.
-#[cfg(feature = "mimx95")]
+#[cfg(any(feature = "mimx95", feature = "mimx952"))]
 mod bindings {
     use super::Instance;
     use crate::{Primary, Secondary};
@@ -154,7 +159,7 @@ mod bindings {
     impl_mu!(MU8_MUB, Secondary, 8);
 }
 
-#[cfg(all(feature = "mimx93", not(feature = "mimx95")))]
+#[cfg(all(feature = "mimx93", not(any(feature = "mimx95", feature = "mimx952"))))]
 mod bindings {
     use super::Instance;
     use crate::{Primary, Secondary};

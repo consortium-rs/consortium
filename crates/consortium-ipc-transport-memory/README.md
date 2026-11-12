@@ -151,13 +151,13 @@ transceivers at `context.ipc_shm.<name>`.
 
 Defaults to `std`. Firmware builds want `default-features = false`.
 
-| Feature                      | Effect                                                                       |
-| ---------------------------- | ---------------------------------------------------------------------------- |
-| `std`                        | `alloc`, Tokio support, UIO errors, `tracing` logs                           |
-| `alloc`                      | link `alloc` through `consortium-ipc`                                        |
-| `defmt`                      | route protocol tracing to `defmt`; derive `Format`                           |
-| `stm32mp21x` / `23x` / `25x` | select the STM32MP2 chip; enables `bell::ipcc` (and `bell::hsem` on 23x/25x) |
-| `mimx93` / `mimx95`          | select the i.MX 9 chip; enables `bell::mu`                                   |
+| Feature                         | Effect                                                                       |
+| ------------------------------- | ---------------------------------------------------------------------------- |
+| `std`                           | `alloc`, Tokio support, UIO errors, `tracing` logs                           |
+| `alloc`                         | link `alloc` through `consortium-ipc`                                        |
+| `defmt`                         | route protocol tracing to `defmt`; derive `Format`                           |
+| `stm32mp21x` / `23x` / `25x`    | select the STM32MP2 chip; enables `bell::ipcc` (and `bell::hsem` on 23x/25x) |
+| `mimx93` / `mimx95` / `mimx952` | select the i.MX 9 chip; enables `bell::mu`                                   |
 
 The transport itself is generic over any `Doorbell` and needs none of them; the chip
 features only bring in the Type-A bells and their chip HAL.

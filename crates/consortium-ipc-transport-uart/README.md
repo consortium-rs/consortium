@@ -119,7 +119,7 @@ let transport = UartTransport::new(chan, rx_wire, tx_wire, rx_buf, tx_buf, MTU)?
 
 | Feature                                  | Re-exports                      | As         |
 | ---------------------------------------- | ------------------------------- | ---------- |
-| `mimx93`, `mimx95`                       | `consortium_hal_imx9::uart`     | `imx9`     |
+| `mimx93`, `mimx95`, `mimx952`            | `consortium_hal_imx9::uart`     | `imx9`     |
 | `stm32mp21x`, `stm32mp23x`, `stm32mp25x` | `consortium_hal_stm32mp2::uart` | `stm32mp2` |
 
 Pick at most one, with `default-features = false`; the HAL rejects several at once.
@@ -170,7 +170,7 @@ Defaults to `std`. Firmware builds want `default-features = false`.
 | `alloc`                                    | Link `alloc` through `consortium-ipc`.                              |
 | `defmt`                                    | Route diagnostics to `defmt`; derive `defmt::Format` on `Error`.    |
 | `unix`                                     | Implies `std`; `unix::open` / `unix::pty_pair` over `tokio-serial`. |
-| `mimx93` / `mimx95`                        | Select i.MX 9; re-export its UART driver as `imx9`.                 |
+| `mimx93` / `mimx95` / `mimx952`            | Select i.MX 9; re-export its UART driver as `imx9`.                 |
 | `stm32mp21x` / `stm32mp23x` / `stm32mp25x` | Select STM32MP2; re-export its driver as `stm32mp2`.                |
 
 ## Testing

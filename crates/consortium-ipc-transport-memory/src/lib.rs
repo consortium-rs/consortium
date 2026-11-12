@@ -205,7 +205,7 @@
 //!
 //! The transport is generic over any [`Doorbell`] and has no chip features. The
 //! Type-A bells and their chip HAL are selected on `consortium-core` instead
-//! (`mimx93`/`mimx95`, `stm32mp21x`/`23x`/`25x`).
+//! (`mimx93`/`mimx95`/`mimx952`, `stm32mp21x`/`23x`/`25x`).
 //!
 //! # Testing
 //!

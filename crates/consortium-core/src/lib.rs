@@ -120,7 +120,7 @@
 //!   chip feature implies it; it is off otherwise so a plain IPC build needs no atomic
 //!   compare-and-swap.
 //! - `gpio` — the single-channel GPIO doorbell (`gpio`).
-//! - `mimx93` / `mimx95` — the i.MX 9 MU bell (`bell::mu`). Mutually exclusive.
+//! - `mimx93` / `mimx95` / `mimx952` — the i.MX 9 MU bell (`bell::mu`). Mutually exclusive.
 //! - `stm32mp21x` / `stm32mp23x` / `stm32mp25x` — the STM32MP2 IPCC bell
 //!   (`bell::ipcc`), plus HSEM (`bell::hsem`) on MP23/MP25.
 

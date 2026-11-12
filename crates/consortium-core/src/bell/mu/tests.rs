@@ -24,7 +24,11 @@ use super::registers::offsets;
 use super::*;
 
 // MU7 is the i.MX95 CA55 <-> CM7 default route; i.MX93 has only MU1/MU2.
-const N: usize = if cfg!(feature = "mimx95") { 7 } else { 1 };
+const N: usize = if cfg!(any(feature = "mimx95", feature = "mimx952")) {
+    7
+} else {
+    1
+};
 
 /// A zeroed fake window large enough to reach `RR3`.
 const WINDOW_WORDS: usize = 0x300 / 4;
