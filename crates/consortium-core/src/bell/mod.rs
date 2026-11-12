@@ -68,7 +68,7 @@
 pub mod hsem;
 #[cfg(any(feature = "stm32mp21x", feature = "stm32mp23x", feature = "stm32mp25x"))]
 pub mod ipcc;
-#[cfg(any(feature = "mimx93", feature = "mimx95"))]
+#[cfg(any(feature = "mimx93", feature = "mimx95", feature = "mimx952"))]
 pub mod mu;
 
 use core::{

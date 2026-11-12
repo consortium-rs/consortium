@@ -34,7 +34,7 @@ use consortium_data::{chipmap, database};
 
 /// Every bundled family database, paired with the one core whose dump is
 /// bundled alongside it (see `chipmap::CHIPS`).
-const COVERED: &[(&str, &str)] = &[("mimx95", "cm7"), ("mimx93", "cm33")];
+const COVERED: &[(&str, &str)] = &[("mimx95", "cm7"), ("mimx952", "cm7"), ("mimx93", "cm33")];
 
 #[test]
 fn mu_party_windows_and_irqs_match_the_core_dump() {

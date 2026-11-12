@@ -29,7 +29,7 @@ pub mod base {
     /// Side-A (MUA) physical base address of each MU instance, index 0 = MU1.
     ///
     /// The side-B (MUB) base of instance `i` is `BASE[i] + LENGTH`.
-    #[cfg(feature = "mimx95")]
+    #[cfg(any(feature = "mimx95", feature = "mimx952"))]
     pub const BASE: [usize; MU_INSTANCE_COUNT] = [
         0x4422_0000, // MU1
         0x445B_0000, // MU2
@@ -46,7 +46,7 @@ pub mod base {
     /// `not(mimx95)` suppresses a duplicate-definition cascade when both chip
     /// features are on; that combination is already fatal via the
     /// `compile_error!` in `bell::mu`.
-    #[cfg(all(not(feature = "mimx95"), feature = "mimx93"))]
+    #[cfg(all(not(feature = "mimx95"), not(feature = "mimx952"), feature = "mimx93"))]
     pub const BASE: [usize; MU_INSTANCE_COUNT] = [
         0x4422_0000, // MU1
         0x4243_0000, // MU2
@@ -74,7 +74,7 @@ pub mod offsets {
     /// Core sticky status 0 register. Reset `0x0`.
     pub const CSSR0: u32 = 0x018;
     /// Core status 0 register. Reset `0x0`.
-    #[cfg(feature = "mimx95")]
+    #[cfg(any(feature = "mimx95", feature = "mimx952"))]
     pub const CSR0: u32 = 0x01C;
 
     /// Flag control register. Reset `0x0`.
