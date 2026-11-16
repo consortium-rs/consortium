@@ -9,6 +9,6 @@ publish = false
 consortium-dbg = { features = [
   "decode",
 ], path = "../../../crates/consortium-dbg", version = "0.6.0" }
-uio = "0.5.2"
+uio = "0.6.0"
 
 [workspace]
