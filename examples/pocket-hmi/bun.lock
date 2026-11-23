@@ -5,7 +5,7 @@
     "": {
       "name": "consortium-pocket-hmi",
       "dependencies": {
-        "@pocketjs/framework": "0.16.0",
+        "@pocketjs/framework": "0.17.0",
         "solid-js": "1.9.14",
       },
     },
@@ -87,7 +87,7 @@
 
     "@noble/hashes": ["@noble/hashes@2.4.0", "", {}, "sha512-X5XaVWZIBCT7HHZGm5I7ZQXDwLG+bGXuSrMQAW+7Zvl87h1kmc1ZB1VSRJcpUfoUrGQp4Fkoxm5kZ+Ms+aW+eA=="],
 
-    "@pocketjs/framework": ["@pocketjs/framework@0.16.0", "", { "dependencies": { "@babel/core": "7.29.7", "@babel/preset-typescript": "7.29.7", "@solid-primitives/keyed": "1.5.3", "@volar/typescript": "2.4.28", "@vue-jsx-vapor/runtime": "3.2.19", "@vue/compiler-dom": "3.6.0-rc.1", "@vue/compiler-sfc": "3.6.0-rc.1", "@vue/compiler-vapor": "3.6.0-rc.1", "@vue/language-core": "3.3.11", "babel-plugin-jsx-dom-expressions": "0.40.7", "babel-preset-solid": "1.9.12", "octane": "0.1.26", "opentype.js": "1.3.5", "solid-js": "1.9.14", "typescript": "5.9.3", "vue": "3.6.0-rc.1", "vue-jsx-vapor": "3.2.19" } }, "sha512-qsRx3PBxVo62CXwalggq5iMYfrVt+KzlFu9BwmjsTEqLPEga8hgkwriQezsltLRSrj6TBr4NhK52HFS+Cr1b2w=="],
+    "@pocketjs/framework": ["@pocketjs/framework@0.17.0", "", { "dependencies": { "@babel/core": "7.29.7", "@babel/preset-typescript": "7.29.7", "@solid-primitives/keyed": "1.5.3", "@volar/typescript": "2.4.28", "@vue-jsx-vapor/runtime": "3.2.19", "@vue/compiler-dom": "3.6.0-rc.1", "@vue/compiler-sfc": "3.6.0-rc.1", "@vue/compiler-vapor": "3.6.0-rc.1", "@vue/language-core": "3.3.11", "babel-plugin-jsx-dom-expressions": "0.40.7", "babel-preset-solid": "1.9.12", "octane": "0.1.26", "opentype.js": "1.3.5", "solid-js": "1.9.14", "typescript": "5.9.3", "vue": "3.6.0-rc.1", "vue-jsx-vapor": "3.2.19" } }, "sha512-8im1pWgiVyZZd4rD0TH9cUYhm2rdp38VVv2tWKlbvMRZymyQPYnRmAs0N56NoUqaEDauC4cy9wi6/5mhulBXtQ=="],
 
     "@rolldown/pluginutils": ["@rolldown/pluginutils@1.0.1", "", {}, "sha512-2j9bGt5Jh8hj+vPtgzPtl72j0yRxHAyumoo6TNfAjsLB04UtpSvPbPcDcBMxz7n+9CYB0c1GxQFxYRg2jimqGw=="],
 

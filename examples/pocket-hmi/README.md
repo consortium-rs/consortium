@@ -2,7 +2,7 @@
 
 A minimal PocketJS project for the `pocket` HMI engine. It depends on the npm
 `@pocketjs/framework` package, pinned to the version that matches the PocketJS
-crates `consortium-hmi-pocket` uses (`0.16.0`). Bump both together.
+crates `consortium-hmi-pocket` uses (`0.17.0`). Bump both together.
 
 ```bash
 bun install

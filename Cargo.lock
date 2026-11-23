@@ -229,7 +229,7 @@ dependencies = [
  "regex",
  "rustc-hash",
  "shlex",
- "syn 2.0.119",
+ "syn 3.0.10",
 ]
 
 [[package]]
@@ -1332,7 +1332,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c54e03a951783e8b327515db3f2a2fd0e3bed362a96b066f341ce66ed49b4ead"
 dependencies = [
  "data-encoding",
- "syn 2.0.119",
+ "syn 3.0.10",
 ]
 
 [[package]]
@@ -1712,7 +1712,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e35d6e78f4cebb90e51d543db8fe41528851d6deeef6ef21ebd4bfdc1e784776"
 dependencies = [
  "libc",
- "windows-sys 0.52.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -1976,7 +1976,7 @@ dependencies = [
  "gobject-sys",
  "libc",
  "system-deps",
- "windows-sys 0.52.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -2485,7 +2485,7 @@ dependencies = [
  "mio",
  "nix 0.31.4",
  "serialport",
- "windows-sys 0.59.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -2625,7 +2625,7 @@ version = "0.50.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7957b9740744892f114936ab4a57b3f487491bbeafaf8083688b16841a4240e5"
 dependencies = [
- "windows-sys 0.59.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -3166,40 +3166,21 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b4596b6d070b27117e987119b4dac604f3c58cfb0b191112e24771b2faeac1a6"
 
 [[package]]
-name = "pocket-draw-ops"
-version = "0.16.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "52408b492823b0436781db58b5bf7015b6a7a7cbfb0511f6e65ab77dde08e7d7"
-dependencies = [
- "pocket-drivers",
- "pocket-spec",
-]
-
-[[package]]
 name = "pocket-drivers"
-version = "0.16.0"
+version = "0.17.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e6b83912e12621131782af942fa83897c08ebc052030d6193a748c96fc586f82"
+checksum = "2eb76983590e8c91accb4b75726d814b60b9a87066fba5d0ee452c568f78e5c2"
 dependencies = [
- "pocket-spec",
-]
-
-[[package]]
-name = "pocket-glyph-pages"
-version = "0.16.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2c470867bd4e104630538169c1461def77bd27fee60c6f7da830652202e7fff4"
-dependencies = [
- "pocket-drivers",
  "pocket-spec",
 ]
 
 [[package]]
 name = "pocket-guest-rquickjs"
-version = "0.16.0"
+version = "0.17.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "383ff0fc6a96f83b968dc006537de00291908a7bfc21d5d88319bc228830c747"
+checksum = "c39a6799cf63ca7ba503f62320133fdfd2cbf16ac209dcd3d3b3395f64ad79a2"
 dependencies = [
+ "log",
  "pocket-drivers",
  "pocket-runtime",
  "rquickjs",
@@ -3207,77 +3188,73 @@ dependencies = [
 
 [[package]]
 name = "pocket-media"
-version = "0.16.0"
+version = "0.17.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1cf1a7eda2c803aebb5ad6ddcc4a4505d739e0696c1da10932d963af11cd4759"
+checksum = "bb3116222bba5d9d85b120b74eb8513b152d5712db16162228bf57bd0d4401a6"
 dependencies = [
  "pocket-spec",
 ]
 
 [[package]]
 name = "pocket-package"
-version = "0.16.0"
+version = "0.17.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e5276f5ee8b20d49a84498ac1fb3fd1200f15e0f04af010cb5800fc1c698a35b"
+checksum = "86bce5e8191ae0b15f0a67da1b7695ff1472fe701e26dd398540bf9a47fb3e80"
 dependencies = [
  "pocket-drivers",
- "pocket-spec",
-]
-
-[[package]]
-name = "pocket-present"
-version = "0.16.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "937b040d33945b8fd7c9e00f2efc13c3b14c2db31a0e753b4f790e861861a3b3"
-dependencies = [
- "pocket-draw-ops",
- "pocket-drivers",
- "pocket-raster",
  "pocket-spec",
 ]
 
 [[package]]
 name = "pocket-raster"
-version = "0.16.0"
+version = "0.17.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "76080ef257d55c436fa293ee595574b1b7efec280e047abada2491f54191dca9"
+checksum = "32c02adb5c59920f0df3d9045eea23516ebfdff93ac43ef83cd0598ea6f62db0"
 dependencies = [
- "pocket-draw-ops",
+ "pocket-drivers",
+ "pocket-render",
+ "pocket-spec",
+]
+
+[[package]]
+name = "pocket-render"
+version = "0.17.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0de4868e9c8707bf30736c3e13a7010ba02e6bd905b2708499e21c54083d22b0"
+dependencies = [
  "pocket-drivers",
  "pocket-spec",
 ]
 
 [[package]]
 name = "pocket-runtime"
-version = "0.16.0"
+version = "0.17.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "aad6347cdaf558caf94a423a0b55ca72e416b09433a3b071461544e5052c3800"
+checksum = "43c775d17d70bcb3f1c3bc22aa12bbe39b70b078ff9b8a319033e8c54b1df0b7"
 dependencies = [
  "pocket-drivers",
  "pocket-package",
- "pocket-present",
+ "pocket-render",
  "pocket-spec",
  "pocketjs-core",
 ]
 
 [[package]]
 name = "pocket-spec"
-version = "0.16.0"
+version = "0.17.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7b7af0ca8808f3ec47f95354289162bfb5fc7da642d81cda0002af778c7e9294"
+checksum = "edf98675a1972cec12888055f018a04f9a1d1524bc2597697c67ed4a6adfdc0c"
 
 [[package]]
 name = "pocketjs-core"
-version = "0.16.0"
+version = "0.17.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ebf25a665dda21c905477959bdb724446e426edaaedca29d844da028d1c6d823"
+checksum = "58d6320877f4d8cfda5881386d8edae7f148149eacc04dbbacca6be0fc6c369d"
 dependencies = [
  "pocket-drivers",
- "pocket-glyph-pages",
  "pocket-media",
  "pocket-package",
- "pocket-present",
- "pocket-raster",
+ "pocket-render",
  "pocket-spec",
  "taffy",
 ]
@@ -3576,18 +3553,18 @@ dependencies = [
 
 [[package]]
 name = "rquickjs"
-version = "0.12.2"
+version = "0.14.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4e04e4eedfb060b503b5f0a2644abb890b0b3620d3fb674f9455f230014964e4"
+checksum = "a0a22bf72f515cc4189dd7c63d016f6de92a11eee98ddf7dd64794198f6eb34e"
 dependencies = [
  "rquickjs-core",
 ]
 
 [[package]]
 name = "rquickjs-core"
-version = "0.12.2"
+version = "0.14.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "16e4f499ac5b943d97ee6dbc44f23c2c10426f420f7d2f1793d6318911b6608c"
+checksum = "6657979a24d543e5fc66f32cef2f47ca82ce8eb55cec5f7d59a12b7b570bbf24"
 dependencies = [
  "hashbrown 0.17.2",
  "relative-path",
@@ -3596,9 +3573,9 @@ dependencies = [
 
 [[package]]
 name = "rquickjs-sys"
-version = "0.12.2"
+version = "0.14.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a13ac243b86a74120814ef7e9e30ad5a2c1199b7b9963b1cf7c84e4cdc1cad99"
+checksum = "cee271d0eeba64f0915b846cb7ae02e16faf3dfdffdca91731101d9d30fe3423"
 dependencies = [
  "cc",
 ]
@@ -3660,7 +3637,7 @@ dependencies = [
  "errno",
  "libc",
  "linux-raw-sys 0.12.1",
- "windows-sys 0.52.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -4082,7 +4059,7 @@ dependencies = [
  "getrandom 0.4.3",
  "once_cell",
  "rustix 1.1.6",
- "windows-sys 0.52.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -4739,7 +4716,7 @@ version = "0.1.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c2a7b1c03c876122aa43f3020e6c3c3ee5c05081c9a00739faf7503aeba10d22"
 dependencies = [
- "windows-sys 0.52.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]

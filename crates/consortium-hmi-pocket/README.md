@@ -13,7 +13,7 @@ DrawList), `pocket-runtime` (op dispatch, asset admission), `pocket-guest-rquick
 DrawList rasterizer). No GPU stack and no `pocket3d` are involved.
 
 > **Versions move together.** The PocketJS crate versions match the npm
-> `@pocketjs/framework` release that `examples/pocket-hmi/package.json` pins (`0.16.0`),
+> `@pocketjs/framework` release that `examples/pocket-hmi/package.json` pins (`0.17.0`),
 > so the Rust host and the bun-built bundle share one binding generation; the guest
 > refuses a bundle whose `ui.__hostAbi` differs. Bump the two together, and pin the same
 > version in your own HMI project. **MSRV is 1.93**, above the workspace's, because the
