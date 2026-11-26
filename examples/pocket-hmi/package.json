@@ -8,7 +8,7 @@
     "build:hero": "bun node_modules/@pocketjs/framework/tools/build.ts hero-main --outdir=dist"
   },
   "dependencies": {
-    "@pocketjs/framework": "0.16.0",
+    "@pocketjs/framework": "0.17.0",
     "solid-js": "1.9.14"
   }
 }
