@@ -161,10 +161,23 @@ fn resolve_kernel_base(
 ) -> Result<BaseDts, CfgError> {
     let normalized = chip.to_ascii_lowercase();
     let (vendor, generic) = if let Some(rest) = normalized.strip_prefix("mimx9") {
-        let line = rest.chars().next().ok_or_else(|| {
-            CfgError::Manifest(format!("cannot derive an i.MX DTS name from chip `{chip}`"))
-        })?;
-        ("freescale", format!("imx9{line}.dtsi"))
+        // The family database names the die, so a separate die whose part numbers
+        // extend another family's prefix (`mimx9529…` is i.MX 952, not i.MX 95)
+        // gets its own SoC tree.
+        let soc = match consortium_data::database::load(chip) {
+            Ok(db) => db
+                .name
+                .to_ascii_lowercase()
+                .trim_start_matches('m')
+                .to_string(),
+            Err(_) => {
+                let line = rest.chars().next().ok_or_else(|| {
+                    CfgError::Manifest(format!("cannot derive an i.MX DTS name from chip `{chip}`"))
+                })?;
+                format!("imx9{line}")
+            }
+        };
+        ("freescale", format!("{soc}.dtsi"))
     } else if chip.to_ascii_lowercase().starts_with("stm32mp2") {
         let digits: String = normalized
             .chars()
@@ -1106,6 +1119,22 @@ mod tests {
         // Overlay cannot strip mboxes; the user is warned.
         assert_eq!(warnings.len(), 1);
         assert!(warnings[0].contains("&cm33"));
+    }
+
+    /// i.MX 952 part numbers start with `mimx95`, but the die has its own SoC
+    /// tree; the generic base must be `imx952.dtsi`, not i.MX 95's.
+    #[test]
+    fn imx952_generic_base_is_its_own_soc_tree() {
+        let root = test_kernel_tree("freescale", "imx952.dtsi", "/ { };");
+        fs::write(
+            root.join("arch/arm64/boot/dts/freescale/imx95.dtsi"),
+            "/ { };",
+        )
+        .unwrap();
+        let base = resolve_kernel_base(&root, "mimx9529avzxn", None, None).unwrap();
+        assert_eq!(base.entry, "imx952.dtsi");
+        let base = resolve_kernel_base(&root, "mimx9596xvt", None, None).unwrap();
+        assert_eq!(base.entry, "imx95.dtsi");
     }
 
     #[test]

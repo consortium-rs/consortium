@@ -45,6 +45,7 @@ defmt = [
 ]
 mimx93 = ["consortium-core?/mimx93", "mimx9x"]
 mimx95 = ["consortium-core?/mimx95", "mimx9x"]
+mimx952 = ["consortium-core?/mimx952", "mimx9x"]
 mimx9x = []
 ipc = ["ipc-shm"]
 # Wired FDCAN transport (segmented over CAN frames), an alternative to shared

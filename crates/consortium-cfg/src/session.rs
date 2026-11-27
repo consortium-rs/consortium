@@ -1347,62 +1347,57 @@ mod tests {
 
     const IMX952_MANIFEST: &str = include_str!("../Consortium.example.mimx952.toml");
 
-    /// The i.MX 952 example (CM7 peripherals only) loads against its own
-    /// database, not i.MX 95's, and its pins validate against the i.MX 952
-    /// signal map.
+    /// The i.MX 952 example loads against its own database, not i.MX 95's: its
+    /// pins validate against the i.MX 952 signal map, and its MU7/MU8 channels
+    /// resolve to the WAKEUP-domain windows that moved on this die.
     #[test]
     fn loads_imx952_example_manifest() {
         let session = Session::from_toml(IMX952_MANIFEST).expect("i.MX 952 example should load");
         assert_eq!(session.database.name, "MIMX952");
-        assert!(session.config.ipc.channels.is_empty());
+        assert_eq!(session.config.ipc.channels.len(), 2);
+        let mu7 = session
+            .database
+            .peripheral
+            .doorbells
+            .iter()
+            .find(|bell| bell.name == "MU7")
+            .expect("i.MX 952 declares MU7");
+        let cm7 = mu7
+            .parties
+            .iter()
+            .find(|party| party.core.to_string() == "cm7")
+            .expect("the CM7 drives MU7");
+        assert_eq!(cm7.memory, 0x0206_0000);
     }
 
-    /// Until the i.MX 952 reference manual gives the MU party windows and the
-    /// OCRAM map, a channel is refused rather than generated at guessed
-    /// addresses. The chip declares neither an SRAM region nor a doorbell, and
-    /// whichever check runs first rejects it.
+    /// As on i.MX 95, the System Manager grants the M7 no OCRAM (imx-sm
+    /// `mx952evk.cfg`), so a CM7 debug ring there is refused; the shared DDR
+    /// window is the place for it.
     #[test]
-    fn imx952_rejects_ipc_until_the_reference_manual() {
-        let manifest = r#"
-            [profile]
-            chip = "mimx9529avzxn"
-            shared = "./shared"
-            deploy_root = "/opt/consortium"
+    fn imx952_cm7_ring_needs_the_shared_ddr_window() {
+        let manifest = |base: u32| {
+            format!(
+                r#"
+                    [profile]
+                    chip = "mimx9529avzxn"
+                    shared = "./shared"
+                    deploy_root = "/opt/consortium"
 
-            [[ipc.channel]]
-            name = "probe"
-            doorbell = "mu7"
-            pattern = "memory"
-            primary = "linux"
-            secondary = "cm7"
-            party.linux = { chan = 0, type = "Ping" }
-            party.cm7 = { chan = 1, type = "Pong" }
-            config.memory = { base = 0x00480000, length = 0x4000 }
-            mtu = 128
-        "#;
+                    [endpoints]
+                    linux = "./app"
+                    cm7 = "./firmware"
+
+                    [dbg.cm7]
+                    memory = {{ base = {base:#x}, length = 0x2000 }}
+                    mtu = 64
+                "#
+            )
+        };
         assert!(matches!(
-            Session::from_toml(manifest),
-            Err(CfgError::RegionOutOfBounds { .. } | CfgError::UnknownDoorbell { .. })
+            Session::from_toml(&manifest(0x004C_0000)),
+            Err(CfgError::RegionNotVisible { .. })
         ));
-    }
-
-    /// With no SRAM region declared, a debug ring has nowhere valid to go.
-    #[test]
-    fn imx952_rejects_a_dbg_ring_without_sram() {
-        let manifest = r#"
-            [profile]
-            chip = "mimx9529avzxn"
-            shared = "./shared"
-            deploy_root = "/opt/consortium"
-
-            [dbg.cm7]
-            memory = { base = 0x00480000, length = 0x2000 }
-            mtu = 64
-        "#;
-        assert!(matches!(
-            Session::from_toml(manifest),
-            Err(CfgError::RegionOutOfBounds { .. })
-        ));
+        Session::from_toml(&manifest(0x8830_0000)).expect("a CM7 ring in shared DDR is valid");
     }
 
     const MP235_MANIFEST: &str = include_str!("../Consortium.example.stm32mp235.toml");

@@ -17,7 +17,9 @@
 //! Messaging Unit (MU) hardware description.
 //!
 //! Reference: i.MX 95 Reference Manual, MU chapter (offsets match the i.MX 93
-//! RM, Rev 7, Chapter 20). All register offsets are relative to a single MU
+//! RM, Rev 7, Chapter 20, and the i.MX 952 RM, Rev 2, Chapters 55 and 88, whose
+//! register map differs from i.MX 95's only in the [`reset::VER`] value). All
+//! register offsets are relative to a single MU
 //! instance base address. The side-B (MUB) window of each instance sits one
 //! [`base::LENGTH`] above the side-A (MUA) base, so a single [`base::BASE`]
 //! array plus the window length describes both processor views.
@@ -29,7 +31,7 @@ pub mod base {
     /// Side-A (MUA) physical base address of each MU instance, index 0 = MU1.
     ///
     /// The side-B (MUB) base of instance `i` is `BASE[i] + LENGTH`.
-    #[cfg(any(feature = "mimx95", feature = "mimx952"))]
+    #[cfg(all(feature = "mimx95", not(feature = "mimx952")))]
     pub const BASE: [usize; MU_INSTANCE_COUNT] = [
         0x4422_0000, // MU1
         0x445B_0000, // MU2
@@ -39,6 +41,22 @@ pub mod base {
         0x4463_0000, // MU6
         0x4243_0000, // MU7
         0x4273_0000, // MU8
+    ];
+
+    /// Side-A (MUA) physical base address of each MU instance, index 0 = MU1.
+    ///
+    /// The AON instances (MU1..MU6) sit where i.MX 95's do; the WAKEUP-domain
+    /// MU7/MU8 moved (IMX952RM Rev 2, Table 16 and §88.1).
+    #[cfg(feature = "mimx952")]
+    pub const BASE: [usize; MU_INSTANCE_COUNT] = [
+        0x4422_0000, // MU1
+        0x445B_0000, // MU2
+        0x445D_0000, // MU3
+        0x445F_0000, // MU4
+        0x4461_0000, // MU5
+        0x4463_0000, // MU6
+        0x4205_0000, // MU7
+        0x4235_0000, // MU8
     ];
 
     /// Side-A (MUA) physical base address of each MU instance, index 0 = MU1.
@@ -59,7 +77,7 @@ pub mod base {
 
 /// Register offsets relative to a MU instance base address.
 pub mod offsets {
-    /// Version ID register. Reset `0x0309_000F` [`super::reset::VER`].
+    /// Version ID register. Reset [`super::reset::VER`].
     pub const VER: u32 = 0x000;
     /// Parameter register. Reset `0x0304_0404` [`super::reset::PAR`].
     pub const PAR: u32 = 0x004;
@@ -190,7 +208,12 @@ pub mod cr {
 /// Reset values for registers whose reset state is non-zero.
 pub mod reset {
     /// Reset value of [`super::offsets::VER`].
+    #[cfg(not(feature = "mimx952"))]
     pub const VER: u32 = 0x0309_000F;
+    /// Reset value of [`super::offsets::VER`]: major 4, minor 6, the only MU
+    /// register whose reset value differs from i.MX 95's.
+    #[cfg(feature = "mimx952")]
+    pub const VER: u32 = 0x0406_000F;
     /// Reset value of [`super::offsets::PAR`].
     pub const PAR: u32 = 0x0304_0404;
     /// Reset value of [`super::offsets::CCR0`].

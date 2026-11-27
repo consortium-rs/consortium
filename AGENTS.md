@@ -343,7 +343,7 @@ All of them live in `consortium-core`, below IPC, so any subsystem that signals 
 core (IPC, and SCMI-style platform management) uses the same bells. There are two kinds:
 
 - **Type-A bells** — IPCC, MU, and (frozen) HSEM — live in `consortium_core::bell`,
-  behind core's chip features (`mimx93`/`mimx95`, `stm32mp21x`/`23x`/`25x`).
+  behind core's chip features (`mimx93`/`mimx95`/`mimx952`, `stm32mp21x`/`23x`/`25x`).
 - **`consortium_core::gpio`** (feature `gpio`) is a single-channel GPIO doorbell. Both paths wait
   on a `GpioSignal` (a pending flag plus one `AtomicWaker`) that the application wakes
   from whatever observes the edge: its IRQ handler on firmware, a `bind_service` closure
@@ -367,7 +367,7 @@ check its register mapping. Read both before changing any block.
 - `bell::ipcc` — STM32 IPCC (`stm32mp21x`/`23x`/`25x`); `IpccDoorbell<S, N>`. `ring`
   reports `BellError::Busy` while the previous signal is unconsumed. The recommended
   STM32MP2 doorbell, and the first validated on hardware.
-- `bell::mu` — NXP i.MX MU (`mimx93`/`mimx95`, mutually exclusive); `MuDoorbell<S, N>`.
+- `bell::mu` — NXP i.MX MU (`mimx93`/`mimx95`/`mimx952`, mutually exclusive); `MuDoorbell<S, N>`.
   Channels `0..4` are GI lines and `4..8` RF lines (`MuLine`); neither reports `Busy` — a
   pending GI is idempotent and an RF ring whose `TRn` is still full is skipped.
   `MuDoorbell::new` also opens the window's i.MX 93 LPCG clock gate. Validated on i.MX 93
@@ -422,7 +422,7 @@ with `uio.bind_service(move || db.service_interrupt())`. Enable the _HAL's_ `rt`
 that code. A core the chip PAC's shipped interrupt table does not describe (STM32MP2's
 CM0+) has no `Interrupt` variant to name and keeps writing its vectors by hand. The
 relevant vectors are HSEM and IPCC1_RX/IPCC2_RX (non-secure), and the MU lines a core
-drives (i.MX93 CM33 `MU1_B`/`MU2_B`; i.MX95 CM7 `MU5_A`/`MU7_B`/`MU8_B`).
+drives (i.MX93 CM33 `MU1_B`/`MU2_B`; i.MX95/952 CM7 `MU5_A`/`MU7_B`/`MU8_B`).
 
 ## Platform Management (PMI)
 
@@ -517,9 +517,11 @@ FDCAN3, LPDMA and IPCC2). i.MX 952 (`mimx952`) is a separate die, not an i.MX 95
 variant: its WAKEUP-domain instances (LPUART3–8, CAN2/3, LPI2C3–8, TPM3–6, LPIT2, MU7/8)
 sit at other addresses and it has no CAN4/5, so it has its own interrupt table and
 singleton map; it shares i.MX 95's System Manager clock model, eDMA request numbers and
-LPIT1 rate, so drivers take the i.MX 95 paths. Support is compile-level only: its chip
-database declares no SRAM region and no MU doorbell until the reference manual is
-published, so `[dbg.*]` rings and IPC channels are rejected for it. Keep these crates firmware-friendly: `no_std`, narrow unsafe blocks, and
+LPIT1 rate, so drivers take the i.MX 95 paths. Its MU block is i.MX 95's register map
+with a new `VER` (`0x0406_000F`), the same party windows and interrupt lines, and the
+same System Manager grants (DDR `0x88000000..0x8A000000` for the M7 and Linux, no
+OCRAM for the M7); only MU7/MU8 moved, to `0x42050000`/`0x42350000` (IMX952RM Rev 2).
+It is not yet validated on hardware. Keep these crates firmware-friendly: `no_std`, narrow unsafe blocks, and
 chip-specific details inside the chip HAL rather than the shared HAL traits.
 
 ### Peripheral Singletons
