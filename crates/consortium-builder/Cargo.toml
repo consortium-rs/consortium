@@ -22,7 +22,6 @@ name                   = "consortium-builder"
 version.workspace      = true
 authors.workspace      = true
 categories.workspace   = true
-homepage.workspace     = true
 keywords.workspace     = true
 readme                 = "README.md"
 repository.workspace   = true
@@ -40,3 +39,6 @@ thiserror             = "2.0.18"
 tokio                 = { features = ["full"], version = "1.50.0" }
 toml                  = "1.1.0"
 uuid                  = "1.23.0"
+
+[lints]
+workspace = true

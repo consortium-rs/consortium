@@ -22,7 +22,6 @@ name                   = "consortium-runtime-mcu"
 version.workspace      = true
 authors.workspace      = true
 categories.workspace   = true
-homepage.workspace     = true
 keywords.workspace     = true
 readme                 = "README.md"
 repository.workspace   = true
@@ -83,3 +82,6 @@ defmt = { optional = true, version = "1" }
 # the core has no native CAS instruction.
 portable-atomic = { default-features = false, features = ["critical-section"], version = "1" }
 static_cell     = { default-features = false, version = "2" }
+
+[lints]
+workspace = true

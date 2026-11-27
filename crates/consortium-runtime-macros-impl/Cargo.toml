@@ -22,7 +22,6 @@ name                   = "consortium-runtime-macros-impl"
 version.workspace      = true
 authors.workspace      = true
 categories.workspace   = true
-homepage.workspace     = true
 keywords.workspace     = true
 readme                 = "README.md"
 repository.workspace   = true
@@ -37,3 +36,6 @@ syn                       = { features = ["full"], version = "3.0" }
 [dev-dependencies]
 insta        = "1"
 prettyplease = "0.3"
+
+[lints]
+workspace = true

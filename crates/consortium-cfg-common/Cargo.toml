@@ -22,7 +22,6 @@ name                   = "consortium-cfg-common"
 version.workspace      = true
 authors.workspace      = true
 categories.workspace   = true
-homepage.workspace     = true
 keywords.workspace     = true
 readme                 = "README.md"
 repository.workspace   = true
@@ -34,3 +33,6 @@ uuid  = { features = ["serde"], version = "1.23.4" }
 
 [dev-dependencies]
 serde_yaml = "0.9"
+
+[lints]
+workspace = true

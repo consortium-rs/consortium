@@ -259,10 +259,12 @@ mod tests {
         );
         set_nonblocking(fds[0]);
         set_nonblocking(fds[1]);
-        // SAFETY: both descriptors are freshly created and uniquely owned here;
-        // wrapping them in `File` transfers ownership so each is closed once on
-        // drop.
-        unsafe { (File::from_raw_fd(fds[0]), File::from_raw_fd(fds[1])) }
+        // SAFETY: `fds[0]` is freshly created and uniquely owned here; wrapping it
+        // in `File` transfers ownership so it is closed once on drop.
+        let dev = unsafe { File::from_raw_fd(fds[0]) };
+        // SAFETY: as above, for the distinct descriptor `fds[1]`.
+        let kernel = unsafe { File::from_raw_fd(fds[1]) };
+        (dev, kernel)
     }
 
     /// "Kernel" side asserts an interrupt: write the 4-byte UIO count to the peer

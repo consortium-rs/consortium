@@ -22,7 +22,6 @@ name                   = "consortium-ort"
 version.workspace      = true
 authors.workspace      = true
 categories.workspace   = true
-homepage.workspace     = true
 keywords.workspace     = true
 readme                 = "README.md"
 repository.workspace   = true
@@ -33,3 +32,6 @@ tracing = ["ort/tracing"]
 
 [dependencies]
 ort = { default-features = false, features = ["api-24", "ndarray", "std"], version = "2.0.0-rc.12" }
+
+[lints]
+workspace = true

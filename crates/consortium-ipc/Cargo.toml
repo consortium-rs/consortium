@@ -22,7 +22,6 @@ name                   = "consortium-ipc"
 version.workspace      = true
 authors.workspace      = true
 categories.workspace   = true
-homepage.workspace     = true
 keywords.workspace     = true
 readme                 = "README.md"
 repository.workspace   = true
@@ -45,3 +44,6 @@ futures = []
 std     = ["alloc", "consortium-core/std", "futures", "tracing"]
 tracing = ["consortium-log/tracing"]
 defmt   = ["consortium-codec/defmt", "consortium-core/defmt", "consortium-log/defmt", "dep:defmt"]
+
+[lints]
+workspace = true

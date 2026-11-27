@@ -146,11 +146,11 @@ fn descriptor_init_writes_documented_layout_offsets() {
     // A plain link publishes no capability bits, and the two bytes after them stay
     // reserved.  This is what lets a peer built before acknowledgement existed pair with a
     // non-acknowledging peer built after it: both read zero and agree.
-    for index in 0..2 {
+    for (index, channel) in descriptor.channels.iter().enumerate().take(2) {
         let entry = channel_table_entry_offset(index);
         assert_eq!(backing[entry + 9], 0, "channel {index} flags");
         assert_eq!(&backing[entry + 10..entry + 12], &[0, 0]);
-        assert!(!descriptor.channels[index].ack_capable());
+        assert!(!channel.ack_capable());
     }
 }
 
@@ -162,10 +162,10 @@ fn descriptor_init_publishes_the_ack_capability_per_channel() {
     init_descriptor_with(base, DescriptorLayout::new(2, 96).with_ack(true));
 
     let descriptor = unsafe { Descriptor::from_raw_ptr(base) };
-    for index in 0..2 {
+    for (index, channel) in descriptor.channels.iter().enumerate().take(2) {
         let entry = channel_table_entry_offset(index);
         assert_eq!(backing[entry + 9], FLAG_CHAN_ACK_CAPABLE);
-        assert!(descriptor.channels[index].ack_capable());
+        assert!(channel.ack_capable());
     }
 
     // The secondary declaring the same capability accepts it.

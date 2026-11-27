@@ -22,7 +22,6 @@ name                   = "consortium-tee-macros"
 version.workspace      = true
 authors.workspace      = true
 categories.workspace   = true
-homepage.workspace     = true
 keywords.workspace     = true
 readme                 = "README.md"
 repository.workspace   = true
@@ -33,3 +32,6 @@ proc-macro = true
 
 [dependencies]
 consortium-tee-macros-impl = { path = "../consortium-tee-macros-impl", version = "0.6.0" }
+
+[lints]
+workspace = true

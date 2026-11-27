@@ -34,7 +34,6 @@ name                   = "consortium-runtime-sys"
 version.workspace      = true
 authors.workspace      = true
 categories.workspace   = true
-homepage.workspace     = true
 keywords.workspace     = true
 readme                 = "README.md"
 repository.workspace   = true
@@ -42,3 +41,8 @@ rust-version.workspace = true
 
 [build-dependencies]
 bindgen = "0.73"
+
+# Bindgen output: the workspace's unsafe-documentation lints cannot apply to
+# generated FFI, so this crate deliberately does not inherit them.
+[lints.cargo]
+missing_lints_inheritance = "allow"
