@@ -247,7 +247,7 @@ export const site: Site = {
   targets: {
     id: 'targets',
     title: 'Supported chips & targets',
-    lede: 'STM32MP25, i.MX 93 and i.MX 95 are officially supported and tested in hardware. STM32MP23 and STM32MP21 reuse the STM32MP25 support without formal verification, and i.MX 952, i.MX 937, i.MX 93W and i.MX 94 are planned.',
+    lede: 'STM32MP25, i.MX 93 and i.MX 95 are officially supported and tested in hardware. STM32MP23 and STM32MP21 reuse the STM32MP25 support and i.MX 952 reuses the i.MX 95 support without formal verification, and i.MX 937, i.MX 93W and i.MX 94 are planned.',
     chips: [
       {
         name: 'STM32MP25',
@@ -299,12 +299,12 @@ export const site: Site = {
       },
       {
         name: 'i.MX 952',
-        cores: 'A55 + M7',
+        cores: 'A55 + M7 + M33 · NPU/GPU/VPU',
         controller: 'Cortex-M7',
         doorbells: 'MU',
-        support: 'planned',
-        supportLabel: 'Planned',
-        note: '',
+        support: 'official',
+        supportLabel: 'Derived from i.MX 95',
+        note: 'Graphics, video, vision and machine learning at the edge.',
       },
       {
         name: 'i.MX 937',

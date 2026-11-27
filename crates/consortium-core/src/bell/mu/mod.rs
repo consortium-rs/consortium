@@ -53,8 +53,8 @@
 //!   unless a kernel driver claims the MU.
 //! - **Linux/UIO** — [`BellA::new_mapped`] takes an `mmap`'d virtual base.
 //!
-//! The vectors a core drives — i.MX93 CM33 `MU1_B`/`MU2_B`, i.MX95 CM7
-//! `MU5_A`/`MU7_B`/`MU8_B` — forward into
+//! The vectors a core drives — i.MX93 CM33 `MU1_B`/`MU2_B`, i.MX95 and i.MX952
+//! CM7 `MU5_A`/`MU7_B`/`MU8_B` — forward into
 //! [`service_interrupt::<Mu<S, N>>()`](super::service_interrupt), which
 //! `consortium-cfg` generates.
 //!
@@ -92,11 +92,13 @@ compile_error!(
      `default-features = false`."
 );
 
-/// Number of MU instances on the selected chip: eight on i.MX 95, two on i.MX 93.
+/// Number of MU instances on the selected chip: eight on i.MX 95 and i.MX 952,
+/// two on i.MX 93.
 #[cfg(any(feature = "mimx95", feature = "mimx952"))]
 pub const MU_INSTANCE_COUNT: usize = 8;
 
-/// Number of MU instances on the selected chip: eight on i.MX 95, two on i.MX 93.
+/// Number of MU instances on the selected chip: eight on i.MX 95 and i.MX 952,
+/// two on i.MX 93.
 #[cfg(all(feature = "mimx93", not(feature = "mimx95"), not(feature = "mimx952")))]
 pub const MU_INSTANCE_COUNT: usize = 2;
 
@@ -149,6 +151,9 @@ macro_rules! impl_mu {
 // The i.MX95 CM7 reaches MU5 side A and MU7/MU8 side B; the i.MX93 CM33 reaches both
 // windows of MU1/MU2 and drives side B. Both lists come from the per-core dumps that
 // generate the HAL's singletons, so a window this core cannot see has none to pass.
+// The i.MX952 CM7 dump exposes every window, but its MU connectivity (IMX952RM
+// §55.1.1, §88.1.1) and the System Manager's M7 grants (imx-sm `mx952evk.cfg`) match
+// i.MX95's, so it binds the same three.
 #[cfg(any(feature = "mimx95", feature = "mimx952"))]
 mod bindings {
     use super::Instance;

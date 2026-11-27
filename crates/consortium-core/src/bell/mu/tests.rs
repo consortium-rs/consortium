@@ -258,3 +258,18 @@ fn distinct_lines_keep_distinct_wakers() {
     assert_eq!(first_wakes.load(Ordering::SeqCst), 1);
     assert_eq!(second_wakes.load(Ordering::SeqCst), 1);
 }
+
+/// i.MX 952 keeps i.MX 95's AON MU windows but moved the WAKEUP-domain MU7/MU8
+/// (IMX952RM Rev 2, Table 16); its VER reset is the one register value that
+/// differs from i.MX 95's (§55.7.1, §88.7.1).
+#[cfg(feature = "mimx952")]
+#[test]
+fn imx952_wakeup_windows_and_version() {
+    assert_eq!(Mu::<Primary, 5>::PHYS_BASE, 0x4461_0000);
+    assert_eq!(Mu::<Primary, 7>::PHYS_BASE, 0x4205_0000);
+    assert_eq!(Mu::<Secondary, 7>::PHYS_BASE, 0x4206_0000);
+    assert_eq!(Mu::<Primary, 8>::PHYS_BASE, 0x4235_0000);
+    assert_eq!(Mu::<Secondary, 8>::PHYS_BASE, 0x4236_0000);
+    assert_eq!(registers::reset::VER, 0x0406_000F);
+    assert_eq!(registers::reset::PAR, 0x0304_0404);
+}

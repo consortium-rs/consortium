@@ -122,6 +122,7 @@ cargo-lint:
     done
     cargo clippy -p consortium-runtime-app --no-default-features --features mimx9x,stm32mp25x --all-targets -- -D warnings
     cargo clippy -p consortium-core --features std,gpio,mimx95 --all-targets -- -D warnings
+    cargo clippy -p consortium-core --features std,mimx952 --all-targets -- -D warnings
     cargo clippy -p consortium-core --features std,stm32mp25x --all-targets -- -D warnings
     cargo clippy -p consortium-tee --no-default-features --features ta --all-targets -- -D warnings
 
@@ -413,9 +414,10 @@ check-ipc-m7:
     cargo check -p consortium-runtime-mcu --target {{ m7_target }} --no-default-features --features ipc-fdcan
     cargo check -p consortium-core --target {{ m7_target }} --features stm32mp25x
     cargo check -p consortium-core --target {{ m7_target }} --features mimx95
-    # i.MX 952 (compile-level): the chip-glue transports, plus every HAL driver,
-    # since no transport pulls in the ADC/DMA/timer/watchdog modules. There is no
-    # `transport-memory` line until its MU doorbell lands with the reference manual.
+    # i.MX 952: the MU doorbell and runtime, the chip-glue transports, plus every
+    # HAL driver, since no transport pulls in the ADC/DMA/timer/watchdog modules.
+    cargo check -p consortium-core --target {{ m7_target }} --features mimx952
+    cargo check -p consortium-runtime-mcu --target {{ m7_target }} --no-default-features --features ipc-shm,mimx952
     cargo check -p consortium-ipc-transport-fdcan-embedded --target {{ m7_target }} --no-default-features --features mimx952
     cargo check -p consortium-ipc-transport-uart --target {{ m7_target }} --no-default-features --features mimx952
     cargo check -p consortium-hal-imx9 --target {{ m7_target }} --no-default-features --features mimx952,rt,adc,can,dma,gpio,i2c,i3c,spi,time-driver-lpit,timer,uart,watchdog
@@ -430,6 +432,7 @@ build-ipc-m7:
     cargo build -p consortium-runtime-mcu --release --target {{ m7_target }}
     cargo build -p consortium-core --release --target {{ m7_target }} --features stm32mp25x
     cargo build -p consortium-core --release --target {{ m7_target }} --features mimx95
+    cargo build -p consortium-core --release --target {{ m7_target }} --features mimx952
     cargo build -p consortium-ipc-transport-fdcan-embedded --release --target {{ m7_target }} --no-default-features --features mimx952
     cargo build -p consortium-ipc-transport-uart --release --target {{ m7_target }} --no-default-features --features mimx952
 
@@ -444,6 +447,7 @@ test-ipc-host:
     cargo test -p consortium-core --features std,stm32mp25x --lib
     cargo test -p consortium-core --features std,mimx95 --lib
     cargo test -p consortium-core --features std,mimx93 --lib
+    cargo test -p consortium-core --features std,mimx952 --lib
     cargo test -p consortium-core --features mimx95 --lib
     cargo test -p consortium-core --features std,gpio --lib
     cargo test -p consortium-ipc-transport-fdcan

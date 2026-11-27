@@ -66,10 +66,10 @@ interrupt definitions match the target. Enabling two is a duplicate-definition e
 | --------- | ------------ | ----------------------------------------- |
 | `mimx93`  | 2            | Hardware-validated                        |
 | `mimx95`  | 8            | Hardware-validated                        |
-| `mimx952` | 8            | Compile-only; no MU doorbell until the RM |
+| `mimx952` | 8            | MU doorbell; not hardware-validated       |
 
 `mimx952` is a separate die from i.MX 95, not a variant: its WAKEUP-domain instances
-(LPUART3–8, CAN2/3, LPI2C3–8, TPM3–6, LPIT2) sit at other addresses, and it has no
+(LPUART3–8, CAN2/3, LPI2C3–8, TPM3–6, LPIT2, MU7/8) sit at other addresses, and it has no
 CAN4/5. It shares i.MX 95's System Manager clock model, eDMA request numbers, and
 LPIT1 rate, so the drivers take the i.MX 95 paths there.
 

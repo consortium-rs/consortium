@@ -1,7 +1,6 @@
 name: MIMX952
-# The i.MX 952 reference manual is not published yet (MCUX's CM7 header cites an
-# `iMX952RM rev1 draftM`), so there are no page numbers to cite below.
-trm: i.MX 952 reference manual (unpublished)
+# Page numbers below cite the IMX952RM, Rev. 2 (October 2026).
+trm: IMX952RM, Rev. 2 (October 2026)
 ap: ca55
 interrupt_parent: gic
 # As on i.MX 95: the CM33 runs the System Manager (imx-sm `devices/MIMX952`) and
@@ -39,27 +38,262 @@ remoteproc:
       read: true
       write: true
       execute: false
+      # Mainline `imx952-evk.dts` reserves exactly 0x1000 here
+      # (`rsc-table@88220000`); a longer window would partially overlap it.
       window:
         origin: 0x88220000
-        length: 0x00004000
+        length: 0x00001000
         reserve: true
     ram:
       origin: 0x80800000
       length: 0x00800000
       reserve: true
 memory:
-  trm_page: []
-  # Aliases only translate SRAM-region and doorbell addresses, and this chip
-  # declares neither yet; i.MX 95's values are not assumed to carry over.
-  aliases: []
-  # No shared SRAM is listed until the reference manual gives the OCRAM map:
-  # neither MCUX nor the mainline device tree describes it. Without a region,
-  # `[dbg.<core>]` rings and `[[ipc.channel]]` windows are rejected for this
-  # chip rather than placed at a guessed address.
-  regions: []
+  trm_page: [63, 72, 82]
+  aliases:
+    - offset: 0x20000000
+      secure: false
+    - offset: 0x30000000
+      secure: true
+  # Access to memory is granted per logical machine by the System Manager, not
+  # by the bus. `visible` follows NXP's EVK configurations (imx-sm
+  # `configs/mx952evk.cfg` and `configs/other/mx952evkrpmsg.cfg`), which agree
+  # on both windows below and grant exactly what i.MX 95's do.
+  regions:
+    # OCRAM is 0x00480000..0x004D8000, but the first 256 KiB belong to the
+    # secure A55 (TF-A) and the M7 has no OCRAM grant at all. Only the top
+    # 96 KiB are open to non-secure Linux.
+    - name: OCRAM
+      type: sram
+      base: 0x004C0000
+      length: 0x00018000
+      visible: [ap]
+    # The DDR window both the M7 and non-secure Linux are granted. NXP's i.MX 95
+    # EVK device trees (and mainline `imx952-evk.dts`, which reuses their
+    # carveouts) reserve 0x88000000..0x88120000 (vrings and the vdev buffer)
+    # and 0x88220000 (the resource table) inside it; channels go above those.
+    - name: DDR
+      type: dram
+      base: 0x88000000
+      length: 0x02000000
+      visible: [ap, cm7]
 peripheral:
-  aliases: []
-  # The MU block is present (MU1..MU8, both halves, at the addresses in
-  # `chip/mimx952_cm7.json`), but its party windows and interrupt lines wait for
-  # the reference manual, so no doorbell is declared yet.
-  doorbells: []
+  aliases:
+    - address: 0x50000000
+      secure: true
+    - address: 0x40000000
+      secure: false
+  doorbells:
+    - name: MU1
+      page: 2833
+      type: mu
+      length: 0x00020000
+      window_length: 0x00010000
+      parties:
+        - core: linux
+          window: a
+          irq: 224
+          page_memory: 94
+          page_irq: 134
+          memory: 0x04220000
+        - core: optee
+          window: a
+          irq: 224
+          page_memory: 94
+          page_irq: 134
+          memory: 0x04220000
+        - core: cm33
+          window: b
+          irq: 225
+          page_memory: 94
+          page_irq: 134
+          memory: 0x04230000
+        - core: cm33-s
+          window: b
+          irq: 225
+          page_memory: 94
+          page_irq: 134
+          memory: 0x04230000
+      party_page: 2833
+      channels: 8
+      channel_page: 2834
+    - name: MU2
+      page: 2833
+      type: mu
+      length: 0x00020000
+      window_length: 0x00010000
+      parties:
+        - core: linux
+          window: a
+          irq: 226
+          page_memory: 96
+          page_irq: 134
+          memory: 0x045B0000
+        - core: optee
+          window: a
+          irq: 226
+          page_memory: 96
+          page_irq: 134
+          memory: 0x045B0000
+        - core: cm33
+          window: b
+          irq: 227
+          page_memory: 96
+          page_irq: 134
+          memory: 0x045C0000
+        - core: cm33-s
+          window: b
+          irq: 227
+          page_memory: 96
+          page_irq: 134
+          memory: 0x045C0000
+      party_page: 2833
+      channels: 8
+      channel_page: 2834
+    - name: MU3
+      page: 2833
+      type: mu
+      length: 0x00020000
+      window_length: 0x00010000
+      parties:
+        - core: linux
+          window: a
+          irq: 228
+          page_memory: 96
+          page_irq: 134
+          memory: 0x045D0000
+        - core: optee
+          window: a
+          irq: 228
+          page_memory: 96
+          page_irq: 134
+          memory: 0x045D0000
+        - core: cm33
+          window: b
+          irq: 229
+          page_memory: 96
+          page_irq: 134
+          memory: 0x045E0000
+        - core: cm33-s
+          window: b
+          irq: 229
+          page_memory: 96
+          page_irq: 134
+          memory: 0x045E0000
+      party_page: 2833
+      channels: 8
+      channel_page: 2834
+    - name: MU4
+      page: 2833
+      type: mu
+      length: 0x00020000
+      window_length: 0x00010000
+      parties:
+        - core: linux
+          window: a
+          irq: 230
+          page_memory: 96
+          page_irq: 134
+          memory: 0x045F0000
+        - core: optee
+          window: a
+          irq: 230
+          page_memory: 96
+          page_irq: 134
+          memory: 0x045F0000
+        - core: cm33
+          window: b
+          irq: 231
+          page_memory: 96
+          page_irq: 134
+          memory: 0x04600000
+        - core: cm33-s
+          window: b
+          irq: 231
+          page_memory: 96
+          page_irq: 134
+          memory: 0x04600000
+      party_page: 2833
+      channels: 8
+      channel_page: 2834
+    - name: MU5
+      page: 2833
+      type: mu
+      length: 0x00020000
+      window_length: 0x00010000
+      parties:
+        - core: cm7
+          window: a
+          irq: 205
+          page_memory: 96
+          page_irq: 133
+          memory: 0x04610000
+        - core: cm33
+          window: b
+          irq: 232
+          page_memory: 96
+          page_irq: 134
+          memory: 0x04620000
+        - core: cm33-s
+          window: b
+          irq: 232
+          page_memory: 96
+          page_irq: 134
+          memory: 0x04620000
+      party_page: 2833
+      channels: 8
+      channel_page: 2834
+    - name: MU7
+      page: 4894
+      type: mu
+      length: 0x00020000
+      window_length: 0x00010000
+      parties:
+        - core: linux
+          window: a
+          irq: 234
+          page_memory: 97
+          page_irq: 134
+          memory: 0x02050000
+        - core: optee
+          window: a
+          irq: 234
+          page_memory: 97
+          page_irq: 134
+          memory: 0x02050000
+        - core: cm7
+          window: b
+          irq: 207
+          page_memory: 97
+          page_irq: 133
+          memory: 0x02060000
+      party_page: 4894
+      channels: 8
+      channel_page: 4895
+    - name: MU8
+      page: 4894
+      type: mu
+      length: 0x00020000
+      window_length: 0x00010000
+      parties:
+        - core: linux
+          window: a
+          irq: 235
+          page_memory: 99
+          page_irq: 134
+          memory: 0x02350000
+        - core: optee
+          window: a
+          irq: 235
+          page_memory: 99
+          page_irq: 134
+          memory: 0x02350000
+        - core: cm7
+          window: b
+          irq: 208
+          page_memory: 99
+          page_irq: 133
+          memory: 0x02360000
+      party_page: 4894
+      channels: 8
+      channel_page: 4895

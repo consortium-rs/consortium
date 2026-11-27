@@ -2,21 +2,465 @@
 
 ## UIO Definition
 
-_No UIO devices._
+### reserved-memory
+
+```dts
+reserved-memory {
+    #address-cells = <2>;
+    #size-cells = <2>;
+    ranges;
+
+    dbg_shm: dbg-shm@88300000 {
+        reg = <0x0 0x88300000 0x0 0x2000>;
+        no-map;
+    };
+
+    ipc_shm_0: ipc-shm@88304000 {
+        reg = <0x0 0x88304000 0x0 0x4000>;
+        no-map;
+    };
+
+    ipc_shm_1: ipc-shm@88308000 {
+        reg = <0x0 0x88308000 0x0 0x4000>;
+        dma-coherent;
+        no-map;
+    };
+};
+```
+
+### mu7
+
+```dts
+mu7@42050000 {
+    compatible = "generic-uio";
+    linux,uio-name = "mu7";
+    reg = <0x0 0x42050000 0x0 0x10000>;
+    interrupt-parent = <&gic>;
+    interrupts = <GIC_SPI 234 IRQ_TYPE_LEVEL_HIGH>;
+    status = "okay";
+};
+```
+
+### mu8
+
+```dts
+mu8@42350000 {
+    compatible = "generic-uio";
+    linux,uio-name = "mu8";
+    reg = <0x0 0x42350000 0x0 0x10000>;
+    interrupt-parent = <&gic>;
+    interrupts = <GIC_SPI 235 IRQ_TYPE_LEVEL_HIGH>;
+    status = "okay";
+};
+```
+
+### dbg-shm
+
+```dts
+dbg-shm@88300000 {
+    compatible = "generic-uio";
+    linux,uio-name = "dbg-shm";
+    reg = <0x0 0x88300000 0x0 0x2000>;
+    memory-region = <&dbg_shm>;
+    status = "okay";
+};
+```
+
+### ipc-shm
+
+```dts
+ipc-shm@88304000 {
+    compatible = "generic-uio";
+    linux,uio-name = "ipc-shm";
+    reg = <0x0 0x88304000 0x0 0x4000 0x0 0x88308000 0x0 0x4000>;
+    memory-region = <&ipc_shm_0 &ipc_shm_1>;
+    status = "okay";
+};
+```
 
 ## NVIC Initialization
-
-_No controller-core doorbell interrupts._
-
-## Initialization code
 
 ### cm7
 
 ```rust
 fn _generated() {
-    ::consortium_ipc_transport_memory::channels!();
+    ::consortium_hal_imx9::hal::nvic::unpend(::consortium_hal_imx9::Interrupt::MU7_B);
+    // SAFETY: the interrupt comes from the validated Consortium
+    // hardware database for this visible core, and the application
+    // owns the matching vector.
+    unsafe {
+        ::consortium_hal_imx9::hal::nvic::set_priority(
+            ::consortium_hal_imx9::Interrupt::MU7_B,
+            0x80u8,
+        );
+        ::consortium_hal_imx9::hal::nvic::enable(
+            ::consortium_hal_imx9::Interrupt::MU7_B,
+        );
+    }
+    ::consortium_runtime_mcu::log::trace!(
+        "consortium controller init: NVIC enabled {} at priority 0x80 (id={})", "MU7_B",
+        207u32
+    );
+    ::consortium_hal_imx9::hal::nvic::unpend(::consortium_hal_imx9::Interrupt::MU8_B);
+    // SAFETY: the interrupt comes from the validated Consortium
+    // hardware database for this visible core, and the application
+    // owns the matching vector.
+    unsafe {
+        ::consortium_hal_imx9::hal::nvic::set_priority(
+            ::consortium_hal_imx9::Interrupt::MU8_B,
+            0x80u8,
+        );
+        ::consortium_hal_imx9::hal::nvic::enable(
+            ::consortium_hal_imx9::Interrupt::MU8_B,
+        );
+    }
+    ::consortium_runtime_mcu::log::trace!(
+        "consortium controller init: NVIC enabled {} at priority 0x80 (id={})", "MU8_B",
+        208u32
+    );
+}
+```
+
+## Initialization code
+
+### ap
+
+```rust
+fn _generated() {
+    ::consortium_ipc_transport_memory::channels!(LP, SENSOR);
+    ::consortium_ipc_transport_memory::impl_channel!(
+        LP, ::consortium_ipc::Primary, ::consortium_core::bell::mu::MuDoorbell <
+        ::consortium_ipc::Primary, 8usize >, ::consortium_runtime_app::uio::UioRegion,
+        ::shared::LowPowerData, ::shared::PowerControl,
+        ::consortium_codec::PostcardCodec, 128usize, ack,
+    );
+    ::consortium_ipc_transport_memory::impl_channel!(
+        SENSOR, ::consortium_ipc::Primary, ::consortium_core::bell::mu::MuDoorbell <
+        ::consortium_ipc::Primary, 7usize >, ::consortium_runtime_app::uio::UioRegion,
+        ::shared::SensorData, ::shared::MotionControl, ::consortium_codec::PostcardCodec,
+        128usize,
+    );
+    fn __consortium_install_channels(
+        uio: &[::std::sync::Arc<::consortium_runtime_app::uio::UioDevice>],
+    ) -> ::core::result::Result<(), ::consortium_runtime_app::uio::UioDeviceError> {
+        ::consortium_ipc_transport_memory::install::<
+            channels::LP,
+        >({
+            let region = ::consortium_runtime_app::uio::UioRegion::zeroed(
+                    &uio[3usize],
+                    0usize,
+                )?
+                .keep(uio[1usize].clone());
+            // SAFETY: the base is the UIO-mapped doorbell register window,
+            // resolved from the validated Consortium hardware database.
+            let doorbell = unsafe {
+                ::consortium_core::bell::mu::MuDoorbell::<
+                    ::consortium_ipc::Primary,
+                    8usize,
+                >::new_mapped(uio[1usize].mmap(0usize)?)
+            };
+            let __service_db = doorbell.clone();
+            uio[1usize]
+                .bind_service(
+                    ::std::sync::Arc::new(move || __service_db.service_interrupt()),
+                );
+            // SAFETY: doorbell channel is verified to be valid in the config.
+            let chan_tx = unsafe { ::consortium_ipc::Chan::new_unchecked(4u8) };
+            // SAFETY: doorbell channel is verified to be valid in the config.
+            let chan_rx = unsafe { ::consortium_ipc::Chan::new_unchecked(5u8) };
+            // SAFETY: doorbell channel is verified to be valid in the config.
+            let chan_ack_tx = unsafe { ::consortium_ipc::Chan::new_unchecked(0u8) };
+            // SAFETY: doorbell channel is verified to be valid in the config.
+            let chan_ack_rx = unsafe { ::consortium_ipc::Chan::new_unchecked(1u8) };
+            // SAFETY: the region is this channel's validated shared-memory
+            // window, whose offset 0x00 holds the descriptor, and the
+            // channels/doorbell are this side's.
+            unsafe {
+                ::consortium_ipc_transport_memory::SharedMemoryTransport::<
+                    ::consortium_ipc::Primary,
+                    _,
+                    _,
+                >::new_acked(
+                    chan_tx,
+                    chan_rx,
+                    chan_ack_tx,
+                    chan_ack_rx,
+                    doorbell,
+                    region,
+                )
+            }
+        });
+        ::consortium_ipc_transport_memory::install::<
+            channels::SENSOR,
+        >({
+            let region = ::consortium_runtime_app::uio::UioRegion::zeroed(
+                    &uio[3usize],
+                    1usize,
+                )?
+                .keep(uio[0usize].clone());
+            // SAFETY: the base is the UIO-mapped doorbell register window,
+            // resolved from the validated Consortium hardware database.
+            let doorbell = unsafe {
+                ::consortium_core::bell::mu::MuDoorbell::<
+                    ::consortium_ipc::Primary,
+                    7usize,
+                >::new_mapped(uio[0usize].mmap(0usize)?)
+            };
+            let __service_db = doorbell.clone();
+            uio[0usize]
+                .bind_service(
+                    ::std::sync::Arc::new(move || __service_db.service_interrupt()),
+                );
+            // SAFETY: doorbell channel is verified to be valid in the config.
+            let chan_tx = unsafe { ::consortium_ipc::Chan::new_unchecked(6u8) };
+            // SAFETY: doorbell channel is verified to be valid in the config.
+            let chan_rx = unsafe { ::consortium_ipc::Chan::new_unchecked(7u8) };
+            // SAFETY: the region is this channel's validated shared-memory
+            // window, whose offset 0x00 holds the descriptor, and the
+            // channels/doorbell are this side's.
+            unsafe {
+                ::consortium_ipc_transport_memory::SharedMemoryTransport::<
+                    ::consortium_ipc::Primary,
+                    _,
+                    _,
+                >::new(chan_tx, chan_rx, doorbell, region)
+            }
+        });
+        ::core::result::Result::Ok(())
+    }
+    /// Aggregate bring-up error for [`init`].
+    ///
+    /// The variant payloads are surfaced through `Debug` in the
+    /// consuming binary (a downstream crate this module is `include!`d
+    /// into), which dead-code analysis cannot see, so allow the
+    /// otherwise-"never read" fields.
+    #[derive(Debug)]
+    #[allow(dead_code)]
+    enum ConsortiumInitError {
+        /// Opening or mapping a UIO device failed.
+        Uio(::consortium_runtime_app::uio::UioDeviceError),
+        Dbg(::consortium_runtime_app::dbg_console::DbgConsoleError),
+    }
+    impl ::core::convert::From<::consortium_runtime_app::uio::UioDeviceError>
+    for ConsortiumInitError {
+        fn from(e: ::consortium_runtime_app::uio::UioDeviceError) -> Self {
+            ConsortiumInitError::Uio(e)
+        }
+    }
+    impl ::core::convert::From<::consortium_runtime_app::dbg_console::DbgConsoleError>
+    for ConsortiumInitError {
+        fn from(e: ::consortium_runtime_app::dbg_console::DbgConsoleError) -> Self {
+            ConsortiumInitError::Dbg(e)
+        }
+    }
+    /// Runtime bring-up policy. Every enabled manifest step defaults on.
+    #[non_exhaustive]
+    pub struct Config {
+        pub tracing: bool,
+        pub uio_irqs: bool,
+        pub dbg_console: bool,
+    }
+    impl ::core::default::Default for Config {
+        fn default() -> Self {
+            Self {
+                tracing: true,
+                uio_irqs: true,
+                dbg_console: true,
+            }
+        }
+    }
+    /// Platform resources owned by the application endpoint.
+    ///
+    /// This type deliberately has no `Drop` implementation so fields can
+    /// be moved independently. The debug field is declared first so it
+    /// stops touching mappings before the UIO devices unmap.
+    pub struct Peripherals {
+        pub dbg_console: ::core::option::Option<
+            ::consortium_runtime_app::dbg_console::DbgConsole,
+        >,
+        pub uio: ::std::vec::Vec<
+            ::std::sync::Arc<::consortium_runtime_app::uio::UioDevice>,
+        >,
+    }
+    fn init(
+        config: Config,
+    ) -> ::core::result::Result<(Peripherals, Channels), ConsortiumInitError> {
+        if config.tracing {
+            ::consortium_runtime_app::init_tracing();
+        }
+        ::consortium_runtime_app::log::trace!(
+            "consortium init: opening {} uio device(s)", 4usize
+        );
+        let uio = ::std::vec![
+            ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open_named("mu7",
+            1107623936u64, true && config.uio_irqs,) ?),
+            ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open_named("mu8",
+            1110769664u64, true && config.uio_irqs,) ?),
+            ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open_named("dbg-shm",
+            2284847104u64, false && config.uio_irqs,) ?),
+            ::std::sync::Arc::new(::consortium_runtime_app::uio::UioDevice::open_named("ipc-shm",
+            2284863488u64, false && config.uio_irqs,) ?)
+        ];
+        ::consortium_runtime_app::log::trace!(
+            "consortium init: installing ipc endpoints"
+        );
+        __consortium_install_channels(&uio)?;
+        let channels = Channels::take();
+        let dbg_console = if config.dbg_console {
+            ::core::option::Option::Some(
+                ::consortium_runtime_app::dbg_console::spawn(
+                    &uio,
+                    &[
+                        ::consortium_runtime_app::dbg_console::DbgRingSpec {
+                            uio_id: 2,
+                            mmap_id: 0,
+                            len: 8192,
+                            elf_bytes: {
+                                #[repr(align(16))]
+                                struct Aligned<const N: usize>([u8; N]);
+                                static ELF: Aligned<
+                                    { include_bytes!("./firmware").len() },
+                                > = Aligned(*include_bytes!("./firmware"));
+                                &ELF.0
+                            },
+                            label: "cm7",
+                        },
+                    ],
+                )?,
+            )
+        } else {
+            ::core::option::Option::None
+        };
+        ::consortium_runtime_app::log::trace!("consortium init: resources ready");
+        ::core::result::Result::Ok((Peripherals { dbg_console, uio }, channels))
+    }
+    /// Error union suitable for `#[consortium_runtime_app::main]`.
+    ///
+    /// `MainOutcome` reports the payload through derived `Debug`, which
+    /// dead-code analysis intentionally does not count as a field read.
+    #[derive(Debug)]
+    #[allow(dead_code)]
+    enum ConsortiumError {
+        Init(ConsortiumInitError),
+        Connect(::consortium_ipc_transport_memory::ConnectError),
+    }
+    impl ::core::convert::From<ConsortiumInitError> for ConsortiumError {
+        fn from(e: ConsortiumInitError) -> Self {
+            Self::Init(e)
+        }
+    }
+    impl ::core::convert::From<::consortium_ipc_transport_memory::ConnectError>
+    for ConsortiumError {
+        fn from(e: ::consortium_ipc_transport_memory::ConnectError) -> Self {
+            Self::Connect(e)
+        }
+    }
+}
+```
+
+### cm7
+
+```rust
+fn _generated() {
+    ::consortium_ipc_transport_memory::channels!(LP, SENSOR);
+    ::consortium_ipc_transport_memory::impl_channel!(
+        LP, ::consortium_ipc::Secondary, ::consortium_core::bell::mu::MuDoorbell <
+        ::consortium_ipc::Secondary, 8usize >,
+        ::consortium_core::regions::UncachedRegion, ::shared::PowerControl,
+        ::shared::LowPowerData, ::consortium_codec::PostcardCodec, 128usize, ack,
+    );
+    ::consortium_ipc_transport_memory::impl_channel!(
+        SENSOR, ::consortium_ipc::Secondary, ::consortium_core::bell::mu::MuDoorbell <
+        ::consortium_ipc::Secondary, 7usize >, ::consortium_core::regions::CachedRegion,
+        ::shared::MotionControl, ::shared::SensorData, ::consortium_codec::PostcardCodec,
+        128usize,
+    );
     #[cfg(target_arch = "arm")]
-    fn __consortium_install_channels() {}
+    fn __consortium_install_channels(
+        __db_mu8_mub: ::consortium_hal_imx9::Peri<
+            'static,
+            ::consortium_hal_imx9::peripherals::MU8_MUB,
+        >,
+        __db_mu7_mub: ::consortium_hal_imx9::Peri<
+            'static,
+            ::consortium_hal_imx9::peripherals::MU7_MUB,
+        >,
+    ) {
+        ::consortium_ipc_transport_memory::install::<
+            channels::LP,
+        >({
+            // SAFETY: automatically generated by Consortium after matching with database
+            let region = unsafe {
+                ::consortium_core::regions::UncachedRegion::new(
+                    (2284863488usize) as *mut u8,
+                    16384usize,
+                )
+            };
+            let doorbell = ::consortium_core::bell::mu::MuDoorbell::<
+                ::consortium_ipc::Secondary,
+                8usize,
+            >::new(__db_mu8_mub);
+            // SAFETY: doorbell channel is verified to be valid in the config.
+            let chan_tx = unsafe { ::consortium_ipc::Chan::new_unchecked(5u8) };
+            // SAFETY: doorbell channel is verified to be valid in the config.
+            let chan_rx = unsafe { ::consortium_ipc::Chan::new_unchecked(4u8) };
+            // SAFETY: doorbell channel is verified to be valid in the config.
+            let chan_ack_tx = unsafe { ::consortium_ipc::Chan::new_unchecked(1u8) };
+            // SAFETY: doorbell channel is verified to be valid in the config.
+            let chan_ack_rx = unsafe { ::consortium_ipc::Chan::new_unchecked(0u8) };
+            // SAFETY: the region is this channel's validated shared-memory
+            // window, whose offset 0x00 holds the descriptor, and the
+            // channels/doorbell are this side's.
+            unsafe {
+                ::consortium_ipc_transport_memory::SharedMemoryTransport::<
+                    ::consortium_ipc::Secondary,
+                    _,
+                    _,
+                >::new_acked(
+                    chan_tx,
+                    chan_rx,
+                    chan_ack_tx,
+                    chan_ack_rx,
+                    doorbell,
+                    region,
+                )
+            }
+        });
+        ::consortium_ipc_transport_memory::install::<
+            channels::SENSOR,
+        >({
+            // SAFETY: automatically generated by Consortium after matching with database
+            let region = unsafe {
+                ::consortium_core::regions::CachedRegion::new(
+                    (2284879872usize) as *mut u8,
+                    16384usize,
+                )
+            };
+            let doorbell = ::consortium_core::bell::mu::MuDoorbell::<
+                ::consortium_ipc::Secondary,
+                7usize,
+            >::new(__db_mu7_mub);
+            // SAFETY: doorbell channel is verified to be valid in the config.
+            let chan_tx = unsafe { ::consortium_ipc::Chan::new_unchecked(7u8) };
+            // SAFETY: doorbell channel is verified to be valid in the config.
+            let chan_rx = unsafe { ::consortium_ipc::Chan::new_unchecked(6u8) };
+            // SAFETY: the region is this channel's validated shared-memory
+            // window, whose offset 0x00 holds the descriptor, and the
+            // channels/doorbell are this side's.
+            unsafe {
+                ::consortium_ipc_transport_memory::SharedMemoryTransport::<
+                    ::consortium_ipc::Secondary,
+                    _,
+                    _,
+                >::new(chan_tx, chan_rx, doorbell, region)
+            }
+        });
+    }
+    #[cfg(target_arch = "arm")]
+    defmt::timestamp!(
+        "{=u32}", { use ::core::sync::atomic:: { AtomicU32, Ordering }; static COUNT :
+        AtomicU32 = AtomicU32::new(0); COUNT.fetch_add(1, Ordering::Relaxed) }
+    );
     /// Interrupt vectors for this endpoint's generated bring-up.
     #[cfg(target_arch = "arm")]
     mod __consortium_vectors {
@@ -24,6 +468,26 @@ fn _generated() {
         #[::consortium_hal_imx9::interrupt]
         fn LPIT1() {
             ::consortium_hal_imx9::timer_driver::on_timer_interrupt();
+        }
+        const _: () = ::core::assert!(
+            ::consortium_hal_imx9::Interrupt::MU7_B as u16 == 207u16,
+            "MU7_B is interrupt 207 in this core's Consortium chip map but not in the chip PAC's interrupt table; the generated vector and the NVIC enable would refer to different lines"
+        );
+        #[::consortium_hal_imx9::interrupt]
+        fn MU7_B() {
+            ::consortium_core::bell::service_interrupt::<
+                ::consortium_core::bell::mu::Mu<::consortium_ipc::Secondary, 7usize>,
+            >();
+        }
+        const _: () = ::core::assert!(
+            ::consortium_hal_imx9::Interrupt::MU8_B as u16 == 208u16,
+            "MU8_B is interrupt 208 in this core's Consortium chip map but not in the chip PAC's interrupt table; the generated vector and the NVIC enable would refer to different lines"
+        );
+        #[::consortium_hal_imx9::interrupt]
+        fn MU8_B() {
+            ::consortium_core::bell::service_interrupt::<
+                ::consortium_core::bell::mu::Mu<::consortium_ipc::Secondary, 8usize>,
+            >();
         }
         const _: () = ::core::assert!(
             ::consortium_hal_imx9::Interrupt::LPI2C3 as u16 == 58u16,
@@ -60,12 +524,83 @@ fn _generated() {
     /// unconnected IPC transport into its generated endpoint state.
     #[cfg(target_arch = "arm")]
     fn init(config: Config) -> (Peripherals, Channels) {
-        if config.logger {}
+        if config.logger {
+            // SAFETY: the ring is this core's validated `[dbg]` window,
+            // written only by this logger and read by the host.
+            unsafe {
+                ::consortium_dbg::logger::ConsortiumLogger::init(
+                    (2284847104usize) as *mut u8,
+                    8192u16,
+                )
+            }
+        }
         ::consortium_runtime_mcu::log::trace!(
             "consortium controller init: mpu/nvic bring-up"
         );
-        if config.mpu {}
+        // SAFETY: `init` runs once during controller bring-up, in
+        // privileged mode, before any other code touches the MPU or
+        // cache-control peripherals.
+        let mut __core = unsafe { ::cortex_m::Peripherals::steal() };
+        if config.mpu {
+            // SAFETY: `init` holds exclusive privileged MPU access during
+            // bring-up; `base`/`size` are this core's validated shared
+            // region from the Consortium hardware layout.
+            unsafe {
+                ::consortium_runtime_mcu::mpu::disable_cache(
+                    &mut __core.MPU,
+                    0u8,
+                    2284863488u32,
+                    16384u32,
+                );
+                ::consortium_runtime_mcu::log::trace!(
+                    "consortium controller init: MPU carveout {} base={:#010x} size={:#010x}",
+                    0u8, 2284863488u32, 16384u32
+                );
+            }
+        }
+        __core.SCB.enable_dcache(&mut __core.CPUID);
+        ::consortium_runtime_mcu::log::trace!(
+            "consortium controller init: Cortex-M7 data cache enabled"
+        );
         if config.nvic {
+            ::consortium_hal_imx9::hal::nvic::unpend(
+                ::consortium_hal_imx9::Interrupt::MU7_B,
+            );
+            // SAFETY: the interrupt comes from the validated Consortium
+            // hardware database for this visible core, and the application
+            // owns the matching vector.
+            unsafe {
+                ::consortium_hal_imx9::hal::nvic::set_priority(
+                    ::consortium_hal_imx9::Interrupt::MU7_B,
+                    0x80u8,
+                );
+                ::consortium_hal_imx9::hal::nvic::enable(
+                    ::consortium_hal_imx9::Interrupt::MU7_B,
+                );
+            }
+            ::consortium_runtime_mcu::log::trace!(
+                "consortium controller init: NVIC enabled {} at priority 0x80 (id={})",
+                "MU7_B", 207u32
+            );
+            ::consortium_hal_imx9::hal::nvic::unpend(
+                ::consortium_hal_imx9::Interrupt::MU8_B,
+            );
+            // SAFETY: the interrupt comes from the validated Consortium
+            // hardware database for this visible core, and the application
+            // owns the matching vector.
+            unsafe {
+                ::consortium_hal_imx9::hal::nvic::set_priority(
+                    ::consortium_hal_imx9::Interrupt::MU8_B,
+                    0x80u8,
+                );
+                ::consortium_hal_imx9::hal::nvic::enable(
+                    ::consortium_hal_imx9::Interrupt::MU8_B,
+                );
+            }
+            ::consortium_runtime_mcu::log::trace!(
+                "consortium controller init: NVIC enabled {} at priority 0x80 (id={})",
+                "MU8_B", 208u32
+            );
             // SAFETY: the interrupt comes from the validated chip map and
             // its generated handler is installed above.
             unsafe {
@@ -87,7 +622,7 @@ fn _generated() {
                 "consortium controller init: time driver up"
             );
         }
-        __consortium_install_channels();
+        __consortium_install_channels(__p.MU8_MUB, __p.MU7_MUB);
         let channels = Channels::take();
         let peripherals = Peripherals {
             CAN2: __p.CAN2,
