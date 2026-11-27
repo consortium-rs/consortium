@@ -18,7 +18,6 @@ name                   = "cogcore-sys"
 version.workspace      = true
 authors.workspace      = true
 categories.workspace   = true
-homepage.workspace     = true
 keywords.workspace     = true
 readme                 = "README.md"
 repository.workspace   = true
@@ -28,3 +27,8 @@ rust-version.workspace = true
 bindgen    = "0.73"
 cc         = "1.1"
 pkg-config = "0.3.33"
+
+# Bindgen output: the workspace's unsafe-documentation lints cannot apply to
+# generated FFI, so this crate deliberately does not inherit them.
+[lints.cargo]
+missing_lints_inheritance = "allow"

@@ -395,6 +395,7 @@ mod tests {
 
     #[test]
     fn tx_channel_encodes_message_and_sends_bytes() {
+        // SAFETY: `MockTransport` drives no doorbell line, so any id is valid for it.
         let ch = unsafe { Chan::new_unchecked(3) };
         let transport = MockTransport::default();
         let mut channel = Channel::<Tx, Message, _, MockCodec>::new(ch, transport, scratch::<8>());
@@ -407,6 +408,7 @@ mod tests {
 
     #[test]
     fn tx_channel_reports_codec_error_before_transport_send() {
+        // SAFETY: `MockTransport` drives no doorbell line, so any id is valid for it.
         let ch = unsafe { Chan::new_unchecked(0) };
         let transport = MockTransport::default();
         let mut channel = Channel::<Tx, Message, _, MockCodec>::new(ch, transport, scratch::<8>());
@@ -420,6 +422,7 @@ mod tests {
 
     #[test]
     fn tx_channel_reports_transport_send_error() {
+        // SAFETY: `MockTransport` drives no doorbell line, so any id is valid for it.
         let ch = unsafe { Chan::new_unchecked(0) };
         let transport = MockTransport {
             fail_send: true,
@@ -435,6 +438,7 @@ mod tests {
 
     #[test]
     fn rx_channel_receives_bytes_and_decodes_message() {
+        // SAFETY: `MockTransport` drives no doorbell line, so any id is valid for it.
         let ch = unsafe { Chan::new_unchecked(1) };
         let transport = MockTransport {
             recv_payload: std::vec![9],
@@ -451,6 +455,7 @@ mod tests {
 
     #[test]
     fn rx_channel_reports_transport_recv_error() {
+        // SAFETY: `MockTransport` drives no doorbell line, so any id is valid for it.
         let ch = unsafe { Chan::new_unchecked(1) };
         let transport = MockTransport {
             fail_recv: true,
@@ -465,6 +470,7 @@ mod tests {
 
     #[test]
     fn rx_channel_reports_codec_decode_error() {
+        // SAFETY: `MockTransport` drives no doorbell line, so any id is valid for it.
         let ch = unsafe { Chan::new_unchecked(1) };
         let transport = MockTransport {
             recv_payload: std::vec![0xEE],

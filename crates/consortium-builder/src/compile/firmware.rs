@@ -99,7 +99,12 @@ fn sibling(raw: &Path, suffix: &str) -> PathBuf {
 
 /// Resolves `arm-none-eabi-objcopy`, honouring a `CONSORTIUM_OBJCOPY` override.
 fn resolve_objcopy() -> String {
-    std::env::var("CONSORTIUM_OBJCOPY").unwrap_or_else(|_| "arm-none-eabi-objcopy".to_string())
+    objcopy_or_default(std::env::var("CONSORTIUM_OBJCOPY").ok())
+}
+
+/// The objcopy to run: the `CONSORTIUM_OBJCOPY` override if set, else the Arm one.
+fn objcopy_or_default(configured: Option<String>) -> String {
+    configured.unwrap_or_else(|| "arm-none-eabi-objcopy".to_string())
 }
 
 /// Post-processes the raw firmware ELF into a remoteproc-loadable image.
@@ -440,17 +445,14 @@ mod tests {
         );
     }
 
+    /// Tested through the pure helper: mutating the process environment from a
+    /// test races every other test thread that reads it.
     #[test]
     fn objcopy_resolution_honours_override() {
-        // SAFETY: single-threaded test; restores the prior value after asserting.
-        let prev = std::env::var("CONSORTIUM_OBJCOPY").ok();
-        unsafe { std::env::set_var("CONSORTIUM_OBJCOPY", "riscv64-unknown-elf-objcopy") };
-        assert_eq!(resolve_objcopy(), "riscv64-unknown-elf-objcopy");
-        unsafe { std::env::remove_var("CONSORTIUM_OBJCOPY") };
-        assert_eq!(resolve_objcopy(), "arm-none-eabi-objcopy");
-        match prev {
-            Some(v) => unsafe { std::env::set_var("CONSORTIUM_OBJCOPY", v) },
-            None => unsafe { std::env::remove_var("CONSORTIUM_OBJCOPY") },
-        }
+        assert_eq!(
+            objcopy_or_default(Some("riscv64-unknown-elf-objcopy".to_string())),
+            "riscv64-unknown-elf-objcopy"
+        );
+        assert_eq!(objcopy_or_default(None), "arm-none-eabi-objcopy");
     }
 }

@@ -65,28 +65,45 @@
 // with no address-space-local constructs.
 pub unsafe trait IpcSafe {}
 
-// Blanket impls for primitive fixed-width, ABI-stable types.
-// SAFETY: all listed types have a fixed, platform-independent size and layout.
-unsafe impl IpcSafe for u8 {}
-unsafe impl IpcSafe for u16 {}
-unsafe impl IpcSafe for u32 {}
-unsafe impl IpcSafe for u64 {}
-unsafe impl IpcSafe for u128 {}
-unsafe impl IpcSafe for i8 {}
-unsafe impl IpcSafe for i16 {}
-unsafe impl IpcSafe for i32 {}
-unsafe impl IpcSafe for i64 {}
-unsafe impl IpcSafe for i128 {}
-unsafe impl IpcSafe for f32 {}
-unsafe impl IpcSafe for f64 {}
-unsafe impl IpcSafe for bool {}
-unsafe impl IpcSafe for () {}
+/// Impls for primitive fixed-width, ABI-stable types.
+macro_rules! impl_ipc_safe_primitive {
+    ($($ty:ty),* $(,)?) => {$(
+        // SAFETY: a fixed-width primitive has the same size and layout on every
+        // core, and holds no pointer, reference, or platform-width integer.
+        unsafe impl IpcSafe for $ty {}
+    )*};
+}
 
-// SAFETY: fixed-size array of an IpcSafe element is itself fixed-size and portable.
+impl_ipc_safe_primitive!(
+    u8,
+    u16,
+    u32,
+    u64,
+    u128,
+    i8,
+    i16,
+    i32,
+    i64,
+    i128,
+    f32,
+    f64,
+    bool,
+    ()
+);
+
+// SAFETY: a fixed-size array of an IpcSafe element is itself fixed-size and
+// portable; `N` is a compile-time length, not a stored `usize`.
 unsafe impl<T: IpcSafe, const N: usize> IpcSafe for [T; N] {}
 
-// SAFETY: tuples of IpcSafe elements have a fixed layout.
+// SAFETY: every element is IpcSafe, so the tuple has a fixed layout with no
+// address-space-local construct.
 unsafe impl<T0: IpcSafe> IpcSafe for (T0,) {}
+// SAFETY: every element is IpcSafe, so the tuple has a fixed layout with no
+// address-space-local construct.
 unsafe impl<T0: IpcSafe, T1: IpcSafe> IpcSafe for (T0, T1) {}
+// SAFETY: every element is IpcSafe, so the tuple has a fixed layout with no
+// address-space-local construct.
 unsafe impl<T0: IpcSafe, T1: IpcSafe, T2: IpcSafe> IpcSafe for (T0, T1, T2) {}
+// SAFETY: every element is IpcSafe, so the tuple has a fixed layout with no
+// address-space-local construct.
 unsafe impl<T0: IpcSafe, T1: IpcSafe, T2: IpcSafe, T3: IpcSafe> IpcSafe for (T0, T1, T2, T3) {}

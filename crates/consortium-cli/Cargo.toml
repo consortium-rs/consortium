@@ -24,7 +24,6 @@ name                   = "csti"
 version.workspace      = true
 authors.workspace      = true
 categories.workspace   = true
-homepage.workspace     = true
 keywords.workspace     = true
 readme                 = "README.md"
 repository.workspace   = true
@@ -50,3 +49,6 @@ tokio              = { features = ["macros", "rt-multi-thread"], version = "1.50
 
 [dev-dependencies]
 toml = "1.1.0"
+
+[lints]
+workspace = true

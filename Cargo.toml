@@ -46,7 +46,6 @@ ignored-paths = ["**/tests/ui/**/*.rs"]
 authors    = ["Ethan Wu <7086cmd@gmail.com>"]
 categories = ["embedded", "hardware-support", "no-std"]
 edition    = "2024"
-homepage   = "https://github.com/consortium-rs/consortium"
 keywords   = ["amp", "embedded", "heterogeneous", "ipc", "no-std"]
 license    = "Apache-2.0"
 readme     = "README.md"

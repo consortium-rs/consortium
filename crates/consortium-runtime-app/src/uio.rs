@@ -288,18 +288,20 @@ impl UioDevice {
         // length) is cleared byte-by-byte.
         let step = core::mem::size_of::<usize>();
         let words = len / step;
-        // SAFETY: `base`/`len` describe the freshly mapped UIO RAM window this
-        // device owns; before the coprocessor boots the AP is its sole writer, so
-        // these in-bounds volatile stores have no aliasing hazard.
-        unsafe {
-            let word_ptr = base as *mut usize;
-            for i in 0..words {
-                word_ptr.add(i).write_volatile(0);
-            }
-            let byte_ptr = base as *mut u8;
-            for i in (words * step)..len {
-                byte_ptr.add(i).write_volatile(0);
-            }
+        // Pointer arithmetic stays safe (`wrapping_add`); only the stores are unsafe.
+        let word_ptr = base as *mut usize;
+        for i in 0..words {
+            // SAFETY: `i < len / step`, so the word lies inside the freshly mapped UIO
+            // RAM window this device owns, and is aligned (page-aligned base). Before
+            // the coprocessor boots the AP is its sole writer, so the volatile store
+            // has no aliasing hazard.
+            unsafe { word_ptr.wrapping_add(i).write_volatile(0) };
+        }
+        let byte_ptr = base as *mut u8;
+        for i in (words * step)..len {
+            // SAFETY: `i < len`, so the byte lies inside the same owned window; as
+            // above, the AP is its sole writer.
+            unsafe { byte_ptr.wrapping_add(i).write_volatile(0) };
         }
         Ok(base)
     }

@@ -22,7 +22,6 @@ name                   = "consortium-runtime-app"
 version.workspace      = true
 authors.workspace      = true
 categories.workspace   = true
-homepage.workspace     = true
 keywords.workspace     = true
 readme                 = "README.md"
 repository.workspace   = true
@@ -91,3 +90,6 @@ uio = { version = "0.6.0" }
 
 
 [dependencies]
+
+[lints]
+workspace = true

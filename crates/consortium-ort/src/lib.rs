@@ -34,3 +34,7 @@
 //!
 //! The `tracing` feature forwards to `ort/tracing`, so ORT diagnostics land in the same
 //! subscriber `consortium-runtime-app` installs.
+
+// The dependency is held on purpose until the wrapper exists (see above); naming it
+// keeps Cargo's `unused_dependencies` lint from reporting the reservation.
+use ort as _;
