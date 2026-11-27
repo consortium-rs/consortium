@@ -70,9 +70,9 @@ embassy-time = { features = ["std"], version = "0.5.1" }
 futures = "0.3"
 # The test doorbells project their wait futures; the library never pins by projection.
 pin-project = "1.1.11"
-prost = { default-features = false, version = "0.14.3" }
-rkyv = { default-features = false, features = ["bytecheck"], version = "0.8.18" }
-serde = { default-features = false, features = ["derive"], version = "1.0.228" }
+prost       = { default-features = false, version = "0.14.3" }
+rkyv        = { default-features = false, features = ["bytecheck"], version = "0.8.18" }
+serde       = { default-features = false, features = ["derive"], version = "1.0.228" }
 # `time` is test-only: the acknowledged-send tests bound every await so a protocol bug
 # fails the suite instead of wedging it.
 tokio = { features = ["macros", "net", "rt", "sync", "time"], version = "1" }
